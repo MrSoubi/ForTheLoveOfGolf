@@ -12,23 +12,12 @@ public class CollectibleManager : MonoBehaviour
     public GameObject[] collectibles;
 
     public int numberCollectible;
-     
-    // TEMP
-    private IEnumerator Temp()
-    {
-        yield return new WaitForSeconds(2);
-
-        AddCollectible(0);
-    }
 
     private void Start()
     {
         if(collectibles.Length > 0)
         {
             textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
-
-            // TEMP
-            StartCoroutine(Temp());
         }
     }
 

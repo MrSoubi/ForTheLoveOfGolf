@@ -13,12 +13,21 @@ public class CameraController : MonoBehaviour
 
     Vector2 mouseInput;
     Vector2 minMaxY = new Vector2(-50, 50);
+    Vector3 currentPos;
+
+    [Header("Camera shake")]
+    [Range(0, 5)] public float shakeIntensity;
+    [Range(.01f, .08f)] public float shakeSpeed;
+
+    float startingIntensity, shakeTimer, shakeTimerTotal;
 
     [Header("References")]
     [SerializeField] Transform lookAt;
     Transform lookAtRayOrigin;
     
     Camera cam;
+
+    bool isPaused = false;
 
     private void Awake()
     {
@@ -30,13 +39,17 @@ public class CameraController : MonoBehaviour
         currentAngle = idleAngle;
         cam.fieldOfView = currentAngle.FOV;
 
-        lookAtRayOrigin = Instantiate(new GameObject("LookAt_RayOrigin"), lookAt).transform;
+        lookAtRayOrigin = new GameObject("LookAt_RayOrigin").transform;
+        lookAtRayOrigin.SetParent(lookAt);
         lookAtRayOrigin.position = lookAt.position;
+
+        StartCoroutine(ShakeInterpolation());
     }
 
     private void Update()
     {
         GetInput();
+        Shake();
     }
 
     private void LateUpdate()
@@ -64,8 +77,7 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(-mouseInput.y, mouseInput.x, 0);
 
         // Applicate values
-        transform.position = lookAt.position + rotation * Direction;
-        transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
+        currentPos = lookAt.position + rotation * Direction;
     }
 
     public void ShangeCameraAngle(CameraAngleType cameraAngleType)
@@ -92,6 +104,44 @@ public class CameraController : MonoBehaviour
         currentAngle.FOV = newAngle.FOV;
 
         DOTween.To(() => currentAngle.lookAtOffset, x => currentAngle.lookAtOffset = x, newAngle.lookAtOffset, time);
+    }
+
+    public void SetShaking(float intensity, float time)
+    {
+        startingIntensity = intensity;
+        shakeIntensity = intensity;
+
+        shakeTimerTotal = time;
+        shakeTimer = time;
+    }
+    void Shake()
+    {
+        if (shakeTimer > 0)
+        {
+            shakeTimer -= Time.deltaTime;
+            shakeIntensity = Mathf.Lerp(startingIntensity, 0f, 1 - (shakeTimer / shakeTimerTotal));
+        }
+    }
+    IEnumerator ShakeInterpolation(bool isNegative = false)
+    {
+        float startTime = Time.time;
+
+        Vector3 initPos = transform.localPosition, targetPos = Random.insideUnitCircle * shakeIntensity;
+
+        while (Time.time < startTime + shakeSpeed)
+        {
+            float delta = 0;
+            if (!isPaused) delta = (Time.time - startTime) / shakeSpeed;
+
+            Vector3 position = Vector3.Lerp(initPos, targetPos / 10, delta) + transform.forward;
+
+            transform.position = position;
+            transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
+
+            yield return null;
+        }
+
+        StartCoroutine(ShakeInterpolation(!isNegative));
     }
 }
 

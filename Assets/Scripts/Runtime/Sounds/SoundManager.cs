@@ -54,7 +54,12 @@ public class SoundManager : MonoBehaviour
         StartCoroutine(Utils.Delay(()=> FreeAudioSource(audioSource), soundRequest.audio.length));
     }
 
-    private AudioSource PullAudioSource() => new GameObject("AudioSource").AddComponent<AudioSource>();
+    private AudioSource PullAudioSource()
+    {
+        var go = new GameObject("AudioSource");
+        go.transform.parent = transform;
+        return go.AddComponent<AudioSource>();
+    }
 
     private AudioSource PickAudioSource()
     {

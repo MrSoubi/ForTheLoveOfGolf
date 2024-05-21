@@ -26,19 +26,41 @@ public class SoundManager : MonoBehaviour
     {
         for(int i = 0; i < quantityAudioSources; ++i)
         {
-            PullAudioSource();
+            audioSourcesAvailable.Enqueue(PullAudioSource());
         }
     }
 
-    public void StopSound(SoundRequest soundRequest) { }
-
-    public void PlaySound(SoundRequest soundRequest) { }
-
-    private bool SoundIsPlaying() { return false; }
-
-    private void PullAudioSource() 
+    public void StopSound(SoundRequest soundRequest)
     {
-        
+        if (soundRequest.audioSourceAssign == null) return;
+        FreeAudioSource(soundRequest.audioSourceAssign);
+        soundRequest.audioSourceAssign = null;
+    }
+
+    public void PlaySound(SoundRequest soundRequest, Vector3 positionSound)
+    {
+        var audioSource = PickAudioSource();
+        if (audioSource == null ||soundRequest == null) return;
+
+        audioSource.clip = soundRequest.audio;
+        audioSource.priority = soundRequest.priority;
+        audioSource.volume = soundRequest.volume;
+        audioSource.spatialBlend = soundRequest.spatializeSound;
+        audioSource.loop = soundRequest.looping;
+
+        audioSource.Play();
+        //Wait pick s
+    }
+
+    private AudioSource PullAudioSource() => new GameObject("AudioSource").AddComponent<AudioSource>();
+
+    private AudioSource PickAudioSource()
+    {
+        AudioSource audioSource = null;
+        if (canExpendQueue) audioSource = PullAudioSource();
+        else if (audioSourcesAvailable.Count > 0) audioSource =  audioSourcesAvailable.Dequeue();
+        else Debug.LogWarning(message: "None AudioSource Available");
+        return audioSource;
     }
 
     private void FreeAudioSource(AudioSource audioSource)
@@ -51,13 +73,5 @@ public class SoundManager : MonoBehaviour
         audioSourcesAvailable.Enqueue(audioSource);
     }
 
-    private AudioSource PickAudioSource()
-    {
-        AudioSource audioSource = null;
-        if (canExpendQueue) audioSource = new GameObject().AddComponent<AudioSource>();
-        else if (audioSourcesAvailable.Count > 0) audioSource =  audioSourcesAvailable.Dequeue();
-        else Debug.LogWarning(message: "None AudioSource Available");
-        return audioSource;
-    }
 
 }

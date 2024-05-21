@@ -33,6 +33,7 @@ public class SoundManager : MonoBehaviour
     public void StopSound(SoundRequest soundRequest)
     {
         if (soundRequest.audioSourceAssign == null) return;
+        soundRequest.audioSourceAssign.Stop();
         FreeAudioSource(soundRequest.audioSourceAssign);
         soundRequest.audioSourceAssign = null;
     }
@@ -47,9 +48,10 @@ public class SoundManager : MonoBehaviour
         audioSource.volume = soundRequest.volume;
         audioSource.spatialBlend = soundRequest.spatializeSound;
         audioSource.loop = soundRequest.looping;
+        audioSource.transform.position = positionSound;
 
         audioSource.Play();
-        //Wait pick s
+        StartCoroutine(Utils.Delay(()=> FreeAudioSource(audioSource), soundRequest.audio.length));
     }
 
     private AudioSource PullAudioSource() => new GameObject("AudioSource").AddComponent<AudioSource>();
@@ -69,9 +71,9 @@ public class SoundManager : MonoBehaviour
         audioSource.priority = 128;
         audioSource.clip = null;
         audioSource.loop = false;
+        audioSource.transform.position = Vector3.zero;
 
         audioSourcesAvailable.Enqueue(audioSource);
     }
-
 
 }

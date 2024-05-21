@@ -11,7 +11,7 @@ public class CollectibleManager : MonoBehaviour
 
     public GameObject[] collectibles;
 
-    public int numberCollectible;
+    public int numberCollectible; // Nomenclature : collectibleCount ?
 
     private void Start()
     {
@@ -21,6 +21,7 @@ public class CollectibleManager : MonoBehaviour
         }
     }
 
+    // Un peu de documentation sur ces deux fontions pour savoir ce qu'elles ajoutent et supprime, c'est pas super clair pour moi (Manu)
     public void AddCollectible(int index)
     {
         numberCollectible += 1;

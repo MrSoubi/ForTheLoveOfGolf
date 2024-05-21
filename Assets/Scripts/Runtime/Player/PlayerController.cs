@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundDrag;
 
     [Header("Ground Check")]
-    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private LayerMask whatIsGround; // Ca correspond à quoi ? Revoir le nommage peut être ?
 
     [Header("Jump Settings")]
     [SerializeField] private float dashForce;
@@ -78,7 +78,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SpeedControl()
+    // (Manu) Possibilité d'utiliser la fonction Vector3.ClampMagnitude à la place ? https://docs.unity3d.com/ScriptReference/Vector3.ClampMagnitude.html
+    private void SpeedControl() // Revoir le nommage ? 
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 

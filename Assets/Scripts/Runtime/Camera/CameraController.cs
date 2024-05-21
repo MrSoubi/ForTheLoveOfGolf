@@ -68,6 +68,7 @@ public class CameraController : MonoBehaviour
         transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
     }
 
+    // WARNING ! Shange -> Change (Manu)
     public void ShangeCameraAngle(CameraAngleType cameraAngleType)
     {
         switch (cameraAngleType)

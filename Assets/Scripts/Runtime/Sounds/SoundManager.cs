@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance {  get; private set; }
     private Queue<AudioSource> audioSourcesAvailable = new ();
+
+    [Header("References")]
+    [Tooltip("Don't touch! MUSIC = 0, SFX = 1, AMBIENT = 2")][SerializeField] private List<AudioMixerGroup> mixerGroups;
 
     [Header("Properties")]
     [SerializeField] private int quantityAudioSources = 10;
@@ -43,6 +47,19 @@ public class SoundManager : MonoBehaviour
         var audioSource = PickAudioSource();
         if (audioSource == null ||soundRequest == null) return;
 
+        switch (soundRequest.category)
+        {
+            case SoundCategory.MUSIC:
+                audioSource.outputAudioMixerGroup = mixerGroups[0];
+                break;
+            case SoundCategory.SFX:
+                audioSource.outputAudioMixerGroup = mixerGroups[1];
+                break;
+            case SoundCategory.AMBIENT:
+                audioSource.outputAudioMixerGroup = mixerGroups[2];
+                break;
+        }
+
         audioSource.clip = soundRequest.audio;
         audioSource.priority = soundRequest.priority;
         audioSource.volume = soundRequest.volume;
@@ -51,6 +68,8 @@ public class SoundManager : MonoBehaviour
         audioSource.transform.position = positionSound;
 
         audioSource.Play();
+
+        if (soundRequest.looping) return;
         StartCoroutine(Utils.Delay(()=> FreeAudioSource(audioSource), soundRequest.audio.length));
     }
 

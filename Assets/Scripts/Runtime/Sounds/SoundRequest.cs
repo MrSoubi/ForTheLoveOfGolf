@@ -7,6 +7,7 @@ public class SoundRequest : ScriptableObject
 {
     [Header("References")]
     [Tooltip("Source of the sound")] public AudioClip audio;
+    [Tooltip("Type of sound")] public SoundCategory category = SoundCategory.SFX;
 
     [Header("Sound properties")]
     [Tooltip("Sound loop")] public bool looping;
@@ -15,4 +16,11 @@ public class SoundRequest : ScriptableObject
     [Tooltip("Does sound is playing in 3D world, 0 = flat, 1 = spatilized")][Range(0f,1f)] public float spatializeSound;
 
     [HideInInspector] public AudioSource audioSourceAssign;
+}
+
+public enum SoundCategory
+{
+    MUSIC,
+    SFX,
+    AMBIENT
 }

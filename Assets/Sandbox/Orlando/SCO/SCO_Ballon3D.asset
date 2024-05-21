@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dae7d26b15c0f94b90dad390a136c1b, type: 3}
-  m_Name: SCO_SoundRequest
+  m_Name: SCO_Ballon3D
   m_EditorClassIdentifier: 
-  audio: {fileID: 0}
+  audio: {fileID: 8300000, guid: 17622b0bf6527f448bc2166dcc5d771b, type: 3}
+  category: 0
   looping: 0
   volume: 1
   priority: 128
+  spatializeSound: 1
   audioSourceAssign: {fileID: 0}

@@ -252,9 +252,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2876081500485314995, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3496192938280441201, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
       propertyPath: m_Name
       value: PlayerController
+      objectReference: {fileID: 0}
+    - target: {fileID: 6702777119538008479, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 2105440747}
+    - target: {fileID: 6702777119538008479, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
+      propertyPath: dashForce
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6702777119538008479, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
+      propertyPath: dashCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6702777119538008479, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 2105440747}
+    - target: {fileID: 6702777119538008479, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
+      propertyPath: airMultiplier
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7285057774491134297, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
       propertyPath: m_LocalPosition.x

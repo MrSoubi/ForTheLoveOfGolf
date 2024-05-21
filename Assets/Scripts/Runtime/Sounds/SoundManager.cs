@@ -5,9 +5,11 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance {  get; private set; }
+    private Queue<AudioSource> audioSourcesAvailable = new ();
 
-    private Queue audioSourcesAvailable = new Queue();
-    private int quantityAudioSources = 10;
+    [Header("Properties")]
+    [SerializeField] private int quantityAudioSources = 10;
+    [SerializeField][Tooltip("Force to have more AudioSource, if all are used")] private bool canExpendQueue = false;
 
     public void Awake()
     {
@@ -28,12 +30,34 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void StopSound() { }
+    public void StopSound(SoundRequest soundRequest) { }
 
-    public void PlaySound() { }
+    public void PlaySound(SoundRequest soundRequest) { }
 
     private bool SoundIsPlaying() { return false; }
 
-    private void PullAudioSource() { }
+    private void PullAudioSource() 
+    {
+        
+    }
+
+    private void FreeAudioSource(AudioSource audioSource)
+    {
+        audioSource.volume = 1f;
+        audioSource.priority = 128;
+        audioSource.clip = null;
+        audioSource.loop = false;
+
+        audioSourcesAvailable.Enqueue(audioSource);
+    }
+
+    private AudioSource PickAudioSource()
+    {
+        AudioSource audioSource = null;
+        if (canExpendQueue) audioSource = new GameObject().AddComponent<AudioSource>();
+        else if (audioSourcesAvailable.Count > 0) audioSource =  audioSourcesAvailable.Dequeue();
+        else Debug.LogWarning(message: "None AudioSource Available");
+        return audioSource;
+    }
 
 }

@@ -19,22 +19,24 @@ public class PlayerController : MonoBehaviour
     [Header("Keybinds")]
     [SerializeField] private KeyCode dashKey = KeyCode.Space;
 
+    [Header("Camera Settings")]
+    [SerializeField] Transform playerCamera;
+
     private bool readyToDash = true;
 
     private bool grounded;
 
     private float horizontalInput;
     private float verticalInput;
-    public Vector3 moveDirection { get; private set; }
-    public bool jumpTriggered { get; private set; }
-    public float dashValue { get; private set; }
+    public Vector3 moveDirection;
+    public bool jumpTriggered;
+    public float dashValue;
 
     private Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
     }
 
     private void Update()
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour
     private void MoveCharacter()
     {
         //Calculate movement direction
-        moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+        moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
 
         if(grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
@@ -91,7 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        rb.AddForce(transform.forward * dashForce * 10f, ForceMode.Impulse);
+        rb.AddForce(playerCamera.transform.forward * dashForce * 10f, ForceMode.Impulse);
     }
 
     private void ResetDash()

@@ -22,13 +22,17 @@ public class PlayerController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] Transform playerCamera;
 
-    private bool readyToDash = true;
-
+    private bool readyToDash;
     private bool grounded;
+    private bool boosting;
+
+    private float boostTimer;
 
     private float horizontalInput;
     private float verticalInput;
+
     public Vector3 moveDirection;
+
     public bool jumpTriggered;
     public float dashValue;
 
@@ -39,12 +43,17 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        readyToDash = true;
+    }
+
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, whatIsGround);
 
         GetInput();
-        SpeedControl();
+        LimitSpeed();
 
         rb.drag = grounded ? groundDrag : 0f;
     }
@@ -73,14 +82,14 @@ public class PlayerController : MonoBehaviour
         {
             readyToDash = false;
 
-            Dash();
+            Boost(5, new Vector3(1,0,0));
 
             Invoke(nameof(ResetDash), dashCooldown);
         }
     }
 
     // (Manu) Possibilité d'utiliser la fonction Vector3.ClampMagnitude à la place ? https://docs.unity3d.com/ScriptReference/Vector3.ClampMagnitude.html
-    private void SpeedControl() // Revoir le nommage ? 
+    private void LimitSpeed() // Revoir le nommage ? 
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -89,6 +98,11 @@ public class PlayerController : MonoBehaviour
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+    }
+
+    public void Boost(float intensity, Vector3 direction)
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
     }
 
     private void Dash()

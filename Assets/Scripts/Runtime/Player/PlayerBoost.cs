@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boosting : MonoBehaviour
+public class PlayerBoost : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform player;

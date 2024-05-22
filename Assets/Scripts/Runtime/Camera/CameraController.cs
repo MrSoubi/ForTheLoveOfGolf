@@ -80,6 +80,7 @@ public class CameraController : MonoBehaviour
         currentPos = lookAt.position + rotation * Direction;
     }
 
+    // WARNING ! Shange -> Change (Manu)
     public void ShangeCameraAngle(CameraAngleType cameraAngleType)
     {
         switch (cameraAngleType)

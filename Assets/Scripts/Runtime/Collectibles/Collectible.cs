@@ -10,7 +10,7 @@ public class Collectible : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player") // Perf -> utiliser CompareTag() (Manu)
         {
             CollectibleManager.GetComponent<CollectibleManager>().AddCollectible(index);
         }

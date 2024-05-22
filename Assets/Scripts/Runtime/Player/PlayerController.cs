@@ -16,22 +16,24 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 movementInput = Vector3.zero;
     public Vector3 direction;
-    Vector3 follower;
+    GameObject focusPoint;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        focusPoint = transform.GetChild(0).gameObject;
     }
 
     private void Update()
     {
-        follower = transform.position + Vector3.up;
-        
+        focusPoint.transform.position = transform.position + Vector3.up;
+        focusPoint.transform.rotation = Quaternion.Euler(rb.velocity.x, rb.velocity.y, rb.velocity.z);
+
         HandleInput();
 
         HandleDirection();
 
-        if (movementInput.x > 0)
+        if (movementInput.magnitude > 0)
         {
             rb.AddForce(direction * speedFactor, ForceMode.Acceleration);
         }
@@ -59,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(follower, 0.2f);
-        Gizmos.DrawLine(follower, follower + direction);
+        Gizmos.DrawSphere(focusPoint.transform.position, 0.2f);
+        Gizmos.DrawLine(focusPoint.transform.position, focusPoint.transform.position + direction);
     }
 }

@@ -105,14 +105,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f72bbea86ddd05468d34499410e2036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleAngle:
+  freeAngle:
     maxDistance: 8
-    sensitivity: 2000
+    timeOffset: 0.2
+    sensitivity: 400
     FOV: 60
     lookAtOffset: {x: 0, y: 1, z: 0}
   shootAngle:
     maxDistance: 13
-    sensitivity: 2500
+    timeOffset: 0.1
+    sensitivity: 200
     FOV: 80
     lookAtOffset: {x: 0, y: 2, z: 0}
   transitionTime: 0.3

@@ -17,13 +17,7 @@ public class SoundManager : MonoBehaviour
 
     public void Awake()
     {
-        if (instance != null && this != instance)
-        {
-            Debug.LogWarning(message: $"SoundManager already exist in world, {gameObject.name} deleted!");
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
+        instance = this.Singleton(instance, () => Destroy(gameObject));
     }
 
     private void Start()

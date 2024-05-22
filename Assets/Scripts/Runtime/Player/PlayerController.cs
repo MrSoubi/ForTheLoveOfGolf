@@ -24,38 +24,52 @@ public class PlayerController : MonoBehaviour
 
     private bool readyToDash;
     private bool grounded;
-    private bool boosting;
-
-    private float boostTimer;
 
     private float horizontalInput;
     private float verticalInput;
 
-    public Vector3 moveDirection;
-
-    public bool jumpTriggered;
-    public float dashValue;
+    private Vector3 moveDirection;
+    private Vector3 delayedForceToApply;
 
     private Rigidbody rb;
 
-    private void Awake()
+    public PlayerState state;
+
+    public enum PlayerState
     {
-        rb = GetComponent<Rigidbody>();
+        rolling,
+        shooting,
+        boosting,
+        slowing,
+        air
     }
+
+    public bool boosting;
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         readyToDash = true;
     }
 
     private void Update()
     {
+        //Ground Check
         grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, whatIsGround);
 
         GetInput();
         LimitSpeed();
+        StateHandler();
 
-        rb.drag = grounded ? groundDrag : 0f;
+        //Handle Drag
+        if(state == PlayerState.rolling)
+        {
+            rb.drag = groundDrag;
+        }
+        else
+        {
+            rb.drag = 0;
+        }
     }
 
     private void FixedUpdate()
@@ -67,7 +81,6 @@ public class PlayerController : MonoBehaviour
     {
         moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
         moveDirection.y = 0f;
-        Debug.DrawRay(transform.position, moveDirection, Color.blue);
 
         if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
@@ -102,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
     public void Boost(float intensity, Vector3 direction)
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        //Boost
     }
 
     private void Dash()
@@ -111,9 +124,16 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(playerCamera.transform.forward * dashForce * 10f, ForceMode.Impulse);
     }
-
     private void ResetDash()
     {
         readyToDash = true;
+    }
+
+    private void StateHandler()
+    {
+        if (boosting)
+        {
+            state = PlayerState.boosting;
+        }
     }
 }

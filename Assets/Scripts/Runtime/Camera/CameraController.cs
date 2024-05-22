@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
 
     Vector2 mouseInput;
     Vector2 minMaxY = new Vector2(-50, 50);
+    Vector3 currentPos;
 
     [Header("References")]
     [SerializeField] Transform lookAt;
@@ -30,7 +31,9 @@ public class CameraController : MonoBehaviour
         currentAngle = idleAngle;
         cam.fieldOfView = currentAngle.FOV;
 
-        lookAtRayOrigin = Instantiate(new GameObject("LookAt_RayOrigin"), lookAt).transform;
+        // Create looktAt parent
+        lookAtRayOrigin = new GameObject("LookAt_RayOrigin").transform;
+        lookAtRayOrigin.SetParent(lookAt);
         lookAtRayOrigin.position = lookAt.position;
     }
 
@@ -50,26 +53,8 @@ public class CameraController : MonoBehaviour
         mouseInput.y += Input.GetAxis("Mouse Y") * currentAngle.sensitivity * Time.deltaTime;
         mouseInput.y = Mathf.Clamp(mouseInput.y, minMaxY.x, minMaxY.y);
     }
-    void CameraControl()
-    {
-        // Set ray for possibleWall
-        float distance = currentAngle.maxDistance;
 
-        lookAtRayOrigin.LookAt(transform);
-        if(Physics.Raycast(lookAtRayOrigin.position, lookAtRayOrigin.forward, out RaycastHit hit, distance))
-            distance = Vector3.Distance(lookAtRayOrigin.position, hit.point);
-
-        // Valculate values
-        Vector3 Direction = new Vector3(0, 0, -distance);
-        Quaternion rotation = Quaternion.Euler(-mouseInput.y, mouseInput.x, 0);
-
-        // Applicate values
-        transform.position = lookAt.position + rotation * Direction;
-        transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
-    }
-
-    // WARNING ! Shange -> Change (Manu)
-    public void ShangeCameraAngle(CameraAngleType cameraAngleType)
+    public void ChangeCameraAngle(CameraAngleType cameraAngleType)
     {
         switch (cameraAngleType)
         {
@@ -93,6 +78,24 @@ public class CameraController : MonoBehaviour
         currentAngle.FOV = newAngle.FOV;
 
         DOTween.To(() => currentAngle.lookAtOffset, x => currentAngle.lookAtOffset = x, newAngle.lookAtOffset, time);
+    }
+
+    void CameraControl()
+    {
+        // Set ray for possibleWall
+        float distance = currentAngle.maxDistance;
+
+        lookAtRayOrigin.LookAt(transform);
+        if(Physics.Raycast(lookAtRayOrigin.position, lookAtRayOrigin.forward, out RaycastHit hit, distance))
+            distance = Vector3.Distance(lookAtRayOrigin.position, hit.point);
+
+        // Valculate values
+        Vector3 Direction = new Vector3(0, 0, -distance);
+        Quaternion rotation = Quaternion.Euler(-mouseInput.y, mouseInput.x, 0);
+
+        // Applicate values
+        transform.position = lookAt.position + rotation * Direction;
+        transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
     }
 }
 

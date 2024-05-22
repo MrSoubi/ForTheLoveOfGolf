@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
-    [SerializeField] Vector3 respawnPoint;
+    public Vector3 respawnPoint;
 
     [SerializeField] int ID;
     [HideInInspector] public HoleManager holeManager;

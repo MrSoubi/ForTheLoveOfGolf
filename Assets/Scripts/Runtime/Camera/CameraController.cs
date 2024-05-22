@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     [Header("Statistics")]
     [SerializeField] CameraAngle freeAngle;
     [SerializeField] CameraAngle shootAngle;
+    [SerializeField] CameraAngle boostAngle;
     [SerializeField] float transitionTime;
 
     CameraAngle currentAngle;
@@ -119,4 +120,4 @@ public class CameraAngle
 }
 
 [System.Serializable] 
-public enum CameraAngleType { Free, Shoot}
+public enum CameraAngleType { Free, Shoot, Boost}

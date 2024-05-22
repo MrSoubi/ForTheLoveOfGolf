@@ -56,10 +56,11 @@ public class PlayerController : MonoBehaviour
 
     private void MoveCharacter()
     {
-        //Calculate movement direction
         moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
+        moveDirection.y = 0f;
+        Debug.DrawRay(transform.position, moveDirection, Color.blue);
 
-        if(grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+        if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 

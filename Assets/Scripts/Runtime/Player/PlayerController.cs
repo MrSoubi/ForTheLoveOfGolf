@@ -7,23 +7,13 @@ using static CameraController;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool canMove { get; private set; } = true;
-
     [Header("Movement Parameter")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float gravity;
+    [SerializeField] private float speedFactor;
+    [SerializeField] Vector3 gravity = Vector3.down * 5f;
 
-    [Header("Ground Settings")]
-    [SerializeField] private LayerMask ground;
-    
-    public bool grounded;
+    private Rigidbody rb;
 
-    [Header("References")]
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private Rigidbody rb;
-
-    private Vector3 moveDirection;
-    private Vector2 currentInput;
+    Vector3 movementInput = Vector3.zero;
 
     private void Awake()
     {
@@ -32,33 +22,14 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.x * 0.5f + 0.2f, ground);
+        HandleInput();
 
-        HandleMovementInput();
-
-        //HandleAcceleration()
-        //HandleSpeed()
-
-        ApplyFinalMovement();
+        rb.AddForce(movementInput * speedFactor, ForceMode.Acceleration);
+        rb.AddForce(gravity, ForceMode.Acceleration);
     }
 
-    private void HandleMovementInput()
+    private void HandleInput()
     {
-        currentInput = new Vector2(moveSpeed * Input.GetAxis("Vertical"), moveSpeed * Input.GetAxis("Horizontal"));
-
-        float moveDirectionY = moveDirection.y;
-        moveDirection = transform.forward * currentInput.x + transform.right * currentInput.y;
-        moveDirection.y = moveDirectionY;
-    }
-
-    private void ApplyFinalMovement()
-    {
-        Debug.DrawRay(transform.position, moveDirection,Color.red, 2f);
-
-        if(!grounded) moveDirection.y -= gravity * Time.deltaTime;
-
-        /*transform.position.x += velocity.x;
-        transform.position.y += velocity.y;
-        transform.position.z += velocity.z;*/
+        movementInput = new Vector3(Input.GetAxis("Vertical"), 0, -Input.GetAxis("Horizontal"));
     }
 }

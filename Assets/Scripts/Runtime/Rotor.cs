@@ -12,4 +12,13 @@ public class Rotor : MonoBehaviour
     {
         transform.Rotate(0, 0, Time.deltaTime * speed);
     }
+
+    private void OnDrawGizmos()
+    {
+        if(transform.childCount != 0)
+        {
+            GameObject go = transform.GetChild(0).gameObject;
+            Gizmos.DrawLine(transform.position, go.transform.position);
+        }
+    }
 }

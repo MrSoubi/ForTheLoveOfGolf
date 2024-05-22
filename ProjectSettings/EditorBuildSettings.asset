@@ -4,5 +4,9 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Sandbox/Eliot/MiniLevel_Test_Physique.unity
+    guid: ddb4463adb7142440aea09a795edd808
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

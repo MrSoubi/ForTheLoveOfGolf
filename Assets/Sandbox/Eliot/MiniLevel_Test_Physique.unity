@@ -918,11 +918,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -930,15 +930,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7703754641900995324, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -953,44 +953,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
+      propertyPath: tmp
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: lookAt
       value: 
       objectReference: {fileID: 1087431347}
     - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: idleAngle.FOV
-      value: 60
+      propertyPath: freeAngle.timeOffset
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: shootAngle.FOV
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: transitionTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: idleAngle.maxDistance
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: idleAngle.sensitivity
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: shootAngle.maxDistance
-      value: 13
+      propertyPath: freeAngle.sensitivity
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
       propertyPath: shootAngle.sensitivity
-      value: 2500
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: idleAngle.lookAtOffset.y
-      value: 1
+      propertyPath: freeAngle.moveTimeOffset
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 8079169877713063533, guid: 5f280c5377e0da44e904b821eb39cbe3, type: 3}
-      propertyPath: shootAngle.lookAtOffset.y
-      value: 2
+      propertyPath: freeAngle.rotateTimeOffset
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

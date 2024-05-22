@@ -28,23 +28,34 @@ public class PlayerBoost : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            Boost(5, new Vector3(1, 0, 0));
-        }
+        if(dashCdTimer > 0)
+            dashCdTimer -= Time.deltaTime;
     }
 
-    private void Boost(float intensity, Vector3 direction)
+    public void Boost(float intensity, Vector3 direction)
     {
+        if (dashCdTimer > 0) return;
+        else dashCdTimer = dashCd;
+
+        pc.boosting = true;
+
         Vector3 forceToApply = direction * intensity;
 
-        rb.AddForce(forceToApply, ForceMode.Impulse);
+        delayedForceToApply = forceToApply;
+        Invoke(nameof(DelayedBoostForce), 0.025f);
 
         Invoke(nameof(ResetBoost), boostDuration);
     }
 
+    private Vector3 delayedForceToApply;
+
+    private void DelayedBoostForce()
+    {
+        rb.AddForce(delayedForceToApply, ForceMode.Impulse);
+    }
+
     private void ResetBoost()
     {
-
+        pc.boosting = false;
     }
 }

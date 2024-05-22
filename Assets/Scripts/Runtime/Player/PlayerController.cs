@@ -5,13 +5,20 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float rollingSpeed;
+    [SerializeField] private float boostSpeedChangeFactor;
     [SerializeField] private float groundDrag;
 
-    [Header("Ground Check")]
-    [SerializeField] private LayerMask whatIsGround; // Ca correspond à quoi ? Revoir le nommage peut être ?
+    private float moveSpeed;
+    private float boostIntensity;
+    private Vector3 boostDirection;
 
-    [Header("Jump Settings")]
+    [Header("Ground Check")]
+    [SerializeField] private LayerMask groundLayer;
+
+    private bool grounded;
+
+    [Header("Dash Settings")]
     [SerializeField] private float dashForce;
     [SerializeField] private float dashCooldown;
     [SerializeField] private float airMultiplier;
@@ -22,16 +29,10 @@ public class PlayerController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] Transform playerCamera;
 
-    private bool readyToDash;
-    private bool grounded;
-
-    private float horizontalInput;
-    private float verticalInput;
-
     private Vector3 moveDirection;
-    private Vector3 delayedForceToApply;
 
     private Rigidbody rb;
+    private PlayerBoost playerBoost;
 
     public PlayerState state;
 
@@ -49,16 +50,17 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        readyToDash = true;
+
+        playerBoost = GetComponent<PlayerBoost>();
     }
 
     private void Update()
     {
         //Ground Check
-        grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, groundLayer);
 
         GetInput();
-        LimitSpeed();
+
         StateHandler();
 
         //Handle Drag
@@ -77,63 +79,111 @@ public class PlayerController : MonoBehaviour
         MoveCharacter();
     }
 
-    private void MoveCharacter()
-    {
-        moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
-        moveDirection.y = 0f;
-
-        if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-        else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-    }
+    private float horizontalInput;
+    private float verticalInput;
 
     private void GetInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        if(Input.GetKey(dashKey) && readyToDash && grounded)
-        {
-            readyToDash = false;
-
-            Boost(5, new Vector3(1,0,0));
-
-            Invoke(nameof(ResetDash), dashCooldown);
-        }
-    }
-
-    // (Manu) Possibilité d'utiliser la fonction Vector3.ClampMagnitude à la place ? https://docs.unity3d.com/ScriptReference/Vector3.ClampMagnitude.html
-    private void LimitSpeed() // Revoir le nommage ? 
-    {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        if(flatVel.magnitude > moveSpeed)
-        {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-        }
     }
 
     public void Boost(float intensity, Vector3 direction)
     {
-        //Boost
+        boostDirection = direction;
+        boostIntensity = moveSpeed * intensity;
+
+        playerBoost.Boost(boostIntensity, boostDirection);
     }
 
-    private void Dash()
-    {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(playerCamera.transform.forward * dashForce * 10f, ForceMode.Impulse);
-    }
-    private void ResetDash()
-    {
-        readyToDash = true;
-    }
+    private float desiredMoveSpeed;
+    private float lastDesiredMoveSpeed;
+    private PlayerState lastState;
+    private bool keepMomentum;
 
     private void StateHandler()
     {
+        //Mode - boosting
         if (boosting)
         {
             state = PlayerState.boosting;
+            desiredMoveSpeed = boostIntensity;
+            speedChangeFactor = boostSpeedChangeFactor;
+        }
+
+        //Mode - Rolling
+        else if (grounded)
+        {
+            state = PlayerState.rolling;
+            desiredMoveSpeed = rollingSpeed;
+        }
+
+        //Mode Air
+        else
+        {
+            state = PlayerState.air;
+            desiredMoveSpeed = rollingSpeed;
+        }
+
+        bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
+        if(lastState == PlayerState.boosting) keepMomentum = true;
+
+        if (desiredMoveSpeedHasChanged)
+        {
+            if (keepMomentum)
+            {
+                StopAllCoroutines();
+                StartCoroutine(SmoothlyLerpModeSpeed());
+            }
+            else
+            {
+                StopAllCoroutines();
+                moveSpeed = desiredMoveSpeed;
+            }
+        }
+
+        lastDesiredMoveSpeed = desiredMoveSpeed;
+        lastState = state;
+    }
+
+    private float speedChangeFactor;
+
+    private IEnumerator SmoothlyLerpModeSpeed()
+    {
+        float time = 0;
+        float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
+        float startValue = moveSpeed;
+
+        float boostFactor = speedChangeFactor;
+
+        while(time < difference)
+        {
+            moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
+
+            time += Time.deltaTime * boostFactor;
+
+            yield return null;
+        }
+
+        moveSpeed = desiredMoveSpeed;
+        speedChangeFactor = 1f;
+        keepMomentum = false;
+    }
+
+    private void MoveCharacter()
+    {
+        moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
+        moveDirection.y = 0f;
+
+        if (state == PlayerState.boosting)
+        {
+            if (grounded) rb.AddForce(boostDirection * boostIntensity * 10f, ForceMode.Force);
+            else if (!grounded) rb.AddForce(boostDirection * boostIntensity * 10f * airMultiplier, ForceMode.Force);
+        }
+        else
+        {
+            if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
 }

@@ -17,14 +17,6 @@ public class HoleManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        for (int i = 0; i < holeInGame.Count; i++)
-        {
-            print(i + " = " + holeInGame[i].wasFinish);
-        }
-    }
-
     public void FinishSelectedHole(int id)
     {
         holeInGame[id].wasFinish = true;

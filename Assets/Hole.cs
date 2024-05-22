@@ -16,6 +16,8 @@ public class Hole : MonoBehaviour
         if (other.transform.parent.transform.CompareTag("Player"))
         {
             holeManager.FinishSelectedHole(ID);
+
+            print("REPLACE PLAYER ON RESPAWNPOINT");
         }
     }
 

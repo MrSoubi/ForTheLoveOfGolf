@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 308698192572460604}
   m_Layer: 0
   m_Name: PlayerMesh
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8131640710866263491}
   m_Layer: 0
   m_Name: PlayerController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -158,16 +158,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c139c1f33fdfa42a5e0cb2aa357069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  rollingSpeed: 0
+  boostSpeedChangeFactor: 0
   groundDrag: 2
-  whatIsGround:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
-  dashForce: 0
-  dashCooldown: 0
-  airMultiplier: 0
+    m_Bits: 0
+  dashForce: 12
+  dashCooldown: 1
+  airMultiplier: 0.25
   dashKey: 32
   playerCamera: {fileID: 0}
+  state: 0
+  boosting: 0
 --- !u!114 &8131640710866263491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,7 +199,7 @@ GameObject:
   - component: {fileID: 5515820761566739665}
   m_Layer: 0
   m_Name: PlayerCollider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

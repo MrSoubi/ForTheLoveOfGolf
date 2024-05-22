@@ -158,16 +158,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c139c1f33fdfa42a5e0cb2aa357069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  rollingSpeed: 0
+  boostSpeedChangeFactor: 0
   groundDrag: 2
-  whatIsGround:
+  groundLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
-  dashForce: 0
-  dashCooldown: 0
-  airMultiplier: 0
+    m_Bits: 0
+  dashForce: 12
+  dashCooldown: 1
+  airMultiplier: 0.25
   dashKey: 32
   playerCamera: {fileID: 0}
+  state: 0
+  boosting: 0
 --- !u!114 &8131640710866263491
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static CameraController;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundDrag;
 
     [Header("Ground Check")]
-    [SerializeField] private LayerMask whatIsGround; // Ca correspond à quoi ? Revoir le nommage peut être ?
+    [SerializeField] private LayerMask groundLayer;
 
-    [Header("Jump Settings")]
+    [Header("Dash Settings")]
     [SerializeField] private float dashForce;
     [SerializeField] private float dashCooldown;
     [SerializeField] private float airMultiplier;
@@ -20,31 +21,36 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode dashKey = KeyCode.Space;
 
     [Header("Camera Settings")]
-    [SerializeField] Transform playerCamera;
+    [SerializeField] Transform playerCamera; 
 
-    private bool readyToDash = true;
-
+    private bool readyToDash;
     private bool grounded;
 
     private float horizontalInput;
     private float verticalInput;
-    public Vector3 moveDirection;
-    public bool jumpTriggered;
-    public float dashValue;
 
+    private Vector3 moveDirection;
+
+    private CameraController cameraAngleType;
     private Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        cameraAngleType = playerCamera.GetComponent<CameraController>();
+    }
+
+    private void Start()
+    {
+        readyToDash = true;
     }
 
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, groundLayer);
 
         GetInput();
-        SpeedControl();
+        LimitSpeed();
 
         rb.drag = grounded ? groundDrag : 0f;
     }
@@ -71,16 +77,18 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetKey(dashKey) && readyToDash && grounded)
         {
-            readyToDash = false;
+            if(grounded)
+            {
+                readyToDash = false;
 
-            Dash();
+                Dash();
 
-            Invoke(nameof(ResetDash), dashCooldown);
+                Invoke(nameof(ResetDash), dashCooldown);
+            }
         }
     }
 
-    // (Manu) Possibilité d'utiliser la fonction Vector3.ClampMagnitude à la place ? https://docs.unity3d.com/ScriptReference/Vector3.ClampMagnitude.html
-    private void SpeedControl() // Revoir le nommage ? 
+    private void LimitSpeed()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
@@ -89,6 +97,11 @@ public class PlayerController : MonoBehaviour
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+    }
+
+    private void ChangeSpeed()
+    {
+
     }
 
     private void Dash()

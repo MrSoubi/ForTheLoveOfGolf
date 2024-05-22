@@ -6,11 +6,18 @@ using static CameraController;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float rollingSpeed;
+    [SerializeField] private float boostSpeedChangeFactor;
     [SerializeField] private float groundDrag;
+
+    private float moveSpeed;
+    private float boostIntensity;
+    private Vector3 boostDirection;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
+    
+    private bool grounded;
 
     [Header("Dash Settings")]
     [SerializeField] private float dashForce;
@@ -21,38 +28,52 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode dashKey = KeyCode.Space;
 
     [Header("Camera Settings")]
-    [SerializeField] Transform playerCamera; 
 
-    private bool readyToDash;
-    private bool grounded;
-
-    private float horizontalInput;
-    private float verticalInput;
+    [SerializeField] Transform playerCamera;
 
     private Vector3 moveDirection;
 
-    private CameraController cameraAngleType;
     private Rigidbody rb;
+    private PlayerBoost playerBoost;
 
-    private void Awake()
+    public PlayerState state;
+
+    public enum PlayerState
     {
-        rb = GetComponent<Rigidbody>();
-        cameraAngleType = playerCamera.GetComponent<CameraController>();
+        rolling,
+        shooting,
+        boosting,
+        slowing,
+        air
     }
+
+    public bool boosting;
 
     private void Start()
     {
-        readyToDash = true;
+        rb = GetComponent<Rigidbody>();
+
+        playerBoost = GetComponent<PlayerBoost>();
     }
 
     private void Update()
     {
+        //Ground Check
         grounded = Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f, groundLayer);
 
         GetInput();
-        LimitSpeed();
 
-        rb.drag = grounded ? groundDrag : 0f;
+        StateHandler();
+
+        //Handle Drag
+        if(state == PlayerState.rolling)
+        {
+            rb.drag = groundDrag;
+        }
+        else
+        {
+            rb.drag = 0;
+        }
     }
 
     private void FixedUpdate()
@@ -60,59 +81,111 @@ public class PlayerController : MonoBehaviour
         MoveCharacter();
     }
 
-    private void MoveCharacter()
-    {
-        moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
-        moveDirection.y = 0f;
-        Debug.DrawRay(transform.position, moveDirection, Color.blue);
-
-        if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-        else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
-    }
+    private float horizontalInput;
+    private float verticalInput;
 
     private void GetInput()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+    }
 
-        if(Input.GetKey(dashKey) && readyToDash && grounded)
+    public void Boost(float intensity, Vector3 direction)
+    {
+        boostDirection = direction;
+        boostIntensity = moveSpeed * intensity;
+
+        playerBoost.Boost(boostIntensity, boostDirection);
+    }
+
+    private float desiredMoveSpeed;
+    private float lastDesiredMoveSpeed;
+    private PlayerState lastState;
+    private bool keepMomentum;
+
+    private void StateHandler()
+    {
+        //Mode - boosting
+        if (boosting)
         {
-            if(grounded)
+            state = PlayerState.boosting;
+            desiredMoveSpeed = boostIntensity;
+            speedChangeFactor = boostSpeedChangeFactor;
+        }
+
+        //Mode - Rolling
+        else if (grounded)
+        {
+            state = PlayerState.rolling;
+            desiredMoveSpeed = rollingSpeed;
+        }
+
+        //Mode Air
+        else
+        {
+            state = PlayerState.air;
+            desiredMoveSpeed = rollingSpeed;
+        }
+
+        bool desiredMoveSpeedHasChanged = desiredMoveSpeed != lastDesiredMoveSpeed;
+        if(lastState == PlayerState.boosting) keepMomentum = true;
+
+        if (desiredMoveSpeedHasChanged)
+        {
+            if (keepMomentum)
             {
-                readyToDash = false;
-
-                Dash();
-
-                Invoke(nameof(ResetDash), dashCooldown);
+                StopAllCoroutines();
+                StartCoroutine(SmoothlyLerpModeSpeed());
+            }
+            else
+            {
+                StopAllCoroutines();
+                moveSpeed = desiredMoveSpeed;
             }
         }
+
+        lastDesiredMoveSpeed = desiredMoveSpeed;
+        lastState = state;
     }
 
-    private void LimitSpeed()
-    {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+    private float speedChangeFactor;
 
-        if(flatVel.magnitude > moveSpeed)
+    private IEnumerator SmoothlyLerpModeSpeed()
+    {
+        float time = 0;
+        float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
+        float startValue = moveSpeed;
+
+        float boostFactor = speedChangeFactor;
+
+        while(time < difference)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
+
+            time += Time.deltaTime * boostFactor;
+
+            yield return null;
         }
+
+        moveSpeed = desiredMoveSpeed;
+        speedChangeFactor = 1f;
+        keepMomentum = false;
     }
 
-    private void ChangeSpeed()
+    private void MoveCharacter()
     {
+        moveDirection = playerCamera.transform.forward * verticalInput + playerCamera.transform.right * horizontalInput;
+        moveDirection.y = 0f;
 
-    }
-
-    private void Dash()
-    {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        rb.AddForce(playerCamera.transform.forward * dashForce * 10f, ForceMode.Impulse);
-    }
-
-    private void ResetDash()
-    {
-        readyToDash = true;
+        if (state == PlayerState.boosting)
+        {
+            if (grounded) rb.AddForce(boostDirection * boostIntensity * 10f, ForceMode.Force);
+            else if (!grounded) rb.AddForce(boostDirection * boostIntensity * 10f * airMultiplier, ForceMode.Force);
+        }
+        else
+        {
+            if (grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            else if (!grounded) rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static CameraController;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
-
+    
     private bool grounded;
 
     [Header("Dash Settings")]
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private KeyCode dashKey = KeyCode.Space;
 
     [Header("Camera Settings")]
+
     [SerializeField] Transform playerCamera;
 
     private Vector3 moveDirection;

@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6702777119538008479}
   m_Layer: 0
   m_Name: PlayerController
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +166,10 @@ MonoBehaviour:
   dashCooldown: 0
   airMultiplier: 0
   dashKey: 32
+  playerCamera: {fileID: 0}
+  moveDirection: {x: 0, y: 0, z: 0}
+  jumpTriggered: 0
+  dashValue: 0
 --- !u!1 &7677489323678348623
 GameObject:
   m_ObjectHideFlags: 0

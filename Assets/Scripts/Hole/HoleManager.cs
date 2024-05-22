@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HoleManager : MonoBehaviour
 {
+    int holeComplete = 0;
+
     Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
 
     private void Start()
@@ -19,7 +21,11 @@ public class HoleManager : MonoBehaviour
 
     public void FinishSelectedHole(int id)
     {
-        holeInGame[id].wasFinish = true;
+        if (!holeInGame[id].wasFinish)
+        {
+            holeComplete++;
+            holeInGame[id].wasFinish = true;
+        }
     }
 }
 

@@ -15,19 +15,11 @@ public class CameraController : MonoBehaviour
     Vector2 minMaxY = new Vector2(-50, 50);
     Vector3 currentPos;
 
-    [Header("Camera shake")]
-    [Range(0, 5)] public float shakeIntensity;
-    [Range(.01f, .08f)] public float shakeSpeed;
-
-    float startingIntensity, shakeTimer, shakeTimerTotal;
-
     [Header("References")]
     [SerializeField] Transform lookAt;
     Transform lookAtRayOrigin;
     
     Camera cam;
-
-    bool isPaused = false;
 
     private void Awake()
     {
@@ -39,17 +31,15 @@ public class CameraController : MonoBehaviour
         currentAngle = idleAngle;
         cam.fieldOfView = currentAngle.FOV;
 
+        // Create looktAt parent
         lookAtRayOrigin = new GameObject("LookAt_RayOrigin").transform;
         lookAtRayOrigin.SetParent(lookAt);
         lookAtRayOrigin.position = lookAt.position;
-
-        StartCoroutine(ShakeInterpolation());
     }
 
     private void Update()
     {
         GetInput();
-        Shake();
     }
 
     private void LateUpdate()
@@ -63,25 +53,8 @@ public class CameraController : MonoBehaviour
         mouseInput.y += Input.GetAxis("Mouse Y") * currentAngle.sensitivity * Time.deltaTime;
         mouseInput.y = Mathf.Clamp(mouseInput.y, minMaxY.x, minMaxY.y);
     }
-    void CameraControl()
-    {
-        // Set ray for possibleWall
-        float distance = currentAngle.maxDistance;
 
-        lookAtRayOrigin.LookAt(transform);
-        if(Physics.Raycast(lookAtRayOrigin.position, lookAtRayOrigin.forward, out RaycastHit hit, distance))
-            distance = Vector3.Distance(lookAtRayOrigin.position, hit.point);
-
-        // Valculate values
-        Vector3 Direction = new Vector3(0, 0, -distance);
-        Quaternion rotation = Quaternion.Euler(-mouseInput.y, mouseInput.x, 0);
-
-        // Applicate values
-        currentPos = lookAt.position + rotation * Direction;
-    }
-
-    // WARNING ! Shange -> Change (Manu)
-    public void ShangeCameraAngle(CameraAngleType cameraAngleType)
+    public void ChangeCameraAngle(CameraAngleType cameraAngleType)
     {
         switch (cameraAngleType)
         {
@@ -107,42 +80,22 @@ public class CameraController : MonoBehaviour
         DOTween.To(() => currentAngle.lookAtOffset, x => currentAngle.lookAtOffset = x, newAngle.lookAtOffset, time);
     }
 
-    public void SetShaking(float intensity, float time)
+    void CameraControl()
     {
-        startingIntensity = intensity;
-        shakeIntensity = intensity;
+        // Set ray for possibleWall
+        float distance = currentAngle.maxDistance;
 
-        shakeTimerTotal = time;
-        shakeTimer = time;
-    }
-    void Shake()
-    {
-        if (shakeTimer > 0)
-        {
-            shakeTimer -= Time.deltaTime;
-            shakeIntensity = Mathf.Lerp(startingIntensity, 0f, 1 - (shakeTimer / shakeTimerTotal));
-        }
-    }
-    IEnumerator ShakeInterpolation(bool isNegative = false)
-    {
-        float startTime = Time.time;
+        lookAtRayOrigin.LookAt(transform);
+        if(Physics.Raycast(lookAtRayOrigin.position, lookAtRayOrigin.forward, out RaycastHit hit, distance))
+            distance = Vector3.Distance(lookAtRayOrigin.position, hit.point);
 
-        Vector3 initPos = transform.localPosition, targetPos = Random.insideUnitCircle * shakeIntensity;
+        // Valculate values
+        Vector3 Direction = new Vector3(0, 0, -distance);
+        Quaternion rotation = Quaternion.Euler(-mouseInput.y, mouseInput.x, 0);
 
-        while (Time.time < startTime + shakeSpeed)
-        {
-            float delta = 0;
-            if (!isPaused) delta = (Time.time - startTime) / shakeSpeed;
-
-            Vector3 position = Vector3.Lerp(initPos, targetPos / 10, delta) + transform.forward;
-
-            transform.position = position;
-            transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
-
-            yield return null;
-        }
-
-        StartCoroutine(ShakeInterpolation(!isNegative));
+        // Applicate values
+        transform.position = lookAt.position + rotation * Direction;
+        transform.LookAt(lookAt.position + currentAngle.lookAtOffset);
     }
 }
 

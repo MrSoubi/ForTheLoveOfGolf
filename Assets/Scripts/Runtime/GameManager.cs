@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
 
     public void Respawn(GameObject currentPlayer)
     {
-        currentPlayer.transform.position = CheckpointManager.instance.GetRespawnPoint();
+        //Remplace par fonction tp joueur
+        //print(currentPlayer);
+        //currentPlayer.transform.position = CheckpointManager.instance.GetRespawnPoint();
     }
 
 }

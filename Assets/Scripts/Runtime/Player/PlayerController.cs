@@ -6,10 +6,10 @@ using UnityEngine.Scripting.APIUpdating;
 public class PlayerController : MonoBehaviour
 {
     [Header("Settings")]
-    public float maxSpeed;
-    public float downForceValue;
-    public float dragAmount;
     public float moveSpeed;
+    public float dragAmount;
+    public float accelerationValue;
+    public float gravityForce;
 
     [Header("References")]
     private InputManager inputs;
@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     [Header("Private")]
     public float horizontalInput;
     public float verticalInput;
-    public float downForce;
 
     public Vector3 moveDirection;
 
@@ -30,8 +29,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        AddDownForce();
+        /*Debug.DrawRay(transform.position, new Vector3(0, -gravityForce, 0), Color.red);
 
+        RaycastHit hit;
+
+        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + 1f))
+        {
+            Vector3 blue = new Vector3(hit.normal.x * gravityForce, (hit.normal.y * gravityForce) - hit.distance, hit.normal.z * gravityForce);
+            Debug.DrawRay(transform.position, blue, Color.blue);
+            Debug.DrawRay(transform.position, blue + new Vector3(0, -gravityForce, 0), Color.green);       
+        }
+        */
         HandleDirection();
 
         SpeedControl();
@@ -47,11 +55,6 @@ public class PlayerController : MonoBehaviour
         return Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f);
     }
 
-    private void AddDownForce()
-    {
-        rb.AddForce(transform.up * downForceValue * -1f, ForceMode.Acceleration);
-    }
-
     private void HandleDirection()
     {
         verticalInput = inputs.vertical;
@@ -62,17 +65,18 @@ public class PlayerController : MonoBehaviour
     {
         moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
-        rb.AddForce(moveDirection.normalized * moveSpeed * 10f * (IsGrounded() ? 1f : 0.1f), ForceMode.Force);
+        rb.AddForce(moveDirection.normalized * (moveSpeed / accelerationValue) * 10f * (IsGrounded() ? 1f : 0.1f), ForceMode.Force);
     }
 
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-        if(flatVel.magnitude > maxSpeed)
+        if(flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+        print(flatVel.magnitude);
     }
 }

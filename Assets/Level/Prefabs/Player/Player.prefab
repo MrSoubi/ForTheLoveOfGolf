@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -5788535909043824210}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,13 +49,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c139c1f33fdfa42a5e0cb2aa357069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 0
-  downForceValue: 5
+  moveSpeed: 15
   dragAmount: 5
-  speed: 7
+  accelerationValue: 0
+  gravityForce: 10
   horizontalInput: 0
   verticalInput: 0
-  downForce: 0
   moveDirection: {x: 0, y: 0, z: 0}
 --- !u!54 &5858678838221024211
 Rigidbody:

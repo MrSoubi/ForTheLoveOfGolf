@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HoleManager : MonoBehaviour
 {
-    int holeComplete = 0;
+    public CollectibleManager CollectibleManager;
 
     Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
 
@@ -16,6 +16,7 @@ public class HoleManager : MonoBehaviour
             holes[i].holeManager = this;
             holes[i].SetID(i);
             holeInGame.Add(i, new HoleStatistic());
+            CollectibleManager.holeCount += 1;
         }
     }
 
@@ -23,7 +24,7 @@ public class HoleManager : MonoBehaviour
     {
         if (!holeInGame[id].wasFinish)
         {
-            holeComplete++;
+            CollectibleManager.holeValue += 1;
             holeInGame[id].wasFinish = true;
         }
     }

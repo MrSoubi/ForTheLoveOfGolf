@@ -16,19 +16,14 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 movementInput = Vector3.zero;
     public Vector3 direction;
-    GameObject focusPoint;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        focusPoint = transform.GetChild(0).gameObject;
     }
 
     private void Update()
     {
-        focusPoint.transform.position = transform.position + Vector3.up;
-        focusPoint.transform.rotation = Quaternion.Euler(rb.velocity.x, rb.velocity.y, rb.velocity.z);
-
         HandleInput();
 
         HandleDirection();
@@ -57,11 +52,5 @@ public class PlayerController : MonoBehaviour
         {
             direction = Vector3.forward;
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(focusPoint.transform.position, 0.2f);
-        Gizmos.DrawLine(focusPoint.transform.position, focusPoint.transform.position + direction);
     }
 }

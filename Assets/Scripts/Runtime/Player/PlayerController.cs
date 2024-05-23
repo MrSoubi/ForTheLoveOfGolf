@@ -1,3 +1,4 @@
+using System;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,18 +9,19 @@ public class PlayerController : MonoBehaviour
     [Header("Settings")]
     public float moveSpeed;
     public float dragAmount;
-    public float accelerationValue;
     public float gravityForce;
 
     [Header("References")]
     private InputManager inputs;
     private Rigidbody rb;
 
-    [Header("Private")]
-    public float horizontalInput;
-    public float verticalInput;
+    public bool isGrounded;
 
-    public Vector3 moveDirection;
+    public Vector3 direction;
+    public Vector3 gravity;
+    public Vector3 normal;
+    public Vector3 friction;
+    public Vector3 acceleration;
 
     private void Awake()
     {
@@ -29,54 +31,76 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        /*Debug.DrawRay(transform.position, new Vector3(0, -gravityForce, 0), Color.red);
-
-        RaycastHit hit;
-
-        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + 1f))
-        {
-            Vector3 blue = new Vector3(hit.normal.x * gravityForce, (hit.normal.y * gravityForce) - hit.distance, hit.normal.z * gravityForce);
-            Debug.DrawRay(transform.position, blue, Color.blue);
-            Debug.DrawRay(transform.position, blue + new Vector3(0, -gravityForce, 0), Color.green);       
-        }
-        */
         HandleDirection();
+        HandleGravity();
 
-        SpeedControl();
+        CheckGround();
+
+        HandleNormal();
+        HandleFriction();
+        HandleInputs();
+
+        PrintValue();
+    }
+
+    private void PrintValue()
+    {
+        print(rb.velocity.magnitude);
     }
 
     private void FixedUpdate()
     {
-        MovePlayer();
-    }
-
-    private bool IsGrounded()
-    {
-        return Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f);
+        HandleForces();
     }
 
     private void HandleDirection()
     {
-        verticalInput = inputs.vertical;
-        horizontalInput = inputs.horizontal;
+        direction = rb.velocity.normalized;
     }
 
-    private void MovePlayer()
+    private void HandleGravity()
     {
-        moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
-
-        rb.AddForce(moveDirection.normalized * (moveSpeed / accelerationValue) * 10f * (IsGrounded() ? 1f : 0.1f), ForceMode.Force);
+        gravity = new Vector3(0, -gravityForce, 0);
     }
 
-    private void SpeedControl()
+    private void HandleNormal()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        if(flatVel.magnitude > moveSpeed)
+        if (isGrounded)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            normal *= gravity.magnitude;
         }
-        print(flatVel.magnitude);
+        else
+        {
+            normal = Vector3.zero;
+        }
+    }
+
+    private void HandleFriction()
+    {
+        friction = Vector3.zero;
+    }
+
+    private void HandleInputs()
+    {
+        //
+    }
+
+    private void HandleForces()
+    {
+        rb.AddForce(gravity + normal, ForceMode.Acceleration);
+    }
+
+    private void CheckGround()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + 0.2f))
+        {
+            normal = hit.normal;
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
     }
 }

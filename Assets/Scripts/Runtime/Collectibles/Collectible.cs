@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Collectible : MonoBehaviour
 {
@@ -10,7 +11,16 @@ public class Collectible : MonoBehaviour
     [HideInInspector]
     public int index;
 
+    [Header("Value Collectible")]
     public int value;
+
+    [Header("Animation Speed")]
+    public float speed;
+
+    private void Update()
+    {
+        transform.Rotate(0, 0, speed * Time.deltaTime);
+    }
 
     /// <summary>
     /// Quand le joueur est détecter, il appelle le manager et ajoute la valeur de la pièce

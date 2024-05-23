@@ -1,38 +1,88 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CollectibleManager : MonoBehaviour
 {
     public TextMeshProUGUI textCollectibleCounter;
 
-    public GameObject[] collectibles;
+    public List<Collectible> collectibles = new List<Collectible>();
 
-    public int numberCollectible; // Nomenclature : collectibleCount ?
+    public int collectibleCount;
 
-    private void Start()
+    private int collectibleValue;
+
+    private void Awake()
     {
-        if(collectibles.Length > 0)
+        collectibles = FindObjectsByType<Collectible>(FindObjectsSortMode.None).ToList();
+
+        for (int i = 0; i < collectibles.Count; i++)
         {
-            textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
+            collectibles[i].CollectibleManager = this;
+            collectibles[i].index = i;
         }
     }
 
-    // Un peu de documentation sur ces deux fontions pour savoir ce qu'elles ajoutent et supprime, c'est pas super clair pour moi (Manu)
-    public void AddCollectible(int index)
+    private void Start()
     {
-        numberCollectible += 1;
-
-        textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
-
-        DelCollectible(index);
+        RefreshInterface();
     }
 
+    /// <summary>
+    /// Met à jour l'affichage du compteur
+    /// </summary>
+    private void RefreshInterface()
+    {
+        if (collectibles.Count > 0)
+        {
+            collectibleValue = 0;
+
+            for (int i = 0; i < collectibles.Count; i++)
+            {
+                collectibleValue += collectibles[i].value;
+            }
+
+            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
+        }
+    }
+
+    /// <summary>
+    /// Met à jour les index dans la liste
+    /// </summary>
+    private void ResetCollectibleIndex()
+    {
+        for (int i = 0; i < collectibles.Count; i++)
+        {
+            collectibles[i].index = i;
+        }
+    }
+
+    /// <summary>
+    /// Detruit le GameObject puis appelle la fonction ResetCollectibleIndex qui met à jour les index dans la liste
+    /// </summary>
+    /// <param name="index">L'index de la piece</param>
     public void DelCollectible(int index)
     {
-        Destroy(collectibles[index]);
+        Destroy(collectibles[index].gameObject);
+        collectibles.RemoveAt(index);
+
+        ResetCollectibleIndex();
+    }
+
+    /// <summary>
+    /// Ajoute la valeur de la pièce dans le compteur et l'affiche puis appelle la fonction DelCollectible qui detruit le GameObject
+    /// </summary>
+    /// <param name="index">L'index de la pièce</param>
+    /// <param name="value">La valeur de la pièce</param>
+    public void AddCollectible(int index, int value)
+    {
+        collectibleCount += value;
+
+        RefreshInterface();
+
+        DelCollectible(index);
     }
 }

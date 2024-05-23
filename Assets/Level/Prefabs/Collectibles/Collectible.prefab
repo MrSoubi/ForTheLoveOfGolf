@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CollectibleManager: {fileID: 0}
   index: 0
+  value: 1

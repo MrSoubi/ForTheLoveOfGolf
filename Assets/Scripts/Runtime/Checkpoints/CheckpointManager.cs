@@ -7,12 +7,19 @@ public class CheckpointManager : MonoBehaviour
     public static CheckpointManager instance { get; private set; }
 
     private Vector3 checkPoints;
+    private CheckpointTrigger lastTrigger;
 
     public void Awake() => instance = Utils.Singleton(this, instance, () => Destroy(gameObject));
 
-    public void SetCheckpoint(Vector3 newCheckPoints)
+    public void SetCheckpoint(Vector3 newCheckPoints, CheckpointTrigger currentTrigger)
     {
-        if (newCheckPoints != checkPoints) checkPoints = newCheckPoints;
+        if (newCheckPoints != checkPoints) 
+        {
+            currentTrigger.SetTexture(true);
+            lastTrigger.SetTexture(false);
+            lastTrigger = currentTrigger;
+            checkPoints = newCheckPoints;
+        }
     }
 
     public Vector3 GetRespawnPoint() => checkPoints;

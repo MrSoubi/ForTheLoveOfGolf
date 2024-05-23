@@ -319,6 +319,7 @@ Transform:
   m_Children:
   - {fileID: 1508979331}
   - {fileID: 614139762}
+  - {fileID: 2108024523}
   m_Father: {fileID: 679003548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &567050714
@@ -366,10 +367,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textCollectibleCounter: {fileID: 2028747073}
-  collectibles:
-  - {fileID: 1508979330}
-  - {fileID: 614139763}
-  numberCollectible: 0
+  collectibles: []
+  collectibleCount: 0
 --- !u!1001 &614139761
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -418,6 +417,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8397641681560885020, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
+      propertyPath: index
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397641681560885020, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397641681560885020, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
+      propertyPath: CollectibleManager
+      value: 
+      objectReference: {fileID: 567050714}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
       value: Collectible1
@@ -430,11 +441,6 @@ PrefabInstance:
 --- !u!4 &614139762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5795309262551769612, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
-  m_PrefabInstance: {fileID: 614139761}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &614139763 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
   m_PrefabInstance: {fileID: 614139761}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &679003547
@@ -931,11 +937,6 @@ Transform:
   - {fileID: 705507995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1508979330 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
-  m_PrefabInstance: {fileID: 9219974732854730494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1508979331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5795309262551769612, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
@@ -1206,6 +1207,76 @@ Transform:
   - {fileID: 368875074}
   m_Father: {fileID: 679003548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2108024522
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 553776256}
+    m_Modifications:
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397641681560885020, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: index
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397641681560885020, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: CollectibleManager
+      value: 
+      objectReference: {fileID: 567050714}
+    - target: {fileID: 8986821413852619165, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+      propertyPath: m_Name
+      value: BigCollectible
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+--- !u!4 &2108024523 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5795309262551769612, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
+  m_PrefabInstance: {fileID: 2108024522}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9219974732854730494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1253,6 +1324,10 @@ PrefabInstance:
     - target: {fileID: 5795309262551769612, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397641681560885020, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
+      propertyPath: value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8397641681560885020, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: CollectibleManager

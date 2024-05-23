@@ -8,6 +8,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera rollingCam;
     [SerializeField] private CinemachineFreeLook aimingCam;
 
+    bool isAiming = false;
+
     void Start()
     {
         rollingCam.enabled = true;
@@ -18,8 +20,15 @@ public class CameraManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rollingCam.enabled = !rollingCam.enabled;
-            aimingCam.enabled = !aimingCam.enabled;
+            isAiming = !isAiming;
+            rollingCam.enabled = !isAiming;
+            aimingCam.enabled = isAiming;
+
+            if (isAiming )
+            {
+                aimingCam.m_YAxis.Value = 0.5f;
+                aimingCam.m_XAxis.Value = 0f;
+            }
         }
     }
 

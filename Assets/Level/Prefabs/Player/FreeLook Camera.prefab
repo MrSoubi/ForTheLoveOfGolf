@@ -264,6 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 514342125693933416}
   - component: {fileID: 8805112899351470418}
+  - component: {fileID: 3593602853026271566}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -394,6 +395,36 @@ MonoBehaviour:
   - {fileID: 2905107634073689912}
   - {fileID: 6270604125757484169}
   - {fileID: 5785296204207582867}
+--- !u!114 &3593602853026271566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204934163682270718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IgnoreTag: 
+  m_TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_MinimumOcclusionTime: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_SmoothingTime: 0
+  m_Damping: 0.2
+  m_DampingWhenOccluded: 0.1
+  m_OptimalTargetDistance: 0
 --- !u!1 &4012598347691731043
 GameObject:
   m_ObjectHideFlags: 3
@@ -498,7 +529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5784996097656166650}
   serializedVersion: 2
-  m_LocalRotation: {x: -2.0249839e-15, y: 0.16007888, z: 3.2839203e-16, w: 0.98710424}
+  m_LocalRotation: {x: 2.0247092e-15, y: 0.16007888, z: -3.2834745e-16, w: 0.98710424}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -11,10 +11,14 @@ public class Challenge : MonoBehaviour
     public float maxTime;
     float timer;
 
+    bool isAlreadyFinish = false;
+
     [SerializeField] ChallengeCollectible[] currentCollectibles;
 
     [Header("Challenge rewards")]
     [SerializeField] GameObject[] challengeRewards;
+
+    Coroutine timerCoroutine;
 
     private void Awake()
     {
@@ -28,6 +32,12 @@ public class Challenge : MonoBehaviour
     private void Start()
     {
         SetActiveCollectible(false);
+
+
+        for (int i = 0; i < challengeRewards.Length; i++)
+        {
+            challengeRewards[i].SetActive(false);
+        }
     }
 
     public void AddCoin(int coin)
@@ -36,17 +46,21 @@ public class Challenge : MonoBehaviour
         ChallengeManager.instance.SetCollectibleCount(currentCoinGet, coinsToGet);
         if(coinsToGet <= currentCoinGet)
         {
-            EndChallenge();
+            isAlreadyFinish = true;
 
             for (int i = 0; i < challengeRewards.Length; i++)
             {
                 challengeRewards[i].SetActive(true);
+                challengeRewards[i].transform.SetParent(null);
             }
+            EndChallenge();
         }
     }
 
     void SetChallenge()
     {
+        currentCoinGet = 0;
+
         ChallengeManager.instance.isDoingChallenge = true;
         ChallengeManager.instance.currentChallenge = this;
 
@@ -61,23 +75,16 @@ public class Challenge : MonoBehaviour
     }
     void StartChallenge()
     {
-        StartCoroutine(ChallengeTimer());
+        timerCoroutine = StartCoroutine(ChallengeTimer());
     }
     void EndChallenge()
     {
-        SetActiveCollectible(false);
-        StartCoroutine(HidTimerAnim());
-
-        ChallengeManager.instance.timerAnim.SetTrigger("Shake");
-    }
-
-    IEnumerator HidTimerAnim()
-    {
-        yield return new WaitForSeconds(2f);
-        ChallengeManager.instance.timerAnim.SetBool("Show", false);
-        ChallengeManager.instance.collectibleAnim.SetBool("Show", false);
-
         ChallengeManager.instance.StopCurrentChallenge();
+
+        SetActiveCollectible(false);
+        StopCoroutine(timerCoroutine);
+
+        if (isAlreadyFinish) Destroy(gameObject);
     }
 
     IEnumerator ChallengeTimer()
@@ -94,7 +101,7 @@ public class Challenge : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player"))
+        if (other.transform.CompareTag("Player") && !isAlreadyFinish)
         {
             if(ChallengeManager.instance.isDoingChallenge) ChallengeManager.instance.StopCurrentChallenge();
             SetChallenge();
@@ -102,13 +109,13 @@ public class Challenge : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.CompareTag("Player"))
+        if (other.transform.CompareTag("Player") && !isAlreadyFinish)
         {
             StartChallenge();
         }
     }
 
-    void SetActiveCollectible(bool active)
+    public void SetActiveCollectible(bool active)
     {
         for (int i = 0; i < currentCollectibles.Length; i++)
         {

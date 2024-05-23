@@ -24,7 +24,9 @@ public class ChallengeManager : MonoBehaviour
 
     public void StopCurrentChallenge()
     {
+        StartCoroutine(HidUIAnim());
         isDoingChallenge = false;
+        currentChallenge.SetActiveCollectible(false);
         currentChallenge.StopAllCoroutines();
         currentChallenge = null;
     }
@@ -32,5 +34,13 @@ public class ChallengeManager : MonoBehaviour
     public void SetCollectibleCount(int current, int max)
     {
         collectibleCountTxt.text = current + " / " + max;
+    }
+    IEnumerator HidUIAnim()
+    {
+        timerAnim.SetTrigger("Shake");
+
+        yield return new WaitForSeconds(2f);
+        timerAnim.SetBool("Show", false);
+        collectibleAnim.SetBool("Show", false);
     }
 }

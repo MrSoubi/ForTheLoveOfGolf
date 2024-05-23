@@ -11,26 +11,36 @@ public class CollectibleManager : MonoBehaviour
 
     public GameObject[] collectibles;
 
-    public int numberCollectible; // Nomenclature : collectibleCount ?
+    public int collectibleCount;
 
+    /// <summary>
+    /// Met à jour l'affichage du compteur
+    /// </summary>
     private void Start()
     {
         if(collectibles.Length > 0)
         {
-            textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
+            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibles.Length;
         }
     }
 
-    // Un peu de documentation sur ces deux fontions pour savoir ce qu'elles ajoutent et supprime, c'est pas super clair pour moi (Manu)
+    /// <summary>
+    /// Ajoute une pièce dans le compteur puis appelle la fonction DelCollectible qui detruit le GameObject
+    /// </summary>
+    /// <param name="index">L'index de la piece</param>
     public void AddCollectible(int index)
     {
-        numberCollectible += 1;
+        collectibleCount += 1;
 
-        textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
+        textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibles.Length;
 
         DelCollectible(index);
     }
 
+    /// <summary>
+    /// Detruit le GameObject
+    /// </summary>
+    /// <param name="index">L'index de la piece</param>
     public void DelCollectible(int index)
     {
         Destroy(collectibles[index]);

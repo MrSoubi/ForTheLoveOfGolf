@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6592609069013781268}
   - component: {fileID: 5031055350452207861}
   - component: {fileID: 3997950000825705159}
+  - component: {fileID: -5788535909043824210}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -48,10 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c139c1f33fdfa42a5e0cb2aa357069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedFactor: 2
-  gravity: {x: 0, y: -5, z: 0}
-  movementInput: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 0, z: 0}
+  maxSpeed: 0
+  downForceValue: 5
+  dragAmount: 5
+  speed: 7
+  horizontalInput: 0
+  verticalInput: 0
+  downForce: 0
+  moveDirection: {x: 0, y: 0, z: 0}
 --- !u!54 &5858678838221024211
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -74,11 +79,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 2
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!135 &6592609069013781268
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -86,7 +91,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6737611680261338443}
-  m_Material: {fileID: 13400000, guid: 635d6d8688b69864e96fcc2caf1797b4, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -150,3 +155,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-5788535909043824210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6737611680261338443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def89323699a7064b8841e0aabc156d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vertical: 0
+  horizontal: 0

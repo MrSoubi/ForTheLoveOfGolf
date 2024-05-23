@@ -1,56 +1,78 @@
-using NUnit.Framework.Interfaces;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
-using static CameraController;
+using UnityEngine.EventSystems;
+using UnityEngine.Scripting.APIUpdating;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Parameter")]
-    [SerializeField] private float speedFactor;
-    [SerializeField] Vector3 gravity = Vector3.down * 5f;
+    [Header("Settings")]
+    public float maxSpeed;
+    public float downForceValue;
+    public float dragAmount;
+    public float moveSpeed;
 
+    [Header("References")]
+    private InputManager inputs;
     private Rigidbody rb;
 
-    public Vector3 movementInput = Vector3.zero;
-    public Vector3 direction;
+    [Header("Private")]
+    public float horizontalInput;
+    public float verticalInput;
+    public float downForce;
+
+    public Vector3 moveDirection;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        inputs = GetComponent<InputManager>();
     }
 
     private void Update()
     {
-        HandleInput();
+        AddDownForce();
 
         HandleDirection();
 
-        if (movementInput.magnitude > 0)
-        {
-            rb.AddForce(direction * speedFactor, ForceMode.Acceleration);
-        }
-        
-        rb.AddForce(gravity, ForceMode.Acceleration);
+        SpeedControl();
     }
 
-    private void HandleInput()
+    private void FixedUpdate()
     {
-        movementInput = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
+        MovePlayer();
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, transform.localScale.y * 0.5f + 0.2f);
+    }
+
+    private void AddDownForce()
+    {
+        rb.AddForce(transform.up * downForceValue * -1f, ForceMode.Acceleration);
     }
 
     private void HandleDirection()
     {
-        if (rb.velocity.magnitude >= 0.001)
+        verticalInput = inputs.vertical;
+        horizontalInput = inputs.horizontal;
+    }
+
+    private void MovePlayer()
+    {
+        moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+
+        rb.AddForce(moveDirection.normalized * moveSpeed * 10f * (IsGrounded() ? 1f : 0.1f), ForceMode.Force);
+    }
+
+    private void SpeedControl()
+    {
+        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        if(flatVel.magnitude > maxSpeed)
         {
-            direction = Quaternion.Euler(0f, 90f * Input.GetAxis("Horizontal"), 0f) * rb.velocity;
-            direction.Normalize();
-        }
-        else
-        {
-            direction = Vector3.forward;
+            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
 }

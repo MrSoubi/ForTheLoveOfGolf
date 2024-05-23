@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDirection()
     {
-        if (rb.velocity.magnitude != 0)
+        if (rb.velocity.magnitude >= 0.001)
         {
             direction = Quaternion.Euler(0f, 90f * Input.GetAxis("Horizontal"), 0f) * rb.velocity;
             direction.Normalize();

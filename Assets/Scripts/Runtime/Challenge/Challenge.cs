@@ -5,17 +5,20 @@ using UnityEngine;
 public class Challenge : MonoBehaviour
 {
     [Header("Challenge conditions")]
-    public int coinsToGet;
-    public int currentCoinGet;
+    [Tooltip("Coin require to finish le challenge")]
+    [SerializeField] int coinsToGet; 
+    int currentCoinGet;
 
-    public float maxTime;
+    [Tooltip("Time of the challenge")]
+    [SerializeField] float maxTime;
     float timer;
 
     bool isAlreadyFinish = false;
 
-    [SerializeField] ChallengeCollectible[] currentCollectibles;
+    ChallengeCollectible[] currentCollectibles;
 
     [Header("Challenge rewards")]
+    [Tooltip("Objects that will appear if you win the challenge")] 
     [SerializeField] GameObject[] challengeRewards;
 
     Coroutine timerCoroutine;

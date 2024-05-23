@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class FreePlayerController : MonoBehaviour
 {
@@ -13,8 +14,13 @@ public class FreePlayerController : MonoBehaviour
 
     bool aiming = false;
 
+    public Material materialOpaque;
+    public Material materialTransparent;
+
     void Start()
     {
+        GetComponent<MeshRenderer>().material = materialOpaque;
+
         Cursor.lockState = CursorLockMode.Locked;
 
         if (mouseSensitivity == 0)
@@ -38,6 +44,16 @@ public class FreePlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             aiming = !aiming;
+
+            if (aiming)
+            {
+                GetComponent<MeshRenderer>().material = materialTransparent;
+                GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(()=> { GetComponent<MeshRenderer>().material = materialOpaque; });
+            }
         }
 
         if (!aiming)

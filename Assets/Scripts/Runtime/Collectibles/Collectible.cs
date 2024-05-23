@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    public GameObject CollectibleManager;
+    [HideInInspector] 
+    public CollectibleManager CollectibleManager;
 
+    [HideInInspector]
     public int index;
 
+    public int value;
+
     /// <summary>
-    /// Quand le player est détécter, il appelle le manager et ajoute la pièce
+    /// Quand le joueur est détecter, il appelle le manager et ajoute la valeur de la pièce
     /// </summary>
     /// <param name="other">le collider qui entre en contact</param>
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            CollectibleManager.GetComponent<CollectibleManager>().AddCollectible(index);
+            CollectibleManager.AddCollectible(index, value);
         }
     }
 }

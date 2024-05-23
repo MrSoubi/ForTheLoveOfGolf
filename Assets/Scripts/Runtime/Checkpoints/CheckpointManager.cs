@@ -16,7 +16,7 @@ public class CheckpointManager : MonoBehaviour
         if (newCheckPoints != checkPoints) 
         {
             currentTrigger.SetTexture(true);
-            lastTrigger.SetTexture(false);
+            if (lastTrigger) lastTrigger.SetTexture(false);
             lastTrigger = currentTrigger;
             checkPoints = newCheckPoints;
         }

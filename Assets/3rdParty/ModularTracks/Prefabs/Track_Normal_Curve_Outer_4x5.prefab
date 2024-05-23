@@ -55,5 +55,56 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a7fc5a01a0fc05e438f77c47fb4ca30d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -512897913404064030}
+    - targetCorrespondingSourceObject: {fileID: -8603339840771121511, guid: a7fc5a01a0fc05e438f77c47fb4ca30d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7642961641963705691}
   m_SourcePrefab: {fileID: 100100000, guid: a7fc5a01a0fc05e438f77c47fb4ca30d, type: 3}
+--- !u!1 &4864922544217327700 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8603339840771121511, guid: a7fc5a01a0fc05e438f77c47fb4ca30d, type: 3}
+  m_PrefabInstance: {fileID: 5411469367839954637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &7642961641963705691
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4864922544217327700}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1103882761297548365, guid: a7fc5a01a0fc05e438f77c47fb4ca30d, type: 3}
+--- !u!1 &5176904719117790108 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a7fc5a01a0fc05e438f77c47fb4ca30d, type: 3}
+  m_PrefabInstance: {fileID: 5411469367839954637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-512897913404064030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5176904719117790108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d0440750173394fa6f119f7e30ce4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Add_Collider: 0

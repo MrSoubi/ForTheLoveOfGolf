@@ -91,9 +91,9 @@ public class PlayerController : MonoBehaviour
     {
         acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime; // Avance
 
-        acceleration += Quaternion.AngleAxis(90, Vector3.up) * direction * moveSpeed / 2 * Input.GetAxisRaw("Horizontal") * Time.deltaTime; // Strafe
+        acceleration += Quaternion.AngleAxis(90, Vector3.up) * direction * moveSpeed * 100 * Input.GetAxisRaw("Horizontal") * Time.deltaTime; // Strafe
 
-        acceleration = Vector3.ClampMagnitude(acceleration, 2f);
+        acceleration = Vector3.ClampMagnitude(acceleration, 5f);
     }
 
     private void HandleForces()

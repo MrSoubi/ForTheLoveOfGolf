@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Settings")]
     public float moveSpeed;
+    public float maxSpeed;
     public float rotationSpeed;
-    //public float dragAmount;
     public float gravityForce;
 
     [Header("References")]
@@ -42,10 +42,7 @@ public class PlayerController : MonoBehaviour
         HandleFriction();
         HandleAcceleration();
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            BoostPlayer(Vector3.forward, 10f);
-        }
+        LimitSpeed();
     }
 
     private void FixedUpdate()
@@ -121,6 +118,11 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    private void LimitSpeed()
+    {
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
     }
 
     public void BoostPlayer(Vector3 direction,float power)

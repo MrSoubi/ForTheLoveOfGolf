@@ -41,6 +41,7 @@ public class CollectibleManager : MonoBehaviour
     {
         for (int i = 0; i < collectibles.Count; i++)
         {
+            collectibleValue += collectibles[i].value;
             collectibles[i].CollectibleManager = this;
             collectibles[i].index = i;
         }
@@ -55,13 +56,6 @@ public class CollectibleManager : MonoBehaviour
     {
         if (textCollectibleCounter != null && collectibles.Count > 0)
         {
-            collectibleValue = 0;
-
-            for (int i = 0; i < collectibles.Count; i++)
-            {
-                collectibleValue += collectibles[i].value;
-            }
-
             textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
         }
     }

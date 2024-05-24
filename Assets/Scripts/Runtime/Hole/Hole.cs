@@ -17,8 +17,18 @@ public class Hole : MonoBehaviour
         {
             holeManager.FinishSelectedHole(ID);
 
-            print("REPLACE PLAYER ON RESPAWNPOINT");
+            SpawnPoint(other);
         }
+    }
+
+    public void NewFlag()
+    {
+
+    }
+
+    private void SpawnPoint(Collider other)
+    {
+        other.transform.position = transform.position + respawnPoint;
     }
 
     private void OnDrawGizmosSelected()

@@ -49,8 +49,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c139c1f33fdfa42a5e0cb2aa357069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
-  rotationSpeed: 0
+  moveSpeed: 1500
+  maxSpeed: 15
+  rotationSpeed: 1
   gravityForce: 10
   isGrounded: 0
   direction: {x: 0, y: 0, z: 0}
@@ -170,3 +171,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vertical: 0
   horizontal: 0
+  inputX: 0
+  inputY: 0

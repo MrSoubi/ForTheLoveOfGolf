@@ -1,56 +1,129 @@
-using NUnit.Framework.Interfaces;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
-using static CameraController;
+using UnityEngine.EventSystems;
+using UnityEngine.Scripting.APIUpdating;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Parameter")]
-    [SerializeField] private float speedFactor;
-    [SerializeField] Vector3 gravity = Vector3.down * 5f;
+    [Header("Settings")]
+    public float moveSpeed;
+    public float rotationSpeed;
+    //public float dragAmount;
+    public float gravityForce;
 
+    [Header("References")]
+    private InputManager inputs;
     private Rigidbody rb;
 
-    public Vector3 movementInput = Vector3.zero;
+    public bool isGrounded;
+
     public Vector3 direction;
+    public Vector3 gravity;
+    public Vector3 normal;
+    public Vector3 friction;
+    public Vector3 acceleration;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        inputs = GetComponent<InputManager>();
     }
 
     private void Update()
     {
-        HandleInput();
-
         HandleDirection();
+        HandleGravity();
 
-        if (movementInput.magnitude > 0)
-        {
-            rb.AddForce(direction * speedFactor, ForceMode.Acceleration);
-        }
-        
-        rb.AddForce(gravity, ForceMode.Acceleration);
+        CheckGround();
+
+        HandleNormal();
+        HandleFriction();
+        HandleAcceleration();
+
+        PrintValue();
     }
 
-    private void HandleInput()
+    private void PrintValue()
     {
-        movementInput = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
+        print(rb.velocity.magnitude);
+    }
+
+    private void FixedUpdate()
+    {
+        HandleForces();
     }
 
     private void HandleDirection()
     {
-        if (rb.velocity.magnitude != 0)
+        if (rb.velocity.magnitude > 0.01)
         {
-            direction = Quaternion.Euler(0f, 90f * Input.GetAxis("Horizontal"), 0f) * rb.velocity;
-            direction.Normalize();
+            direction = rb.velocity.normalized;
+            direction = Quaternion.AngleAxis(Input.GetAxisRaw("Mouse X") * rotationSpeed, Vector3.up) * direction;
+        }
+        
+    }
+
+    private void HandleGravity()
+    {
+        gravity = new Vector3(0, -gravityForce, 0);
+    }
+
+    private void HandleNormal()
+    {
+        if (isGrounded)
+        {
+            normal *= gravity.magnitude;
         }
         else
         {
-            direction = Vector3.forward;
+            normal = Vector3.zero;
         }
+    }
+
+    private void HandleFriction()
+    {
+        friction = Vector3.zero;
+    }
+
+    private void HandleAcceleration()
+    {
+        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed
+            + Quaternion.AngleAxis(90, Vector3.up) * direction * Input.GetAxisRaw("Horizontal") * moveSpeed / 4;
+
+        acceleration = Vector3.ClampMagnitude(acceleration, 5f);
+    }
+
+    private void HandleForces()
+    {
+        rb.AddForce(gravity + normal + acceleration, ForceMode.Acceleration);
+    }
+
+    private void CheckGround()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + 0.2f))
+        {
+            normal = hit.normal;
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.position + normal);
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position, transform.position + gravity);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + acceleration);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + friction);
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + direction);
     }
 }

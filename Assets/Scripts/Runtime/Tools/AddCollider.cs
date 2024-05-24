@@ -12,7 +12,7 @@ public class AddCollider : MonoBehaviour
         MeshRenderer[] tmp = GetComponentsInChildren<MeshRenderer>();
         for (int i = 0; i < tmp.Length; i++)
         {
-            tmp[i].AddComponent<MeshCollider>();
+            if (!tmp[i].TryGetComponent(out MeshCollider tmpCollid)) tmp[i].AddComponent<MeshCollider>();
         }
     }
 }

@@ -13,6 +13,8 @@ public class Rotor : MonoBehaviour
         transform.Rotate(0, Time.deltaTime * speed, 0);
     }
 
+#if UNITY_EDITOR
+
     private void OnDrawGizmos()
     {
         if(transform.childCount != 0)
@@ -26,4 +28,6 @@ public class Rotor : MonoBehaviour
             Handles.DrawWireArc(centerPos, go.transform.up, go.transform.forward, 360, Vector3.Distance(centerPos, go.transform.position));
         }
     }
+#endif
+
 }

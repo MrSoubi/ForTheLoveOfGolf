@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1500
-  maxSpeed: 15
+  maxSpeed: 25
   rotationSpeed: 1
   gravityForce: 10
   isGrounded: 0

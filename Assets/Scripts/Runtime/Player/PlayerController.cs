@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
@@ -40,13 +41,6 @@ public class PlayerController : MonoBehaviour
         HandleNormal();
         HandleFriction();
         HandleAcceleration();
-
-        PrintValue();
-    }
-
-    private void PrintValue()
-    {
-        print(rb.velocity.magnitude);
     }
 
     private void FixedUpdate()
@@ -56,12 +50,19 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDirection()
     {
+        float inputMouse = Input.GetAxisRaw("Mouse X");
+        if (inputMouse != 0f)
+        {
+            float angle = Input.GetAxisRaw("Mouse X") * rotationSpeed;
+            rb.velocity = Quaternion.AngleAxis(angle, Vector3.up) * rb.velocity; // La direction tourne avec le mouvement de la souris
+        }
+
         if (rb.velocity.magnitude > 0.01)
         {
-            direction = rb.velocity.normalized;
-            direction = Quaternion.AngleAxis(Input.GetAxisRaw("Mouse X") * rotationSpeed, Vector3.up) * direction;
+            direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
         }
-        
+
+        Debug.Assert(direction.magnitude > 0f);
     }
 
     private void HandleGravity()
@@ -88,21 +89,25 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed
-            + Quaternion.AngleAxis(90, Vector3.up) * direction * Input.GetAxisRaw("Horizontal") * moveSpeed / 4;
+        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime; // Avance
+
+        acceleration += Quaternion.AngleAxis(90, Vector3.up) * direction * moveSpeed * 100 * Input.GetAxisRaw("Horizontal") * Time.deltaTime; // Strafe
 
         acceleration = Vector3.ClampMagnitude(acceleration, 5f);
     }
 
     private void HandleForces()
     {
-        rb.AddForce(gravity + normal + acceleration, ForceMode.Acceleration);
+        Vector3 forces = (gravity + normal + acceleration + friction);
+
+        rb.AddForce(forces, ForceMode.Acceleration);
     }
 
+    float groundDetectionLength = 0.03f;
     private void CheckGround()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + 0.2f))
+        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + groundDetectionLength))
         {
             normal = hit.normal;
             isGrounded = true;
@@ -125,5 +130,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + friction);
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + direction);
+        //Gizmos.DrawLine(transform.position + direction, transform.position + direction + debugDirection);
     }
 }

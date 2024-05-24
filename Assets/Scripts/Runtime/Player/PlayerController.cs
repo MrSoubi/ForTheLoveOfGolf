@@ -54,12 +54,20 @@ public class PlayerController : MonoBehaviour
         HandleForces();
     }
 
+    Vector3 debugDirection;
+
     private void HandleDirection()
     {
         if (rb.velocity.magnitude > 0.01)
         {
             direction = rb.velocity.normalized;
-            direction = Quaternion.AngleAxis(Input.GetAxisRaw("Mouse X") * rotationSpeed, Vector3.up) * direction;
+
+            debugDirection = direction;
+            Debug.Log(Input.GetAxisRaw("Mouse X"));
+
+            direction = Quaternion.AngleAxis(Input.GetAxisRaw("Mouse X") * Time.deltaTime * rotationSpeed, Vector3.up) * direction;
+
+            debugDirection -= direction;
         }
         
     }
@@ -88,8 +96,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed
-            + Quaternion.AngleAxis(90, Vector3.up) * direction * Input.GetAxisRaw("Horizontal") * moveSpeed / 4;
+        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed // Avance
+            + Quaternion.AngleAxis(90, Vector3.up) * direction * Input.GetAxisRaw("Horizontal") * moveSpeed / 4; // Straf
 
         acceleration = Vector3.ClampMagnitude(acceleration, 5f);
     }
@@ -124,6 +132,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, transform.position + friction);
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + direction);
+        Gizmos.DrawLine(transform.position, transform.position + debugDirection);
     }
 }

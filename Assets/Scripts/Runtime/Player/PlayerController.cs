@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Settings")]
     public float moveSpeed;
-    public float dragAmount;
+    public float rotationSpeed;
+    //public float dragAmount;
     public float gravityForce;
 
     [Header("References")]
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
         HandleNormal();
         HandleFriction();
-        HandleInputs();
+        HandleAcceleration();
 
         PrintValue();
     }
@@ -55,7 +56,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDirection()
     {
-        direction = rb.velocity.normalized;
+        if (rb.velocity.magnitude > 0.01)
+        {
+            direction = rb.velocity.normalized;
+            direction = Quaternion.AngleAxis(Input.GetAxisRaw("Mouse X") * rotationSpeed, Vector3.up) * direction;
+        }
+        
     }
 
     private void HandleGravity()
@@ -80,14 +86,17 @@ public class PlayerController : MonoBehaviour
         friction = Vector3.zero;
     }
 
-    private void HandleInputs()
+    private void HandleAcceleration()
     {
-        //
+        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed
+            + Quaternion.AngleAxis(90, Vector3.up) * direction * Input.GetAxisRaw("Horizontal") * moveSpeed / 4;
+
+        acceleration = Vector3.ClampMagnitude(acceleration, 5f);
     }
 
     private void HandleForces()
     {
-        rb.AddForce(gravity + normal, ForceMode.Acceleration);
+        rb.AddForce(gravity + normal + acceleration, ForceMode.Acceleration);
     }
 
     private void CheckGround()
@@ -102,5 +111,19 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.position + normal);
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position, transform.position + gravity);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + acceleration);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + friction);
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + direction);
     }
 }

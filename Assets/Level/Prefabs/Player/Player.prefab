@@ -50,12 +50,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 15
-  dragAmount: 5
-  accelerationValue: 0
+  dragAmount: 0
   gravityForce: 10
-  horizontalInput: 0
-  verticalInput: 0
-  moveDirection: {x: 0, y: 0, z: 0}
+  isGrounded: 0
+  direction: {x: 0, y: 0, z: 0}
+  gravity: {x: 0, y: 0, z: 0}
+  normal: {x: 0, y: 0, z: 0}
+  friction: {x: 0, y: 0, z: 0}
+  acceleration: {x: 0, y: 0, z: 0}
 --- !u!54 &5858678838221024211
 Rigidbody:
   m_ObjectHideFlags: 0

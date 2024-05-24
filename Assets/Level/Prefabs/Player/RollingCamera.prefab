@@ -69,7 +69,7 @@ MonoBehaviour:
   m_RollDamping: 1
   m_AngularDamping: 0
   m_Heading:
-    m_Definition: 2
+    m_Definition: 1
     m_VelocityFilterStrength: 4
     m_Bias: 0
   m_RecenterToTargetHeading:

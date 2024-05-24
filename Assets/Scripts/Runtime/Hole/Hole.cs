@@ -13,7 +13,7 @@ public class Hole : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.transform.CompareTag("Player"))
+        if (other.transform.CompareTag("Player"))
         {
             holeManager.FinishSelectedHole(ID);
 

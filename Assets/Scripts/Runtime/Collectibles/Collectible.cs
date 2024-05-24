@@ -1,18 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Collectible : MonoBehaviour
 {
-    public GameObject CollectibleManager;
+    [HideInInspector] 
+    public CollectibleManager CollectibleManager;
 
+    [HideInInspector]
     public int index;
 
+    [Header("Value Collectible")]
+    public int value;
+
+    [Header("Animation Speed")]
+    public float speed;
+
+    private void Update()
+    {
+        transform.Rotate(0, 0, speed * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Quand le joueur est détecter, il appelle le manager et ajoute la valeur de la pièce
+    /// </summary>
+    /// <param name="other">le collider qui entre en contact</param>
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player") // Perf -> utiliser CompareTag() (Manu)
+        if(other.CompareTag("Player"))
         {
-            CollectibleManager.GetComponent<CollectibleManager>().AddCollectible(index);
+            CollectibleManager.AddCollectible(index, value);
         }
     }
 }

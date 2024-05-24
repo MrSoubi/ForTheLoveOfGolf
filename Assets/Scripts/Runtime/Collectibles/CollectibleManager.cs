@@ -1,38 +1,105 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CollectibleManager : MonoBehaviour
 {
+    [HideInInspector]
+    public List<Collectible> collectibles = new List<Collectible>();
+
+    [Header("Interface")]
     public TextMeshProUGUI textCollectibleCounter;
 
-    public GameObject[] collectibles;
+    [Header("Collectible")]
+    public int collectibleCount;
+    public int collectibleValue;
 
-    public int numberCollectible; // Nomenclature : collectibleCount ?
+    [Header("Hole")]
+    public int holeCount;
+    public int holeValue;
 
-    private void Start()
+    private void Awake()
     {
-        if(collectibles.Length > 0)
+        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        for (int i = 0; i < tmp.Length; i++)
         {
-            textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
+            if (tmp[i].TryGetComponent(out Collectible currentCollectible))
+            {
+                collectibles.Add(currentCollectible);
+            }
+            if (tmp[i].TryGetComponent(out Buttons currentButton))
+            {
+                currentButton.collectibleManager = this;
+            }
         }
     }
 
-    // Un peu de documentation sur ces deux fontions pour savoir ce qu'elles ajoutent et supprime, c'est pas super clair pour moi (Manu)
-    public void AddCollectible(int index)
+    private void Start()
     {
-        numberCollectible += 1;
+        for (int i = 0; i < collectibles.Count; i++)
+        {
+            collectibles[i].CollectibleManager = this;
+            collectibles[i].index = i;
+        }
 
-        textCollectibleCounter.text = numberCollectible.ToString() + "/" + collectibles.Length;
-
-        DelCollectible(index);
+        RefreshInterface();
     }
 
+    /// <summary>
+    /// Met à jour l'affichage du compteur
+    /// </summary>
+    private void RefreshInterface()
+    {
+        if (textCollectibleCounter != null && collectibles.Count > 0)
+        {
+            collectibleValue = 0;
+
+            for (int i = 0; i < collectibles.Count; i++)
+            {
+                collectibleValue += collectibles[i].value;
+            }
+
+            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
+        }
+    }
+
+    /// <summary>
+    /// Met à jour les index dans la liste
+    /// </summary>
+    private void ResetCollectibleIndex()
+    {
+        for (int i = 0; i < collectibles.Count; i++)
+        {
+            collectibles[i].index = i;
+        }
+    }
+
+    /// <summary>
+    /// Detruit le GameObject puis appelle la fonction ResetCollectibleIndex qui met à jour les index dans la liste
+    /// </summary>
+    /// <param name="index">L'index de la piece</param>
     public void DelCollectible(int index)
     {
-        Destroy(collectibles[index]);
+        Destroy(collectibles[index].gameObject);
+        collectibles.RemoveAt(index);
+
+        ResetCollectibleIndex();
+    }
+
+    /// <summary>
+    /// Ajoute la valeur de la pièce dans le compteur et l'affiche puis appelle la fonction DelCollectible qui detruit le GameObject
+    /// </summary>
+    /// <param name="index">L'index de la pièce</param>
+    /// <param name="value">La valeur de la pièce</param>
+    public void AddCollectible(int index, int value)
+    {
+        collectibleCount += value;
+
+        RefreshInterface();
+
+        DelCollectible(index);
     }
 }

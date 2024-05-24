@@ -6,8 +6,6 @@ public class InputManager : MonoBehaviour
 {
     [HideInInspector] public float vertical;
     [HideInInspector] public float horizontal;
-    [HideInInspector] public float inputX;
-    [HideInInspector] public float inputY;
 
     void Update()
     {
@@ -18,7 +16,5 @@ public class InputManager : MonoBehaviour
     {
         vertical = Input.GetAxisRaw("Vertical");
         horizontal = Input.GetAxisRaw("Horizontal");
-        inputX = Input.GetAxisRaw("Mouse X");
-        inputY = Input.GetAxisRaw("Mouse Y");
     }
 }

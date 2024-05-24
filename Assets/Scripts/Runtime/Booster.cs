@@ -9,9 +9,6 @@ public class Booster : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player"))
-        {
-            other.GetComponent<PlayerController>().BoostPlayer(transform.forward, intensity);
-        }
+        
     }
 }

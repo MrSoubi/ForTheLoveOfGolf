@@ -13,12 +13,22 @@ public class Hole : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.parent.transform.CompareTag("Player"))
+        if (other.transform.CompareTag("Player"))
         {
             holeManager.FinishSelectedHole(ID);
 
-            print("REPLACE PLAYER ON RESPAWNPOINT");
+            SpawnPoint(other);
         }
+    }
+
+    public void NewFlag()
+    {
+
+    }
+
+    private void SpawnPoint(Collider other)
+    {
+        other.transform.position = transform.position + respawnPoint;
     }
 
     private void OnDrawGizmosSelected()

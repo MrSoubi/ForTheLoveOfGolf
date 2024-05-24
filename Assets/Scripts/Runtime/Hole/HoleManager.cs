@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class HoleManager : MonoBehaviour
 {
-    int holeComplete = 0;
+    public CollectibleManager CollectibleManager;
+    public Material flagMaterial;
 
     Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
+    public List<Hole> holesCount = new List<Hole>();
 
-    private void Start()
+    private void Awake()
     {
         Hole[] holes = FindObjectsByType<Hole>(FindObjectsSortMode.None);
         for (int i = 0; i < holes.Length; i++)
@@ -16,6 +18,8 @@ public class HoleManager : MonoBehaviour
             holes[i].holeManager = this;
             holes[i].SetID(i);
             holeInGame.Add(i, new HoleStatistic());
+            holesCount.Add(holes[i]);
+            CollectibleManager.holeValue += 1;
         }
     }
 
@@ -23,8 +27,9 @@ public class HoleManager : MonoBehaviour
     {
         if (!holeInGame[id].wasFinish)
         {
-            holeComplete++;
+            CollectibleManager.holeCount += 1;
             holeInGame[id].wasFinish = true;
+            holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
         }
     }
 }

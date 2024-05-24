@@ -7,27 +7,45 @@ using UnityEngine;
 
 public class CollectibleManager : MonoBehaviour
 {
-    public TextMeshProUGUI textCollectibleCounter;
-
+    [HideInInspector]
     public List<Collectible> collectibles = new List<Collectible>();
 
-    public int collectibleCount;
+    [Header("Interface")]
+    public TextMeshProUGUI textCollectibleCounter;
 
-    private int collectibleValue;
+    [Header("Collectible")]
+    public int collectibleCount;
+    public int collectibleValue;
+
+    [Header("Hole")]
+    public int holeCount;
+    public int holeValue;
 
     private void Awake()
     {
-        collectibles = FindObjectsByType<Collectible>(FindObjectsSortMode.None).ToList();
-
-        for (int i = 0; i < collectibles.Count; i++)
+        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        for (int i = 0; i < tmp.Length; i++)
         {
-            collectibles[i].CollectibleManager = this;
-            collectibles[i].index = i;
+            if (tmp[i].TryGetComponent(out Collectible currentCollectible))
+            {
+                collectibles.Add(currentCollectible);
+            }
+            if (tmp[i].TryGetComponent(out Buttons currentButton))
+            {
+                currentButton.collectibleManager = this;
+            }
         }
     }
 
     private void Start()
     {
+        for (int i = 0; i < collectibles.Count; i++)
+        {
+            collectibleValue += collectibles[i].value;
+            collectibles[i].CollectibleManager = this;
+            collectibles[i].index = i;
+        }
+
         RefreshInterface();
     }
 
@@ -36,15 +54,8 @@ public class CollectibleManager : MonoBehaviour
     /// </summary>
     private void RefreshInterface()
     {
-        if (collectibles.Count > 0)
+        if (textCollectibleCounter != null && collectibles.Count > 0)
         {
-            collectibleValue = 0;
-
-            for (int i = 0; i < collectibles.Count; i++)
-            {
-                collectibleValue += collectibles[i].value;
-            }
-
             textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
         }
     }

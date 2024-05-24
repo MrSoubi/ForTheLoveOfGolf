@@ -41,6 +41,11 @@ public class PlayerController : MonoBehaviour
         HandleNormal();
         HandleFriction();
         HandleAcceleration();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            BoostPlayer(Vector3.forward, 10f);
+        }
     }
 
     private void FixedUpdate()
@@ -116,6 +121,11 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public void BoostPlayer(Vector3 direction,float power)
+    {
+        rb.AddForce(direction * power * 5f, ForceMode.Impulse);
     }
 
     private void OnDrawGizmos()

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
     public Vector3 respawnPoint;
-    public bool endFlag;
 
     [SerializeField] int ID;
     [HideInInspector] public HoleManager holeManager;
@@ -20,6 +19,11 @@ public class Hole : MonoBehaviour
 
             SpawnPoint(other);
         }
+    }
+
+    public void NewFlag()
+    {
+
     }
 
     private void SpawnPoint(Collider other)

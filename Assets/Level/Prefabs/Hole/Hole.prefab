@@ -73,8 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76664273647b4b478ff0163fdab1cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {x: 1.5, y: 0.5, z: 0}
-  endFlag: 0
+  respawnPoint: {x: -2, y: 0.5, z: -2}
   ID: 0
   holeManager: {fileID: 0}
 --- !u!1 &532853375584780047
@@ -704,7 +703,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 98bc34ddef060be4ea47e99161e9df8f, type: 2}
+  - {fileID: 2100000, guid: 41680dad0f0243748b4e228f49a2e3c4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

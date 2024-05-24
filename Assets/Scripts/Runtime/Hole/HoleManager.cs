@@ -5,8 +5,7 @@ using UnityEngine;
 public class HoleManager : MonoBehaviour
 {
     public CollectibleManager CollectibleManager;
-    public Material flagMaterialComplete;
-    public Material flagMaterialInComplete;
+    public Material flagMaterial;
 
     Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
     public List<Hole> holesCount = new List<Hole>();
@@ -24,35 +23,13 @@ public class HoleManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        CollectibleManager.RefreshInterface();
-    }
-
     public void FinishSelectedHole(int id)
     {
         if (!holeInGame[id].wasFinish)
         {
             CollectibleManager.holeCount += 1;
             holeInGame[id].wasFinish = true;
-
-            if(holesCount[id].endFlag)
-            {
-                if (CollectibleManager.collectibleCount >= CollectibleManager.collectibleValue)
-                {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
-                }
-                else
-                {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialInComplete;
-                }
-            }
-            else
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
-            }
-            
-            CollectibleManager.RefreshInterface();
+            holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
         }
     }
 }

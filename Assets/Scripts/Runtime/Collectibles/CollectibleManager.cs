@@ -12,7 +12,6 @@ public class CollectibleManager : MonoBehaviour
 
     [Header("Interface")]
     public TextMeshProUGUI textCollectibleCounter;
-    public TextMeshProUGUI textHoleCounter;
 
     [Header("Collectible")]
     public int collectibleCount;
@@ -53,16 +52,11 @@ public class CollectibleManager : MonoBehaviour
     /// <summary>
     /// Met à jour l'affichage du compteur
     /// </summary>
-    public void RefreshInterface()
+    private void RefreshInterface()
     {
         if (textCollectibleCounter != null && collectibles.Count > 0)
         {
-            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue.ToString();
-        }
-
-        if(textHoleCounter != null && holeValue > 0)
-        {
-            textHoleCounter.text = holeCount.ToString() + "/" + holeValue.ToString();
+            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
         }
     }
 

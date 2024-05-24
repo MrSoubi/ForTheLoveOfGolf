@@ -20,11 +20,11 @@ public class Buttons : MonoBehaviour
         {
             if (!door.open)
             {
-                if (door.collectibleNeed && collectibleManager.collectibleCount >= door.collectibleQuantity)
+                if (door.collectibleNeed && collectibleManager.collectibleValue >= door.collectibleQuantity)
                 {
                     door.OpenDoor();
                 }
-                else if (door.holeNeed && collectibleManager.holeCount >= door.holeQuantity)
+                else if (door.holeNeed && collectibleManager.holeValue >= door.holeQuantity)
                 {
                     door.OpenDoor();
                 }

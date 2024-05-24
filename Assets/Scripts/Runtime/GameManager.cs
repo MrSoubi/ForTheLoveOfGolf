@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject player;
+
     public static GameManager instance { get; private set; }
     public void Awake() => instance = this.Singleton(instance, () => Destroy(gameObject));
 

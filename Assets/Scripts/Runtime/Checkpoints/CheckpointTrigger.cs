@@ -23,7 +23,7 @@ public class CheckpointTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") CheckpointManager.instance.SetCheckpoint(transform.position,this);
+        //if (other.tag == "Player") CheckpointManager.instance.SetCheckpoint(transform.position,this);
     }
 
     public void SetTexture(bool enable)

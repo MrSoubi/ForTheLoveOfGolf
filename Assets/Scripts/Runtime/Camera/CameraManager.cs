@@ -55,8 +55,8 @@ public class CameraManager : MonoBehaviour
     /// </summary>
     public void RollShoot()
     {
-        rollingCam.enabled = false;
-        aimingCam.enabled = true;
+        rollingCam.enabled = true;
+        aimingCam.enabled = false;
     }
 
     /// <summary>

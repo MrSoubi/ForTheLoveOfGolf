@@ -24,12 +24,13 @@ public class CollectibleManager : MonoBehaviour
     bool showCollectibleCount = true;
     [SerializeField] Animator collectibleCountAnim;
 
-    public static CollectibleManager instance;
+    public Action<int> onCollected; 
+
+    public static CollectibleManager instance { get; private set; }
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        instance = this.Singleton(instance, () => Destroy(gameObject));
 
         GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
         for (int i = 0; i < tmp.Length; i++)
@@ -100,6 +101,8 @@ public class CollectibleManager : MonoBehaviour
     public void AddCollectible(int index, int value)
     {
         collectibleCount += value;
+        print("enter");
+        onCollected?.Invoke(collectibleCount);
 
         RefreshInterface();
 

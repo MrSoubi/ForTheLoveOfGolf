@@ -51,16 +51,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1500
   maxSpeed: 25
+  airMultiplier: 0
   rotationSpeed: 1
   gravityForce: 10
   isGrounded: 0
-  direction: {x: 0, y: 0, z: 0}
-  gravity: {x: 0, y: 0, z: 0}
-  normal: {x: 0, y: 0, z: 0}
-  friction: {x: 0, y: 0, z: 0}
-  acceleration: {x: 0, y: 0, z: 0}
   materialOpaque: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
   materialTransparent: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
+  groundDetectionLength: 0.025
 --- !u!54 &5858678838221024211
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -86,7 +83,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!135 &6592609069013781268
 SphereCollider:

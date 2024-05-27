@@ -246,6 +246,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 237025705098480584}
     m_Modifications:
     - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
+      propertyPath: flagMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: f685a57b9da560a448bb95374a652f90, type: 2}
+    - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
       propertyPath: CollectibleManager
       value: 
       objectReference: {fileID: 2376659783594387614}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class HoleManager : MonoBehaviour
 {
     public CollectibleManager CollectibleManager;
-    //public Material flagMaterial;
+    [SerializeField] private Material flagMaterial;
 
     Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
     public List<Hole> holesCount = new List<Hole>();
@@ -29,8 +29,22 @@ public class HoleManager : MonoBehaviour
         {
             CollectibleManager.holeCount += 1;
             holeInGame[id].wasFinish = true;
-            //holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
+            holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
         }
+
+        if (IsEveryHoleFinished())
+        {
+            print("Every hole was finished");
+        }
+    }
+
+    bool IsEveryHoleFinished()
+    {
+        for (int i = 0; i < holeInGame.Count; i++)
+        {
+            if (!holeInGame[i].wasFinish) return false;
+        }
+        return true;
     }
 }
 

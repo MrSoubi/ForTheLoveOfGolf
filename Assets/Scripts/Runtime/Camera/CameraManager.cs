@@ -8,6 +8,7 @@ public class CameraManager : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera rollingCam;
     [SerializeField] private CinemachineFreeLook aimingCam;
+    private CinemachineBrain brain;
 
     bool isAiming = false;
 
@@ -15,6 +16,8 @@ public class CameraManager : MonoBehaviour
     {
         rollingCam.enabled = true;
         aimingCam.enabled = false;
+
+        brain = GetComponentInChildren<CinemachineBrain>();
     }
 
     void Update()
@@ -62,6 +65,11 @@ public class CameraManager : MonoBehaviour
     /// <returns></returns>
     public Vector3 GetShootingDirection()
     {
-        return Vector3.zero;
+        Transform liveCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform;
+        Transform target = brain.ActiveVirtualCamera.LookAt;
+
+        Vector3 shootingDirection = target.position - liveCamera.position;
+
+        return shootingDirection;
     }
 }

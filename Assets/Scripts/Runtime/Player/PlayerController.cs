@@ -34,13 +34,12 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
-    public bool isAiming;
-    public bool isGrounded;
+    private bool isAiming;
+    private bool isGrounded;
 
     // Transparence de la balle en mode Aim
-    private Material materialOpaque;
-    private Material materialTransparent;
-
+    public Material materialOpaque;
+    public Material materialTransparent;
 
     private int shootCharges;
     private int maxShootCharges;
@@ -213,7 +212,23 @@ public class PlayerController : MonoBehaviour
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
 
+    /// <summary>
+    /// Informe la balle qu'elle vient de rentrer dans un environnement special
+    /// </summary>
+    /// <param name="effect"></param>
+    public void SetEnvironmentEffect(EnvironmentEffect effect)
+    {
 
+    }
+
+    /// <summary>
+    /// Informe la balle qu'elle vient de quitter un environnement special
+    /// </summary>
+    /// <param name="effect"></param>
+    public void UnsetEnvironmentEffect(EnvironmentEffect effect)
+    {
+
+    }
 
     /// <summary>
     /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.

@@ -8,11 +8,21 @@ public class CheckpointTrigger : MonoBehaviour
 
     private void Start()
     {
-        if (startingPoint) Utils.Delay(() => CheckpointManager.instance.SetCheckpoint(transform.position),0.05f);
+        if (startingPoint) StartCoroutine(Utils.Delay(() => CheckpointManager.instance.SetCheckpoint(transform.position + Vector3.up *1.5f ,this),0.05f));
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") CheckpointManager.instance.SetCheckpoint(transform.position);
+        if (other.tag == "Player") SetCheckpoint();
+    }
+
+    public void SetCheckpoint()
+    {
+        CheckpointManager.instance.SetCheckpoint(transform.position + Vector3.up * 1.5f, this);
+    }
+
+    public void ChangeMaterial(Material material)
+    {
+        GetComponentInChildren<MeshRenderer>().material  = material;
     }
 }

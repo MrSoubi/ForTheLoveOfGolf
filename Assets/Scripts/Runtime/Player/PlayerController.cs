@@ -16,24 +16,23 @@ public class PlayerController : MonoBehaviour
     private InputManager inputs;
     private Rigidbody rb;
 
-    public bool isGrounded;
-
     public Vector3 direction;
     public Vector3 gravity;
     public Vector3 normal;
     public Vector3 friction;
     public Vector3 acceleration;
 
-    public float minGroundDotProduct;
+    public Vector3 contactNormal;
+    public Vector3 velocity, desiredVelocity;
+
+    private Vector2 playerInput;
+    private Vector2 mouseInput;
+
+    public bool isGrounded;
 
     // Transparence de la balle en mode Aim
     public Material materialOpaque;
     public Material materialTransparent;
-
-    private void OnValidate()
-    {
-        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
-    }
 
     private void Awake()
     {
@@ -41,8 +40,6 @@ public class PlayerController : MonoBehaviour
         inputs = GetComponent<InputManager>();
 
         GetComponent<MeshRenderer>().material = materialOpaque;
-
-        OnValidate();
     }
 
     private void Update()
@@ -68,22 +65,19 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        Vector2 playerInput;
-
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.y = Input.GetAxis("Vertical");
+
+        mouseInput.x = Input.GetAxisRaw("Mouse X");
+        mouseInput.y = Input.GetAxisRaw("Mouse Y");
 
         playerInput = Vector2.ClampMagnitude(playerInput, 1);
     }
 
     private void HandleDirection()
     {
-        float inputMouse = Input.GetAxisRaw("Mouse X");
-        if (inputMouse != 0f)
-        {
-            float angle = Input.GetAxisRaw("Mouse X") * rotationSpeed;
-            rb.velocity = Quaternion.AngleAxis(angle, Vector3.up) * rb.velocity; // La direction tourne avec le mouvement de la souris
-        }
+        // La direction tourne avec le mouvement de la souris
+        rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity; 
 
         if (rb.velocity.magnitude > 0.01)
         {
@@ -135,7 +129,7 @@ public class PlayerController : MonoBehaviour
     private void CheckGround()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + groundDetectionLength))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + groundDetectionLength))
         {
             normal = hit.normal;
             isGrounded = true;

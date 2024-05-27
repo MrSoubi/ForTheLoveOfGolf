@@ -202,6 +202,11 @@ public class PlayerController : MonoBehaviour
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
 
+    private void Shoot(Vector3 direction)
+    {
+        rb.AddForce(direction * 10f, ForceMode.Impulse);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

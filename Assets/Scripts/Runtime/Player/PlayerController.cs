@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseInput;
 
     private bool isAiming;
-    private bool isGrounded;
+    public bool isGrounded;
 
     // Transparence de la balle en mode Aim
     public Material materialOpaque;
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
                 if (rb.velocity.magnitude > 0.01)
                 {
-                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
+                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vÃ©locitÃ©
                 }
                 break;
         }
@@ -144,8 +144,7 @@ public class PlayerController : MonoBehaviour
 
                 Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
                 Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
-
-                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10f);
                 break;
         }
     }
@@ -157,11 +156,14 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
-    float groundDetectionLength = 0.03f;
+    public float groundDetectionLength = 0.025f;
     private void CheckGround()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + groundDetectionLength))
+
+        Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+        if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
         {
             normal = hit.normal;
             isGrounded = true;
@@ -177,13 +179,13 @@ public class PlayerController : MonoBehaviour
         switch (environmentEffect)
         {
             default:
-                rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
                 break;
         }
     }
 
     /// <summary>
-    /// Ajoute un boost de vitesse à la balle dans la direction donnée en paramètre. Si la vitesse résultante est assez grande, elle devient la nouvelle vitesse max.
+    /// Ajoute un boost de vitesse Ã  la balle dans la direction donnÃ©e en paramÃ¨tre. Si la vitesse rÃ©sultante est assez grande, elle devient la nouvelle vitesse max.
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="power"></param>
@@ -198,7 +200,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Renvoie la balle en fonction du vecteur normal à la surface sur laquelle la balle est entrée en collision.
+    /// Renvoie la balle en fonction du vecteur normal Ã  la surface sur laquelle la balle est entrÃ©e en collision.
     /// </summary>
     /// <param name="normal"></param>
     public void BumpFlipper(Vector3 normal)
@@ -209,7 +211,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Projette la balle dans la direction donnée en paramètre, en gardant la force de la balle
+    /// Projette la balle dans la direction donnÃ©e en paramÃ¨tre, en gardant la force de la balle
     /// </summary>
     /// <param name="direction"></param>
     public void BumpTrampoline(Vector3 direction)
@@ -218,7 +220,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Stop tous les mouvements de la balle et la téléporte à la position donnée en paramètre.
+    /// Stop tous les mouvements de la balle et la tÃ©lÃ©porte Ã  la position donnÃ©e en paramÃ¨tre.
     /// </summary>
     /// <param name="newPosition"></param>
     public void Teleport(Vector3 newPosition)
@@ -239,7 +241,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Relance la balle suite à un freeze
+    /// Relance la balle suite Ã  un freeze
     /// </summary>
     public void UnFreeze()
     {
@@ -282,7 +284,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.
+    /// Applique un effet de tir Ã  la balle. S'applique uniquement si la balle dispose de charges de tir.
     /// </summary>
     /// <param name="direction"></param>
     public void Shoot(Vector3 direction)
@@ -295,7 +297,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute des charges de tir à la balle. La fonction gère la quantité max de charges.
+    /// Ajoute des charges de tir Ã  la balle. La fonction gÃ¨re la quantitÃ© max de charges.
     /// </summary>
     /// <param name="amount"></param>
     public void AddShootCharges(int amount)

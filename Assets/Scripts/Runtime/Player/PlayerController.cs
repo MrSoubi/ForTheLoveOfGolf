@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed;
     public float gravityForce;
 
+    [SerializeField, Range(0, 90)] float maxGroundAngle = 25f; //angle max du ce qu'est un sol
+
     [Header("References")]
     private InputManager inputs;
     private Rigidbody rb;
@@ -22,19 +24,31 @@ public class PlayerController : MonoBehaviour
     public Vector3 friction;
     public Vector3 acceleration;
 
+    public float minGroundDotProduct;
+
     // Transparence de la balle en mode Aim
     public Material materialOpaque;
     public Material materialTransparent;
+
+    private void OnValidate()
+    {
+        minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
+    }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         inputs = GetComponent<InputManager>();
+
         GetComponent<MeshRenderer>().material = materialOpaque;
+
+        OnValidate();
     }
 
     private void Update()
     {
+        HandleInput();
+
         HandleDirection();
         HandleGravity();
 
@@ -50,6 +64,16 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         HandleForces();
+    }
+
+    private void HandleInput()
+    {
+        Vector2 playerInput;
+
+        playerInput.x = Input.GetAxis("Horizontal");
+        playerInput.y = Input.GetAxis("Vertical");
+
+        playerInput = Vector2.ClampMagnitude(playerInput, 1);
     }
 
     private void HandleDirection()

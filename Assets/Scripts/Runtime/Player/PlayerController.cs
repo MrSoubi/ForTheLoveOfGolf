@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Settings")]
     public float moveSpeed;
+    public float maxSpeed;
     public float airMultiplier;
     public float rotationSpeed;
     public float gravityForce;
@@ -125,8 +126,6 @@ public class PlayerController : MonoBehaviour
 
         Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
         Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
-
-        print(acceleration);
 
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
     }

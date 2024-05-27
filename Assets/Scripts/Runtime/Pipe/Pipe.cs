@@ -12,8 +12,7 @@ public class Pipe : MonoBehaviour
         {
             if (backroomCheckpoint)
             {
-                print("CHANGER LA FONCTION DE TP");
-                other.transform.position = backroomCheckpoint.transform.position;
+                other.GetComponent<PlayerController>().Teleport(backroomCheckpoint.transform.position);
                 backroomCheckpoint.SetCheckpoint();
             }
             else print("Il n'y a pas de sortie au tuyau !");

@@ -228,19 +228,7 @@ public class PlayerController : MonoBehaviour
             Vector3 origin = transform.position;
             float radius = transform.localScale.x * 0.5f + groundDetectionLength;
 
-            var colliders = Physics.OverlapSphere(origin, radius);
 
-            if(colliders.Length != 0)
-            {
-                normal = (colliders[0].transform.position - transform.position).normalized;
-                AddShootCharges(1);
-                isGrounded = true;
-            }
-            else
-            {
-                normal = Vector3.zero;
-                isGrounded = false;
-            }
         }
         else
         {

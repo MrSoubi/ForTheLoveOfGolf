@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float gravityForce;
 
     [Header("Shooting Settings")]
+    public float shootForce;
     public int shootCharges;
     public int maxShootCharges;
 
@@ -42,7 +43,7 @@ public class PlayerController : MonoBehaviour
     public CameraManager cameraManager;
 
     private Vector3 direction;
-    private Vector3 gravity;
+    public Vector3 gravity;
     private Vector3 normal;
     private Vector3 friction;
     private Vector3 acceleration;
@@ -118,9 +119,10 @@ public class PlayerController : MonoBehaviour
     public float shootingAngle;
     private void HandleAiming()
     {
+        Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
+
         if (Input.GetKeyDown(shootInput))
         {
-            Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
             UnFreeze();
             rb.velocity = shootDirection * rb.velocity.magnitude;
             Shoot(shootDirection);
@@ -156,7 +158,13 @@ public class PlayerController : MonoBehaviour
         switch (environmentEffect)
         {
             default:
-                gravity = new Vector3(0, -gravityForce, 0);
+                float yFactor = 1f;
+                if (isGrounded)
+                {
+                    yFactor = 1 / (rb.velocity.normalized.y + 2) / 2;
+                }
+
+                gravity = new Vector3(0, -gravityForce * yFactor, 0);
                 break;
         }
     }
@@ -211,22 +219,46 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
+    public bool complexDetection;
     public float groundDetectionLength = 0.025f;
     private void CheckGround()
     {
-        RaycastHit hit;
-
-        Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
-
-        if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
+        if (complexDetection)
         {
-            normal = hit.normal;
-            AddShootCharges(1);
-            isGrounded = true;
+            Vector3 origin = transform.position;
+            float radius = transform.localScale.x * 0.5f + groundDetectionLength;
+
+            var colliders = Physics.OverlapSphere(origin, radius);
+
+            if(colliders.Length != 0)
+            {
+                normal = (colliders[0].transform.position - transform.position).normalized;
+                AddShootCharges(1);
+                isGrounded = true;
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+            }
         }
         else
         {
-            isGrounded = false;
+            RaycastHit hit;
+
+            Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+            if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
+            {
+                normal = hit.normal;
+                AddShootCharges(1);
+                isGrounded = true;
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+            }
         }
     }
 
@@ -340,6 +372,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     /// <summary>
     /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.
     /// </summary>
@@ -348,7 +381,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shootCharges > 0)
         {
-            rb.AddForce(direction * 10f, ForceMode.Impulse);
+            rb.AddForce(direction * shootForce, ForceMode.Impulse);
             shootCharges--;
         }
     }

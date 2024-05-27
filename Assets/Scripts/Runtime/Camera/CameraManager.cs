@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour
         aimingCam.enabled = true;
 
         aimingCam.m_YAxis.Value = 0.5f;
-        aimingCam.m_XAxis.Value = 0f;
+        //aimingCam.m_XAxis.Value = 0f;
     }
 
     /// <summary>

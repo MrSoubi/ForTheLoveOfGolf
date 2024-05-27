@@ -11,7 +11,7 @@ public class Booster : MonoBehaviour
     {
         if (other.transform.CompareTag("Player"))
         {
-            other.GetComponent<PlayerController>().BoostPlayer(transform.forward, intensity);
+            other.GetComponent<PlayerController>().Boost(transform.forward, intensity);
         }
     }
 }

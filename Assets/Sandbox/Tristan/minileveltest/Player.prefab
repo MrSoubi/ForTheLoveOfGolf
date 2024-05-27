@@ -59,8 +59,8 @@ MonoBehaviour:
   normal: {x: 0, y: 0, z: 0}
   friction: {x: 0, y: 0, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
-  materialOpaque: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
-  materialTransparent: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
+  materialOpaque: {fileID: 0}
+  materialTransparent: {fileID: 0}
 --- !u!54 &5858678838221024211
 Rigidbody:
   m_ObjectHideFlags: 0

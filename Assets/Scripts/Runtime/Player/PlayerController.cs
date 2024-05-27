@@ -247,6 +247,11 @@ public class PlayerController : MonoBehaviour
         isFreezed = false;
     }
 
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
+    }
+
     private void MakePlayerOpaque()
     {
         GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });

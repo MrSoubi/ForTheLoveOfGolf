@@ -31,6 +31,20 @@ public class HoleManager : MonoBehaviour
             holeInGame[id].wasFinish = true;
             holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
         }
+
+        if (IsEveryHoleFinished())
+        {
+            print("Every hole was finished");
+        }
+    }
+
+    bool IsEveryHoleFinished()
+    {
+        for (int i = 0; i < holeInGame.Count; i++)
+        {
+            if (!holeInGame[i].wasFinish) return false;
+        }
+        return true;
     }
 }
 

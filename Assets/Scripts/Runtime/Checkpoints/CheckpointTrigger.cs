@@ -13,6 +13,11 @@ public class CheckpointTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") CheckpointManager.instance.SetCheckpoint(transform.position);
+        if (other.tag == "Player") SetCheckpoint();
+    }
+
+    public void SetCheckpoint()
+    {
+        CheckpointManager.instance.SetCheckpoint(transform.position);
     }
 }

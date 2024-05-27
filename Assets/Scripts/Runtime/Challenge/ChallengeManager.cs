@@ -12,7 +12,7 @@ public class ChallengeManager : MonoBehaviour
     public TMP_Text collectibleCountTxt;
 
     public bool isDoingChallenge = false;
-    public Challenge currentChallenge;
+    [HideInInspector] public Challenge currentChallenge;
 
     public static ChallengeManager instance;
 
@@ -31,6 +31,19 @@ public class ChallengeManager : MonoBehaviour
         currentChallenge = null;
     }
 
+    public void StartNewChallenge(Challenge challenge, int currentCoinGet, int coinsToGet)
+    {
+        isDoingChallenge = true;
+        currentChallenge = challenge;
+
+        SetCollectibleCount(currentCoinGet, coinsToGet);
+
+        timerTxt.text = "0.00";
+        timerAnim.SetBool("Show", true);
+        collectibleAnim.SetBool("Show", true);
+        CollectibleManager.instance.HidCollectibleCount();
+    }
+
     public void SetCollectibleCount(int current, int max)
     {
         collectibleCountTxt.text = current + " / " + max;
@@ -42,5 +55,6 @@ public class ChallengeManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         timerAnim.SetBool("Show", false);
         collectibleAnim.SetBool("Show", false);
+        CollectibleManager.instance.ShowCollectibleCount();
     }
 }

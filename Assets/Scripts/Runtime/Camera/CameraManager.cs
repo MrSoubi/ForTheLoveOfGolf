@@ -32,4 +32,36 @@ public class CameraManager : MonoBehaviour
             }
         }
     }
+
+    public void UseCamera(CinemachineVirtualCamera camera)
+    {
+
+    }
+
+    /// <summary>
+    /// Active la caméra de visée
+    /// </summary>
+    public void AimShoot()
+    {
+        rollingCam.enabled = false;
+        aimingCam.enabled = true;
+    }
+
+    /// <summary>
+    /// Active la caméra de suivi de la balle
+    /// </summary>
+    public void RollShoot()
+    {
+        rollingCam.enabled = false;
+        aimingCam.enabled = true;
+    }
+
+    /// <summary>
+    /// Renvoie la direction dans laquelle la caméra actuelle regarde
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetShootingDirection()
+    {
+        return Vector3.zero;
+    }
 }

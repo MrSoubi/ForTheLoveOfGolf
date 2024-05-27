@@ -65,7 +65,14 @@ public class PlayerController : MonoBehaviour
     {
         HandleInput();
 
-        if(isAiming) HandleAiming();
+        if (isAiming)
+        {
+            HandleAiming();
+        }
+        else
+        {
+            cameraManager.RollShoot();
+        }
 
         HandleDirection();
         HandleGravity();
@@ -89,7 +96,7 @@ public class PlayerController : MonoBehaviour
         cameraManager.AimShoot();
         if (isShooting)
         {
-            Shoot(cameraManager.GetShootingDirection());
+            Shoot(transform.forward);
         }
     }
 

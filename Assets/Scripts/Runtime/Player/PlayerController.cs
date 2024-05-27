@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseInput;
 
     private bool isAiming;
-    private bool isGrounded;
+    public bool isGrounded;
 
     // Transparence de la balle en mode Aim
     public Material materialOpaque;
@@ -115,10 +115,12 @@ public class PlayerController : MonoBehaviour
             default:
                 if (isGrounded)
                 {
+                   
                     normal *= gravity.magnitude;
                 }
                 else
                 {
+                    Debug.Log(normal.magnitude);
                     normal = Vector3.zero;
                 }
                 break;
@@ -145,7 +147,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
                 Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
 
-                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10f);
                 break;
         }
     }
@@ -157,11 +159,14 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
-    float groundDetectionLength = 0.03f;
+    public float groundDetectionLength = 0.025f;
     private void CheckGround()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + groundDetectionLength))
+
+        Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+        if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
         {
             normal = hit.normal;
             isGrounded = true;
@@ -177,7 +182,7 @@ public class PlayerController : MonoBehaviour
         switch (environmentEffect)
         {
             default:
-                rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
                 break;
         }
     }
@@ -312,7 +317,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + gravity);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + acceleration);
+        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, transform.position + friction);
         Gizmos.color = Color.green;

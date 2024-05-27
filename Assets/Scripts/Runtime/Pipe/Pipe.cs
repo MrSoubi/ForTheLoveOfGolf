@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] CheckpointTrigger backroomCheckpoint;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            if (backroomCheckpoint)
+            {
+                other.GetComponent<PlayerController>().Teleport(backroomCheckpoint.transform.position);
+                backroomCheckpoint.SetCheckpoint();
+            }
+            else print("Il n'y a pas de sortie au tuyau !");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDrawGizmos()
     {
-        
+        if(backroomCheckpoint) Gizmos.DrawSphere(backroomCheckpoint.transform.position, .2f);
     }
 }

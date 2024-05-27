@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Challenge : MonoBehaviour
@@ -36,7 +37,7 @@ public class Challenge : MonoBehaviour
     {
         SetActiveCollectible(false);
 
-
+        if (coinsToGet == 0) coinsToGet = currentCollectibles.Length;
         for (int i = 0; i < challengeRewards.Length; i++)
         {
             challengeRewards[i].SetActive(false);

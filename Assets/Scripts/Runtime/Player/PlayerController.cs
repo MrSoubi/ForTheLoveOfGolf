@@ -146,9 +146,19 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
     }
 
+    /// <summary>
+    /// Ajoute un boost de vitesse à la balle dans la direction donnée en paramètre. Si la vitesse résultante est assez grande, elle devient la nouvelle vitesse max.
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="power"></param>
     public void Boost(Vector3 direction,float power)
     {
-        rb.AddForce(direction * power * 5f, ForceMode.Impulse);
+        rb.AddForce(direction * power, ForceMode.Impulse);
+        
+        if (rb.velocity.magnitude > maxSpeed)
+        {
+            maxSpeed = rb.velocity.magnitude;
+        }
     }
 
     /// <summary>

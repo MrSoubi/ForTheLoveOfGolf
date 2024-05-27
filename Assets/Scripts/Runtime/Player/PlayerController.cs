@@ -35,6 +35,10 @@ public class PlayerController : MonoBehaviour
     public Material materialOpaque;
     public Material materialTransparent;
 
+
+    private int shootCharges;
+    private int maxShootCharges;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -202,9 +206,30 @@ public class PlayerController : MonoBehaviour
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
 
-    private void Shoot(Vector3 direction)
+
+
+    /// <summary>
+    /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.
+    /// </summary>
+    /// <param name="direction"></param>
+    public void Shoot(Vector3 direction)
     {
-        rb.AddForce(direction * 10f, ForceMode.Impulse);
+        if (shootCharges > 0)
+        {
+            rb.AddForce(direction * 10f, ForceMode.Impulse);
+            shootCharges--;
+        }
+    }
+
+    /// <summary>
+    /// Ajoute des charges de tir à la balle. La fonction gère la quantité max de charges.
+    /// </summary>
+    /// <param name="amount"></param>
+    public void AddShootCharges(int amount)
+    {
+        shootCharges += amount;
+
+        Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
 
     private void OnDrawGizmos()

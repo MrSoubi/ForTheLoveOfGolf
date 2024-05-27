@@ -177,6 +177,16 @@ public class PlayerController : MonoBehaviour
         rb.velocity = direction.normalized * rb.velocity.magnitude;
     }
 
+    /// <summary>
+    /// Stop tous les mouvements de la balle et la téléporte à la position donnée en paramètre.
+    /// </summary>
+    /// <param name="newPosition"></param>
+    public void Teleport(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+        rb.velocity = Vector3.zero;
+    }
+
     private void MakePlayerOpaque()
     {
         GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });

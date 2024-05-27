@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     private Material materialOpaque;
     private Material materialTransparent;
 
+
+    private int shootCharges;
+    private int maxShootCharges;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -154,9 +158,19 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
     }
 
+    /// <summary>
+    /// Ajoute un boost de vitesse à la balle dans la direction donnée en paramètre. Si la vitesse résultante est assez grande, elle devient la nouvelle vitesse max.
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="power"></param>
     public void Boost(Vector3 direction,float power)
     {
-        rb.AddForce(direction * power * 5f, ForceMode.Impulse);
+        rb.AddForce(direction * power, ForceMode.Impulse);
+        
+        if (rb.velocity.magnitude > maxSpeed)
+        {
+            maxSpeed = rb.velocity.magnitude;
+        }
     }
 
     /// <summary>
@@ -198,6 +212,32 @@ public class PlayerController : MonoBehaviour
     {
         GetComponent<MeshRenderer>().material = materialTransparent;
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
+    }
+
+
+
+    /// <summary>
+    /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.
+    /// </summary>
+    /// <param name="direction"></param>
+    public void Shoot(Vector3 direction)
+    {
+        if (shootCharges > 0)
+        {
+            rb.AddForce(direction * 10f, ForceMode.Impulse);
+            shootCharges--;
+        }
+    }
+
+    /// <summary>
+    /// Ajoute des charges de tir à la balle. La fonction gère la quantité max de charges.
+    /// </summary>
+    /// <param name="amount"></param>
+    public void AddShootCharges(int amount)
+    {
+        shootCharges += amount;
+
+        Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
 
     private void OnDrawGizmos()

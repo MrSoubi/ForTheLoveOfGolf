@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
                 float yFactor = 1f;
                 if (isGrounded)
                 {
-                    yFactor = 1 / (rb.velocity.normalized.y + 2) / 2;
+                    //yFactor = 1 / (rb.velocity.normalized.y + 2) / 2;
                 }
 
                 gravity = new Vector3(0, -gravityForce * yFactor, 0);
@@ -219,6 +219,7 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
+    public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
     private void CheckGround()
@@ -226,9 +227,23 @@ public class PlayerController : MonoBehaviour
         if (complexDetection)
         {
             Vector3 origin = transform.position;
-            float radius = transform.localScale.x * 0.5f + groundDetectionLength;
+            float radius = transform.localScale.x * 0.5f - 0.001f;
+            float maxDistance = radius + groundDetectionLength;
+            RaycastHit hit;
 
-
+            if(Physics.SphereCast(origin, radius, Vector3.down, out hit, maxDistance))
+            {
+                contactPoint = hit.point;
+                Debug.Log(hit.point);
+                normal = hit.normal.normalized;
+                AddShootCharges(1);
+                isGrounded = true;
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+            }
         }
         else
         {
@@ -385,18 +400,71 @@ public class PlayerController : MonoBehaviour
         shootCharges = Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
 
+    [Header("Gizmos")]
+    public float factor = 0.5f;
+    public bool drawNormal;
+    public bool normalNormalized;
+    public Color normalColor = Color.blue;
+    public bool drawGravity;
+    public bool gravityNormalized;
+    public Color gravityColor = Color.black;
+    public bool drawAcceleration;
+    public Color accelerationColor = Color.red;
+    public bool drawFriction;
+    public Color frictionColor = Color.cyan;
+    public bool drawDirection;
+    public Color directionColor = Color.green;
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + normal);
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, transform.position + gravity);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + acceleration);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + friction);
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + direction);
-        //Gizmos.DrawLine(transform.position + direction, transform.position + direction + debugDirection);
+        if(drawNormal)
+        {
+            Gizmos.color = normalColor;
+            if(normalNormalized)
+            {
+                Gizmos.DrawLine(transform.position, transform.position + normal.normalized);
+            }
+            else
+            {
+                Gizmos.DrawLine(transform.position, transform.position + normal * factor);
+            }
+        }
+
+        if(drawGravity)
+        {
+            Gizmos.color = gravityColor;
+            if (gravityNormalized)
+            {
+                Gizmos.DrawLine(transform.position, transform.position + gravity.normalized);
+            }
+            else
+            {
+                Gizmos.DrawLine(transform.position, transform.position + gravity * factor);
+            }
+        }
+
+        if(drawAcceleration)
+        {
+            Gizmos.color = accelerationColor;
+            Gizmos.DrawLine(transform.position, transform.position + acceleration);
+        }
+
+        if (drawFriction)
+        {
+            Gizmos.color = frictionColor;
+            Gizmos.DrawLine(transform.position, transform.position + friction);
+        }
+
+        if (drawDirection)
+        {
+            Gizmos.color = directionColor;
+            Gizmos.DrawLine(transform.position, transform.position + direction);
+        }
+
+        //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+
+        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
     }
 }

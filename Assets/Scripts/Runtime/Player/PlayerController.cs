@@ -127,9 +127,25 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
     }
 
-    public void BoostPlayer(Vector3 direction,float power)
+    public void Boost(Vector3 direction,float power)
     {
         rb.AddForce(direction * power * 5f, ForceMode.Impulse);
+    }
+
+    public void Bump(Vector3 direction, float power)
+    {
+        Debug.Log("Bump");
+    }
+
+    private void MakePlayerOpaque()
+    {
+        GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });
+    }
+
+    private void MakePlayerTransparent()
+    {
+        GetComponent<MeshRenderer>().material = materialTransparent;
+        GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
 
     private void OnDrawGizmos()
@@ -145,16 +161,5 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + direction);
         //Gizmos.DrawLine(transform.position + direction, transform.position + direction + debugDirection);
-    }
-
-    private void MakePlayerOpaque()
-    {
-        GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });
-    }
-
-    private void MakePlayerTransparent()
-    {
-        GetComponent<MeshRenderer>().material = materialTransparent;
-        GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
 }

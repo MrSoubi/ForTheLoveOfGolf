@@ -89,7 +89,12 @@ public class PlayerController : MonoBehaviour
                 // La direction tourne avec le mouvement de la souris
                 rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity;
 
-                if (rb.velocity.magnitude > 0.01)
+                if (rb.velocity.y < 0.0001)
+                {
+                    direction = transform.forward;
+                }
+
+                if (rb.velocity.magnitude > 0.0001)
                 {
                     direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
                 }
@@ -145,9 +150,9 @@ public class PlayerController : MonoBehaviour
                 float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
 
                 Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
+                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
 
-                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10f);
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
                 break;
         }
     }

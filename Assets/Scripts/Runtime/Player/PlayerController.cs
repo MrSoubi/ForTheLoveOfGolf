@@ -317,7 +317,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + gravity);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        Gizmos.DrawLine(transform.position, transform.position + acceleration);
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, transform.position + friction);
         Gizmos.color = Color.green;

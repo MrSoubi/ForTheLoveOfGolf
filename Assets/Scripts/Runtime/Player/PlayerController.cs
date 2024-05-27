@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [Header("Shooting Settings")]
     public int shootCharges;
     public int maxShootCharges;
+    public float shootingDelay;
 
     [Header("Inputs")]
     public KeyCode aimingInput = KeyCode.Mouse1;
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
         HandleInput();
 
         if(isAiming) HandleAiming();
+        else //cameraManager.RollShoot();
 
         HandleDirection();
         HandleGravity();
@@ -89,7 +91,10 @@ public class PlayerController : MonoBehaviour
         cameraManager.AimShoot();
         if (isShooting)
         {
-            Shoot(cameraManager.GetShootingDirection());
+            //cameraManager.GetShootingDirection()
+            Shoot(transform.forward);
+            isShooting = false;
+            isAiming = false;
         }
     }
 
@@ -322,6 +327,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shootCharges > 0)
         {
+            Debug.Log("Shoot");
             rb.AddForce(direction * 10f, ForceMode.Impulse);
             shootCharges--;
         }

@@ -15,16 +15,31 @@ public enum EnvironmentEffect
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Movement Settings")]
     public float moveSpeed;
     public float maxSpeed;
     public float airMultiplier;
     public float rotationSpeed;
     public float gravityForce;
 
+    [Header("Shooting Settings")]
+    public int shootCharges;
+    public int maxShootCharges;
+
+    [Header("Inputs")]
+    public KeyCode aimingInput = KeyCode.Mouse1;
+    public KeyCode shootInput = KeyCode.Mouse0;
+
+    [Header("Materials")]
+    public Material materialOpaque;
+    public Material materialTransparent;
+
+    [Header("Other")]
+
     private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
 
     private Rigidbody rb;
+    public CameraManager cameraManager;
 
     private Vector3 direction;
     private Vector3 gravity;
@@ -35,16 +50,10 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
-    private bool isAiming;
+    public bool isAiming;
+    public bool isShooting;
     public bool isGrounded;
-
-    // Transparence de la balle en mode Aim
-    public Material materialOpaque;
-    public Material materialTransparent;
-
-    private int shootCharges;
-    private int maxShootCharges;
-
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -55,6 +64,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
+
+        if(isAiming) HandleAiming();
 
         HandleDirection();
         HandleGravity();
@@ -73,6 +84,15 @@ public class PlayerController : MonoBehaviour
         HandleForces();
     }
 
+    private void HandleAiming()
+    {
+        cameraManager.AimShoot();
+        if (isShooting)
+        {
+            Shoot(cameraManager.GetShootingDirection());
+        }
+    }
+
     private void HandleInput()
     {
         playerInput.x = Input.GetAxis("Horizontal");
@@ -80,6 +100,9 @@ public class PlayerController : MonoBehaviour
 
         mouseInput.x = Input.GetAxisRaw("Mouse X");
         mouseInput.y = Input.GetAxisRaw("Mouse Y");
+
+        isAiming = Input.GetKey(aimingInput);
+        isShooting = Input.GetKeyDown(shootInput);
     }
 
     private void HandleDirection()
@@ -125,7 +148,6 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(normal.magnitude);
                     normal = Vector3.zero;
                 }
                 break;
@@ -174,6 +196,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
         {
             normal = hit.normal;
+            AddShootCharges(1);
             isGrounded = true;
         }
         else
@@ -312,7 +335,7 @@ public class PlayerController : MonoBehaviour
     {
         shootCharges += amount;
 
-        Mathf.Clamp(shootCharges, 0, maxShootCharges);
+        shootCharges = Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
 
     private void OnDrawGizmos()

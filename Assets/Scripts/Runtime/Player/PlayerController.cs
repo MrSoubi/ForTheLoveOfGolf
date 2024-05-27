@@ -227,6 +227,26 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
+    private Vector3 savedVelocity;
+    private bool isFreezed;
+    /// <summary>
+    /// Bloque tous les mouvements de la balle
+    /// </summary>
+    public void Freeze()
+    {
+        savedVelocity = rb.velocity;
+        isFreezed = true;
+    }
+
+    /// <summary>
+    /// Relance la balle suite à un freeze
+    /// </summary>
+    public void UnFreeze()
+    {
+        rb.velocity = savedVelocity;
+        isFreezed = false;
+    }
+
     private void MakePlayerOpaque()
     {
         GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });

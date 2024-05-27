@@ -3,42 +3,46 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum EnvironmentEffect
+{
+    NORMAL,
+    ONWOOD,
+    MOIST,
+    CHILLED,
+    SLIMY
+}
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Settings")]
     public float moveSpeed;
-    public float maxSpeed;
+    public float airMultiplier;
     public float rotationSpeed;
     public float gravityForce;
 
-    [SerializeField, Range(0, 90)] float maxGroundAngle = 25f; //angle max du ce qu'est un sol
+    private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
 
-    [Header("References")]
-    private InputManager inputs;
     private Rigidbody rb;
 
-    public Vector3 direction;
-    public Vector3 gravity;
-    public Vector3 normal;
-    public Vector3 friction;
-    public Vector3 acceleration;
-
-    public Vector3 contactNormal;
-    public Vector3 velocity, desiredVelocity;
+    private Vector3 direction;
+    private Vector3 gravity;
+    private Vector3 normal;
+    private Vector3 friction;
+    private Vector3 acceleration;
 
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
+    public bool isAiming;
     public bool isGrounded;
 
     // Transparence de la balle en mode Aim
-    public Material materialOpaque;
-    public Material materialTransparent;
+    private Material materialOpaque;
+    private Material materialTransparent;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        inputs = GetComponent<InputManager>();
 
         GetComponent<MeshRenderer>().material = materialOpaque;
     }
@@ -71,8 +75,6 @@ public class PlayerController : MonoBehaviour
 
         mouseInput.x = Input.GetAxisRaw("Mouse X");
         mouseInput.y = Input.GetAxisRaw("Mouse Y");
-
-        playerInput = Vector2.ClampMagnitude(playerInput, 1);
     }
 
     private void HandleDirection()
@@ -84,8 +86,6 @@ public class PlayerController : MonoBehaviour
         {
             direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
         }
-
-        Debug.Assert(direction.magnitude > 0f);
     }
 
     private void HandleGravity()
@@ -107,21 +107,29 @@ public class PlayerController : MonoBehaviour
 
     private void HandleFriction()
     {
-        friction = Vector3.zero;
+        switch (environmentEffect)
+        {
+            case EnvironmentEffect.NORMAL:
+                friction = Vector3.zero;
+                break;
+        }
     }
 
     private void HandleAcceleration()
     {
-        acceleration = direction * Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime; // Avance
+        float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
 
-        acceleration += Quaternion.AngleAxis(90, Vector3.up) * direction * moveSpeed * 100 * Input.GetAxisRaw("Horizontal") * Time.deltaTime; // Strafe
+        Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
+        Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
 
-        acceleration = Vector3.ClampMagnitude(acceleration, 5f);
+        print(acceleration);
+
+        acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
     }
 
     private void HandleForces()
     {
-        Vector3 forces = (gravity + normal + acceleration + friction);
+        Vector3 forces = gravity + normal + acceleration + friction;
 
         rb.AddForce(forces, ForceMode.Acceleration);
     }
@@ -143,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
     private void LimitSpeed()
     {
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
     }
 
     public void Boost(Vector3 direction,float power)

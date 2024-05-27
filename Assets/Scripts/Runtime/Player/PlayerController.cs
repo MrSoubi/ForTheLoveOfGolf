@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -132,9 +133,24 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(direction * power * 5f, ForceMode.Impulse);
     }
 
-    public void Bump(Vector3 direction, float power)
+    /// <summary>
+    /// Renvoie la balle en fonction du vecteur normal à la surface sur laquelle la balle est entrée en collision.
+    /// </summary>
+    /// <param name="normal"></param>
+    public void BumpFlipper(Vector3 normal)
     {
-        Debug.Log("Bump");
+        float angle = Vector3.Angle(rb.velocity, normal);
+
+        rb.velocity = Quaternion.AngleAxis(angle * 2, normal) * rb.velocity;
+    }
+
+    /// <summary>
+    /// Projette la balle dans la direction donnée en paramètre, en gardant la force de la balle
+    /// </summary>
+    /// <param name="direction"></param>
+    public void BumpTrampoline(Vector3 direction)
+    {
+        rb.velocity = direction.normalized * rb.velocity.magnitude;
     }
 
     private void MakePlayerOpaque()

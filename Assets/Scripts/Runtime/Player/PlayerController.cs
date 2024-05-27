@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -83,29 +84,44 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDirection()
     {
-        // La direction tourne avec le mouvement de la souris
-        rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity; 
+        switch(environmentEffect){
+            default:
+                // La direction tourne avec le mouvement de la souris
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity;
 
-        if (rb.velocity.magnitude > 0.01)
-        {
-            direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
+                if (rb.velocity.magnitude > 0.01)
+                {
+                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
+                }
+                break;
         }
+
     }
 
     private void HandleGravity()
     {
-        gravity = new Vector3(0, -gravityForce, 0);
+        switch (environmentEffect)
+        {
+            default:
+                gravity = new Vector3(0, -gravityForce, 0);
+                break;
+        }
     }
 
     private void HandleNormal()
     {
-        if (isGrounded)
+        switch (environmentEffect)
         {
-            normal *= gravity.magnitude;
-        }
-        else
-        {
-            normal = Vector3.zero;
+            default:
+                if (isGrounded)
+                {
+                    normal *= gravity.magnitude;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                }
+                break;
         }
     }
 
@@ -113,7 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         switch (environmentEffect)
         {
-            case EnvironmentEffect.NORMAL:
+            default:
                 friction = Vector3.zero;
                 break;
         }
@@ -121,12 +137,17 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
+        switch (environmentEffect)
+        {
+            default:
+                float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
 
-        Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-        Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
+                Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
+                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
 
-        acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
+                break;
+        }
     }
 
     private void HandleForces()
@@ -153,7 +174,12 @@ public class PlayerController : MonoBehaviour
 
     private void LimitSpeed()
     {
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
+        switch (environmentEffect)
+        {
+            default:
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
+                break;
+        }
     }
 
     /// <summary>
@@ -199,6 +225,31 @@ public class PlayerController : MonoBehaviour
     {
         transform.position = newPosition;
         rb.velocity = Vector3.zero;
+    }
+
+    private Vector3 savedVelocity;
+    private bool isFreezed;
+    /// <summary>
+    /// Bloque tous les mouvements de la balle
+    /// </summary>
+    public void Freeze()
+    {
+        savedVelocity = rb.velocity;
+        isFreezed = true;
+    }
+
+    /// <summary>
+    /// Relance la balle suite à un freeze
+    /// </summary>
+    public void UnFreeze()
+    {
+        rb.velocity = savedVelocity;
+        isFreezed = false;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
     }
 
     private void MakePlayerOpaque()

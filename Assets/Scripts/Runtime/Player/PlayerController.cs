@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseInput;
 
     public bool isAiming;
-    public bool isShooting;
     public bool isGrounded;
     
     private void Awake()
@@ -71,32 +70,24 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            cameraManager.RollShoot();
+            HandleDirection();
+            HandleGravity();
+
+            CheckGround();
+
+            HandleNormal();
+            HandleFriction();
+            HandleAcceleration();
+
+            LimitSpeed();
         }
-
-        HandleDirection();
-        HandleGravity();
-
-        CheckGround();
-
-        HandleNormal();
-        HandleFriction();
-        HandleAcceleration();
-
-        LimitSpeed();
     }
 
     private void FixedUpdate()
     {
-        HandleForces();
-    }
-
-    private void HandleAiming()
-    {
-        cameraManager.AimShoot();
-        if (isShooting)
+        if (!isAiming)
         {
-            Shoot(transform.forward);
+            HandleForces();
         }
     }
 
@@ -108,8 +99,35 @@ public class PlayerController : MonoBehaviour
         mouseInput.x = Input.GetAxisRaw("Mouse X");
         mouseInput.y = Input.GetAxisRaw("Mouse Y");
 
-        isAiming = Input.GetKey(aimingInput);
-        isShooting = Input.GetKeyDown(shootInput);
+        if (!isAiming && Input.GetKeyDown(aimingInput))
+        {
+            Freeze();
+            cameraManager.AimShoot();
+            isAiming = true;
+            MakePlayerTransparent();
+        }
+
+        if (isAiming && Input.GetKeyUp(aimingInput))
+        {
+            UnFreeze();
+            cameraManager.RollShoot();
+            isAiming = false;
+        }
+    }
+
+    public float shootingAngle;
+    private void HandleAiming()
+    {
+        if (Input.GetKeyDown(shootInput))
+        {
+            Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
+            UnFreeze();
+            rb.velocity = shootDirection * rb.velocity.magnitude;
+            Shoot(shootDirection);
+            cameraManager.RollShoot();
+            isAiming = false;
+            MakePlayerOpaque();
+        }
     }
 
     private void HandleDirection()
@@ -275,6 +293,7 @@ public class PlayerController : MonoBehaviour
     public void Freeze()
     {
         savedVelocity = rb.velocity;
+        rb.velocity = Vector3.zero;
         isFreezed = true;
     }
 

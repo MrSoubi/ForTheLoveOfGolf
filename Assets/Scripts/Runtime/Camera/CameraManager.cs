@@ -20,22 +20,6 @@ public class CameraManager : MonoBehaviour
         brain = GetComponentInChildren<CinemachineBrain>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isAiming = !isAiming;
-            rollingCam.enabled = !isAiming;
-            aimingCam.enabled = isAiming;
-
-            if (isAiming )
-            {
-                aimingCam.m_YAxis.Value = 0.5f;
-                aimingCam.m_XAxis.Value = 0f;
-            }
-        }
-    }
-
     public void UseCamera(CinemachineVirtualCamera camera)
     {
 
@@ -48,6 +32,9 @@ public class CameraManager : MonoBehaviour
     {
         rollingCam.enabled = false;
         aimingCam.enabled = true;
+
+        aimingCam.m_YAxis.Value = 0.5f;
+        aimingCam.m_XAxis.Value = 0f;
     }
 
     /// <summary>

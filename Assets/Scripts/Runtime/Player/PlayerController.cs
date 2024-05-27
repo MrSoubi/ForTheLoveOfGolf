@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 
@@ -21,10 +22,15 @@ public class PlayerController : MonoBehaviour
     public Vector3 friction;
     public Vector3 acceleration;
 
+    // Transparence de la balle en mode Aim
+    public Material materialOpaque;
+    public Material materialTransparent;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         inputs = GetComponent<InputManager>();
+        GetComponent<MeshRenderer>().material = materialOpaque;
     }
 
     private void Update()
@@ -139,5 +145,16 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, transform.position + direction);
         //Gizmos.DrawLine(transform.position + direction, transform.position + direction + debugDirection);
+    }
+
+    private void MakePlayerOpaque()
+    {
+        GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });
+    }
+
+    private void MakePlayerTransparent()
+    {
+        GetComponent<MeshRenderer>().material = materialTransparent;
+        GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
 }

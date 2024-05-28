@@ -138,7 +138,8 @@ public class PlayerController : MonoBehaviour
         switch(environmentEffect){
             default:
                 // La direction tourne avec le mouvement de la souris
-                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity;
+                // Le changement de direction est plus faible quand la vitesse augmente
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed / rb.velocity.magnitude, Vector3.up) * rb.velocity;
 
                 if (rb.velocity.y < 0.0001)
                 {

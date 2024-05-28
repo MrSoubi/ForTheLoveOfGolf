@@ -1,18 +1,5 @@
 using DG.Tweening;
-using System;
-using Unity.VisualScripting;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
-
-public enum EnvironmentEffect
-{
-    NORMAL,
-    ONWOOD,
-    MOIST,
-    CHILLED,
-    SLIMY
-}
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,9 +14,6 @@ public class PlayerController : MonoBehaviour
     public Material materialTransparent;
 
     [Header("Other")]
-
-    private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
-
     private Rigidbody rb;
     public CameraManager cameraManager;
 
@@ -133,108 +117,88 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDirection()
     {
-        switch(environmentEffect){
-            default:
-                // La direction tourne avec le mouvement de la souris
-                // Le changement de direction est plus faible quand la vitesse augmente
-                float mag = Mathf.Clamp(rb.velocity.magnitude, 0.000001f, Mathf.Infinity);
-                rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / mag, Vector3.up) * rb.velocity;
+        // La direction tourne avec le mouvement de la souris
+        // Le changement de direction est plus faible quand la vitesse augmente
+        float mag = Mathf.Clamp(rb.velocity.magnitude, 0.000001f, Mathf.Infinity);
 
-                if (rb.velocity.y < 0.0001)
-                {
-                    direction = transform.forward;
-                }
+        rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / mag, Vector3.up) * rb.velocity;
 
-                if (rb.velocity.magnitude > 0.0001)
-                {
-                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
-                }
-                break;
+        if (rb.velocity.y < 0.0001)
+        {
+            direction = transform.forward;
         }
 
+        if (rb.velocity.magnitude > 0.0001)
+        {
+            direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
+        }
     }
+
+
     private void HandleGravity()
     {
-        switch (environmentEffect)
+        float yFactor = 1f;
+                
+        if (isGrounded)
         {
-            default:
-                float yFactor = 1f;
-                
-                if (isGrounded)
-                {
-                    if (onStickySurface)
-                    {
-                        gravity = contactPoint.normalized * PCData.gravityForce * -1;
-                    }
-                    else
-                    {
-                        yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+            yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
 
-                        if (yFactor < 0)
-                        {
-                            Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
-                        }
-                        gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
-                    }
-                }
-                else
-                {
-                    gravity = new Vector3(0, -PCData.gravityForce, 0);
-                }
-
-                
-                break;
+            if (yFactor < 0)
+            {
+                Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+            }
+            gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+        }
+        else
+        {
+            gravity = new Vector3(0, -PCData.gravityForce, 0);
         }
     }
 
     private void HandleNormal()
     {
-        switch (environmentEffect)
+        if (isGrounded)
         {
-            default:
-                if (isGrounded)
-                {
-                     normal *= gravity.magnitude;
-                }
-                else
-                {
-                    normal = Vector3.zero;
-                }
-                break;
+            normal *= gravity.magnitude;
+        }
+        else
+        {
+            normal = Vector3.zero;
         }
     }
 
     private void HandleFriction()
     {
-        switch (environmentEffect)
-        {
-            default:
-                friction = Vector3.zero;
-                break;
-        }
+        friction = Vector3.zero;
     }
 
     private void HandleAcceleration()
     {
-        switch (environmentEffect)
-        {
-            default:
-                float accelerationSpeed = (isGrounded ? PCData.moveSpeed : PCData.moveSpeed * PCData.airMultiplier) * Time.deltaTime;
+        float accelerationSpeed = (isGrounded ? PCData.moveSpeed : PCData.moveSpeed * PCData.airMultiplier) * Time.deltaTime;
 
-                Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
+        Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
+        Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
 
-                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
-                break;
-        }
+        acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
+
+
 
     private void HandleForces()
     {
+        if (onStickySurface)
+        {
+            gravity = Vector3.zero;
+            normal = Vector3.zero;
+            friction = Vector3.zero;
+        }
+
         Vector3 forces = gravity + normal + acceleration + friction;
 
         rb.AddForce(forces, ForceMode.Acceleration);
     }
+
+
 
     public Vector3 contactPoint;
     public bool complexDetection;
@@ -265,12 +229,14 @@ public class PlayerController : MonoBehaviour
                 {
                     normal = Vector3.zero;
                     isGrounded = false;
+                    onStickySurface = false;
                 }
             }
             else
             {
                 normal = Vector3.zero;
                 isGrounded = false;
+                onStickySurface = false;
             }
         }
         else
@@ -297,12 +263,7 @@ public class PlayerController : MonoBehaviour
 
     private void LimitSpeed()
     {
-        switch (environmentEffect)
-        {
-            default:
-                rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
-                break;
-        }
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
     }
 
     /// <summary>
@@ -401,24 +362,6 @@ public class PlayerController : MonoBehaviour
     {
         GetComponent<MeshRenderer>().material = materialTransparent;
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
-    }
-
-    /// <summary>
-    /// Informe la balle qu'elle vient de rentrer dans un environnement special
-    /// </summary>
-    /// <param name="effect"></param>
-    public void SetEnvironmentEffect(EnvironmentEffect effect)
-    {
-
-    }
-
-    /// <summary>
-    /// Informe la balle qu'elle vient de quitter un environnement special
-    /// </summary>
-    /// <param name="effect"></param>
-    public void UnsetEnvironmentEffect(EnvironmentEffect effect)
-    {
-
     }
 
 

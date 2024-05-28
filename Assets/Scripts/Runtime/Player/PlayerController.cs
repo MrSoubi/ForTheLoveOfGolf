@@ -1,19 +1,45 @@
 using DG.Tweening;
+using System;
+using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
+
+public enum EnvironmentEffect
+{
+    NORMAL,
+    ONWOOD,
+    MOIST,
+    CHILLED,
+    SLIMY
+}
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerControllerData PCData;
+    [Header("Movement Settings")]
+    public float moveSpeed;
+    public float maxSpeed;
+    public float airMultiplier;
+    public float rotationSpeed;
+    public float gravityForce;
 
-    [Header("Gizmos")]
-    public bool normalNormalized;
-    public bool gravityNormalized;
+    [Header("Shooting Settings")]
+    public float shootForce;
+    public int shootCharges;
+    public int maxShootCharges;
+
+    [Header("Inputs")]
+    public KeyCode aimingInput = KeyCode.Mouse1;
+    public KeyCode shootInput = KeyCode.Mouse0;
 
     [Header("Materials")]
     public Material materialOpaque;
     public Material materialTransparent;
 
     [Header("Other")]
+
+    private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
+
     private Rigidbody rb;
     public CameraManager cameraManager;
 
@@ -26,24 +52,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
-    public float shootingAngle;
-
-    private int shootCharges;
-
     public bool isAiming;
     public bool isGrounded;
-    public bool onStickySurface;
-
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
 
         GetComponent<MeshRenderer>().material = materialOpaque;
-    }
-
-    private void Start()
-    {
-        shootCharges = PCData.shootCharges;
     }
 
     private void Update()
@@ -56,7 +72,16 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            HandleRolling();
+            HandleDirection();
+            HandleGravity();
+
+            CheckGround();
+
+            HandleNormal();
+            HandleFriction();
+            HandleAcceleration();
+
+            LimitSpeed();
         }
     }
 
@@ -68,11 +93,37 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void HandleInput()
+    {
+        playerInput.x = Input.GetAxis("Horizontal");
+        playerInput.y = Input.GetAxis("Vertical");
+
+        mouseInput.x = Input.GetAxisRaw("Mouse X");
+        mouseInput.y = Input.GetAxisRaw("Mouse Y");
+
+        if (!isAiming && Input.GetKeyDown(aimingInput))
+        {
+            Freeze();
+            isAiming = true;
+            MakePlayerTransparent();
+            cameraManager.AimShoot();
+        }
+
+        if (isAiming && Input.GetKeyUp(aimingInput))
+        {
+            UnFreeze();
+            isAiming = false;
+            MakePlayerOpaque();
+            cameraManager.RollShoot();
+        }
+    }
+
+    public float shootingAngle;
     private void HandleAiming()
     {
         Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
 
-        if (Input.GetKeyDown(PCData.shootInput))
+        if (Input.GetKeyDown(shootInput))
         {
             UnFreeze();
             rb.velocity = shootDirection * rb.velocity.magnitude;
@@ -83,147 +134,96 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleRolling()
-    {
-        HandleDirection();
-        CheckGround();
-        HandleGravity();
-        HandleNormal();
-        HandleFriction();
-        HandleAcceleration();
-
-        LimitSpeed();
-    }
-
-    private void HandleInput()
-    {
-        playerInput.x = Input.GetAxis("Horizontal");
-        playerInput.y = Input.GetAxis("Vertical");
-
-        mouseInput.x = Input.GetAxisRaw("Mouse X");
-        mouseInput.y = Input.GetAxisRaw("Mouse Y");
-
-        if (!isAiming && Input.GetKeyDown(PCData.aimingInput))
-        {
-            Freeze();
-            isAiming = true;
-            MakePlayerTransparent();
-            cameraManager.AimShoot();
-        }
-
-        if (isAiming && Input.GetKeyUp(PCData.aimingInput))
-        {
-            UnFreeze();
-            isAiming = false;
-            MakePlayerOpaque();
-            cameraManager.RollShoot();
-        }
-    }
-
     private void HandleDirection()
     {
-        // La direction tourne avec le mouvement de la souris
-        // Le changement de direction est plus faible quand la vitesse augmente
-        float mag = Mathf.Clamp(rb.velocity.magnitude, 0.000001f, Mathf.Infinity);
+        switch(environmentEffect){
+            default:
+                // La direction tourne avec le mouvement de la souris
+                // Le changement de direction est plus faible quand la vitesse augmente
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed / rb.velocity.magnitude, Vector3.up) * rb.velocity;
 
-        rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / mag, Vector3.up) * rb.velocity;
+                if (rb.velocity.y < 0.0001)
+                {
+                    direction = transform.forward;
+                }
 
-        if (rb.velocity.y < 0.0001)
-        {
-            direction = transform.forward;
+                if (rb.velocity.magnitude > 0.0001)
+                {
+                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vÈlocitÈ
+                }
+                break;
         }
 
-        if (rb.velocity.magnitude > 0.0001)
-        {
-            direction = rb.velocity.normalized; // La direction de la balle est celle de la v√©locit√©
-        }
-
-        if (onStickySurface)
-        {
-            //Vector3.ProjectOnPlane();
-        }
     }
 
+
+    public AnimationCurve yCurve;
     private void HandleGravity()
     {
-        if (onStickySurface)
+        switch (environmentEffect)
         {
-            gravity = Vector3.zero;
-        }
-        else
-        {
-            float yFactor = 1f;
-
-            if (isGrounded)
-            {
-                yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
-
-                if (yFactor < 0)
+            default:
+                float yFactor = 1f;
+                if (isGrounded)
                 {
-                    Debug.LogWarning("Player Controller : Y Curve pour la d√©finition de la gravit√© est inf√©rieur √† 0, v√©rifier la forme de la courbe.");
+                    yFactor = yCurve.Evaluate(rb.velocity.y);
+
+                    if (yFactor < 0)
+                    {
+                        Debug.LogWarning("Player Controller : Y Curve pour la dÈfinition de la gravitÈ est infÈrieur ‡ 0, vÈrifier la forme de la courbe.");
+                    }
                 }
-                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
-            }
-            else
-            {
-                gravity = new Vector3(0, -PCData.gravityForce, 0);
-            }
+
+                gravity = new Vector3(0, -gravityForce * yFactor, 0);
+                break;
         }
     }
 
     private void HandleNormal()
     {
-        if (onStickySurface)
+        switch (environmentEffect)
         {
-            normal = Vector3.zero;
+            default:
+                if (isGrounded)
+                {
+                   
+                    normal *= gravity.magnitude;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                }
+                break;
         }
-        else
-        {
-            if (isGrounded)
-            {
-                normal *= gravity.magnitude;
-            }
-            else
-            {
-                normal = Vector3.zero;
-            }
-        }
-        
     }
 
     private void HandleFriction()
     {
-        if (onStickySurface)
+        switch (environmentEffect)
         {
-            friction = Vector3.zero;
-        }
-        else
-        {
-            friction = Vector3.zero;
+            default:
+                friction = Vector3.zero;
+                break;
         }
     }
 
     private void HandleAcceleration()
     {
-        float accelerationSpeed = (isGrounded ? PCData.moveSpeed : PCData.moveSpeed * PCData.airMultiplier) * Time.deltaTime;
+        switch (environmentEffect)
+        {
+            default:
+                float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
 
-        Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-        Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de d√©placement
+                Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
+                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de dÈplacement
 
-        acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
+                break;
+        }
     }
-
-
 
     private void HandleForces()
     {
-        if (onStickySurface)
-        {
-            gravity = Vector3.zero;
-            normal = Vector3.zero;
-            friction = Vector3.zero;
-        }
-
         Vector3 forces = gravity + normal + acceleration + friction;
 
         rb.AddForce(forces, ForceMode.Acceleration);
@@ -232,7 +232,6 @@ public class PlayerController : MonoBehaviour
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
-
     private void CheckGround()
     {
         if (complexDetection)
@@ -250,21 +249,17 @@ public class PlayerController : MonoBehaviour
                     normal = hit.normal.normalized;
                     AddShootCharges(1);
                     isGrounded = true;
-
-                    onStickySurface = hit.collider.CompareTag("Sticky");
                 }
                 else
                 {
                     normal = Vector3.zero;
                     isGrounded = false;
-                    onStickySurface = false;
                 }
             }
             else
             {
                 normal = Vector3.zero;
                 isGrounded = false;
-                onStickySurface = false;
             }
         }
         else
@@ -278,8 +273,6 @@ public class PlayerController : MonoBehaviour
                 normal = hit.normal;
                 AddShootCharges(1);
                 isGrounded = true;
-
-                onStickySurface = hit.collider.CompareTag("Sticky");
             }
             else
             {
@@ -291,11 +284,16 @@ public class PlayerController : MonoBehaviour
 
     private void LimitSpeed()
     {
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
+        switch (environmentEffect)
+        {
+            default:
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+                break;
+        }
     }
 
     /// <summary>
-    /// Ajoute un boost de vitesse √† la balle dans la direction donn√©e en param√®tre. Si la vitesse r√©sultante est assez grande, elle devient la nouvelle vitesse max.
+    /// Ajoute un boost de vitesse ‡ la balle dans la direction donnÈe en paramËtre. Si la vitesse rÈsultante est assez grande, elle devient la nouvelle vitesse max.
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="power"></param>
@@ -303,15 +301,14 @@ public class PlayerController : MonoBehaviour
     {
         rb.AddForce(direction * power, ForceMode.Impulse);
         
-        if (rb.velocity.magnitude > PCData.maxSpeed)
+        if (rb.velocity.magnitude > maxSpeed)
         {
-            PCData.maxSpeed = rb.velocity.magnitude;
+            maxSpeed = rb.velocity.magnitude;
         }
     }
 
-    #region Bump
     /// <summary>
-    /// Renvoie la balle en fonction du vecteur normal √† la surface sur laquelle la balle est entr√©e en collision.
+    /// Renvoie la balle en fonction du vecteur normal ‡ la surface sur laquelle la balle est entrÈe en collision.
     /// </summary>
     /// <param name="normal"></param>
     public void BumpFlipper(Vector3 normal)
@@ -322,17 +319,16 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Projette la balle dans la direction donn√©e en param√®tre, en gardant la force de la balle
+    /// Projette la balle dans la direction donnÈe en paramËtre, en gardant la force de la balle
     /// </summary>
     /// <param name="direction"></param>
     public void BumpTrampoline(Vector3 direction)
     {
         rb.velocity = direction.normalized * rb.velocity.magnitude;
     }
-    #endregion
 
     /// <summary>
-    /// Stop tous les mouvements de la balle et la t√©l√©porte √† la position donn√©e en param√®tre.
+    /// Stop tous les mouvements de la balle et la tÈlÈporte ‡ la position donnÈe en paramËtre.
     /// </summary>
     /// <param name="newPosition"></param>
     public void Teleport(Vector3 newPosition)
@@ -341,11 +337,8 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
-    #region Freeze
-
     private Vector3 savedVelocity;
     private bool isFreezed;
-
     /// <summary>
     /// Bloque tous les mouvements de la balle
     /// </summary>
@@ -357,40 +350,19 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Relance la balle suite √† un freeze
+    /// Relance la balle suite ‡ un freeze
     /// </summary>
     public void UnFreeze()
     {
         rb.velocity = savedVelocity;
         isFreezed = false;
     }
-    #endregion
-    #region Block
-    /// <summary>
-    /// Arr√™te totalement la balle, elle ne subira plus l'effet d'aucune force (gravit√©, input, bump...)
-    /// </summary>
-    public void Block()
-    {
 
-    }
-
-    /// <summary>
-    /// D√©bloque la balle
-    /// </summary>
-    public void UnBlock()
-    {
-
-    }
-    #endregion
-
-    #region Getters
     public Vector3 GetVelocity()
     {
         return rb.velocity;
     }
-    #endregion
 
-    #region Material
     private void MakePlayerOpaque()
     {
         GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });
@@ -401,91 +373,117 @@ public class PlayerController : MonoBehaviour
         GetComponent<MeshRenderer>().material = materialTransparent;
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
-    #endregion
 
-    #region Charges de tir
     /// <summary>
-    /// Applique un effet de tir √† la balle. S'applique uniquement si la balle dispose de charges de tir.
+    /// Informe la balle qu'elle vient de rentrer dans un environnement special
+    /// </summary>
+    /// <param name="effect"></param>
+    public void SetEnvironmentEffect(EnvironmentEffect effect)
+    {
+
+    }
+
+    /// <summary>
+    /// Informe la balle qu'elle vient de quitter un environnement special
+    /// </summary>
+    /// <param name="effect"></param>
+    public void UnsetEnvironmentEffect(EnvironmentEffect effect)
+    {
+
+    }
+
+
+    /// <summary>
+    /// Applique un effet de tir ‡ la balle. S'applique uniquement si la balle dispose de charges de tir.
     /// </summary>
     /// <param name="direction"></param>
     public void Shoot(Vector3 direction)
     {
         if (shootCharges > 0)
         {
-            rb.AddForce(direction * PCData.shootForce, ForceMode.Impulse);
+            rb.AddForce(direction * shootForce, ForceMode.Impulse);
             shootCharges--;
         }
     }
 
     /// <summary>
-    /// Ajoute des charges de tir √† la balle. La fonction g√®re la quantit√© max de charges.
+    /// Ajoute des charges de tir ‡ la balle. La fonction gËre la quantitÈ max de charges.
     /// </summary>
     /// <param name="amount"></param>
     public void AddShootCharges(int amount)
     {
         shootCharges += amount;
 
-        shootCharges = Mathf.Clamp(shootCharges, 0, PCData.maxShootCharges);
+        shootCharges = Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
 
-    private bool CanShoot()
-    {
-        return shootCharges > 0;
-    }
-    #endregion
+    [Header("Gizmos")]
+    public float factor = 0.5f;
+    public bool drawNormal;
+    public bool normalNormalized;
+    public Color normalColor = Color.blue;
+    public bool drawGravity;
+    public bool gravityNormalized;
+    public Color gravityColor = Color.black;
+    public bool drawAcceleration;
+    public Color accelerationColor = Color.red;
+    public bool drawFriction;
+    public Color frictionColor = Color.cyan;
+    public bool drawDirection;
+    public Color directionColor = Color.green;
 
     private void OnDrawGizmos()
     {
-        if(PCData.drawNormal)
+        if(drawNormal)
         {
-            Gizmos.color = PCData.normalColor;
+            Gizmos.color = normalColor;
             if(normalNormalized)
             {
                 Gizmos.DrawLine(transform.position, transform.position + normal.normalized);
             }
             else
             {
-                Gizmos.DrawLine(transform.position, transform.position + normal * PCData.factor);
+                Gizmos.DrawLine(transform.position, transform.position + normal * factor);
             }
         }
 
-        if(PCData.drawGravity)
+        if(drawGravity)
         {
-            Gizmos.color = PCData.gravityColor;
+            Gizmos.color = gravityColor;
             if (gravityNormalized)
             {
                 Gizmos.DrawLine(transform.position, transform.position + gravity.normalized);
             }
             else
             {
-                Gizmos.DrawLine(transform.position, transform.position + gravity * PCData.factor);
+                Gizmos.DrawLine(transform.position, transform.position + gravity * factor);
             }
         }
 
-        if(PCData.drawAcceleration)
+        if(drawAcceleration)
         {
-            Gizmos.color = PCData.accelerationColor;
+            Gizmos.color = accelerationColor;
             Gizmos.DrawLine(transform.position, transform.position + acceleration);
         }
 
-        if (PCData.drawFriction)
+        if (drawFriction)
         {
-            Gizmos.color = PCData.frictionColor;
+            Gizmos.color = frictionColor;
             Gizmos.DrawLine(transform.position, transform.position + friction);
         }
 
-        if (PCData.drawDirection)
+        if (drawDirection)
         {
-            Gizmos.color = PCData.directionColor;
+            Gizmos.color = directionColor;
             Gizmos.DrawLine(transform.position, transform.position + direction);
         }
 
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
 #if !UNITY_EDITOR
-        //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
-        //Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-       // Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
+        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

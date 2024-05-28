@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -35,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseInput;
 
     private bool isAiming;
-    private bool isGrounded;
+    public bool isGrounded;
 
     // Transparence de la balle en mode Aim
     public Material materialOpaque;
@@ -83,29 +84,44 @@ public class PlayerController : MonoBehaviour
 
     private void HandleDirection()
     {
-        // La direction tourne avec le mouvement de la souris
-        rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity; 
+        switch(environmentEffect){
+            default:
+                // La direction tourne avec le mouvement de la souris
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity;
 
-        if (rb.velocity.magnitude > 0.01)
-        {
-            direction = rb.velocity.normalized; // La direction de la balle est celle de la vÈlocitÈ
+                if (rb.velocity.magnitude > 0.01)
+                {
+                    direction = rb.velocity.normalized; // La direction de la balle est celle de la v√©locit√©
+                }
+                break;
         }
+
     }
 
     private void HandleGravity()
     {
-        gravity = new Vector3(0, -gravityForce, 0);
+        switch (environmentEffect)
+        {
+            default:
+                gravity = new Vector3(0, -gravityForce, 0);
+                break;
+        }
     }
 
     private void HandleNormal()
     {
-        if (isGrounded)
+        switch (environmentEffect)
         {
-            normal *= gravity.magnitude;
-        }
-        else
-        {
-            normal = Vector3.zero;
+            default:
+                if (isGrounded)
+                {
+                    normal *= gravity.magnitude;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                }
+                break;
         }
     }
 
@@ -113,7 +129,7 @@ public class PlayerController : MonoBehaviour
     {
         switch (environmentEffect)
         {
-            case EnvironmentEffect.NORMAL:
+            default:
                 friction = Vector3.zero;
                 break;
         }
@@ -121,12 +137,16 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
+        switch (environmentEffect)
+        {
+            default:
+                float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
 
-        Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-        Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
-
-        acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 5f);
+                Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
+                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10f);
+                break;
+        }
     }
 
     private void HandleForces()
@@ -136,11 +156,14 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
-    float groundDetectionLength = 0.03f;
+    public float groundDetectionLength = 0.025f;
     private void CheckGround()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, transform.localScale.x * 0.5f + groundDetectionLength))
+
+        Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+        if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
         {
             normal = hit.normal;
             isGrounded = true;
@@ -153,11 +176,16 @@ public class PlayerController : MonoBehaviour
 
     private void LimitSpeed()
     {
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, moveSpeed);
+        switch (environmentEffect)
+        {
+            default:
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+                break;
+        }
     }
 
     /// <summary>
-    /// Ajoute un boost de vitesse ‡ la balle dans la direction donnÈe en paramËtre. Si la vitesse rÈsultante est assez grande, elle devient la nouvelle vitesse max.
+    /// Ajoute un boost de vitesse √† la balle dans la direction donn√©e en param√®tre. Si la vitesse r√©sultante est assez grande, elle devient la nouvelle vitesse max.
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="power"></param>
@@ -172,7 +200,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Renvoie la balle en fonction du vecteur normal ‡ la surface sur laquelle la balle est entrÈe en collision.
+    /// Renvoie la balle en fonction du vecteur normal √† la surface sur laquelle la balle est entr√©e en collision.
     /// </summary>
     /// <param name="normal"></param>
     public void BumpFlipper(Vector3 normal)
@@ -183,7 +211,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Projette la balle dans la direction donnÈe en paramËtre, en gardant la force de la balle
+    /// Projette la balle dans la direction donn√©e en param√®tre, en gardant la force de la balle
     /// </summary>
     /// <param name="direction"></param>
     public void BumpTrampoline(Vector3 direction)
@@ -192,13 +220,38 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Stop tous les mouvements de la balle et la tÈlÈporte ‡ la position donnÈe en paramËtre.
+    /// Stop tous les mouvements de la balle et la t√©l√©porte √† la position donn√©e en param√®tre.
     /// </summary>
     /// <param name="newPosition"></param>
     public void Teleport(Vector3 newPosition)
     {
         transform.position = newPosition;
         rb.velocity = Vector3.zero;
+    }
+
+    private Vector3 savedVelocity;
+    private bool isFreezed;
+    /// <summary>
+    /// Bloque tous les mouvements de la balle
+    /// </summary>
+    public void Freeze()
+    {
+        savedVelocity = rb.velocity;
+        isFreezed = true;
+    }
+
+    /// <summary>
+    /// Relance la balle suite √† un freeze
+    /// </summary>
+    public void UnFreeze()
+    {
+        rb.velocity = savedVelocity;
+        isFreezed = false;
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
     }
 
     private void MakePlayerOpaque()
@@ -231,7 +284,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Applique un effet de tir ‡ la balle. S'applique uniquement si la balle dispose de charges de tir.
+    /// Applique un effet de tir √† la balle. S'applique uniquement si la balle dispose de charges de tir.
     /// </summary>
     /// <param name="direction"></param>
     public void Shoot(Vector3 direction)
@@ -244,7 +297,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute des charges de tir ‡ la balle. La fonction gËre la quantitÈ max de charges.
+    /// Ajoute des charges de tir √† la balle. La fonction g√®re la quantit√© max de charges.
     /// </summary>
     /// <param name="amount"></param>
     public void AddShootCharges(int amount)

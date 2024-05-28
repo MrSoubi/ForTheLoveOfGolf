@@ -8,8 +8,7 @@ public class DeathTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            //GameManager.instance.Respawn(other.gameObject);
-            other.transform.position = new Vector3(0, 0, 0);
+            GameManager.instance.Respawn(other.gameObject);
         }
     }
 }

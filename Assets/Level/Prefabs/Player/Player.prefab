@@ -54,10 +54,34 @@ MonoBehaviour:
   airMultiplier: 0
   rotationSpeed: 1
   gravityForce: 10
-  isGrounded: 0
+  shootForce: 0
+  shootCharges: 0
+  maxShootCharges: 0
+  aimingInput: 324
+  shootInput: 323
   materialOpaque: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
   materialTransparent: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
-  groundDetectionLength: 0.025
+  cameraManager: {fileID: 0}
+  gravity: {x: 0, y: 0, z: 0}
+  isAiming: 0
+  isGrounded: 0
+  shootingAngle: 0
+  contactPoint: {x: 0, y: 0, z: 0}
+  complexDetection: 1
+  groundDetectionLength: 0.002
+  factor: 0.5
+  drawNormal: 1
+  normalNormalized: 0
+  normalColor: {r: 0, g: 0, b: 1, a: 1}
+  drawGravity: 0
+  gravityNormalized: 0
+  gravityColor: {r: 0, g: 0, b: 0, a: 1}
+  drawAcceleration: 0
+  accelerationColor: {r: 1, g: 0, b: 0, a: 1}
+  drawFriction: 0
+  frictionColor: {r: 0, g: 1, b: 1, a: 1}
+  drawDirection: 0
+  directionColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!54 &5858678838221024211
 Rigidbody:
   m_ObjectHideFlags: 0

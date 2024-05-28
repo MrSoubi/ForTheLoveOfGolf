@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,5 +40,11 @@ public static class Utils
         }
         instance = @object;
         return instance;
+    }
+
+    public static void Bump(this Transform t)
+    {
+        Vector3 initialScale = t.localScale;
+        t.DOScale(t.localScale * 1.4f, 0.1f).OnComplete(() => { t.DOScale(initialScale, .09f); });
     }
 }

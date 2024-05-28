@@ -1,38 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class Hole : MonoBehaviour
 {
-    public Vector3 respawnPoint;
+    [SerializeField] Vector3 respawnPoint;
 
     [SerializeField] int ID;
     [HideInInspector] public HoleManager holeManager;
 
+    GameObject collision;
+
     public void SetID(int id) => ID = id;
+
+    [SerializeField] Animator ballContentAnim;
+    [SerializeField] Transform virtualBall;
+    [SerializeField] Transform flagVisual;
+
+    private void Start()
+    {
+        virtualBall.gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Player"))
         {
             holeManager.FinishSelectedHole(ID);
+            collision = other.gameObject;
+            collision.SetActive(false);
+            virtualBall.gameObject.SetActive(true);
 
-            SpawnPoint(other);
+            ballContentAnim.SetTrigger("WinAnim");
+            StartCoroutine(SpawnPoint());
+
+            virtualBall.transform.localScale = collision.transform.localScale;
+            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponent<MeshFilter>().mesh; 
+            virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponent<MeshRenderer>().materials; 
         }
     }
 
-    public void NewFlag()
+    IEnumerator SpawnPoint()
     {
+        yield return new WaitForSeconds(1.1f);
 
-    }
+        collision.GetComponent<PlayerController>().Teleport(transform.position + respawnPoint);
+        collision.SetActive(true);
+        virtualBall.gameObject.SetActive(false);
+        collision = null;
 
-    private void SpawnPoint(Collider other)
-    {
-        other.transform.position = transform.position + respawnPoint;
+        flagVisual.Bump();
     }
 
     private void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position + respawnPoint, .1f);
     }
 }

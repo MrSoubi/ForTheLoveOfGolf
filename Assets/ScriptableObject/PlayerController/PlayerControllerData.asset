@@ -44,10 +44,10 @@ MonoBehaviour:
   normalColor: {r: 0, g: 0, b: 1, a: 1}
   drawGravity: 0
   gravityNormalized: 0
-  gravityColor: {r: 0, g: 0, b: 0, a: 1}
+  gravityColor: {r: 0, g: 0, b: 1, a: 1}
   drawAcceleration: 0
-  accelerationColor: {r: 1, g: 0, b: 0, a: 1}
+  accelerationColor: {r: 1, g: 0.9306717, b: 0, a: 1}
   drawFriction: 0
-  frictionColor: {r: 0, g: 1, b: 1, a: 1}
+  frictionColor: {r: 0, g: 0, b: 1, a: 1}
   drawDirection: 0
-  directionColor: {r: 0, g: 1, b: 0, a: 1}
+  directionColor: {r: 0, g: 0, b: 1, a: 1}

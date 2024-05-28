@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour
             UnFreeze();
             cameraManager.RollShoot();
             isAiming = false;
+            MakePlayerOpaque();
         }
     }
 

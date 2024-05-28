@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -16,35 +17,61 @@ public enum EnvironmentEffect
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private PlayerControllerData PCData;
+
     [Header("Movement Settings")]
-    public float moveSpeed;
-    public float maxSpeed;
-    public float airMultiplier;
-    public float rotationSpeed;
-    public float gravityForce;
+    private float moveSpeed;
+    private float maxSpeed;
+    private float airMultiplier;
+    private float rotationSpeed;
+    private float gravityForce;
+
+    private AnimationCurve yCurve;
 
     [Header("Shooting Settings")]
-    public float shootForce;
-    public int shootCharges;
-    public int maxShootCharges;
+    private float shootForce;
+    private int shootCharges;
+    private int maxShootCharges;
 
     [Header("Inputs")]
-    public KeyCode aimingInput = KeyCode.Mouse1;
-    public KeyCode shootInput = KeyCode.Mouse0;
+    private KeyCode aimingInput = KeyCode.Mouse1;
+    private KeyCode shootInput = KeyCode.Mouse0;
 
     [Header("Materials")]
     public Material materialOpaque;
     public Material materialTransparent;
 
+    [Header("Gizmos")]
+
+    public bool normalNormalized;
+    public bool gravityNormalized;
+
+    private float factor;
+
+    private bool drawNormal; 
+    private Color normalColor = Color.blue;
+
+    private bool drawGravity;  
+    private Color gravityColor = Color.black;
+
+    private bool drawAcceleration;
+    private Color accelerationColor = Color.red;
+
+    private bool drawFriction;
+    private Color frictionColor = Color.cyan;
+
+    private bool drawDirection;
+    private Color directionColor = Color.green;
+
     [Header("Other")]
 
-    private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
+    public EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
 
     private Rigidbody rb;
     public CameraManager cameraManager;
 
     private Vector3 direction;
-    public Vector3 gravity;
+    private Vector3 gravity;
     private Vector3 normal;
     private Vector3 friction;
     private Vector3 acceleration;
@@ -52,14 +79,44 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
-    public bool isAiming;
-    public bool isGrounded;
+    private bool isAiming;
+    private bool isGrounded;
     
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
 
         GetComponent<MeshRenderer>().material = materialOpaque;
+    }
+
+    private void Start()
+    {
+        moveSpeed = PCData.moveSpeed;
+        maxSpeed = PCData.maxSpeed;
+        airMultiplier = PCData.airMultiplier;
+        rotationSpeed = PCData.rotationSpeed;
+        gravityForce = PCData.gravityForce;
+        yCurve = PCData.yCurve;
+
+        shootForce = PCData.shootForce;
+        shootCharges = PCData.shootCharges;
+        maxShootCharges = PCData.maxShootCharges;
+
+        aimingInput = PCData.aimingInput;
+        shootInput = PCData.shootInput;
+
+        factor = PCData.factor;
+
+        drawNormal = PCData.drawNormal;
+        normalColor = PCData.normalColor;
+        drawGravity = PCData.drawGravity;
+        gravityColor = PCData.gravityColor;
+        drawAcceleration = PCData.drawAcceleration;
+        accelerationColor = PCData.accelerationColor;
+        drawFriction = PCData.drawFriction;
+        frictionColor = PCData.frictionColor;
+        drawDirection = PCData.drawDirection;
+        directionColor = PCData.directionColor;
     }
 
     private void Update()
@@ -156,8 +213,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
-    public AnimationCurve yCurve;
     private void HandleGravity()
     {
         switch (environmentEffect)
@@ -434,21 +489,6 @@ public class PlayerController : MonoBehaviour
 
         shootCharges = Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
-
-    [Header("Gizmos")]
-    public float factor = 0.5f;
-    public bool drawNormal;
-    public bool normalNormalized;
-    public Color normalColor = Color.blue;
-    public bool drawGravity;
-    public bool gravityNormalized;
-    public Color gravityColor = Color.black;
-    public bool drawAcceleration;
-    public Color accelerationColor = Color.red;
-    public bool drawFriction;
-    public Color frictionColor = Color.cyan;
-    public bool drawDirection;
-    public Color directionColor = Color.green;
 
     private void OnDrawGizmos()
     {

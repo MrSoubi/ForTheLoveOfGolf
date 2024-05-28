@@ -46,8 +46,17 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
+<<<<<<< Updated upstream
     private bool isAiming;
     private bool isGrounded;
+=======
+    public float shootingAngle;
+
+    private int shootCharges;
+
+    public bool isAiming = false;
+    public bool isGrounded;
+>>>>>>> Stashed changes
     
     private void Awake()
     {

@@ -243,7 +243,6 @@ public class PlayerController : MonoBehaviour
 
             if(Physics.SphereCast(origin, radius, Vector3.down, out hit, maxDistance))
             {
-                Debug.Log(hit.distance);
                 if(hit.distance <= groundDetectionLength)
                 {
                     contactPoint = hit.point;

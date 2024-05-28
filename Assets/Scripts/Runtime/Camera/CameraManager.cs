@@ -15,7 +15,7 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         rollingCam.enabled = true;
-        aimingCam.enabled = false;
+        aimingCam.enabled = true;
 
         brain = GetComponentInChildren<CinemachineBrain>();
     }
@@ -25,15 +25,23 @@ public class CameraManager : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        Debug.Log(brain.transform.rotation.y * 180);
+    }
     /// <summary>
     /// Active la caméra de visée
     /// </summary>
     public void AimShoot()
     {
-        rollingCam.enabled = false;
-        aimingCam.enabled = true;
-
         aimingCam.m_YAxis.Value = 0.5f;
+
+        
+
+        rollingCam.enabled = false;
+        //aimingCam.enabled = true;
+        aimingCam.m_XAxis.Value = brain.transform.rotation.y * 180; // Problème d'offset non linéaire !
+
         //aimingCam.m_XAxis.Value = 0f;
     }
 
@@ -43,7 +51,7 @@ public class CameraManager : MonoBehaviour
     public void RollShoot()
     {
         rollingCam.enabled = true;
-        aimingCam.enabled = false;
+        //aimingCam.enabled = false;
     }
 
     /// <summary>

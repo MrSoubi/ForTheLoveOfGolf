@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -19,26 +18,23 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerControllerData PCData;
 
-    private int shootCharges;
+    [Header("Gizmos")]
+    public bool normalNormalized;
+    public bool gravityNormalized;
 
     [Header("Materials")]
     public Material materialOpaque;
     public Material materialTransparent;
 
-    [Header("Gizmos")]
-
-    public bool normalNormalized;
-    public bool gravityNormalized;
-
     [Header("Other")]
 
-    public EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
+    private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
 
     private Rigidbody rb;
     public CameraManager cameraManager;
 
     private Vector3 direction;
-    private Vector3 gravity;
+    public Vector3 gravity;
     private Vector3 normal;
     private Vector3 friction;
     private Vector3 acceleration;
@@ -46,8 +42,12 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
-    private bool isAiming;
-    private bool isGrounded;
+    public float shootingAngle;
+
+    private int shootCharges;
+
+    public bool isAiming;
+    public bool isGrounded;
     
     private void Awake()
     {
@@ -103,21 +103,20 @@ public class PlayerController : MonoBehaviour
         if (!isAiming && Input.GetKeyDown(PCData.aimingInput))
         {
             Freeze();
-            cameraManager.AimShoot();
             isAiming = true;
             MakePlayerTransparent();
+            cameraManager.AimShoot();
         }
 
         if (isAiming && Input.GetKeyUp(PCData.aimingInput))
         {
             UnFreeze();
-            cameraManager.RollShoot();
             isAiming = false;
             MakePlayerOpaque();
+            cameraManager.RollShoot();
         }
     }
 
-    public float shootingAngle;
     private void HandleAiming()
     {
         Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
@@ -127,9 +126,9 @@ public class PlayerController : MonoBehaviour
             UnFreeze();
             rb.velocity = shootDirection * rb.velocity.magnitude;
             Shoot(shootDirection);
-            cameraManager.RollShoot();
             isAiming = false;
             MakePlayerOpaque();
+            cameraManager.RollShoot();
         }
     }
 
@@ -154,24 +153,36 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
     private void HandleGravity()
     {
         switch (environmentEffect)
         {
             default:
                 float yFactor = 1f;
+                
                 if (isGrounded)
                 {
-                    yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
-
-                    if (yFactor < 0)
+                    if (onStickySurface)
                     {
-                        Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                        gravity = contactPoint.normalized * PCData.gravityForce * -1;
+                    }
+                    else
+                    {
+                        yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+
+                        if (yFactor < 0)
+                        {
+                            Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                        }
+                        gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
                     }
                 }
+                else
+                {
+                    gravity = new Vector3(0, -PCData.gravityForce, 0);
+                }
 
-                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+                
                 break;
         }
     }
@@ -183,8 +194,7 @@ public class PlayerController : MonoBehaviour
             default:
                 if (isGrounded)
                 {
-                   
-                    normal *= gravity.magnitude;
+                     normal *= gravity.magnitude;
                 }
                 else
                 {
@@ -229,6 +239,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
+
+    public bool onStickySurface;
     private void CheckGround()
     {
         if (complexDetection)
@@ -246,6 +258,8 @@ public class PlayerController : MonoBehaviour
                     normal = hit.normal.normalized;
                     AddShootCharges(1);
                     isGrounded = true;
+
+                    onStickySurface = hit.collider.CompareTag("Sticky");
                 }
                 else
                 {
@@ -270,6 +284,8 @@ public class PlayerController : MonoBehaviour
                 normal = hit.normal;
                 AddShootCharges(1);
                 isGrounded = true;
+
+                onStickySurface = hit.collider.CompareTag("Sticky");
             }
             else
             {
@@ -463,9 +479,9 @@ public class PlayerController : MonoBehaviour
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
 #if !UNITY_EDITOR
-        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
-        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
+        //Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+       // Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

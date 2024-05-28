@@ -55,15 +55,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            HandleDirection();
-            
-            CheckGround();
-            HandleGravity();
-            HandleNormal();
-            HandleFriction();
-            HandleAcceleration();
-
-            LimitSpeed();
+            HandleRolling();
         }
     }
 
@@ -73,6 +65,33 @@ public class PlayerController : MonoBehaviour
         {
             HandleForces();
         }
+    }
+
+    private void HandleAiming()
+    {
+        Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
+
+        if (Input.GetKeyDown(PCData.shootInput))
+        {
+            UnFreeze();
+            rb.velocity = shootDirection * rb.velocity.magnitude;
+            Shoot(shootDirection);
+            isAiming = false;
+            MakePlayerOpaque();
+            cameraManager.RollShoot();
+        }
+    }
+
+    private void HandleRolling()
+    {
+        HandleDirection();
+        CheckGround();
+        HandleGravity();
+        HandleNormal();
+        HandleFriction();
+        HandleAcceleration();
+
+        LimitSpeed();
     }
 
     private void HandleInput()
@@ -100,20 +119,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleAiming()
-    {
-        Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
 
-        if (Input.GetKeyDown(PCData.shootInput))
-        {
-            UnFreeze();
-            rb.velocity = shootDirection * rb.velocity.magnitude;
-            Shoot(shootDirection);
-            isAiming = false;
-            MakePlayerOpaque();
-            cameraManager.RollShoot();
-        }
-    }
 
     private void HandleDirection()
     {
@@ -281,6 +287,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #region Bump
     /// <summary>
     /// Renvoie la balle en fonction du vecteur normal à la surface sur laquelle la balle est entrée en collision.
     /// </summary>
@@ -300,6 +307,7 @@ public class PlayerController : MonoBehaviour
     {
         rb.velocity = direction.normalized * rb.velocity.magnitude;
     }
+    #endregion
 
     /// <summary>
     /// Stop tous les mouvements de la balle et la téléporte à la position donnée en paramètre.
@@ -311,8 +319,11 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.zero;
     }
 
+    #region Freeze
+
     private Vector3 savedVelocity;
     private bool isFreezed;
+
     /// <summary>
     /// Bloque tous les mouvements de la balle
     /// </summary>
@@ -331,7 +342,9 @@ public class PlayerController : MonoBehaviour
         rb.velocity = savedVelocity;
         isFreezed = false;
     }
+    #endregion
 
+    #region Block
     /// <summary>
     /// Arrête totalement la balle, elle ne subira plus l'effet d'aucune force (gravité, input, bump...)
     /// </summary>
@@ -347,12 +360,16 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+    #endregion
 
+    #region Getters
     public Vector3 GetVelocity()
     {
         return rb.velocity;
     }
+    #endregion
 
+    #region Material
     private void MakePlayerOpaque()
     {
         GetComponent<MeshRenderer>().material.DOFade(1, 0.5f).OnComplete(() => { GetComponent<MeshRenderer>().material = materialOpaque; });
@@ -363,8 +380,9 @@ public class PlayerController : MonoBehaviour
         GetComponent<MeshRenderer>().material = materialTransparent;
         GetComponent<MeshRenderer>().material.DOFade(0.2f, 0.5f);
     }
+    #endregion
 
-
+    #region Charges de tir
     /// <summary>
     /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.
     /// </summary>
@@ -388,6 +406,13 @@ public class PlayerController : MonoBehaviour
 
         shootCharges = Mathf.Clamp(shootCharges, 0, PCData.maxShootCharges);
     }
+
+    private bool CanShoot()
+    {
+        return shootCharges > 0;
+    }
+    #endregion
+
 
     private void OnDrawGizmos()
     {

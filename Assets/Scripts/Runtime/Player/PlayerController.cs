@@ -371,6 +371,22 @@ public class PlayerController : MonoBehaviour
         isFreezed = false;
     }
 
+    /// <summary>
+    /// Arrête totalement la balle, elle ne subira plus l'effet d'aucune force (gravité, input, bump...)
+    /// </summary>
+    public void Block()
+    {
+
+    }
+
+    /// <summary>
+    /// Débloque la balle
+    /// </summary>
+    public void UnBlock()
+    {
+
+    }
+
     public Vector3 GetVelocity()
     {
         return rb.velocity;

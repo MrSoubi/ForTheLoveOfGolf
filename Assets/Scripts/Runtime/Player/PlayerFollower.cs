@@ -17,6 +17,10 @@ public class PlayerFollower : MonoBehaviour
     void Update()
     {
         transform.position = player.transform.position;
-        transform.forward = playerController.GetVelocity().normalized;
+
+        if (!playerController.isAiming)
+        {
+            transform.forward = playerController.GetVelocity().normalized;
+        }
     }
 }

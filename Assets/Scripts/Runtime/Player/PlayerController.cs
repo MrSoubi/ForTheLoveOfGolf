@@ -104,17 +104,17 @@ public class PlayerController : MonoBehaviour
         if (!isAiming && Input.GetKeyDown(aimingInput))
         {
             Freeze();
-            cameraManager.AimShoot();
             isAiming = true;
             MakePlayerTransparent();
+            cameraManager.AimShoot();
         }
 
         if (isAiming && Input.GetKeyUp(aimingInput))
         {
             UnFreeze();
-            cameraManager.RollShoot();
             isAiming = false;
             MakePlayerOpaque();
+            cameraManager.RollShoot();
         }
     }
 
@@ -128,9 +128,9 @@ public class PlayerController : MonoBehaviour
             UnFreeze();
             rb.velocity = shootDirection * rb.velocity.magnitude;
             Shoot(shootDirection);
-            cameraManager.RollShoot();
             isAiming = false;
             MakePlayerOpaque();
+            cameraManager.RollShoot();
         }
     }
 

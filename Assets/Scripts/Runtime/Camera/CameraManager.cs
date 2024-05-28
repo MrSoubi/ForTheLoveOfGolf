@@ -27,7 +27,7 @@ public class CameraManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(brain.transform.rotation.y * 180);
+        //Debug.Log(brain.transform.rotation.y * 180);
     }
     /// <summary>
     /// Active la caméra de visée
@@ -36,13 +36,9 @@ public class CameraManager : MonoBehaviour
     {
         aimingCam.m_YAxis.Value = 0.5f;
 
-        
+        aimingCam.m_XAxis.Value = rollingCam.transform.rotation.eulerAngles.y;
 
         rollingCam.enabled = false;
-        //aimingCam.enabled = true;
-        aimingCam.m_XAxis.Value = brain.transform.rotation.y * 180; // Problème d'offset non linéaire !
-
-        //aimingCam.m_XAxis.Value = 0f;
     }
 
     /// <summary>
@@ -51,7 +47,6 @@ public class CameraManager : MonoBehaviour
     public void RollShoot()
     {
         rollingCam.enabled = true;
-        //aimingCam.enabled = false;
     }
 
     /// <summary>

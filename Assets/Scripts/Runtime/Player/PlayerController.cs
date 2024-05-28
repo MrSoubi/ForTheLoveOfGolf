@@ -233,11 +233,20 @@ public class PlayerController : MonoBehaviour
 
             if(Physics.SphereCast(origin, radius, Vector3.down, out hit, maxDistance))
             {
-                contactPoint = hit.point;
-                Debug.Log(hit.point);
-                normal = hit.normal.normalized;
-                AddShootCharges(1);
-                isGrounded = true;
+                Debug.Log(hit.distance);
+                if(hit.distance <= groundDetectionLength)
+                {
+                    contactPoint = hit.point;
+                    Debug.Log(hit.point);
+                    normal = hit.normal.normalized;
+                    AddShootCharges(1);
+                    isGrounded = true;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                    isGrounded = false;
+                }
             }
             else
             {
@@ -466,5 +475,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 
         Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

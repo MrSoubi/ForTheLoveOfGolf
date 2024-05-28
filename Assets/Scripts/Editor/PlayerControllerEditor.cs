@@ -11,6 +11,8 @@ public class PlayerControllerEditor : EditorWindow
 {
     private PlayerControllerData PCData;
 
+    private Vector2 scrollPos = Vector2.zero;
+
     private bool showMovementSettings = true;
     private bool showShootingSettings = true;
     private bool showInputSettings = true;
@@ -52,6 +54,9 @@ public class PlayerControllerEditor : EditorWindow
         Rect area = new Rect(padding, padding, position.width - padding * 2f, position.height - padding * 2f);
 
         GUILayout.BeginArea(area);
+
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.ExpandHeight(true));
+
         showMovementSettings = EditorGUILayout.Foldout(showMovementSettings, "Movement Settings", true, header1Style);
         if (showMovementSettings)
         {
@@ -137,9 +142,7 @@ public class PlayerControllerEditor : EditorWindow
             }
             EditorGUI.indentLevel--;
         }
-
+        EditorGUILayout.EndScrollView();
         GUILayout.EndArea();
     }
-
-
 }

@@ -232,6 +232,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
+
+    public bool onStickySurface;
     private void CheckGround()
     {
         if (complexDetection)
@@ -249,6 +251,8 @@ public class PlayerController : MonoBehaviour
                     normal = hit.normal.normalized;
                     AddShootCharges(1);
                     isGrounded = true;
+
+                    onStickySurface = hit.collider.CompareTag("Sticky");
                 }
                 else
                 {
@@ -273,6 +277,8 @@ public class PlayerController : MonoBehaviour
                 normal = hit.normal;
                 AddShootCharges(1);
                 isGrounded = true;
+
+                onStickySurface = hit.collider.CompareTag("Sticky");
             }
             else
             {

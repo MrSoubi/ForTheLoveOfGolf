@@ -165,6 +165,11 @@ public class PlayerController : MonoBehaviour
                 if (isGrounded)
                 {
                     yFactor = yCurve.Evaluate(rb.velocity.y);
+
+                    if (yFactor < 0)
+                    {
+                        Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                    }
                 }
 
                 gravity = new Vector3(0, -gravityForce * yFactor, 0);

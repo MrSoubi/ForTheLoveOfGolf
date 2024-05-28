@@ -164,17 +164,30 @@ public class PlayerController : MonoBehaviour
         {
             default:
                 float yFactor = 1f;
+                
                 if (isGrounded)
                 {
-                    yFactor = yCurve.Evaluate(rb.velocity.y);
-
-                    if (yFactor < 0)
+                    if (onStickySurface)
                     {
-                        Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                        gravity = contactPoint.normalized * gravityForce * -1;
+                    }
+                    else
+                    {
+                        yFactor = yCurve.Evaluate(rb.velocity.y);
+
+                        if (yFactor < 0)
+                        {
+                            Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                        }
+                        gravity = new Vector3(0, -gravityForce * yFactor, 0);
                     }
                 }
+                else
+                {
+                    gravity = new Vector3(0, -gravityForce, 0);
+                }
 
-                gravity = new Vector3(0, -gravityForce * yFactor, 0);
+                
                 break;
         }
     }
@@ -186,8 +199,7 @@ public class PlayerController : MonoBehaviour
             default:
                 if (isGrounded)
                 {
-                   
-                    normal *= gravity.magnitude;
+                     normal *= gravity.magnitude;
                 }
                 else
                 {
@@ -487,9 +499,9 @@ public class PlayerController : MonoBehaviour
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
 #if !UNITY_EDITOR
-        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
-        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
+        //Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+       // Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

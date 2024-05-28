@@ -153,34 +153,27 @@ public class PlayerControllerEditor : EditorWindow
             EditorGUI.indentLevel--;
         }
 
-        GUILayout.Label("Profiles", EditorStyles.boldLabel);
-        PCData = EditorGUILayout.ObjectField("Settings", PCData, typeof(PlayerControllerData), false) as PlayerControllerData;
-
         if (PCData != null)
         {
-            if (GUILayout.Button("Save Settings"))
-            {
-                EditorUtility.SetDirty(PCData);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
-
-            GUILayout.Space(10);
-            GUILayout.Label("Profiles", EditorStyles.boldLabel);
-
             selectedProfileIndex = EditorGUILayout.Popup("Select Profile", selectedProfileIndex, profileNames.ToArray());
 
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Load Profile"))
             {
                 LoadProfile(profileNames[selectedProfileIndex]);
             }
+            if(GUILayout.Button("Delete Profile"))
+            {
+                DeleteProfile(profileNames[selectedProfileIndex]);
+            }
+            EditorGUILayout.EndHorizontal();
 
             profileName = EditorGUILayout.TextField("Profile Name", profileName);
 
             if (GUILayout.Button("Save Profile"))
             {
                 SaveProfile(profileName, PCData);
-                LoadProfileNames(); // Refresh profile list
+                RefreshProfileNames();
             }
         }
 
@@ -204,10 +197,17 @@ public class PlayerControllerEditor : EditorWindow
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
     }
 
-    private void LoadProfileNames()
+    private void DeleteProfile(string profileName)
+    {
+        string path = $"Assets/Profiles/{profileName}.asset";
+        AssetDatabase.DeleteAsset(path);
+        RefreshProfileNames();
+    }
+
+    private void RefreshProfileNames()
     {
         profileNames.Clear();
-        string[] guids = AssetDatabase.FindAssets("t:GameSettings", new[] { "Assets/Profiles" });
+        string[] guids = AssetDatabase.FindAssets("t:PlayerControllerData", new[] { "Assets/Profiles" });
         foreach (string guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);

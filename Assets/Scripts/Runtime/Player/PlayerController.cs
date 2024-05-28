@@ -480,8 +480,9 @@ public class PlayerController : MonoBehaviour
 
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
+#if !UNITY_EDITOR
         Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
-
+#endif
         Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
         Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }

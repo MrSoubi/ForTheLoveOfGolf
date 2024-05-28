@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,19 +16,35 @@ public enum EnvironmentEffect
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Movement Settings")]
     public float moveSpeed;
     public float maxSpeed;
     public float airMultiplier;
     public float rotationSpeed;
     public float gravityForce;
 
+    [Header("Shooting Settings")]
+    public float shootForce;
+    public int shootCharges;
+    public int maxShootCharges;
+
+    [Header("Inputs")]
+    public KeyCode aimingInput = KeyCode.Mouse1;
+    public KeyCode shootInput = KeyCode.Mouse0;
+
+    [Header("Materials")]
+    public Material materialOpaque;
+    public Material materialTransparent;
+
+    [Header("Other")]
+
     private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
 
     private Rigidbody rb;
+    public CameraManager cameraManager;
 
     private Vector3 direction;
-    private Vector3 gravity;
+    public Vector3 gravity;
     private Vector3 normal;
     private Vector3 friction;
     private Vector3 acceleration;
@@ -35,16 +52,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 playerInput;
     private Vector2 mouseInput;
 
-    private bool isAiming;
+    public bool isAiming;
     public bool isGrounded;
-
-    // Transparence de la balle en mode Aim
-    public Material materialOpaque;
-    public Material materialTransparent;
-
-    private int shootCharges;
-    private int maxShootCharges;
-
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -56,21 +66,31 @@ public class PlayerController : MonoBehaviour
     {
         HandleInput();
 
-        HandleDirection();
-        HandleGravity();
+        if (isAiming)
+        {
+            HandleAiming();
+        }
+        else
+        {
+            HandleDirection();
+            HandleGravity();
 
-        CheckGround();
+            CheckGround();
 
-        HandleNormal();
-        HandleFriction();
-        HandleAcceleration();
+            HandleNormal();
+            HandleFriction();
+            HandleAcceleration();
 
-        LimitSpeed();
+            LimitSpeed();
+        }
     }
 
     private void FixedUpdate()
     {
-        HandleForces();
+        if (!isAiming)
+        {
+            HandleForces();
+        }
     }
 
     private void HandleInput()
@@ -80,6 +100,38 @@ public class PlayerController : MonoBehaviour
 
         mouseInput.x = Input.GetAxisRaw("Mouse X");
         mouseInput.y = Input.GetAxisRaw("Mouse Y");
+
+        if (!isAiming && Input.GetKeyDown(aimingInput))
+        {
+            Freeze();
+            cameraManager.AimShoot();
+            isAiming = true;
+            MakePlayerTransparent();
+        }
+
+        if (isAiming && Input.GetKeyUp(aimingInput))
+        {
+            UnFreeze();
+            cameraManager.RollShoot();
+            isAiming = false;
+            MakePlayerOpaque();
+        }
+    }
+
+    public float shootingAngle;
+    private void HandleAiming()
+    {
+        Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
+
+        if (Input.GetKeyDown(shootInput))
+        {
+            UnFreeze();
+            rb.velocity = shootDirection * rb.velocity.magnitude;
+            Shoot(shootDirection);
+            cameraManager.RollShoot();
+            isAiming = false;
+            MakePlayerOpaque();
+        }
     }
 
     private void HandleDirection()
@@ -87,23 +139,42 @@ public class PlayerController : MonoBehaviour
         switch(environmentEffect){
             default:
                 // La direction tourne avec le mouvement de la souris
-                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed, Vector3.up) * rb.velocity;
+                // Le changement de direction est plus faible quand la vitesse augmente
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed / rb.velocity.magnitude, Vector3.up) * rb.velocity;
 
-                if (rb.velocity.magnitude > 0.01)
+                if (rb.velocity.y < 0.0001)
                 {
-                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vÃ©locitÃ©
+                    direction = transform.forward;
+                }
+
+                if (rb.velocity.magnitude > 0.0001)
+                {
+                    direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
                 }
                 break;
         }
 
     }
 
+
+    public AnimationCurve yCurve;
     private void HandleGravity()
     {
         switch (environmentEffect)
         {
             default:
-                gravity = new Vector3(0, -gravityForce, 0);
+                float yFactor = 1f;
+                if (isGrounded)
+                {
+                    yFactor = yCurve.Evaluate(rb.velocity.y);
+
+                    if (yFactor < 0)
+                    {
+                        Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                    }
+                }
+
+                gravity = new Vector3(0, -gravityForce * yFactor, 0);
                 break;
         }
     }
@@ -115,6 +186,7 @@ public class PlayerController : MonoBehaviour
             default:
                 if (isGrounded)
                 {
+                   
                     normal *= gravity.magnitude;
                 }
                 else
@@ -143,8 +215,9 @@ public class PlayerController : MonoBehaviour
                 float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
 
                 Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x;
-                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10f);
+                Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
+
+                acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
                 break;
         }
     }
@@ -156,21 +229,56 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
+    public Vector3 contactPoint;
+    public bool complexDetection;
     public float groundDetectionLength = 0.025f;
     private void CheckGround()
     {
-        RaycastHit hit;
-
-        Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
-
-        if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
+        if (complexDetection)
         {
-            normal = hit.normal;
-            isGrounded = true;
+            Vector3 origin = transform.position;
+            float radius = transform.localScale.x * 0.5f - 0.001f;
+            float maxDistance = radius + groundDetectionLength;
+            RaycastHit hit;
+
+            if(Physics.SphereCast(origin, radius, Vector3.down, out hit, maxDistance))
+            {
+                if(hit.distance <= groundDetectionLength)
+                {
+                    contactPoint = hit.point;
+                    normal = hit.normal.normalized;
+                    AddShootCharges(1);
+                    isGrounded = true;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                    isGrounded = false;
+                }
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+            }
         }
         else
         {
-            isGrounded = false;
+            RaycastHit hit;
+
+            Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+            if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
+            {
+                normal = hit.normal;
+                AddShootCharges(1);
+                isGrounded = true;
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+            }
         }
     }
 
@@ -185,7 +293,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute un boost de vitesse Ã  la balle dans la direction donnÃ©e en paramÃ¨tre. Si la vitesse rÃ©sultante est assez grande, elle devient la nouvelle vitesse max.
+    /// Ajoute un boost de vitesse à la balle dans la direction donnée en paramètre. Si la vitesse résultante est assez grande, elle devient la nouvelle vitesse max.
     /// </summary>
     /// <param name="direction"></param>
     /// <param name="power"></param>
@@ -200,7 +308,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Renvoie la balle en fonction du vecteur normal Ã  la surface sur laquelle la balle est entrÃ©e en collision.
+    /// Renvoie la balle en fonction du vecteur normal à la surface sur laquelle la balle est entrée en collision.
     /// </summary>
     /// <param name="normal"></param>
     public void BumpFlipper(Vector3 normal)
@@ -211,7 +319,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Projette la balle dans la direction donnÃ©e en paramÃ¨tre, en gardant la force de la balle
+    /// Projette la balle dans la direction donnée en paramètre, en gardant la force de la balle
     /// </summary>
     /// <param name="direction"></param>
     public void BumpTrampoline(Vector3 direction)
@@ -220,7 +328,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Stop tous les mouvements de la balle et la tÃ©lÃ©porte Ã  la position donnÃ©e en paramÃ¨tre.
+    /// Stop tous les mouvements de la balle et la téléporte à la position donnée en paramètre.
     /// </summary>
     /// <param name="newPosition"></param>
     public void Teleport(Vector3 newPosition)
@@ -237,11 +345,12 @@ public class PlayerController : MonoBehaviour
     public void Freeze()
     {
         savedVelocity = rb.velocity;
+        rb.velocity = Vector3.zero;
         isFreezed = true;
     }
 
     /// <summary>
-    /// Relance la balle suite Ã  un freeze
+    /// Relance la balle suite à un freeze
     /// </summary>
     public void UnFreeze()
     {
@@ -283,42 +392,97 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     /// <summary>
-    /// Applique un effet de tir Ã  la balle. S'applique uniquement si la balle dispose de charges de tir.
+    /// Applique un effet de tir à la balle. S'applique uniquement si la balle dispose de charges de tir.
     /// </summary>
     /// <param name="direction"></param>
     public void Shoot(Vector3 direction)
     {
         if (shootCharges > 0)
         {
-            rb.AddForce(direction * 10f, ForceMode.Impulse);
+            rb.AddForce(direction * shootForce, ForceMode.Impulse);
             shootCharges--;
         }
     }
 
     /// <summary>
-    /// Ajoute des charges de tir Ã  la balle. La fonction gÃ¨re la quantitÃ© max de charges.
+    /// Ajoute des charges de tir à la balle. La fonction gère la quantité max de charges.
     /// </summary>
     /// <param name="amount"></param>
     public void AddShootCharges(int amount)
     {
         shootCharges += amount;
 
-        Mathf.Clamp(shootCharges, 0, maxShootCharges);
+        shootCharges = Mathf.Clamp(shootCharges, 0, maxShootCharges);
     }
+
+    [Header("Gizmos")]
+    public float factor = 0.5f;
+    public bool drawNormal;
+    public bool normalNormalized;
+    public Color normalColor = Color.blue;
+    public bool drawGravity;
+    public bool gravityNormalized;
+    public Color gravityColor = Color.black;
+    public bool drawAcceleration;
+    public Color accelerationColor = Color.red;
+    public bool drawFriction;
+    public Color frictionColor = Color.cyan;
+    public bool drawDirection;
+    public Color directionColor = Color.green;
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + normal);
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, transform.position + gravity);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + acceleration);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + friction);
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + direction);
-        //Gizmos.DrawLine(transform.position + direction, transform.position + direction + debugDirection);
+        if(drawNormal)
+        {
+            Gizmos.color = normalColor;
+            if(normalNormalized)
+            {
+                Gizmos.DrawLine(transform.position, transform.position + normal.normalized);
+            }
+            else
+            {
+                Gizmos.DrawLine(transform.position, transform.position + normal * factor);
+            }
+        }
+
+        if(drawGravity)
+        {
+            Gizmos.color = gravityColor;
+            if (gravityNormalized)
+            {
+                Gizmos.DrawLine(transform.position, transform.position + gravity.normalized);
+            }
+            else
+            {
+                Gizmos.DrawLine(transform.position, transform.position + gravity * factor);
+            }
+        }
+
+        if(drawAcceleration)
+        {
+            Gizmos.color = accelerationColor;
+            Gizmos.DrawLine(transform.position, transform.position + acceleration);
+        }
+
+        if (drawFriction)
+        {
+            Gizmos.color = frictionColor;
+            Gizmos.DrawLine(transform.position, transform.position + friction);
+        }
+
+        if (drawDirection)
+        {
+            Gizmos.color = directionColor;
+            Gizmos.DrawLine(transform.position, transform.position + direction);
+        }
+
+        //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+
+        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

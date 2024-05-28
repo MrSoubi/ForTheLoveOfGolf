@@ -14,6 +14,7 @@ public class CursorManager : MonoBehaviour
     private void Start()
     {
         SetCursorVisibility(false);
+        SetCursorLockMod(CursorLockMode.Locked);
     }
 
     public void SetCursorVisibility(bool isVisible)

@@ -10,7 +10,7 @@ public class PlayerFollower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerController = GetComponent<PlayerController>();
+        playerController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

@@ -19,23 +19,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerControllerData PCData;
 
-    [Header("Movement Settings")]
-    private float moveSpeed;
-    private float maxSpeed;
-    private float airMultiplier;
-    private float rotationSpeed;
-    private float gravityForce;
-
-    private AnimationCurve yCurve;
-
-    [Header("Shooting Settings")]
-    private float shootForce;
     private int shootCharges;
-    private int maxShootCharges;
-
-    [Header("Inputs")]
-    private KeyCode aimingInput = KeyCode.Mouse1;
-    private KeyCode shootInput = KeyCode.Mouse0;
 
     [Header("Materials")]
     public Material materialOpaque;
@@ -45,23 +29,6 @@ public class PlayerController : MonoBehaviour
 
     public bool normalNormalized;
     public bool gravityNormalized;
-
-    private float factor;
-
-    private bool drawNormal; 
-    private Color normalColor = Color.blue;
-
-    private bool drawGravity;  
-    private Color gravityColor = Color.black;
-
-    private bool drawAcceleration;
-    private Color accelerationColor = Color.red;
-
-    private bool drawFriction;
-    private Color frictionColor = Color.cyan;
-
-    private bool drawDirection;
-    private Color directionColor = Color.green;
 
     [Header("Other")]
 
@@ -91,32 +58,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        moveSpeed = PCData.moveSpeed;
-        maxSpeed = PCData.maxSpeed;
-        airMultiplier = PCData.airMultiplier;
-        rotationSpeed = PCData.rotationSpeed;
-        gravityForce = PCData.gravityForce;
-        yCurve = PCData.yCurve;
-
-        shootForce = PCData.shootForce;
         shootCharges = PCData.shootCharges;
-        maxShootCharges = PCData.maxShootCharges;
-
-        aimingInput = PCData.aimingInput;
-        shootInput = PCData.shootInput;
-
-        factor = PCData.factor;
-
-        drawNormal = PCData.drawNormal;
-        normalColor = PCData.normalColor;
-        drawGravity = PCData.drawGravity;
-        gravityColor = PCData.gravityColor;
-        drawAcceleration = PCData.drawAcceleration;
-        accelerationColor = PCData.accelerationColor;
-        drawFriction = PCData.drawFriction;
-        frictionColor = PCData.frictionColor;
-        drawDirection = PCData.drawDirection;
-        directionColor = PCData.directionColor;
     }
 
     private void Update()
@@ -158,20 +100,20 @@ public class PlayerController : MonoBehaviour
         mouseInput.x = Input.GetAxisRaw("Mouse X");
         mouseInput.y = Input.GetAxisRaw("Mouse Y");
 
-        if (!isAiming && Input.GetKeyDown(aimingInput))
+        if (!isAiming && Input.GetKeyDown(PCData.aimingInput))
         {
             Freeze();
+            cameraManager.AimShoot();
             isAiming = true;
             MakePlayerTransparent();
-            cameraManager.AimShoot();
         }
 
-        if (isAiming && Input.GetKeyUp(aimingInput))
+        if (isAiming && Input.GetKeyUp(PCData.aimingInput))
         {
             UnFreeze();
+            cameraManager.RollShoot();
             isAiming = false;
             MakePlayerOpaque();
-            cameraManager.RollShoot();
         }
     }
 
@@ -180,14 +122,14 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
 
-        if (Input.GetKeyDown(shootInput))
+        if (Input.GetKeyDown(PCData.shootInput))
         {
             UnFreeze();
             rb.velocity = shootDirection * rb.velocity.magnitude;
             Shoot(shootDirection);
+            cameraManager.RollShoot();
             isAiming = false;
             MakePlayerOpaque();
-            cameraManager.RollShoot();
         }
     }
 
@@ -197,7 +139,7 @@ public class PlayerController : MonoBehaviour
             default:
                 // La direction tourne avec le mouvement de la souris
                 // Le changement de direction est plus faible quand la vitesse augmente
-                rb.velocity = Quaternion.AngleAxis(mouseInput.x * rotationSpeed / rb.velocity.magnitude, Vector3.up) * rb.velocity;
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / rb.velocity.magnitude, Vector3.up) * rb.velocity;
 
                 if (rb.velocity.y < 0.0001)
                 {
@@ -219,30 +161,17 @@ public class PlayerController : MonoBehaviour
         {
             default:
                 float yFactor = 1f;
-                
                 if (isGrounded)
                 {
-                    if (onStickySurface)
-                    {
-                        gravity = contactPoint.normalized * gravityForce * -1;
-                    }
-                    else
-                    {
-                        yFactor = yCurve.Evaluate(rb.velocity.y);
+                    yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
 
-                        if (yFactor < 0)
-                        {
-                            Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
-                        }
-                        gravity = new Vector3(0, -gravityForce * yFactor, 0);
+                    if (yFactor < 0)
+                    {
+                        Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
                     }
                 }
-                else
-                {
-                    gravity = new Vector3(0, -gravityForce, 0);
-                }
 
-                
+                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
                 break;
         }
     }
@@ -254,7 +183,8 @@ public class PlayerController : MonoBehaviour
             default:
                 if (isGrounded)
                 {
-                     normal *= gravity.magnitude;
+                   
+                    normal *= gravity.magnitude;
                 }
                 else
                 {
@@ -279,7 +209,7 @@ public class PlayerController : MonoBehaviour
         switch (environmentEffect)
         {
             default:
-                float accelerationSpeed = (isGrounded ? moveSpeed : moveSpeed * airMultiplier) * Time.deltaTime;
+                float accelerationSpeed = (isGrounded ? PCData.moveSpeed : PCData.moveSpeed * PCData.airMultiplier) * Time.deltaTime;
 
                 Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
                 Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
@@ -299,8 +229,6 @@ public class PlayerController : MonoBehaviour
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
-
-    public bool onStickySurface;
     private void CheckGround()
     {
         if (complexDetection)
@@ -318,8 +246,6 @@ public class PlayerController : MonoBehaviour
                     normal = hit.normal.normalized;
                     AddShootCharges(1);
                     isGrounded = true;
-
-                    onStickySurface = hit.collider.CompareTag("Sticky");
                 }
                 else
                 {
@@ -344,8 +270,6 @@ public class PlayerController : MonoBehaviour
                 normal = hit.normal;
                 AddShootCharges(1);
                 isGrounded = true;
-
-                onStickySurface = hit.collider.CompareTag("Sticky");
             }
             else
             {
@@ -360,7 +284,7 @@ public class PlayerController : MonoBehaviour
         switch (environmentEffect)
         {
             default:
-                rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
                 break;
         }
     }
@@ -374,9 +298,9 @@ public class PlayerController : MonoBehaviour
     {
         rb.AddForce(direction * power, ForceMode.Impulse);
         
-        if (rb.velocity.magnitude > maxSpeed)
+        if (rb.velocity.magnitude > PCData.maxSpeed)
         {
-            maxSpeed = rb.velocity.magnitude;
+            PCData.maxSpeed = rb.velocity.magnitude;
         }
     }
 
@@ -474,7 +398,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shootCharges > 0)
         {
-            rb.AddForce(direction * shootForce, ForceMode.Impulse);
+            rb.AddForce(direction * PCData.shootForce, ForceMode.Impulse);
             shootCharges--;
         }
     }
@@ -487,61 +411,61 @@ public class PlayerController : MonoBehaviour
     {
         shootCharges += amount;
 
-        shootCharges = Mathf.Clamp(shootCharges, 0, maxShootCharges);
+        shootCharges = Mathf.Clamp(shootCharges, 0, PCData.maxShootCharges);
     }
 
     private void OnDrawGizmos()
     {
-        if(drawNormal)
+        if(PCData.drawNormal)
         {
-            Gizmos.color = normalColor;
+            Gizmos.color = PCData.normalColor;
             if(normalNormalized)
             {
                 Gizmos.DrawLine(transform.position, transform.position + normal.normalized);
             }
             else
             {
-                Gizmos.DrawLine(transform.position, transform.position + normal * factor);
+                Gizmos.DrawLine(transform.position, transform.position + normal * PCData.factor);
             }
         }
 
-        if(drawGravity)
+        if(PCData.drawGravity)
         {
-            Gizmos.color = gravityColor;
+            Gizmos.color = PCData.gravityColor;
             if (gravityNormalized)
             {
                 Gizmos.DrawLine(transform.position, transform.position + gravity.normalized);
             }
             else
             {
-                Gizmos.DrawLine(transform.position, transform.position + gravity * factor);
+                Gizmos.DrawLine(transform.position, transform.position + gravity * PCData.factor);
             }
         }
 
-        if(drawAcceleration)
+        if(PCData.drawAcceleration)
         {
-            Gizmos.color = accelerationColor;
+            Gizmos.color = PCData.accelerationColor;
             Gizmos.DrawLine(transform.position, transform.position + acceleration);
         }
 
-        if (drawFriction)
+        if (PCData.drawFriction)
         {
-            Gizmos.color = frictionColor;
+            Gizmos.color = PCData.frictionColor;
             Gizmos.DrawLine(transform.position, transform.position + friction);
         }
 
-        if (drawDirection)
+        if (PCData.drawDirection)
         {
-            Gizmos.color = directionColor;
+            Gizmos.color = PCData.directionColor;
             Gizmos.DrawLine(transform.position, transform.position + direction);
         }
 
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
 #if !UNITY_EDITOR
-        //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
-        //Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-       // Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
+        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

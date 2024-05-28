@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -153,6 +154,8 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
+    public AnimationCurve yCurve;
     private void HandleGravity()
     {
         switch (environmentEffect)
@@ -161,7 +164,7 @@ public class PlayerController : MonoBehaviour
                 float yFactor = 1f;
                 if (isGrounded)
                 {
-                    //yFactor = 1 / (rb.velocity.normalized.y + 2) / 2;
+                    yFactor = yCurve.Evaluate(rb.velocity.y);
                 }
 
                 gravity = new Vector3(0, -gravityForce * yFactor, 0);
@@ -237,7 +240,6 @@ public class PlayerController : MonoBehaviour
                 if(hit.distance <= groundDetectionLength)
                 {
                     contactPoint = hit.point;
-                    Debug.Log(hit.point);
                     normal = hit.normal.normalized;
                     AddShootCharges(1);
                     isGrounded = true;

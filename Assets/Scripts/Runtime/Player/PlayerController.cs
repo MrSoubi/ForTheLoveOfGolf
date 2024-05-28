@@ -72,10 +72,9 @@ public class PlayerController : MonoBehaviour
         else
         {
             HandleDirection();
-            HandleGravity();
-
+            
             CheckGround();
-
+            HandleGravity();
             HandleNormal();
             HandleFriction();
             HandleAcceleration();
@@ -138,7 +137,8 @@ public class PlayerController : MonoBehaviour
             default:
                 // La direction tourne avec le mouvement de la souris
                 // Le changement de direction est plus faible quand la vitesse augmente
-                rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / rb.velocity.magnitude, Vector3.up) * rb.velocity;
+                float mag = Mathf.Clamp(rb.velocity.magnitude, 0.000001f, Mathf.Infinity);
+                rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / mag, Vector3.up) * rb.velocity;
 
                 if (rb.velocity.y < 0.0001)
                 {

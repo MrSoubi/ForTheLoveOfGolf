@@ -63,16 +63,9 @@ public class Challenge : MonoBehaviour
     void SetChallenge()
     {
         currentCoinGet = 0;
-
-        ChallengeManager.instance.isDoingChallenge = true;
-        ChallengeManager.instance.currentChallenge = this;
-
-        ChallengeManager.instance.SetCollectibleCount(currentCoinGet, coinsToGet);
-
         timer = maxTime;
-        ChallengeManager.instance.timerTxt.text = timer.ToString("F2");
-        ChallengeManager.instance.timerAnim.SetBool("Show", true);
-        ChallengeManager.instance.collectibleAnim.SetBool("Show", true);
+
+        ChallengeManager.instance.StartNewChallenge(this, currentCoinGet, coinsToGet);
         
         SetActiveCollectible(true);
     }

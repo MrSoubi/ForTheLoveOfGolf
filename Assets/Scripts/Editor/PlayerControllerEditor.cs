@@ -220,7 +220,6 @@ public class PlayerControllerEditor : EditorWindow
 
         if (profileNames.Count == 0)
         {
-            Debug.Log("caca");
             profileNames.Add("No Profiles Available");
         }
 

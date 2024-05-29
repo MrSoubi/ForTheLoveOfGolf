@@ -58,6 +58,15 @@ public class PlayerController : MonoBehaviour
         {
             HandleRolling();
         }
+
+        if (isGrounded)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.yellow;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material.color = Color.blue;
+        }
     }
 
     private void FixedUpdate()
@@ -197,12 +206,16 @@ public class PlayerController : MonoBehaviour
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
 
+    public float stickyForce;
     private void HandleStickySurface()
     {
         direction = Vector3.ProjectOnPlane(direction, normal).normalized;
+        rb.velocity = direction * rb.velocity.magnitude;
+
+        gravity = Vector3.zero;
 
         friction = Vector3.zero;
-        gravity = Vector3.zero;
+        
         normal = Vector3.zero;
     }
 
@@ -221,26 +234,59 @@ public class PlayerController : MonoBehaviour
     Vector3 castDirection;
     private void CheckGround()
     {
+        if (onStickySurface)
+        {
+            castDirection = Quaternion.AngleAxis(90, Vector3.forward) * rb.velocity.normalized;
+        }
+        else
+        {
+            castDirection = Vector3.down;
+        }
+
         if (complexDetection)
         {
-            Vector3 origin = transform.position;
-            float radius = transform.localScale.x * 0.5f - 0.001f;
-            float maxDistance = radius + groundDetectionLength;
-
-            if(onStickySurface)
-            {
-                castDirection = Quaternion.AngleAxis(-90, Vector3.forward) * rb.velocity.normalized;
-            }
-            else
-            {
-                castDirection = Vector3.down;
-            }
+            Vector3 origin = transform.position - gravity.normalized * 0.1f;
+            float radius = transform.localScale.x * 0.5f + 0.001f;
+            float maxDistance = radius + groundDetectionLength + Mathf.Infinity;
 
             RaycastHit hit;
 
             if(Physics.SphereCast(origin, radius, castDirection, out hit, maxDistance))
             {
                 if(hit.distance <= groundDetectionLength)
+                {
+                    contactPoint = hit.point;
+                    normal = hit.normal.normalized;
+                    AddShootCharges(1);
+                    isGrounded = true;
+
+                    onStickySurface = hit.collider.CompareTag("Sticky");
+                    Debug.Log(hit.collider.tag);
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                    isGrounded = false;
+                    onStickySurface = false;
+                }
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+                onStickySurface = false;
+            }
+        }
+        else
+        {
+            RaycastHit hit;
+
+            Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+            if (Physics.Raycast(startingPosition, castDirection, out hit, groundDetectionLength))
+            {
+                Debug.Log(hit.distance);
+                if (hit.distance <= groundDetectionLength)
                 {
                     contactPoint = hit.point;
                     normal = hit.normal.normalized;
@@ -263,31 +309,11 @@ public class PlayerController : MonoBehaviour
                 onStickySurface = false;
             }
         }
-        else
-        {
-            RaycastHit hit;
-
-            Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
-
-            if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
-            {
-                normal = hit.normal;
-                AddShootCharges(1);
-                isGrounded = true;
-
-                onStickySurface = hit.collider.CompareTag("Sticky");
-            }
-            else
-            {
-                normal = Vector3.zero;
-                isGrounded = false;
-            }
-        }
     }
 
     private void LimitSpeed()
     {
-                rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
     }
 
     /// <summary>
@@ -484,6 +510,5 @@ public class PlayerController : MonoBehaviour
         //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
         Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

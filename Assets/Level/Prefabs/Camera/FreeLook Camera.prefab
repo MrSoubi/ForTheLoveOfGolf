@@ -382,7 +382,7 @@ MonoBehaviour:
     m_RecenteringTime: 2
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
-  m_BindingMode: 2
+  m_BindingMode: 1
   m_SplineCurvature: 0.209
   m_Orbits:
   - m_Height: 3

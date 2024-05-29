@@ -48,6 +48,20 @@ public class HoleManager : MonoBehaviour
 
             collectibleManager.RefreshInterface();
         }
+
+        if (IsEveryHoleFinished())
+        {
+            print("Every hole was finished");
+        }
+    }
+
+    bool IsEveryHoleFinished()
+    {
+        for (int i = 0; i < holeInGame.Count; i++)
+        {
+            if (!holeInGame[i].wasFinish) return false;
+        }
+        return true;
     }
 }
 

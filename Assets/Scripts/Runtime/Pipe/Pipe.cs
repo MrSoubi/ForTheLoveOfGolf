@@ -12,30 +12,36 @@ public class Pipe : MonoBehaviour
         {
             if (backroomCheckpoint)
             {
-<<<<<<< Updated upstream
                 print("CHANGER LA FONCTION DE TP");
                 other.transform.position = backroomCheckpoint.transform.position;
                 backroomCheckpoint.SetCheckpoint();
-=======
                 StartCoroutine(TeleportCoroutine(other.gameObject));
->>>>>>> Stashed changes
             }
             else print("Il n'y a pas de sortie au tuyau !");
         }
     }
 
     IEnumerator TeleportCoroutine(GameObject player)
-    {
-        // Freez player pos
-        // Fade in
+    {        
+        player.TryGetComponent(out PlayerController controller);
+        if (!controller)
+        {
+            controller.Block();
 
-        yield return new WaitForSeconds(1.2f);
+            yield return new WaitForSeconds(.4f);
 
-        player.GetComponent<PlayerController>().Teleport(backroomCheckpoint.transform.position);
-        backroomCheckpoint.SetCheckpoint();
+            UIManager.instance?.FadeIn();
 
-        // Fade out
-        // unfreez player pos
+            yield return new WaitForSeconds(1.2f);
+
+            player.GetComponent<PlayerController>().Teleport(backroomCheckpoint.transform.position);
+            backroomCheckpoint.SetCheckpoint();
+
+            UIManager.instance?.FadeOut();
+
+            yield return new WaitForSeconds(.8f);
+            controller.UnBlock();
+        }
     }
 
     private void OnDrawGizmos()

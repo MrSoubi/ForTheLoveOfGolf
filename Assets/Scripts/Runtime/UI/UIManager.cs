@@ -6,7 +6,14 @@ public class UIManager : MonoBehaviour
 {
     public Animator circularFadeAnim;
 
-    public void Fadein()
+    public static UIManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    public void FadeIn()
     {
         circularFadeAnim.SetTrigger("FadeIn");
     }

@@ -105,6 +105,7 @@ public class Challenge : MonoBehaviour
     {
         if (other.transform.CompareTag("Player") && !isAlreadyFinish)
         {
+            print("rthsrthetgrtgv");
             StartChallenge();
         }
     }

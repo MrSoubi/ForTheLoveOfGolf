@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool isAiming;
     public bool isGrounded;
     public bool onStickySurface;
-    
+    public bool allowStickySurfaces;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -61,7 +61,14 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            GetComponent<MeshRenderer>().material.color = Color.yellow;
+            if (allowStickySurfaces && onStickySurface)
+            {
+                GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material.color = Color.yellow;
+            }
         }
         else
         {
@@ -100,7 +107,7 @@ public class PlayerController : MonoBehaviour
         HandleNormal();
         HandleFriction();
 
-        if (onStickySurface)
+        if (allowStickySurfaces && onStickySurface)
         {
             HandleStickySurface();
         }
@@ -206,7 +213,6 @@ public class PlayerController : MonoBehaviour
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
 
-    public float stickyForce;
     private void HandleStickySurface()
     {
         direction = Vector3.ProjectOnPlane(direction, normal).normalized;
@@ -234,7 +240,7 @@ public class PlayerController : MonoBehaviour
     Vector3 castDirection;
     private void CheckGround()
     {
-        if (onStickySurface)
+        if (allowStickySurfaces && onStickySurface)
         {
             castDirection = Quaternion.AngleAxis(90, Vector3.forward) * rb.velocity.normalized;
         }
@@ -245,37 +251,7 @@ public class PlayerController : MonoBehaviour
 
         if (complexDetection)
         {
-            Vector3 origin = transform.position - gravity.normalized * 0.1f;
-            float radius = transform.localScale.x * 0.5f + 0.001f;
-            float maxDistance = radius + groundDetectionLength + Mathf.Infinity;
-
-            RaycastHit hit;
-
-            if(Physics.SphereCast(origin, radius, castDirection, out hit, maxDistance))
-            {
-                if(hit.distance <= groundDetectionLength)
-                {
-                    contactPoint = hit.point;
-                    normal = hit.normal.normalized;
-                    AddShootCharges(1);
-                    isGrounded = true;
-
-                    onStickySurface = hit.collider.CompareTag("Sticky");
-                    Debug.Log(hit.collider.tag);
-                }
-                else
-                {
-                    normal = Vector3.zero;
-                    isGrounded = false;
-                    onStickySurface = false;
-                }
-            }
-            else
-            {
-                normal = Vector3.zero;
-                isGrounded = false;
-                onStickySurface = false;
-            }
+            SphereDetection_v2();
         }
         else
         {
@@ -310,6 +286,89 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    private void SphereDetection_v1()
+    {
+        Vector3 origin = transform.position - gravity.normalized * 0.1f;
+        float radius = transform.localScale.x * 0.5f + 0.001f;
+        float maxDistance = radius + groundDetectionLength;
+
+        RaycastHit hit;
+
+        if (Physics.SphereCast(origin, radius, castDirection, out hit, maxDistance))
+        {
+            Debug.Log("Cast successfull");
+            if (hit.distance <= groundDetectionLength)
+            {
+                contactPoint = hit.point;
+                normal = hit.normal.normalized;
+                AddShootCharges(1);
+                isGrounded = true;
+
+                onStickySurface = hit.collider.CompareTag("Sticky");
+                Debug.Log(hit.collider.tag);
+            }
+            else
+            {
+                normal = Vector3.zero;
+                isGrounded = false;
+                onStickySurface = false;
+            }
+        }
+        else
+        {
+            normal = Vector3.zero;
+            isGrounded = false;
+            onStickySurface = false;
+        }
+    }
+
+    private void SphereDetection_v2()
+    {
+        Vector3 origin = transform.position;
+        float radius = transform.localScale.x * 0.5f;
+
+        RaycastHit hit;
+
+        if (Physics.SphereCast(origin, radius, castDirection, out hit, Mathf.Infinity))
+        {
+            contactPoint = hit.point;
+            Vector3 contactSphere = hit.point + (origin - contactPoint).normalized * radius;
+            float distanceBtwOriginAndCastSPhere = (origin - contactSphere).magnitude;
+
+            onStickySurface = hit.collider.CompareTag("Sticky");
+
+            if (allowStickySurfaces && onStickySurface && distanceBtwOriginAndCastSPhere <= 1 && distanceBtwOriginAndCastSPhere >= 0.01)
+            {
+                rb.position = contactSphere;
+                normal = hit.normal.normalized;
+                AddShootCharges(1);
+                isGrounded = true;
+            }
+            else
+            {
+                if (distanceBtwOriginAndCastSPhere <= groundDetectionLength)
+                {
+                    normal = hit.normal.normalized;
+                    AddShootCharges(1);
+                    isGrounded = true;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                    isGrounded = false;
+                    onStickySurface = false;
+                }
+            }
+        }
+        else
+        {
+            normal = Vector3.zero;
+            isGrounded = false;
+            onStickySurface = false;
+        }
+    }
+
 
     private void LimitSpeed()
     {

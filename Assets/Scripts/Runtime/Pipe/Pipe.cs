@@ -4,23 +4,50 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] CheckpointTrigger backroomCheckpoint;
+    [SerializeField] Pipe backroomPipe;
+    public Vector3 respawnPoint;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (backroomCheckpoint)
+            if (backroomPipe)
             {
-                other.GetComponent<PlayerController>().Teleport(backroomCheckpoint.transform.position);
-                backroomCheckpoint.SetCheckpoint();
+                StartCoroutine(TeleportCoroutine(other.gameObject));
             }
-            else print("Il n'y a pas de sortie au tuyau !");
+        }
+    }
+
+    IEnumerator TeleportCoroutine(GameObject player)
+    {        
+        player.TryGetComponent(out PlayerController controller);
+        if (controller)
+        {
+            controller.Block();
+
+            yield return new WaitForSeconds(.4f);
+
+            UIManager.instance?.FadeIn();
+
+            yield return new WaitForSeconds(1.2f);
+
+            controller.Teleport(backroomPipe.transform.position + backroomPipe.respawnPoint);
+
+            UIManager.instance?.FadeOut();
+
+            yield return new WaitForSeconds(.8f);
+            controller.UnBlock();
         }
     }
 
     private void OnDrawGizmos()
     {
-        if(backroomCheckpoint) Gizmos.DrawSphere(backroomCheckpoint.transform.position, .2f);
+        if(backroomPipe) Gizmos.DrawSphere(backroomPipe.respawnPoint, .2f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position + respawnPoint, .1f);
     }
 }

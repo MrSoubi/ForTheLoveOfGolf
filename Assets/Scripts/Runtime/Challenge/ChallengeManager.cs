@@ -31,10 +31,12 @@ public class ChallengeManager : MonoBehaviour
         currentChallenge = null;
     }
 
-    public void StartNewChallenge(Challenge challenge, int currentCoinGet, int coinsToGet)
+    public void StartNewChallenge(Challenge challenge, float time, int currentCoinGet, int coinsToGet)
     {
         isDoingChallenge = true;
         currentChallenge = challenge;
+
+        SetTimer(time);
 
         SetCollectibleCount(currentCoinGet, coinsToGet);
 
@@ -47,6 +49,10 @@ public class ChallengeManager : MonoBehaviour
     public void SetCollectibleCount(int current, int max)
     {
         collectibleCountTxt.text = current + " / " + max;
+    }
+    public void SetTimer(float time)
+    {
+        timerTxt.text = time.ToString("F2");
     }
     IEnumerator HidUIAnim()
     {

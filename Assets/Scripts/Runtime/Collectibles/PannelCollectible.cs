@@ -20,7 +20,7 @@ public class PannelCollectible : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollected += UpdatePannel, 0.05f));
+        StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
     }
 
     private void UpdatePannel(int nbCollected)
@@ -29,7 +29,7 @@ public class PannelCollectible : MonoBehaviour
         textCollectibles.text = nbCollected + "/" + nbCollectibles;
         if (nbCollected >= nbCollectibles)
         {
-            if (CollectibleManager.instance) CollectibleManager.instance.onCollected -= UpdatePannel;
+            if (CollectibleManager.instance) CollectibleManager.instance.onCollectedCoin -= UpdatePannel;
             //particleEffect.Play();
             //StartCoroutine(Utils.Delay(() => 
             //{

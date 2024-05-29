@@ -30,6 +30,9 @@ public class HoleManager : MonoBehaviour
         {
             collectibleManager.holeCount += 1;
             holeInGame[id].wasFinish = true;
+
+            collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);
+
             if(holesCount[id].finish)
             {
                 if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
@@ -49,19 +52,23 @@ public class HoleManager : MonoBehaviour
             collectibleManager.RefreshInterface();
         }
 
-        if (IsEveryHoleFinished())
+        if (holesCount[id].finish)
         {
-            print("Every hole was finished");
+            if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
+            {
+                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
+            }
+            else
+            {
+                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
+            }
         }
-    }
+        else
+        {
+            holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
+        }
 
-    bool IsEveryHoleFinished()
-    {
-        for (int i = 0; i < holeInGame.Count; i++)
-        {
-            if (!holeInGame[i].wasFinish) return false;
-        }
-        return true;
+        collectibleManager.RefreshInterface();
     }
 }
 

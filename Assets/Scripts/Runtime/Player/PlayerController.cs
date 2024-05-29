@@ -213,6 +213,8 @@ public class PlayerController : MonoBehaviour
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
 
+
+
     private void HandleForces()
     {
         if (onStickySurface)
@@ -226,7 +228,6 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(forces, ForceMode.Acceleration);
     }
-
 
     public Vector3 contactPoint;
     public bool complexDetection;
@@ -364,7 +365,6 @@ public class PlayerController : MonoBehaviour
         isFreezed = false;
     }
     #endregion
-
     #region Block
     /// <summary>
     /// Arrête totalement la balle, elle ne subira plus l'effet d'aucune force (gravité, input, bump...)

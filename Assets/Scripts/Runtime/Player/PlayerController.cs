@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool isAiming;
     public bool isGrounded;
     public bool onStickySurface;
-
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -90,12 +90,13 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleNormal();
         HandleFriction();
-        HandleAcceleration();
 
         if (onStickySurface)
         {
             HandleStickySurface();
         }
+
+        HandleAcceleration();
 
         LimitSpeed();
     }
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour
     private void HandleGravity()
     {
         float yFactor = 1f;
-
+                
         if (isGrounded)
         {
             yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
@@ -156,7 +157,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
             }
-            gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
         }
         else
         {
@@ -168,7 +169,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded)
         {
-            normal *= gravity.magnitude;
+                normal *= gravity.magnitude;
         }
         else
         {
@@ -183,7 +184,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        float accelerationSpeed = (isGrounded ? PCData.moveSpeed : PCData.moveSpeed * PCData.airMultiplier) * Time.deltaTime;
+        float accelerationSpeed = PCData.moveSpeed * Time.deltaTime;
+
+        if (!isGrounded)
+        {
+            accelerationSpeed *= PCData.airMultiplier;
+        }
 
         Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
         Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
@@ -193,30 +199,26 @@ public class PlayerController : MonoBehaviour
 
     private void HandleStickySurface()
     {
+        direction = Vector3.ProjectOnPlane(direction, normal).normalized;
+
         friction = Vector3.zero;
         gravity = Vector3.zero;
         normal = Vector3.zero;
     }
 
+
     private void HandleForces()
     {
-        if (onStickySurface)
-        {
-            gravity = Vector3.zero;
-            normal = Vector3.zero;
-            friction = Vector3.zero;
-        }
-
         Vector3 forces = gravity + normal + acceleration + friction;
 
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
-
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
 
+    Vector3 castDirection;
     private void CheckGround()
     {
         if (complexDetection)
@@ -224,9 +226,19 @@ public class PlayerController : MonoBehaviour
             Vector3 origin = transform.position;
             float radius = transform.localScale.x * 0.5f - 0.001f;
             float maxDistance = radius + groundDetectionLength;
+
+            if(onStickySurface)
+            {
+                castDirection = Quaternion.AngleAxis(-90, Vector3.forward) * rb.velocity.normalized;
+            }
+            else
+            {
+                castDirection = Vector3.down;
+            }
+
             RaycastHit hit;
 
-            if(Physics.SphereCast(origin, radius, Vector3.down, out hit, maxDistance))
+            if(Physics.SphereCast(origin, radius, castDirection, out hit, maxDistance))
             {
                 if(hit.distance <= groundDetectionLength)
                 {
@@ -275,7 +287,7 @@ public class PlayerController : MonoBehaviour
 
     private void LimitSpeed()
     {
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
+                rb.velocity = Vector3.ClampMagnitude(rb.velocity, PCData.maxSpeed);
     }
 
     /// <summary>
@@ -349,7 +361,6 @@ public class PlayerController : MonoBehaviour
         isFreezed = false;
     }
     #endregion
-
     #region Block
     /// <summary>
     /// Arrête totalement la balle, elle ne subira plus l'effet d'aucune force (gravité, input, bump...)
@@ -465,12 +476,14 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawLine(transform.position, transform.position + direction);
         }
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + castDirection * 5);
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
 #if !UNITY_EDITOR
         //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
-        //Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-       // Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
+        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
+        Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
     }
 }

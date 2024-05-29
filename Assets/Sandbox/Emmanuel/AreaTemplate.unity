@@ -4429,17 +4429,21 @@ PrefabInstance:
       propertyPath: cameraManager
       value: 
       objectReference: {fileID: 692280476}
+    - target: {fileID: 3982923495089131998, guid: e533a178add9d1746b7aaf56a346cda8, type: 3}
+      propertyPath: groundDetectionLength
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 6737611680261338443, guid: e533a178add9d1746b7aaf56a346cda8, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7311884581465759139, guid: e533a178add9d1746b7aaf56a346cda8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.3
+      value: -12.42
       objectReference: {fileID: 0}
     - target: {fileID: 7311884581465759139, guid: e533a178add9d1746b7aaf56a346cda8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.8
+      value: 3.74
       objectReference: {fileID: 0}
     - target: {fileID: 7311884581465759139, guid: e533a178add9d1746b7aaf56a346cda8, type: 3}
       propertyPath: m_LocalPosition.z

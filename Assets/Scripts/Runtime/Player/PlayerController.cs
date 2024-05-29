@@ -92,6 +92,11 @@ public class PlayerController : MonoBehaviour
         HandleFriction();
         HandleAcceleration();
 
+        if (onStickySurface)
+        {
+            HandleStickySurface();
+        }
+
         LimitSpeed();
     }
 
@@ -137,70 +142,43 @@ public class PlayerController : MonoBehaviour
         {
             direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
         }
-
-        if (onStickySurface)
-        {
-            //Vector3.ProjectOnPlane();
-        }
     }
 
     private void HandleGravity()
     {
-        if (onStickySurface)
+        float yFactor = 1f;
+
+        if (isGrounded)
         {
-            gravity = Vector3.zero;
+            yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+
+            if (yFactor < 0)
+            {
+                Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+            }
+            gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
         }
         else
         {
-            float yFactor = 1f;
-
-            if (isGrounded)
-            {
-                yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
-
-                if (yFactor < 0)
-                {
-                    Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
-                }
-                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
-            }
-            else
-            {
-                gravity = new Vector3(0, -PCData.gravityForce, 0);
-            }
+            gravity = new Vector3(0, -PCData.gravityForce, 0);
         }
     }
 
     private void HandleNormal()
     {
-        if (onStickySurface)
+        if (isGrounded)
         {
-            normal = Vector3.zero;
+            normal *= gravity.magnitude;
         }
         else
         {
-            if (isGrounded)
-            {
-                normal *= gravity.magnitude;
-            }
-            else
-            {
-                normal = Vector3.zero;
-            }
+            normal = Vector3.zero;
         }
-        
     }
 
     private void HandleFriction()
     {
-        if (onStickySurface)
-        {
-            friction = Vector3.zero;
-        }
-        else
-        {
-            friction = Vector3.zero;
-        }
+        friction = Vector3.zero;
     }
 
     private void HandleAcceleration()
@@ -211,6 +189,13 @@ public class PlayerController : MonoBehaviour
         Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
 
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
+    }
+
+    private void HandleStickySurface()
+    {
+        friction = Vector3.zero;
+        gravity = Vector3.zero;
+        normal = Vector3.zero;
     }
 
     private void HandleForces()

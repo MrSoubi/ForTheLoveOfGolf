@@ -311,6 +311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectibleManager: {fileID: 0}
   door: {fileID: 2607355348971403495}
+  animeDuration: 1
 --- !u!1 &7003911263428509806
 GameObject:
   m_ObjectHideFlags: 0

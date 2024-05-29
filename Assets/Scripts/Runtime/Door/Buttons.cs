@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,16 @@ public class Buttons : MonoBehaviour
     [Header("Door")]
     public Door door;
 
+    [Header("Animation")]
+    public int animeDuration;
+
+    private Vector3 position;
+
+    private void Start()
+    {
+        position = transform.position;
+    }
+
     /// <summary>
     /// Quand le joueur est détecter, il ouvre la porte uniquement si l'objectif est bon
     /// </summary>
@@ -18,17 +29,41 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            transform.DOMove(new Vector3(position.x, position.y - 0.3f, position.z), animeDuration);
+
             if (!door.open)
             {
-                if (door.collectibleNeed && collectibleManager.collectibleValue >= door.collectibleQuantity)
+                if(door.collectibleNeed && collectibleManager.collectibleCount >= door.collectibleQuantity)
                 {
-                    door.OpenDoor();
+                    if(door.holeNeed && collectibleManager.holeCount >= door.holeQuantity)
+                    {
+                        door.OpenDoor();
+                    }
+                    else if(!door.holeNeed)
+                    {
+                        door.OpenDoor();
+                    }
                 }
-                else if (door.holeNeed && collectibleManager.holeValue >= door.holeQuantity)
+                else if(door.holeNeed && collectibleManager.holeCount >= door.holeQuantity)
                 {
-                    door.OpenDoor();
+                    if (door.collectibleNeed && collectibleManager.collectibleCount >= door.collectibleQuantity)
+                    {
+                        door.OpenDoor();
+                    }
+                    else if (!door.collectibleNeed)
+                    {
+                        door.OpenDoor();
+                    }
                 }
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            transform.DOMove(new Vector3(position.x, position.y, position.z), animeDuration);
         }
     }
 }

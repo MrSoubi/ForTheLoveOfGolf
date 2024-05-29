@@ -56,16 +56,6 @@ public class Buttons : MonoBehaviour
         textHole.text = nbCollected + "/" + door.holeQuantity.ToString() + " Holes";
     }
 
-    [Header("Animation")]
-    public int animeDuration;
-
-    private Vector3 position;
-
-    private void Start()
-    {
-        position = transform.position;
-    }
-
     /// <summary>
     /// Quand le joueur est détecter, il ouvre la porte uniquement si l'objectif est bon
     /// </summary>

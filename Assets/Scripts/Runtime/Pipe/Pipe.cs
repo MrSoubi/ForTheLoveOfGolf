@@ -21,28 +21,6 @@ public class Pipe : MonoBehaviour
     IEnumerator TeleportCoroutine(GameObject player)
     {        
         player.TryGetComponent(out PlayerController controller);
-        if (!controller)
-        {
-            controller.Block();
-
-            yield return new WaitForSeconds(.4f);
-
-            UIManager.instance?.FadeIn();
-
-            yield return new WaitForSeconds(1.2f);
-
-            controller.Teleport(backroomPipe.transform.position + backroomPipe.respawnPoint);
-
-            UIManager.instance?.FadeOut();
-
-            yield return new WaitForSeconds(.8f);
-            controller.UnBlock();
-        }
-    }
-
-    IEnumerator TeleportCoroutine(GameObject player)
-    {        
-        player.TryGetComponent(out PlayerController controller);
         if (controller)
         {
             controller.Block();
@@ -53,8 +31,7 @@ public class Pipe : MonoBehaviour
 
             yield return new WaitForSeconds(1.2f);
 
-           controller.Teleport(backroomCheckpoint.transform.position);
-            backroomCheckpoint.SetCheckpoint();
+            controller.Teleport(backroomPipe.transform.position + backroomPipe.respawnPoint);
 
             UIManager.instance?.FadeOut();
 

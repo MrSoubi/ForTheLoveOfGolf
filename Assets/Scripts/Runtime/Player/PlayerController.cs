@@ -140,39 +140,61 @@ public class PlayerController : MonoBehaviour
 
     private void HandleGravity()
     {
-        float yFactor = 1f;
-                
-        if (isGrounded)
+        if (onStickySurface)
         {
-            yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
-
-            if (yFactor < 0)
-            {
-                Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
-            }
-            gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+            gravity = Vector3.zero;
         }
         else
         {
-            gravity = new Vector3(0, -PCData.gravityForce, 0);
+            float yFactor = 1f;
+
+            if (isGrounded)
+            {
+                yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+
+                if (yFactor < 0)
+                {
+                    Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                }
+                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+            }
+            else
+            {
+                gravity = new Vector3(0, -PCData.gravityForce, 0);
+            }
         }
     }
 
     private void HandleNormal()
     {
-        if (isGrounded)
-        {
-            normal *= gravity.magnitude;
-        }
-        else
+        if (onStickySurface)
         {
             normal = Vector3.zero;
         }
+        else
+        {
+            if (isGrounded)
+            {
+                normal *= gravity.magnitude;
+            }
+            else
+            {
+                normal = Vector3.zero;
+            }
+        }
+        
     }
 
     private void HandleFriction()
     {
-        friction = Vector3.zero;
+        if (onStickySurface)
+        {
+            friction = Vector3.zero;
+        }
+        else
+        {
+            friction = Vector3.zero;
+        }
     }
 
     private void HandleAcceleration()

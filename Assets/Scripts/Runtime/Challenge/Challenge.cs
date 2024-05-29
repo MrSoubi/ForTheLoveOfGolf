@@ -22,6 +22,8 @@ public class Challenge : MonoBehaviour
 
     Coroutine timerCoroutine;
 
+    [HideInInspector] public bool active;
+
     private void Awake()
     {
         currentCollectibles = GetComponentsInChildren<ChallengeCollectible>();
@@ -71,9 +73,11 @@ public class Challenge : MonoBehaviour
     void StartChallenge()
     {
         timerCoroutine = StartCoroutine(ChallengeTimer());
+        active = true;
     }
-    void EndChallenge()
+    public void EndChallenge()
     {
+        active = false;
         ChallengeManager.instance.StopCurrentChallenge();
 
         SetActiveCollectible(false);

@@ -107,7 +107,6 @@ public class CollectibleManager : MonoBehaviour
     {
         collectibleCount += value;
         onCollectedCoin?.Invoke(collectibleCount);
-        onCollectedHole?.Invoke(collectibleCount);
 
         RefreshInterface();
 

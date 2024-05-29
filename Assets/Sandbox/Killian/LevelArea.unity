@@ -1127,6 +1127,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3711257098331494810, guid: c72b6350c56cde64aa29d6ae60352253, type: 3}
+      propertyPath: Challenges
+      value: 
+      objectReference: {fileID: 1862825293}
     - target: {fileID: 6851233898408773567, guid: c72b6350c56cde64aa29d6ae60352253, type: 3}
       propertyPath: m_LocalScale.x
       value: 1000
@@ -4880,6 +4884,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2dfb158de8ef6444b9d09d27836f217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1862825293 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 91549553482475834, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+  m_PrefabInstance: {fileID: 214739486}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f22b68c51a384c4fa00a2af50cfd8f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1869663131 stripped

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2512754017032047404}
   - component: {fileID: 8719213257280431555}
   - component: {fileID: 240100589004947867}
-  - component: {fileID: 5840509933500768904}
+  - component: {fileID: 1086525251016097395}
   m_Layer: 0
   m_Name: UCurveFlatMesh
   m_TagString: Untagged
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3260246462256965622}
-  m_Mesh: {fileID: -423980839061237346, guid: 3102922c7d57c6f4ba0fff8e72ddfd5f, type: 3}
+  m_Mesh: {fileID: -423980839061237346, guid: 055667ba068fee449b0bb53025b628e7, type: 3}
 --- !u!23 &240100589004947867
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5840509933500768904
+--- !u!64 &1086525251016097395
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -423980839061237346, guid: 3102922c7d57c6f4ba0fff8e72ddfd5f, type: 3}
+  m_Mesh: {fileID: -423980839061237346, guid: 055667ba068fee449b0bb53025b628e7, type: 3}
 --- !u!1 &7742412604002110129
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8499543720293822005}
   - component: {fileID: 4029394366140495448}
   - component: {fileID: 2012684289852463804}
-  - component: {fileID: 4677606183929593145}
+  - component: {fileID: 6243577436708181471}
   m_Layer: 0
   m_Name: BermIntMesh
   m_TagString: Untagged
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7790749150949464780}
-  m_Mesh: {fileID: 6407806552772977074, guid: 3102922c7d57c6f4ba0fff8e72ddfd5f, type: 3}
+  m_Mesh: {fileID: 6407806552772977074, guid: 055667ba068fee449b0bb53025b628e7, type: 3}
 --- !u!23 &2012684289852463804
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4677606183929593145
+--- !u!64 &6243577436708181471
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,7 +105,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 6407806552772977074, guid: 3102922c7d57c6f4ba0fff8e72ddfd5f, type: 3}
+  m_Mesh: {fileID: 6407806552772977074, guid: 055667ba068fee449b0bb53025b628e7, type: 3}
 --- !u!1 &8085493773215813740
 GameObject:
   m_ObjectHideFlags: 0

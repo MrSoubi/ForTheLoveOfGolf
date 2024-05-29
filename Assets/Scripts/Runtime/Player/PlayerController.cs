@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isAiming;
     public bool isGrounded;
-    
+    public bool onStickySurface;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -136,6 +137,11 @@ public class PlayerController : MonoBehaviour
         {
             direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
         }
+
+        if (onStickySurface)
+        {
+            //Vector3.ProjectOnPlane();
+        }
     }
 
     private void HandleGravity()
@@ -207,8 +213,6 @@ public class PlayerController : MonoBehaviour
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
 
-
-
     private void HandleForces()
     {
         if (onStickySurface)
@@ -224,12 +228,10 @@ public class PlayerController : MonoBehaviour
     }
 
 
-
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
 
-    public bool onStickySurface;
     private void CheckGround()
     {
         if (complexDetection)

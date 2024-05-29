@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isAiming;
     public bool isGrounded;
-    
+    public bool onStickySurface;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -136,43 +137,70 @@ public class PlayerController : MonoBehaviour
         {
             direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
         }
+
+        if (onStickySurface)
+        {
+            //Vector3.ProjectOnPlane();
+        }
     }
 
     private void HandleGravity()
     {
-        float yFactor = 1f;
-                
-        if (isGrounded)
+        if (onStickySurface)
         {
-            yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
-
-            if (yFactor < 0)
-            {
-                Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
-            }
-            gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+            gravity = Vector3.zero;
         }
         else
         {
-            gravity = new Vector3(0, -PCData.gravityForce, 0);
+            float yFactor = 1f;
+
+            if (isGrounded)
+            {
+                yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+
+                if (yFactor < 0)
+                {
+                    Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+                }
+                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+            }
+            else
+            {
+                gravity = new Vector3(0, -PCData.gravityForce, 0);
+            }
         }
     }
 
     private void HandleNormal()
     {
-        if (isGrounded)
-        {
-            normal *= gravity.magnitude;
-        }
-        else
+        if (onStickySurface)
         {
             normal = Vector3.zero;
         }
+        else
+        {
+            if (isGrounded)
+            {
+                normal *= gravity.magnitude;
+            }
+            else
+            {
+                normal = Vector3.zero;
+            }
+        }
+        
     }
 
     private void HandleFriction()
     {
-        friction = Vector3.zero;
+        if (onStickySurface)
+        {
+            friction = Vector3.zero;
+        }
+        else
+        {
+            friction = Vector3.zero;
+        }
     }
 
     private void HandleAcceleration()
@@ -201,13 +229,10 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(forces, ForceMode.Acceleration);
     }
 
-
-
     public Vector3 contactPoint;
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
 
-    public bool onStickySurface;
     private void CheckGround()
     {
         if (complexDetection)
@@ -340,7 +365,6 @@ public class PlayerController : MonoBehaviour
         isFreezed = false;
     }
     #endregion
-
     #region Block
     /// <summary>
     /// Arrête totalement la balle, elle ne subira plus l'effet d'aucune force (gravité, input, bump...)

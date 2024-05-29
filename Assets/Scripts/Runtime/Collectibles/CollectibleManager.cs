@@ -12,6 +12,7 @@ public class CollectibleManager : MonoBehaviour
 
     [Header("Interface")]
     public TextMeshProUGUI textCollectibleCounter;
+    public TextMeshProUGUI textHoleCounter;
 
     [Header("Collectible")]
     public int collectibleCount;
@@ -24,7 +25,8 @@ public class CollectibleManager : MonoBehaviour
     bool showCollectibleCount = true;
     [SerializeField] Animator collectibleCountAnim;
 
-    public Action<int> onCollected; 
+    public Action<int> onCollectedCoin;
+    public Action<int> onCollectedHole;
 
     public static CollectibleManager instance { get; private set; }
 
@@ -62,11 +64,14 @@ public class CollectibleManager : MonoBehaviour
     /// <summary>
     /// Met à jour l'affichage du compteur
     /// </summary>
-    private void RefreshInterface()
+    public void RefreshInterface()
     {
         if (textCollectibleCounter != null && collectibles.Count > 0)
         {
+            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue + " Coins";
+            textHoleCounter.text = holeCount.ToString() + "/" + holeValue + " Holes";
             textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
+            textHoleCounter.text = holeCount.ToString() + "/" + holeValue;
         }
     }
 
@@ -101,8 +106,7 @@ public class CollectibleManager : MonoBehaviour
     public void AddCollectible(int index, int value)
     {
         collectibleCount += value;
-        print("enter");
-        onCollected?.Invoke(collectibleCount);
+        onCollectedCoin?.Invoke(collectibleCount);
 
         RefreshInterface();
 

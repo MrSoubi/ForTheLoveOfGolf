@@ -9,6 +9,7 @@ public class Hole : MonoBehaviour
 
     [SerializeField] int ID;
     [HideInInspector] public HoleManager holeManager;
+    public bool finish;
 
     GameObject collision;
 

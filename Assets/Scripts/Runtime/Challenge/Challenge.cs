@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Challenge : MonoBehaviour
@@ -23,6 +21,8 @@ public class Challenge : MonoBehaviour
     [SerializeField] GameObject[] challengeRewards;
 
     Coroutine timerCoroutine;
+
+    [HideInInspector] public bool active;
 
     private void Awake()
     {
@@ -66,16 +66,18 @@ public class Challenge : MonoBehaviour
         currentCoinGet = 0;
         timer = maxTime;
 
-        ChallengeManager.instance.StartNewChallenge(this, currentCoinGet, coinsToGet);
+        ChallengeManager.instance.StartNewChallenge(this, maxTime, currentCoinGet, coinsToGet);
         
         SetActiveCollectible(true);
     }
     void StartChallenge()
     {
         timerCoroutine = StartCoroutine(ChallengeTimer());
+        active = true;
     }
-    void EndChallenge()
+    public void EndChallenge()
     {
+        active = false;
         ChallengeManager.instance.StopCurrentChallenge();
 
         SetActiveCollectible(false);
@@ -89,7 +91,7 @@ public class Challenge : MonoBehaviour
         while(timer > 0)
         {
             timer -= Time.deltaTime;
-            ChallengeManager.instance.timerTxt.text = timer.ToString("F2");
+            ChallengeManager.instance.SetTimer(timer);
             yield return null;
         }
 
@@ -100,7 +102,6 @@ public class Challenge : MonoBehaviour
     {
         if (other.transform.CompareTag("Player") && !isAlreadyFinish)
         {
-            if(ChallengeManager.instance.isDoingChallenge) ChallengeManager.instance.StopCurrentChallenge();
             SetChallenge();
         }
     }

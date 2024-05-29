@@ -10,7 +10,7 @@ public class Door : MonoBehaviour
     public bool openVertical;
 
     [Header("Animation")]
-    public int animeDuration = 3;
+    public int animeDuration;
 
     [Header("State")]
     public bool open;

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
   m_Name: PlayerControllerData
   m_EditorClassIdentifier: 
-  moveSpeed: 1500
-  maxSpeed: 25
+  moveSpeed: 2000
+  maxSpeed: 30
   airMultiplier: 0.25
-  rotationSpeed: 1
-  gravityForce: 0
+  rotationSpeed: 5
+  gravityForce: 10
   shootForce: 10
   shootCharges: 1
   maxShootCharges: 1
@@ -33,22 +33,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
+      time: -1
+      value: 2
+      inSlope: -1
+      outSlope: -1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.8
+      outSlope: -0.8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
+      value: 0.4
+      inSlope: -0.6
+      outSlope: -0.6
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

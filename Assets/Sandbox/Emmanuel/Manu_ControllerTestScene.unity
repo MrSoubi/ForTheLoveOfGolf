@@ -1385,9 +1385,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
+      propertyPath: maxShoots
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
+      propertyPath: shootingAngle
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
       propertyPath: aimingMaterial
       value: 
       objectReference: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
+    - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
+      propertyPath: normalMaterial
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
       propertyPath: rollingMaterial
       value: 

@@ -29,7 +29,8 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField]
     float shootHeight = 2f;
 
-    int maxAirShoots = 0;
+    [SerializeField]
+    int maxShoots = 1;
 
     [Tooltip("Angle maximum du sol au delà duquel la balle ne prendre plus d'accélération")]
     [SerializeField, Range(0, 90)]
@@ -218,8 +219,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (playerInputSpace)
         {
             rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
-            forwardAxis =
-                ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
+            forwardAxis = ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
         }
         else
         {
@@ -236,21 +236,10 @@ public class PC_MovingSphere : MonoBehaviour
 
     void UpdateBall()
     {
-        //Material ballMaterial = normalMaterial;
         Vector3 rotationPlaneNormal = lastContactNormal;
         float rotationFactor = 1f;
-        
 
-        if (Climbing)
-        {
-            //ballMaterial = climbingMaterial;
-        }
-        else if (Swimming)
-        {
-            //ballMaterial = swimmingMaterial;
-            rotationFactor = ballSwimRotation;
-        }
-        else if (!OnGround)
+        if (!OnGround)
         {
             if (OnSteep)
             {
@@ -261,7 +250,6 @@ public class PC_MovingSphere : MonoBehaviour
                 rotationFactor = ballAirRotation;
             }
         }
-        //meshRenderer.material = ballMaterial;
 
         Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
         movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
@@ -347,11 +335,13 @@ public class PC_MovingSphere : MonoBehaviour
         {
             velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
         }
-        else
+        else // La balle est dans les airs
         {
             velocity += gravity * Time.deltaTime;
         }
+
         body.velocity = velocity;
+
         ClearState();
     }
 
@@ -536,34 +526,15 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
-    Vector3 shootDirectionDEBUG;
     public float shootingAngle;
     void Shoot(Vector3 gravity)
     {
         Vector3 shootDirection;
-        /*
-        if (OnGround)
-        {
-            shootDirection = contactNormal;
-        }
-        else if (OnSteep)
-        {
-            shootDirection = steepNormal;
-            shootPhase = 0;
-        }
-        else if (maxAirShoots > 0 && shootPhase <= maxAirShoots)
-        {
-            if (shootPhase == 0)
-            {
-                shootPhase = 1;
-            }
-            shootDirection = contactNormal;
-        }
-        else
+
+        if (maxShoots <= 0 || shootPhase >= maxShoots)
         {
             return;
         }
-        */
 
         stepsSinceLastJump = 0;
         shootPhase += 1;
@@ -575,14 +546,14 @@ public class PC_MovingSphere : MonoBehaviour
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
-        shootDirectionDEBUG = shootDirection;
-        //shootDirection = playerInputSpace.forward + upAxis;
+
         float alignedSpeed = Vector3.Dot(velocity, shootDirection);
         if (alignedSpeed > 0f)
         {
             shootSpeed = Mathf.Max(shootSpeed - alignedSpeed, 0f);
         }
-        velocity += shootDirection * shootSpeed;
+
+        velocity = shootDirection * shootSpeed;
     }
 
     void OnCollisionEnter(Collision collision)

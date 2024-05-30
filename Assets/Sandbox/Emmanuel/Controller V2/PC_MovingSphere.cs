@@ -12,24 +12,27 @@ public class PC_MovingSphere : MonoBehaviour
     Transform ball = default;
 
     [SerializeField, Range(0f, 100f)]
-    float maxSpeed = 10f, maxClimbSpeed = 4f, maxSwimSpeed = 5f;
+    float maxSpeed = 10f;
+        
+    float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
     [SerializeField, Range(0f, 100f)]
     float
         maxAcceleration = 10f,
-        maxAirAcceleration = 1f,
+        maxAirAcceleration = 1f;
+
+    float
         maxClimbAcceleration = 40f,
         maxSwimAcceleration = 5f;
 
-    [SerializeField, Range(0f, 10f)]
     float jumpHeight = 2f;
 
-    [SerializeField, Range(0, 5)]
     int maxAirJumps = 0;
 
     [Tooltip("Angle maximum du sol au delà duquel la balle ne prendre plus d'accélération")]
     [SerializeField, Range(0, 90)]
     float maxGroundAngle = 25f;
+    
     float maxStairsAngle = 50f; // Non utilisé
 
     float maxClimbAngle = 140f; // Non utilisé
@@ -59,12 +62,16 @@ public class PC_MovingSphere : MonoBehaviour
 
     [Tooltip("")]
     [SerializeField]
-    LayerMask probeMask = -1, stairsMask = -1, climbMask = -1, waterMask = 0;
+    LayerMask probeMask = -1;
+    
+    LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
     [Tooltip("")]
     [SerializeField]
     Material
-        normalMaterial = default,
+        normalMaterial = default;
+        
+    Material 
         climbingMaterial = default,
         swimmingMaterial = default;
 
@@ -78,9 +85,9 @@ public class PC_MovingSphere : MonoBehaviour
 
     [Tooltip("Utilisé pour l'affichage de la texture")]
     [SerializeField, Min(0f)]
-    float
-        ballAirRotation = 0.5f,
-        ballSwimRotation = 2f;
+    float ballAirRotation = 0.5f;
+        
+    float ballSwimRotation = 2f;
 
     Rigidbody body, connectedBody, previousConnectedBody;
 
@@ -111,6 +118,9 @@ public class PC_MovingSphere : MonoBehaviour
     bool Swimming => false; // submergence >= swimThreshold;
 
     float submergence;
+
+
+    bool isJumpAllowed = false;
 
     int jumpPhase;
 
@@ -505,43 +515,46 @@ public class PC_MovingSphere : MonoBehaviour
 
     void Jump(Vector3 gravity)
     {
-        Vector3 jumpDirection;
-        if (OnGround)
+        if (isJumpAllowed)
         {
-            jumpDirection = contactNormal;
-        }
-        else if (OnSteep)
-        {
-            jumpDirection = steepNormal;
-            jumpPhase = 0;
-        }
-        else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
-        {
-            if (jumpPhase == 0)
+            Vector3 jumpDirection;
+            if (OnGround)
             {
-                jumpPhase = 1;
+                jumpDirection = contactNormal;
             }
-            jumpDirection = contactNormal;
-        }
-        else
-        {
-            return;
-        }
+            else if (OnSteep)
+            {
+                jumpDirection = steepNormal;
+                jumpPhase = 0;
+            }
+            else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
+            {
+                if (jumpPhase == 0)
+                {
+                    jumpPhase = 1;
+                }
+                jumpDirection = contactNormal;
+            }
+            else
+            {
+                return;
+            }
 
-        stepsSinceLastJump = 0;
-        jumpPhase += 1;
-        float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-        if (InWater)
-        {
-            jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+            stepsSinceLastJump = 0;
+            jumpPhase += 1;
+            float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+            if (InWater)
+            {
+                jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+            }
+            jumpDirection = (jumpDirection + upAxis).normalized;
+            float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+            if (alignedSpeed > 0f)
+            {
+                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+            }
+            velocity += jumpDirection * jumpSpeed;
         }
-        jumpDirection = (jumpDirection + upAxis).normalized;
-        float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
-        if (alignedSpeed > 0f)
-        {
-            jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
-        }
-        velocity += jumpDirection * jumpSpeed;
     }
 
     void OnCollisionEnter(Collision collision)

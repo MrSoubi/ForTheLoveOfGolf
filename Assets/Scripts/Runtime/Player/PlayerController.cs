@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        shootCharges = PCData.shootCharges;
+        //shootCharges = PCData.shootCharges;
     }
 
     private void Update()
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 shootDirection = Quaternion.AngleAxis(shootingAngle, Vector3.right) * cameraManager.GetShootingDirection();
 
-        if (Input.GetKeyDown(PCData.shootInput))
+        //if (Input.GetKeyDown(PCData.shootInput))
         {
             UnFreeze();
             rb.velocity = shootDirection * rb.velocity.magnitude;
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
         mouseInput.x = Input.GetAxisRaw("Mouse X");
         mouseInput.y = Input.GetAxisRaw("Mouse Y");
 
-        if (!isAiming && Input.GetKeyDown(PCData.aimingInput))
+        //if (!isAiming && Input.GetKeyDown(PCData.aimingInput))
         {
             Freeze();
             isAiming = true;
@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
             cameraManager.AimShoot();
         }
 
-        if (isAiming && Input.GetKeyUp(PCData.aimingInput))
+        //if (isAiming && Input.GetKeyUp(PCData.aimingInput))
         {
             UnFreeze();
             isAiming = false;
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
         // Le changement de direction est plus faible quand la vitesse augmente
         float mag = Mathf.Clamp(rb.velocity.magnitude, 0.000001f, Mathf.Infinity);
 
-        rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / mag, Vector3.up) * rb.velocity;
+        //rb.velocity = Quaternion.AngleAxis(mouseInput.x * PCData.rotationSpeed / mag, Vector3.up) * rb.velocity;
 
         if (rb.velocity.y < 0.0001)
         {
@@ -167,17 +167,17 @@ public class PlayerController : MonoBehaviour
                 
         if (isGrounded)
         {
-            yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+            //yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
 
             if (yFactor < 0)
             {
                 Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
             }
-                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
+            //gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
         }
         else
         {
-            gravity = new Vector3(0, -PCData.gravityForce, 0);
+            //gravity = new Vector3(0, -PCData.gravityForce, 0);
         }
     }
 
@@ -200,17 +200,17 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAcceleration()
     {
-        float accelerationSpeed = PCData.moveSpeed * Time.deltaTime;
+        //float accelerationSpeed = PCData.moveSpeed * Time.deltaTime;
 
         if (!isGrounded)
         {
-            accelerationSpeed *= PCData.airMultiplier;
+            //    accelerationSpeed *= PCData.airMultiplier;
         }
 
-        Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
-        Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
+        //Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
+        //Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
 
-        acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
+        //acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
 
     private void HandleStickySurface()
@@ -493,7 +493,7 @@ public class PlayerController : MonoBehaviour
     {
         if (shootCharges > 0)
         {
-            rb.AddForce(direction * PCData.shootForce, ForceMode.Impulse);
+            // rb.AddForce(direction * PCData.shootForce, ForceMode.Impulse);
             shootCharges--;
         }
     }
@@ -506,7 +506,7 @@ public class PlayerController : MonoBehaviour
     {
         shootCharges += amount;
 
-        shootCharges = Mathf.Clamp(shootCharges, 0, PCData.maxShootCharges);
+        //shootCharges = Mathf.Clamp(shootCharges, 0, PCData.maxShootCharges);
     }
 
     private bool CanShoot()
@@ -515,12 +515,12 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         if(PCData.drawNormal)
         {
-            Gizmos.color = PCData.normalColor;
-            if(normalNormalized)
+            //Gizmos.color = PCData.normalColor;
+            if (normalNormalized)
             {
                 Gizmos.DrawLine(transform.position, transform.position + normal.normalized);
             }
@@ -569,5 +569,5 @@ public class PlayerController : MonoBehaviour
         //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
         Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-    }
+    }*/
 }

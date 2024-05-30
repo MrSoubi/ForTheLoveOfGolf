@@ -3,6 +3,21 @@ using UnityEngine;
 
 public class PC_MovingSphere : MonoBehaviour
 {
+    public float maxSpeed = 10f;
+    [HideInInspector] public float maxAcceleration = 10f; 
+    [HideInInspector] public float maxAirAcceleration = 1f;
+    [HideInInspector] public float maxGroundAngle = 25f;
+    [HideInInspector] public float maxSnapSpeed = 100f;
+
+    [HideInInspector] public float probeDistance = 1f;
+
+    [HideInInspector] public LayerMask probeMask = -1;
+
+    [HideInInspector] public Material normalMaterial = default;
+
+    [HideInInspector] public float ballRadius = 0.5f;
+    [HideInInspector] public float ballAlignSpeed = 180f;
+    [HideInInspector] public float ballAirRotation = 0.5f;
 
     [SerializeField]
     [Tooltip("Utiliser la caméra suivant la balle")]
@@ -11,16 +26,8 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField]
     [Tooltip("Mettre l'enfant Ball")]
     Transform ball = default;
-
-    [SerializeField, Range(0f, 100f)]
-    float maxSpeed = 10f;
-        
+  
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
-
-    [SerializeField, Range(0f, 100f)]
-    float
-        maxAcceleration = 10f,
-        maxAirAcceleration = 1f;
 
     float
         maxClimbAcceleration = 40f,
@@ -31,21 +38,11 @@ public class PC_MovingSphere : MonoBehaviour
     int maxAirShoots = 0;
 
     [Tooltip("Angle maximum du sol au delà duquel la balle ne prendre plus d'accélération")]
-    [SerializeField, Range(0, 90)]
-    float maxGroundAngle = 25f;
+   
     
     float maxStairsAngle = 50f; // Non utilisé
 
     float maxClimbAngle = 140f; // Non utilisé
-
-    [Tooltip("Vitesse maximale au delà de laquelle la balle n'accrochera plus au sol en cas de collision avec un léger rebord")]
-    [SerializeField, Range(0f, 100f)]
-    float maxSnapSpeed = 100f;
-
-    [Tooltip("Distance de détection du sol")]
-    [SerializeField, Min(0f)]
-    float probeDistance = 1f;
-
 
     float submergenceOffset = 0.5f;
 
@@ -60,33 +57,15 @@ public class PC_MovingSphere : MonoBehaviour
 
 
     float swimThreshold = 0.5f;
-
-    [Tooltip("")]
-    [SerializeField]
-    LayerMask probeMask = -1;
     
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
-
-    [Tooltip("")]
-    [SerializeField]
-    Material
-        normalMaterial = default;
         
     Material 
         climbingMaterial = default,
         swimmingMaterial = default;
 
     [Tooltip("")]
-    [SerializeField, Min(0.1f)]
-    float ballRadius = 0.5f;
-
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
-    float ballAlignSpeed = 180f;
-
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
-    float ballAirRotation = 0.5f;
+    
         
     float ballSwimRotation = 2f;
 

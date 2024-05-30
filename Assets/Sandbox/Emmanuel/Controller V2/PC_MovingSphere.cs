@@ -162,9 +162,9 @@ public class PC_MovingSphere : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(1))
         {
+            Time.timeScale = 1.0f;
             isAiming = false;
             playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode();
-            Time.timeScale = 1.0f;
         }
 
         if (isAiming)

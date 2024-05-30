@@ -35,6 +35,7 @@ public class PC_OrbitCamera : MonoBehaviour
 
     Vector3 focusPoint, previousFocusPoint;
 
+    [SerializeField]
     Vector2 orbitAngles = new Vector2(45f, 0f);
 
     float lastManualRotationTime;
@@ -71,6 +72,7 @@ public class PC_OrbitCamera : MonoBehaviour
     void LateUpdate()
     {
         UpdateFocusPoint();
+
         Quaternion lookRotation;
         if (ManualRotation() || AutomaticRotation())
         {
@@ -82,6 +84,11 @@ public class PC_OrbitCamera : MonoBehaviour
             lookRotation = transform.localRotation;
         }
 
+        UpdatePositionAndRotation(lookRotation);
+    }
+
+    void UpdatePositionAndRotation(Quaternion lookRotation)
+    {
         Vector3 lookDirection = lookRotation * Vector3.forward;
         Vector3 lookPosition = focusPoint - lookDirection * distance;
 
@@ -139,13 +146,19 @@ public class PC_OrbitCamera : MonoBehaviour
         this.XSensitivity = XSensitivity;
     }
 
+    Vector3 savedOrbitAngles;
+
     public void ToggleAimMode()
     {
+        savedOrbitAngles = orbitAngles;
         SetSensitivity(AimingXSensitivity, AimingYSensitivity);
     }
 
     public void ToggleFollowMode()
     {
+        orbitAngles = savedOrbitAngles;
+        UpdateFocusPoint();
+        UpdatePositionAndRotation(Quaternion.Euler(orbitAngles));
         SetSensitivity(RollingXSensitivity, RollingYSensitivity);
     }
 

@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 2339147619680396541}
   - component: {fileID: 5741251947662172199}
   m_Layer: 0
-  m_Name: Orbit Follower
+  m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

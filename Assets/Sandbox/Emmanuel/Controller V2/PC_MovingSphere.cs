@@ -156,16 +156,14 @@ public class PC_MovingSphere : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            //CameraManager.Instance.AimShoot();
             isAiming = true;
-
+            playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleAimMode();
             Time.timeScale = 0.1f;
         }
         if (Input.GetMouseButtonUp(1))
         {
-            //CameraManager.Instance.RollShoot();
             isAiming = false;
-
+            playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode();
             Time.timeScale = 1.0f;
         }
 

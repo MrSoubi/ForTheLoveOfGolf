@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PC_MovingSphere : MonoBehaviour
 {
-    public float maxSpeed = 10f;
+    [HideInInspector] public float maxSpeed = 10f;
     [HideInInspector] public float maxAcceleration = 10f; 
     [HideInInspector] public float maxAirAcceleration = 1f;
     [HideInInspector] public float maxGroundAngle = 25f;

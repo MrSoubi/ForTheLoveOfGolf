@@ -25,9 +25,9 @@ public class PC_MovingSphere : MonoBehaviour
         maxClimbAcceleration = 40f,
         maxSwimAcceleration = 5f;
 
-    float jumpHeight = 2f;
+    float shootHeight = 2f;
 
-    int maxAirJumps = 0;
+    int maxAirShoots = 0;
 
     [Tooltip("Angle maximum du sol au delà duquel la balle ne prendre plus d'accélération")]
     [SerializeField, Range(0, 90)]
@@ -122,7 +122,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     bool isJumpAllowed = false;
 
-    int jumpPhase;
+    int shootPhase;
 
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
 
@@ -282,7 +282,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (desiredJump)
         {
             desiredJump = false;
-            Jump(gravity);
+            Shoot(gravity);
         }
 
         if (Climbing)
@@ -341,7 +341,7 @@ public class PC_MovingSphere : MonoBehaviour
             stepsSinceLastGrounded = 0;
             if (stepsSinceLastJump > 1)
             {
-                jumpPhase = 0;
+                shootPhase = 0;
             }
             if (groundContactCount > 1)
             {
@@ -513,48 +513,45 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
-    void Jump(Vector3 gravity)
+    void Shoot(Vector3 gravity)
     {
-        if (isJumpAllowed)
+        Vector3 shootDirection;
+        if (OnGround)
         {
-            Vector3 jumpDirection;
-            if (OnGround)
-            {
-                jumpDirection = contactNormal;
-            }
-            else if (OnSteep)
-            {
-                jumpDirection = steepNormal;
-                jumpPhase = 0;
-            }
-            else if (maxAirJumps > 0 && jumpPhase <= maxAirJumps)
-            {
-                if (jumpPhase == 0)
-                {
-                    jumpPhase = 1;
-                }
-                jumpDirection = contactNormal;
-            }
-            else
-            {
-                return;
-            }
-
-            stepsSinceLastJump = 0;
-            jumpPhase += 1;
-            float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
-            if (InWater)
-            {
-                jumpSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-            }
-            jumpDirection = (jumpDirection + upAxis).normalized;
-            float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
-            if (alignedSpeed > 0f)
-            {
-                jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
-            }
-            velocity += jumpDirection * jumpSpeed;
+            shootDirection = contactNormal;
         }
+        else if (OnSteep)
+        {
+            shootDirection = steepNormal;
+            shootPhase = 0;
+        }
+        else if (maxAirShoots > 0 && shootPhase <= maxAirShoots)
+        {
+            if (shootPhase == 0)
+            {
+                shootPhase = 1;
+            }
+            shootDirection = contactNormal;
+        }
+        else
+        {
+            return;
+        }
+
+        stepsSinceLastJump = 0;
+        shootPhase += 1;
+        float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
+        if (InWater)
+        {
+            shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+        }
+        shootDirection = (shootDirection + upAxis).normalized;
+        float alignedSpeed = Vector3.Dot(velocity, shootDirection);
+        if (alignedSpeed > 0f)
+        {
+            shootSpeed = Mathf.Max(shootSpeed - alignedSpeed, 0f);
+        }
+        velocity += shootDirection * shootSpeed;
     }
 
     void OnCollisionEnter(Collision collision)

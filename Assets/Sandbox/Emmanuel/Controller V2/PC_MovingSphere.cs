@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class PC_MovingSphere : MonoBehaviour
@@ -150,7 +151,40 @@ public class PC_MovingSphere : MonoBehaviour
         OnValidate();
     }
 
+    bool isAiming;
     void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            //CameraManager.Instance.AimShoot();
+            isAiming = true;
+
+            Time.timeScale = 0.1f;
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            //CameraManager.Instance.RollShoot();
+            isAiming = false;
+
+            Time.timeScale = 1.0f;
+        }
+
+        if (isAiming)
+        {
+            HandleAim();
+        }
+        else
+        {
+            HandleRoll();
+        }
+    }
+
+    void HandleAim()
+    {
+        
+    }
+
+    void HandleRoll()
     {
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.z = Input.GetAxis("Vertical");

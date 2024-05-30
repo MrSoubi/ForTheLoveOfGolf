@@ -1,11 +1,28 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using System;
+
 
 public class CameraManager : MonoBehaviour
 {
+    private static CameraManager instance = null;
+    public static CameraManager Instance => instance;
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(this.gameObject);
+
+        // Initialisation du Game Manager...
+    }
+
     [SerializeField] private CinemachineVirtualCamera rollingCam;
     [SerializeField] private CinemachineFreeLook aimingCam;
     private CinemachineBrain brain;

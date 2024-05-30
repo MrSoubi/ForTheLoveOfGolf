@@ -7,7 +7,7 @@ public class PannelCollectible : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private TMP_Text textCollectibles;
-    [SerializeField] private GameObject holePrefab;
+    [SerializeField] private GameObject holeRef;
     [SerializeField] private ParticleSystem particleEffect;
     [Space]
     [SerializeField][Min(0)] private int nbCollectibles;
@@ -21,6 +21,7 @@ public class PannelCollectible : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
+        holeRef.SetActive(false);
     }
 
     private void UpdatePannel(int nbCollected)
@@ -38,7 +39,7 @@ public class PannelCollectible : MonoBehaviour
             //}, particleEffect.totalTime * 0.6f));
 
             Destroy(transform.GetChild(0).gameObject);
-            Instantiate(holePrefab, transform);
+            holeRef.SetActive(true);
         }
     }
 }

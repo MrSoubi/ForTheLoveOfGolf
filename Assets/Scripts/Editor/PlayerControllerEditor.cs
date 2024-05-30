@@ -195,6 +195,10 @@ public class PlayerControllerEditor : EditorWindow
     {
         string path = $"Assets/Profiles/{profileName}.asset";
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
+        if(PCData == null )
+        {
+            PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>("Assets/ScriptableObject/PlayerController/PlayerControllerData.asset");
+        }
     }
 
     private void DeleteProfile(string profileName)
@@ -217,6 +221,11 @@ public class PlayerControllerEditor : EditorWindow
         if (profileNames.Count == 0)
         {
             profileNames.Add("No Profiles Available");
+        }
+
+        if (PCData == null)
+        {
+            PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>("Assets/ScriptableObject/PlayerController/PlayerControllerData.asset");
         }
     }
 }

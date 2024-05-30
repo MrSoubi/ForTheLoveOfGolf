@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool isAiming;
     public bool isGrounded;
     public bool onStickySurface;
-
+    public bool allowStickySurfaces;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -57,6 +57,22 @@ public class PlayerController : MonoBehaviour
         else
         {
             HandleRolling();
+        }
+
+        if (isGrounded)
+        {
+            if (allowStickySurfaces && onStickySurface)
+            {
+                GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material.color = Color.yellow;
+            }
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material.color = Color.blue;
         }
     }
 
@@ -90,6 +106,12 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleNormal();
         HandleFriction();
+
+        if (allowStickySurfaces && onStickySurface)
+        {
+            HandleStickySurface();
+        }
+
         HandleAcceleration();
 
         LimitSpeed();
@@ -137,75 +159,53 @@ public class PlayerController : MonoBehaviour
         {
             direction = rb.velocity.normalized; // La direction de la balle est celle de la vélocité
         }
-
-        if (onStickySurface)
-        {
-            //Vector3.ProjectOnPlane();
-        }
     }
 
     private void HandleGravity()
     {
-        if (onStickySurface)
+        float yFactor = 1f;
+                
+        if (isGrounded)
         {
-            gravity = Vector3.zero;
+            yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
+
+            if (yFactor < 0)
+            {
+                Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
+            }
+                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
         }
         else
         {
-            float yFactor = 1f;
-
-            if (isGrounded)
-            {
-                yFactor = PCData.yCurve.Evaluate(rb.velocity.y);
-
-                if (yFactor < 0)
-                {
-                    Debug.LogWarning("Player Controller : Y Curve pour la définition de la gravité est inférieur à 0, vérifier la forme de la courbe.");
-                }
-                gravity = new Vector3(0, -PCData.gravityForce * yFactor, 0);
-            }
-            else
-            {
-                gravity = new Vector3(0, -PCData.gravityForce, 0);
-            }
+            gravity = new Vector3(0, -PCData.gravityForce, 0);
         }
     }
 
     private void HandleNormal()
     {
-        if (onStickySurface)
+        if (isGrounded)
         {
-            normal = Vector3.zero;
+                normal *= gravity.magnitude;
         }
         else
         {
-            if (isGrounded)
-            {
-                normal *= gravity.magnitude;
-            }
-            else
-            {
-                normal = Vector3.zero;
-            }
+            normal = Vector3.zero;
         }
-        
     }
 
     private void HandleFriction()
     {
-        if (onStickySurface)
-        {
-            friction = Vector3.zero;
-        }
-        else
-        {
-            friction = Vector3.zero;
-        }
+        friction = Vector3.zero;
     }
 
     private void HandleAcceleration()
     {
-        float accelerationSpeed = (isGrounded ? PCData.moveSpeed : PCData.moveSpeed * PCData.airMultiplier) * Time.deltaTime;
+        float accelerationSpeed = PCData.moveSpeed * Time.deltaTime;
+
+        if (!isGrounded)
+        {
+            accelerationSpeed *= PCData.airMultiplier;
+        }
 
         Vector3 verticalAcceleration = direction * playerInput.y * accelerationSpeed;
         Vector3 horizontalAcceleration = Quaternion.AngleAxis(90, Vector3.up) * direction * accelerationSpeed * 100f * playerInput.x; // A revoir en fonction de la vitesse de déplacement
@@ -213,17 +213,21 @@ public class PlayerController : MonoBehaviour
         acceleration = Vector3.ClampMagnitude(verticalAcceleration + horizontalAcceleration, 10);
     }
 
+    private void HandleStickySurface()
+    {
+        direction = Vector3.ProjectOnPlane(direction, normal).normalized;
+        rb.velocity = direction * rb.velocity.magnitude;
+
+        gravity = Vector3.zero;
+
+        friction = Vector3.zero;
+        
+        normal = Vector3.zero;
+    }
 
 
     private void HandleForces()
     {
-        if (onStickySurface)
-        {
-            gravity = Vector3.zero;
-            normal = Vector3.zero;
-            friction = Vector3.zero;
-        }
-
         Vector3 forces = gravity + normal + acceleration + friction;
 
         rb.AddForce(forces, ForceMode.Acceleration);
@@ -233,18 +237,32 @@ public class PlayerController : MonoBehaviour
     public bool complexDetection;
     public float groundDetectionLength = 0.025f;
 
+    Vector3 castDirection;
     private void CheckGround()
     {
+        if (allowStickySurfaces && onStickySurface)
+        {
+            castDirection = Quaternion.AngleAxis(90, Vector3.forward) * rb.velocity.normalized;
+        }
+        else
+        {
+            castDirection = Vector3.down;
+        }
+
         if (complexDetection)
         {
-            Vector3 origin = transform.position;
-            float radius = transform.localScale.x * 0.5f - 0.001f;
-            float maxDistance = radius + groundDetectionLength;
+            SphereDetection_v2();
+        }
+        else
+        {
             RaycastHit hit;
 
-            if(Physics.SphereCast(origin, radius, Vector3.down, out hit, maxDistance))
+            Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
+
+            if (Physics.Raycast(startingPosition, castDirection, out hit, groundDetectionLength))
             {
-                if(hit.distance <= groundDetectionLength)
+                Debug.Log(hit.distance);
+                if (hit.distance <= groundDetectionLength)
                 {
                     contactPoint = hit.point;
                     normal = hit.normal.normalized;
@@ -267,27 +285,90 @@ public class PlayerController : MonoBehaviour
                 onStickySurface = false;
             }
         }
-        else
+    }
+
+    private void SphereDetection_v1()
+    {
+        Vector3 origin = transform.position - gravity.normalized * 0.1f;
+        float radius = transform.localScale.x * 0.5f + 0.001f;
+        float maxDistance = radius + groundDetectionLength;
+
+        RaycastHit hit;
+
+        if (Physics.SphereCast(origin, radius, castDirection, out hit, maxDistance))
         {
-            RaycastHit hit;
-
-            Vector3 startingPosition = transform.position + transform.localScale.x * 0.5f * Vector3.down;
-
-            if (Physics.Raycast(startingPosition, Vector3.down, out hit, groundDetectionLength))
+            Debug.Log("Cast successfull");
+            if (hit.distance <= groundDetectionLength)
             {
-                normal = hit.normal;
+                contactPoint = hit.point;
+                normal = hit.normal.normalized;
                 AddShootCharges(1);
                 isGrounded = true;
 
                 onStickySurface = hit.collider.CompareTag("Sticky");
+                Debug.Log(hit.collider.tag);
             }
             else
             {
                 normal = Vector3.zero;
                 isGrounded = false;
+                onStickySurface = false;
             }
         }
+        else
+        {
+            normal = Vector3.zero;
+            isGrounded = false;
+            onStickySurface = false;
+        }
     }
+
+    private void SphereDetection_v2()
+    {
+        Vector3 origin = transform.position;
+        float radius = transform.localScale.x * 0.5f;
+
+        RaycastHit hit;
+
+        if (Physics.SphereCast(origin, radius, castDirection, out hit, Mathf.Infinity))
+        {
+            contactPoint = hit.point;
+            Vector3 contactSphere = hit.point + (origin - contactPoint).normalized * radius;
+            float distanceBtwOriginAndCastSPhere = (origin - contactSphere).magnitude;
+
+            onStickySurface = hit.collider.CompareTag("Sticky");
+
+            if (allowStickySurfaces && onStickySurface && distanceBtwOriginAndCastSPhere <= 1 && distanceBtwOriginAndCastSPhere >= 0.01)
+            {
+                rb.position = contactSphere;
+                normal = hit.normal.normalized;
+                AddShootCharges(1);
+                isGrounded = true;
+            }
+            else
+            {
+                if (distanceBtwOriginAndCastSPhere <= groundDetectionLength)
+                {
+                    normal = hit.normal.normalized;
+                    AddShootCharges(1);
+                    isGrounded = true;
+                }
+                else
+                {
+                    normal = Vector3.zero;
+                    isGrounded = false;
+                    onStickySurface = false;
+                }
+            }
+        }
+        else
+        {
+            normal = Vector3.zero;
+            isGrounded = false;
+            onStickySurface = false;
+        }
+    }
+
 
     private void LimitSpeed()
     {
@@ -480,12 +561,13 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawLine(transform.position, transform.position + direction);
         }
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + castDirection * 5);
         //Gizmos.DrawLine(transform.position, transform.position + normal + gravity);
         Gizmos.color = Color.white;
 #if !UNITY_EDITOR
         //Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
 #endif
-        //Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
-       // Gizmos.DrawLine(contactPoint, contactPoint + 3 * Vector3.up);
+        Gizmos.DrawSphere(contactPoint + Vector3.up * transform.localScale.x / 2f , transform.localScale.x * 0.5f);
     }
 }

@@ -26,6 +26,8 @@ public class PlayerControllerEditor : EditorWindow
     private bool showMaterialSettings = true;
     private bool showBallSettings = true;
 
+    private bool addProfilePopup = false;
+
     private GUIStyle header1Style;
     private GUIStyle header2Style;
 
@@ -85,12 +87,20 @@ public class PlayerControllerEditor : EditorWindow
 
         if (PCData != null)
         {
-            EditorGUILayout.BeginHorizontal();
-            profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
-
-            if (GUILayout.Button("Add Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
+            if (!addProfilePopup && GUILayout.Button("New Profile"))
             {
-                NewProfile(profileName, PCData);
+                addProfilePopup = true;
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            if (addProfilePopup)
+            {
+                profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
+                if (GUILayout.Button("Add", GUILayout.Width(150), GUILayout.MinWidth(100)))
+                {
+                    addProfilePopup = false;
+                    NewProfile(profileName, PCData);
+                }
             }
             EditorGUILayout.EndHorizontal();
 
@@ -133,7 +143,7 @@ public class PlayerControllerEditor : EditorWindow
                 EditorGUI.indentLevel--;
             }
 
-            showMaterialSettings = EditorGUILayout.Foldout(showMaterialSettings, "Probe Settings", true, header2Style);
+            showMaterialSettings = EditorGUILayout.Foldout(showMaterialSettings, "Material Settings", true, header2Style);
             if (showMaterialSettings)
             {
                 EditorGUI.indentLevel++;
@@ -144,7 +154,7 @@ public class PlayerControllerEditor : EditorWindow
                 EditorGUI.indentLevel--;
             }
 
-            showBallSettings = EditorGUILayout.Foldout(showMaterialSettings, "Probe Settings", true, header2Style);
+            showBallSettings = EditorGUILayout.Foldout(showBallSettings, "Ball Settings", true, header2Style);
             if(showBallSettings)
             {
                 EditorGUI.indentLevel++;
@@ -169,7 +179,7 @@ public class PlayerControllerEditor : EditorWindow
     private void GetProfileList()
     {
         profileNames.Clear();
-        string[] guids = AssetDatabase.FindAssets("t:PlayerControllerData", new[] { "Assets/Profiles" });
+        string[] guids = AssetDatabase.FindAssets("t:PlayerControllerData", new[] { "Assets/Profiles/Player" });
         foreach (string guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -184,13 +194,13 @@ public class PlayerControllerEditor : EditorWindow
 
     private void LoadProfile(string profileName)
     {
-        string path = $"Assets/Profiles/{profileName}.asset";
+        string path = $"Assets/Profiles/Player/{profileName}.asset";
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
     }
 
     private void NewProfile(string profileName, PlayerControllerData settings)
     {
-        string path = $"Assets/Profiles/{profileName}.asset";
+        string path = $"Assets/Profiles/Player/{profileName}.asset";
         PlayerControllerData newProfile = CreateInstance<PlayerControllerData>();
         if(settings != null) EditorUtility.CopySerialized(settings, newProfile);
         AssetDatabase.CreateAsset(newProfile, path);
@@ -199,7 +209,7 @@ public class PlayerControllerEditor : EditorWindow
     }
     private void DeleteProfile(int index)
     {
-        string path = $"Assets/Profiles/{profileNames[index]}.asset";
+        string path = $"Assets/Profiles/Player/{profileNames[index]}.asset";
         AssetDatabase.DeleteAsset(path);
         selectedProfileIndex = index > 0 ? index - 1 : 0;
         GetProfileList();

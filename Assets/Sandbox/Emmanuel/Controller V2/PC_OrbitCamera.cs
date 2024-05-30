@@ -3,40 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class PC_OrbitCamera : MonoBehaviour
 {
-
-    [SerializeField]
-    Transform focus = default;
-
-    [SerializeField, Range(1f, 20f)]
-    float distance = 5f;
-
-    [SerializeField, Min(0f)]
-    float focusRadius = 5f;
-
-    [SerializeField, Range(0f, 1f)]
-    float focusCentering = 0.5f;
-
-    [SerializeField, Range(1f, 360f)]
-    float rotationSpeed = 90f;
-
-    [SerializeField, Range(-89f, 89f)]
-    float minVerticalAngle = -45f, maxVerticalAngle = 45f;
-
-    [SerializeField, Min(0f)]
-    float alignDelay = 5f;
-
-    [SerializeField, Range(0f, 90f)]
-    float alignSmoothRange = 45f;
-
-    [SerializeField]
-    LayerMask obstructionMask = -1;
+    [HideInInspector] public Transform focus = default;
+    [HideInInspector] public float distance = 5f;
+    [HideInInspector] public float focusRadius = 5f;
+    [HideInInspector] public float focusCentering = 0.5f;
+    [HideInInspector] public float rotationSpeed = 90f;
+    [HideInInspector] public float minVerticalAngle = -45f, maxVerticalAngle = 45f;
+    [HideInInspector] public float alignDelay = 5f;
+    [HideInInspector] public float alignSmoothRange = 45f;
+    [HideInInspector] public LayerMask obstructionMask = -1;
+    [HideInInspector] public Vector2 orbitAngles = new Vector2(45f, 0f);
 
     Camera regularCamera;
 
     Vector3 focusPoint, previousFocusPoint;
-
-    [SerializeField]
-    Vector2 orbitAngles = new Vector2(45f, 0f);
 
     float lastManualRotationTime;
 

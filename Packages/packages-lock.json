@@ -2,7 +2,7 @@
   "dependencies": {
     "com.autodesk.fbx": {
       "version": "5.0.0",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -81,7 +81,7 @@
     },
     "com.unity.formats.fbx": {
       "version": "5.0.0",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.timeline": "1.7.1",
@@ -148,7 +148,7 @@
     },
     "com.unity.probuilder": {
       "version": "5.0.7",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.settings-manager": "1.0.3",

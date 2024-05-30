@@ -232,9 +232,4 @@ public class PC_OrbitCamera : MonoBehaviour
         float angle = Mathf.Acos(direction.y) * Mathf.Rad2Deg;
         return direction.x < 0f ? 360f - angle : angle;
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 10f);
-    }
 }

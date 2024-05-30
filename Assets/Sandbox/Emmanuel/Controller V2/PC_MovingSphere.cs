@@ -335,7 +335,7 @@ public class PC_MovingSphere : MonoBehaviour
         {
             velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
         }
-        else // La balle est dans les airs
+        else
         {
             velocity += gravity * Time.deltaTime;
         }

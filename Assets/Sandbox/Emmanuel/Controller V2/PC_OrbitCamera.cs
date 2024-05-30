@@ -35,6 +35,7 @@ public class PC_OrbitCamera : MonoBehaviour
 
     Vector3 focusPoint, previousFocusPoint;
 
+    [SerializeField]
     Vector2 orbitAngles = new Vector2(45f, 0f);
 
     float lastManualRotationTime;
@@ -71,6 +72,7 @@ public class PC_OrbitCamera : MonoBehaviour
     void LateUpdate()
     {
         UpdateFocusPoint();
+
         Quaternion lookRotation;
         if (ManualRotation() || AutomaticRotation())
         {
@@ -82,6 +84,11 @@ public class PC_OrbitCamera : MonoBehaviour
             lookRotation = transform.localRotation;
         }
 
+        UpdatePositionAndRotation(lookRotation);
+    }
+
+    void UpdatePositionAndRotation(Quaternion lookRotation)
+    {
         Vector3 lookDirection = lookRotation * Vector3.forward;
         Vector3 lookPosition = focusPoint - lookDirection * distance;
 
@@ -128,11 +135,38 @@ public class PC_OrbitCamera : MonoBehaviour
         }
     }
 
+
+    float AimingYSensitivity = 1f, AimingXSensitivity = 1f;
+    float RollingYSensitivity = 0f, RollingXSensitivity = 1f;
+    float YSensitivity, XSensitivity;
+
+    public void SetSensitivity(float XSensitivity, float YSensitivity)
+    {
+        this.YSensitivity = YSensitivity;
+        this.XSensitivity = XSensitivity;
+    }
+
+    Vector3 savedOrbitAngles;
+
+    public void ToggleAimMode()
+    {
+        savedOrbitAngles = orbitAngles;
+        SetSensitivity(AimingXSensitivity, AimingYSensitivity);
+    }
+
+    public void ToggleFollowMode()
+    {
+        orbitAngles = savedOrbitAngles;
+        UpdateFocusPoint();
+        UpdatePositionAndRotation(Quaternion.Euler(orbitAngles));
+        SetSensitivity(RollingXSensitivity, RollingYSensitivity);
+    }
+
     bool ManualRotation()
     {
         Vector2 input = new Vector2(
-            Input.GetAxis("Mouse Y"),
-            Input.GetAxis("Mouse X")
+            Input.GetAxis("Mouse Y") * YSensitivity,
+            Input.GetAxis("Mouse X") * XSensitivity
         );
         const float e = 0.001f;
         if (input.x < -e || input.x > e || input.y < -e || input.y > e)

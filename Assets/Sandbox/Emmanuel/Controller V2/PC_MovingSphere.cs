@@ -26,6 +26,7 @@ public class PC_MovingSphere : MonoBehaviour
         maxClimbAcceleration = 40f,
         maxSwimAcceleration = 5f;
 
+    [SerializeField]
     float shootHeight = 2f;
 
     int maxAirShoots = 0;
@@ -67,10 +68,8 @@ public class PC_MovingSphere : MonoBehaviour
     
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-    [Tooltip("")]
-    [SerializeField]
-    Material
-        normalMaterial = default;
+
+    //Material        normalMaterial = default;
         
     Material 
         climbingMaterial = default,
@@ -100,7 +99,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     Vector3 upAxis, rightAxis, forwardAxis;
 
-    bool desiredJump, desiresClimbing;
+    bool desiredShoot, desiresClimbing;
 
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
 
@@ -131,6 +130,8 @@ public class PC_MovingSphere : MonoBehaviour
 
     MeshRenderer meshRenderer;
 
+
+
     public void PreventSnapToGround()
     {
         stepsSinceLastJump = -1;
@@ -154,17 +155,21 @@ public class PC_MovingSphere : MonoBehaviour
     bool isAiming;
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (shouldToogleRoll)
         {
-            isAiming = true;
-            playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleAimMode();
-            Time.timeScale = 0.1f;
+            shouldToogleRoll = false;
+            ToggleRoll();
         }
-        if (Input.GetMouseButtonUp(1))
+        else
         {
-            Time.timeScale = 1.0f;
-            isAiming = false;
-            playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode();
+            if (Input.GetMouseButtonDown(1)) // Activation du mode Aim
+            {
+                ToggleAim();
+            }
+            if (Input.GetMouseButtonUp(1)) // Desactivation du mode Aim
+            {
+                ToggleRoll();
+            }
         }
 
         if (isAiming)
@@ -175,11 +180,32 @@ public class PC_MovingSphere : MonoBehaviour
         {
             HandleRoll();
         }
+
+        UpdateBall();
+    }
+
+    [SerializeField]
+    Material rollingMaterial, aimingMaterial;
+
+    void ToggleAim()
+    {
+        isAiming = true;
+        meshRenderer.material = aimingMaterial;
+        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleAimMode();
+        Time.timeScale = 0.1f;
+    }
+
+    void ToggleRoll()
+    {
+        Time.timeScale = 1.0f;
+        isAiming = false;
+        meshRenderer.material = rollingMaterial;
+        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode();
     }
 
     void HandleAim()
     {
-        
+        desiredShoot |= Input.GetMouseButtonDown(0);
     }
 
     void HandleRoll()
@@ -205,27 +231,23 @@ public class PC_MovingSphere : MonoBehaviour
         {
             desiresClimbing = false;
         }
-        else
-        {
-            desiredJump |= Input.GetButtonDown("Jump");
-            //desiresClimbing = Input.GetButton("Climb");
-        }
 
-        UpdateBall();
     }
 
     void UpdateBall()
     {
-        Material ballMaterial = normalMaterial;
+        //Material ballMaterial = normalMaterial;
         Vector3 rotationPlaneNormal = lastContactNormal;
         float rotationFactor = 1f;
+        
+
         if (Climbing)
         {
-            ballMaterial = climbingMaterial;
+            //ballMaterial = climbingMaterial;
         }
         else if (Swimming)
         {
-            ballMaterial = swimmingMaterial;
+            //ballMaterial = swimmingMaterial;
             rotationFactor = ballSwimRotation;
         }
         else if (!OnGround)
@@ -239,21 +261,17 @@ public class PC_MovingSphere : MonoBehaviour
                 rotationFactor = ballAirRotation;
             }
         }
-        meshRenderer.material = ballMaterial;
+        //meshRenderer.material = ballMaterial;
 
-        Vector3 movement =
-            (body.velocity - lastConnectionVelocity) * Time.deltaTime;
-        movement -=
-            rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
+        Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
+        movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
 
         float distance = movement.magnitude;
 
         Quaternion rotation = ball.localRotation;
         if (connectedBody && connectedBody == previousConnectedBody)
         {
-            rotation = Quaternion.Euler(
-                connectedBody.angularVelocity * (Mathf.Rad2Deg * Time.deltaTime)
-            ) * rotation;
+            rotation = Quaternion.Euler(connectedBody.angularVelocity * (Mathf.Rad2Deg * Time.deltaTime)) * rotation;
             if (distance < 0.001f)
             {
                 ball.localRotation = rotation;
@@ -266,8 +284,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         float angle = distance * rotationFactor * (180f / Mathf.PI) / ballRadius;
-        Vector3 rotationAxis =
-            Vector3.Cross(rotationPlaneNormal, movement).normalized;
+        Vector3 rotationAxis = Vector3.Cross(rotationPlaneNormal, movement).normalized;
         rotation = Quaternion.Euler(rotationAxis * angle) * rotation;
         if (ballAlignSpeed > 0f)
         {
@@ -276,29 +293,25 @@ public class PC_MovingSphere : MonoBehaviour
         ball.localRotation = rotation;
     }
 
-    Quaternion AlignBallRotation(
-        Vector3 rotationAxis, Quaternion rotation, float traveledDistance
-    )
+    Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
     {
         Vector3 ballAxis = ball.up;
         float dot = Mathf.Clamp(Vector3.Dot(ballAxis, rotationAxis), -1f, 1f);
         float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
         float maxAngle = ballAlignSpeed * traveledDistance;
 
-        Quaternion newAlignment =
-            Quaternion.FromToRotation(ballAxis, rotationAxis) * rotation;
+        Quaternion newAlignment = Quaternion.FromToRotation(ballAxis, rotationAxis) * rotation;
         if (angle <= maxAngle)
         {
             return newAlignment;
         }
         else
         {
-            return Quaternion.SlerpUnclamped(
-                rotation, newAlignment, maxAngle / angle
-            );
+            return Quaternion.SlerpUnclamped(rotation, newAlignment, maxAngle / angle);
         }
     }
 
+    bool shouldToogleRoll;
     void FixedUpdate()
     {
         Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
@@ -311,33 +324,28 @@ public class PC_MovingSphere : MonoBehaviour
 
         AdjustVelocity();
 
-        if (desiredJump)
+        if (desiredShoot)
         {
-            desiredJump = false;
+            desiredShoot = false;
             Shoot(gravity);
+            shouldToogleRoll = true;
         }
 
         if (Climbing)
         {
-            velocity -=
-                contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
+            velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
         }
         else if (InWater)
         {
-            velocity +=
-                gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+            velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
         }
         else if (OnGround && velocity.sqrMagnitude < 0.01f)
         {
-            velocity +=
-                contactNormal *
-                (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
+            velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
         }
         else if (desiresClimbing && OnGround)
         {
-            velocity +=
-                (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) *
-                Time.deltaTime;
+            velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
         }
         else
         {
@@ -365,10 +373,7 @@ public class PC_MovingSphere : MonoBehaviour
         stepsSinceLastGrounded += 1;
         stepsSinceLastJump += 1;
         velocity = body.velocity;
-        if (
-            CheckClimbing() || CheckSwimming() ||
-            OnGround || SnapToGround() || CheckSteepContacts()
-        )
+        if (CheckClimbing() || CheckSwimming() || OnGround || SnapToGround() || CheckSteepContacts())
         {
             stepsSinceLastGrounded = 0;
             if (stepsSinceLastJump > 1)
@@ -398,15 +403,11 @@ public class PC_MovingSphere : MonoBehaviour
     {
         if (connectedBody == previousConnectedBody)
         {
-            Vector3 connectionMovement =
-                connectedBody.transform.TransformPoint(connectionLocalPosition) -
-                connectionWorldPosition;
+            Vector3 connectionMovement = connectedBody.transform.TransformPoint(connectionLocalPosition) - connectionWorldPosition;
             connectionVelocity = connectionMovement / Time.deltaTime;
         }
         connectionWorldPosition = body.position;
-        connectionLocalPosition = connectedBody.transform.InverseTransformPoint(
-            connectionWorldPosition
-        );
+        connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
     }
 
     bool CheckClimbing()
@@ -451,10 +452,7 @@ public class PC_MovingSphere : MonoBehaviour
         {
             return false;
         }
-        if (!Physics.Raycast(
-            body.position, -upAxis, out RaycastHit hit,
-            probeDistance, probeMask, QueryTriggerInteraction.Ignore
-        ))
+        if (!Physics.Raycast(body.position, -upAxis, out RaycastHit hit, probeDistance, probeMask, QueryTriggerInteraction.Ignore))
         {
             return false;
         }
@@ -507,10 +505,7 @@ public class PC_MovingSphere : MonoBehaviour
         else if (InWater)
         {
             float swimFactor = Mathf.Min(1f, submergence / swimThreshold);
-            acceleration = Mathf.LerpUnclamped(
-                OnGround ? maxAcceleration : maxAirAcceleration,
-                maxSwimAcceleration, swimFactor
-            );
+            acceleration = Mathf.LerpUnclamped(OnGround ? maxAcceleration : maxAirAcceleration,maxSwimAcceleration, swimFactor);
             speed = Mathf.LerpUnclamped(maxSpeed, maxSwimSpeed, swimFactor);
             xAxis = rightAxis;
             zAxis = forwardAxis;
@@ -528,15 +523,11 @@ public class PC_MovingSphere : MonoBehaviour
         Vector3 relativeVelocity = velocity - connectionVelocity;
 
         Vector3 adjustment;
-        adjustment.x =
-            playerInput.x * speed - Vector3.Dot(relativeVelocity, xAxis);
-        adjustment.z =
-            playerInput.z * speed - Vector3.Dot(relativeVelocity, zAxis);
-        adjustment.y = Swimming ?
-            playerInput.y * speed - Vector3.Dot(relativeVelocity, upAxis) : 0f;
+        adjustment.x = playerInput.x * speed - Vector3.Dot(relativeVelocity, xAxis);
+        adjustment.z = playerInput.z * speed - Vector3.Dot(relativeVelocity, zAxis);
+        adjustment.y = Swimming ? playerInput.y * speed - Vector3.Dot(relativeVelocity, upAxis) : 0f;
 
-        adjustment =
-            Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
+        adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
         velocity += xAxis * adjustment.x + zAxis * adjustment.z;
         if (Swimming)
@@ -545,9 +536,12 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
+    Vector3 shootDirectionDEBUG;
+    public float shootingAngle;
     void Shoot(Vector3 gravity)
     {
         Vector3 shootDirection;
+        /*
         if (OnGround)
         {
             shootDirection = contactNormal;
@@ -569,6 +563,7 @@ public class PC_MovingSphere : MonoBehaviour
         {
             return;
         }
+        */
 
         stepsSinceLastJump = 0;
         shootPhase += 1;
@@ -577,7 +572,11 @@ public class PC_MovingSphere : MonoBehaviour
         {
             shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
         }
-        shootDirection = (shootDirection + upAxis).normalized;
+
+        shootDirection = playerInputSpace.forward;
+        shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
+        shootDirectionDEBUG = shootDirection;
+        //shootDirection = playerInputSpace.forward + upAxis;
         float alignedSpeed = Vector3.Dot(velocity, shootDirection);
         if (alignedSpeed > 0f)
         {
@@ -626,8 +625,7 @@ public class PC_MovingSphere : MonoBehaviour
                     }
                 }
                 if (
-                    desiresClimbing && upDot >= minClimbDotProduct &&
-                    (climbMask & (1 << layer)) != 0
+                    desiresClimbing && upDot >= minClimbDotProduct && (climbMask & (1 << layer)) != 0
                 )
                 {
                     climbContactCount += 1;
@@ -657,11 +655,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     void EvaluateSubmergence(Collider collider)
     {
-        if (Physics.Raycast(
-            body.position + upAxis * submergenceOffset,
-            -upAxis, out RaycastHit hit, submergenceRange + 1f,
-            waterMask, QueryTriggerInteraction.Collide
-        ))
+        if (Physics.Raycast(body.position + upAxis * submergenceOffset, -upAxis, out RaycastHit hit, submergenceRange + 1f, waterMask, QueryTriggerInteraction.Collide))
         {
             submergence = 1f - hit.distance / submergenceRange;
         }
@@ -682,7 +676,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     float GetMinDot(int layer)
     {
-        return (stairsMask & (1 << layer)) == 0 ?
-            minGroundDotProduct : minStairsDotProduct;
+        return (stairsMask & (1 << layer)) == 0 ? minGroundDotProduct : minStairsDotProduct;
     }
 }

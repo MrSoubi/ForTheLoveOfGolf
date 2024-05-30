@@ -177,17 +177,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focus: {fileID: 8311251610936502720}
-  distance: 5
+  distance: 8
   focusRadius: 5
   focusCentering: 0.5
   rotationSpeed: 90
-  minVerticalAngle: -45
+  minVerticalAngle: -89
   maxVerticalAngle: 45
   alignDelay: 5
   alignSmoothRange: 45
   obstructionMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  orbitAngles: {x: 30, y: 0}
 --- !u!114 &5741251947662172199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,6 +346,10 @@ PrefabInstance:
     - target: {fileID: 2608575853528526071, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: shootHeight
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: playerInputSpace

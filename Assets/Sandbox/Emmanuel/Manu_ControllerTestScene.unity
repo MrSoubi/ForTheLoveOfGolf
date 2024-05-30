@@ -1384,6 +1384,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
+      propertyPath: aimingMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
+    - target: {fileID: 349318181925397498, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
+      propertyPath: rollingMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
     - target: {fileID: 2136447274448085653, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
       propertyPath: m_LocalPosition.x
       value: -27.46
@@ -1423,14 +1431,6 @@ PrefabInstance:
     - target: {fileID: 2136447274448085653, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2339147619680396541, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
-      propertyPath: distance
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2339147619680396541, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
-      propertyPath: orbitAngles.x
-      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2599920386103912642, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
       propertyPath: m_Name

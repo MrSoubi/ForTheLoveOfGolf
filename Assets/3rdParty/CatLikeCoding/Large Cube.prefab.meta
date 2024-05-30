@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Animation/UI/CircularFade.meta
+guid: 88d9b319eb8b8b04d913b54e3173cc34
+folderAsset: yes
+DefaultImporter:
+========
 guid: 6065c7918c9ff2f48a481f39c8e92409
 PrefabImporter:
+>>>>>>>> dev:Assets/3rdParty/CatLikeCoding/Large Cube.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

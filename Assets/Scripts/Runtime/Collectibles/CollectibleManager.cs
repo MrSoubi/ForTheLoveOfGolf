@@ -22,9 +22,6 @@ public class CollectibleManager : MonoBehaviour
     public int holeCount;
     public int holeValue;
 
-    bool showCollectibleCount = true;
-    [SerializeField] Animator collectibleCountAnim;
-
     public Action<int> onCollectedCoin;
     public Action<int> onCollectedHole;
 
@@ -58,7 +55,6 @@ public class CollectibleManager : MonoBehaviour
         }
 
         RefreshInterface();
-        ShowCollectibleCount();
     }
 
     /// <summary>
@@ -111,16 +107,5 @@ public class CollectibleManager : MonoBehaviour
         RefreshInterface();
 
         DelCollectible(index);
-    }
-
-    public void ShowCollectibleCount()
-    {
-        showCollectibleCount = true;
-        collectibleCountAnim.SetBool("Show", showCollectibleCount);
-    }
-    public void HidCollectibleCount()
-    {
-        showCollectibleCount = false;
-        collectibleCountAnim.SetBool("Show", showCollectibleCount);
     }
 }

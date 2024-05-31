@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f7d2605f20ed94ebce69a0badfde8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 3496192938280441201, guid: da7094a162f7a1040a06e700c43330f6, type: 3}
 --- !u!1001 &1623808203921235396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -253,6 +252,14 @@ PrefabInstance:
       propertyPath: CollectibleManager
       value: 
       objectReference: {fileID: 2376659783594387614}
+    - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
+      propertyPath: collectibleManager
+      value: 
+      objectReference: {fileID: 2376659783594387614}
+    - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
+      propertyPath: flagMaterialComplete
+      value: 
+      objectReference: {fileID: 2100000, guid: 41680dad0f0243748b4e228f49a2e3c4, type: 2}
     - target: {fileID: 6117528502718944329, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
       propertyPath: m_Name
       value: HoleManager

@@ -570,6 +570,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     public float shootingAngle;
+    
     void Shoot(Vector3 gravity)
     {
         Vector3 shootDirection;
@@ -596,9 +597,24 @@ public class PC_MovingSphere : MonoBehaviour
             shootSpeed = Mathf.Max(shootSpeed - alignedSpeed, 0f);
         }
 
-        velocity += shootDirection * shootSpeed;
+        velocity += shootDirection * shootSpeed * EvaluateShootFactor();
 
         IncreaseMaxSpeed();
+    }
+
+    [SerializeField]
+    [Tooltip("Garder les keys entre 0 et 1 en X. Les valeurs en Y peuvent varier de n'importe quelle façon mais devraient rester entre 1 et 2.")]
+    AnimationCurve shootCurve;
+    //public float minShootFactor, maxShootFactor;
+    float EvaluateShootFactor()
+    {
+        float abs = velocity.magnitude / speedLimits[speedLimits.Count - 1];
+        abs *= shootCurve.keys[shootCurve.length - 1].time;
+
+        float result = shootCurve.Evaluate(abs);
+
+        Debug.Log(result);
+        return result;
     }
 
     void OnCollisionEnter(Collision collision)

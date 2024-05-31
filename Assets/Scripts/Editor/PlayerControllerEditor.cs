@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditor.Search;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UI;
 
 public class PlayerControllerEditor : EditorWindow
@@ -16,6 +17,8 @@ public class PlayerControllerEditor : EditorWindow
     private PlayerControllerData PCData;
 
     private bool hideNewProfileSettings = true;
+
+    private bool showMovementSettings = true;
 
     private string baseProfileName = "NewProfile";
     private string profileName;
@@ -42,6 +45,8 @@ public class PlayerControllerEditor : EditorWindow
 
     private void OnGUI()
     {
+        PCSphere = FindAnyObjectByType<PC_MovingSphere>();
+
         header1Style = new GUIStyle(EditorStyles.foldout);
         header1Style.fontStyle = FontStyle.Bold;
         header1Style.normal.textColor = Color.white;
@@ -55,56 +60,88 @@ public class PlayerControllerEditor : EditorWindow
         GUILayout.BeginArea(area);
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.ExpandHeight(true));
 
-        if (profileList.Count == 0)
+        if (PCSphere != null)
         {
-            EditorGUILayout.BeginHorizontal();
-
-            profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
-            if (GUILayout.Button("Add Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
-            {
-                NewProfile(profileName);
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-        else
-        {
-            EditorGUILayout.BeginHorizontal();
-
-            selectedProfileIndex = EditorGUILayout.Popup("Select Profile", selectedProfileIndex, profileList.ToArray(), GUILayout.MinWidth(250));
-
-            if (profileList.Count > 0 && GUILayout.Button("Delete Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
-            {
-                DeleteProfile(selectedProfileIndex);
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            if (hideNewProfileSettings)
-            {
-                if (GUILayout.Button("New Profile"))
-                {
-                    profileName = baseProfileName;
-                    hideNewProfileSettings = false;
-                }
-            } 
-
-            if (!hideNewProfileSettings)
+            if (profileList.Count == 0)
             {
                 EditorGUILayout.BeginHorizontal();
+
                 profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
-                if (GUILayout.Button("Add", GUILayout.Width(150), GUILayout.MinWidth(100)))
+                if (GUILayout.Button("Add Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
                 {
-                    hideNewProfileSettings = true;
                     NewProfile(profileName);
-                    selectedProfileIndex = GetProfileIndex(profileName);
                 }
+
                 EditorGUILayout.EndHorizontal();
             }
+            else
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                selectedProfileIndex = EditorGUILayout.Popup("Select Profile", selectedProfileIndex, profileList.ToArray(), GUILayout.MinWidth(250));
+
+                if (profileList.Count > 0 && GUILayout.Button("Delete Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
+                {
+                    DeleteProfile(selectedProfileIndex);
+                }
+
+                EditorGUILayout.EndHorizontal();
+
+                if (hideNewProfileSettings)
+                {
+                    if (GUILayout.Button("New Profile"))
+                    {
+                        profileName = baseProfileName;
+                        hideNewProfileSettings = false;
+                    }
+                }
+
+                if (!hideNewProfileSettings)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
+                    if (GUILayout.Button("Add", GUILayout.Width(150), GUILayout.MinWidth(100)))
+                    {
+                        hideNewProfileSettings = true;
+                        NewProfile(profileName);
+                        selectedProfileIndex = GetProfileIndex(profileName);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+
+            if (profileList.Count > 0) LoadProfile(profileList[selectedProfileIndex]);
+
+            if (PCData != null)
+            {
+                PCSphere.UpdatePCData();
+
+                showMovementSettings = EditorGUILayout.Foldout(showMovementSettings, "Movement Settings");
+                if (showMovementSettings)
+                {
+                    PCData.maxAcceleration = EditorGUILayout.Slider("Max Acceleration", PCData.maxAcceleration, 1f, 100f);
+                    PCData.maxAirAcceleration = EditorGUILayout.Slider("Max Air Acceleration", PCData.maxAirAcceleration, 1f, 100f);
+
+                    PCData.shootHeight = EditorGUILayout.Slider("shoot Height", PCData.shootHeight, 0f, 100f);
+                    PCData.maxShoots = EditorGUILayout.IntField("Max Shoots", PCData.maxShoots);
+
+                    PCData.maxGroundAngle = EditorGUILayout.Slider("Max Ground Angle", PCData.maxGroundAngle, 0f, 90f);
+                    PCData.maxSnapSpeed = EditorGUILayout.Slider("Max Snap Speed", PCData.maxSnapSpeed, 0f, 100f);
+                    PCData.probeDistance = EditorGUILayout.Slider("Probe Distance", PCData.probeDistance, 0f, 100f);
+
+                    PCData.speedLimitMargin = EditorGUILayout.FloatField("Max Shoots", PCData.speedLimitMargin);
+
+                    PCData.rollingMaterial = (Material)EditorGUILayout.ObjectField(PCData.rollingMaterial, typeof(Material), true);
+                    PCData.aimingMaterial = (Material)EditorGUILayout.ObjectField(PCData.aimingMaterial, typeof(Material), true);
+
+                    PCData.shootingAngle = EditorGUILayout.FloatField("Max Shoots", PCData.shootingAngle);
+
+                    PCData.shootCurve = EditorGUILayout.CurveField("Animation Curve", PCData.shootCurve);
+                }
+            }
+
+
         }
-
-        if (profileList.Count > 0) LoadProfile(profileList[selectedProfileIndex]);
-
         EditorGUILayout.EndScrollView();
         GUILayout.EndArea();
     }
@@ -128,6 +165,7 @@ public class PlayerControllerEditor : EditorWindow
     {
         string path = profilePath + profileName + ".asset";
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
+        PCSphere.SetPCData(PCData);
         GetProfileList();
     }
 

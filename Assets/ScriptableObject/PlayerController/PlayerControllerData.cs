@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,18 +6,25 @@ using UnityEngine;
 public class PlayerControllerData : ScriptableObject
 {
     public float maxSpeed = 10f;
+
     public float maxAcceleration = 10f;
     public float maxAirAcceleration = 1f;
+
+    public float shootHeight = 2f;
+    public int maxShoots = 1;
+
     public float maxGroundAngle = 25f;
     public float maxSnapSpeed = 100f;
 
     public float probeDistance = 1f;
 
-    public LayerMask probeMask = -1;
+    public List<float> speedLimits;
+    public float speedLimitMargin;
 
-    public Material normalMaterial = default;
+    public Material rollingMaterial;
+    public Material aimingMaterial;
 
-    public float ballRadius = 0.5f;
-    public float ballAlignSpeed = 180f;
-    public float ballAirRotation = 0.5f;
+    public float shootingAngle;
+
+    public AnimationCurve shootCurve;
 }

@@ -700,12 +700,24 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void UpdatePCData()
     {
-
+        maxAcceleration = PCData.maxAcceleration;
+        maxAirAcceleration = PCData.maxAirAcceleration;
+        shootHeight = PCData.shootHeight;
+        maxShoots = PCData.maxShoots;
+        maxGroundAngle = PCData.maxGroundAngle;
+        maxSnapSpeed = PCData.maxSnapSpeed;
+        probeDistance = PCData.probeDistance;
+        speedLimits = PCData.speedLimits;
+        speedLimitMargin = PCData.speedLimitMargin;
+        rollingMaterial = PCData.rollingMaterial;
+        aimingMaterial = PCData.aimingMaterial;
+        shootingAngle = PCData.shootingAngle;
+        shootCurve = PCData.shootCurve;
     }
 
     public void SetPCData(PlayerControllerData PCData)
     {
-
+        this.PCData = PCData;
     }
 
     public PlayerControllerData GetPCData()

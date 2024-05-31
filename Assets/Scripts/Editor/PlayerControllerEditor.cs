@@ -15,27 +15,24 @@ public class PlayerControllerEditor : EditorWindow
     private PC_MovingSphere PCSphere;
     private PlayerControllerData PCData;
 
-    private string profileName = "NewProfile";
-    private List<string> profileNames = new List<string>();
+    private bool hideNewProfileSettings = true;
+
+    private string baseProfileName = "NewProfile";
+    private string profileName;
+    private List<string> profileList = new List<string>();
     private int selectedProfileIndex = 0;
 
+    public string profilePath = "Assets/Profiles/Player/";
+
     private Vector2 scrollPos = Vector2.zero;
-
-    private bool showMovementSettings = true;
-    private bool showProbeSettings = true;
-    private bool showMaterialSettings = true;
-    private bool showBallSettings = true;
-
-    private bool addProfilePopup = false;
 
     private GUIStyle header1Style;
     private GUIStyle header2Style;
 
     [MenuItem("Tools/Player Controller")]
-    static void Init()
+    public static void ShowWindow()
     {
-        var window = (PlayerControllerEditor)GetWindow(typeof(PlayerControllerEditor));
-        window.Show();
+        GetWindow<PlayerControllerEditor>("Player Controller Editor");
     }
 
     private void OnEnable()
@@ -45,8 +42,6 @@ public class PlayerControllerEditor : EditorWindow
 
     private void OnGUI()
     {
-        PCSphere = FindFirstObjectByType<PC_MovingSphere>();
-
         header1Style = new GUIStyle(EditorStyles.foldout);
         header1Style.fontStyle = FontStyle.Bold;
         header1Style.normal.textColor = Color.white;
@@ -56,121 +51,59 @@ public class PlayerControllerEditor : EditorWindow
 
         float padding = 15;
         Rect area = new Rect(padding, padding, position.width - padding * 2f, position.height - padding * 2f);
+
         GUILayout.BeginArea(area);
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, GUILayout.ExpandHeight(true));
 
-        EditorGUILayout.BeginHorizontal();
-        
-        if(profileNames.Count == 0)
+        if (profileList.Count == 0)
         {
+            EditorGUILayout.BeginHorizontal();
+
             profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
-            if(GUILayout.Button("Add Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
+            if (GUILayout.Button("Add Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
             {
-                NewProfile(profileName, PCData);
+                NewProfile(profileName);
             }
+
+            EditorGUILayout.EndHorizontal();
         }
         else
         {
-            selectedProfileIndex = EditorGUILayout.Popup("Select Profile", selectedProfileIndex, profileNames.ToArray(), GUILayout.MinWidth(250));
-        }
+            EditorGUILayout.BeginHorizontal();
 
-        if (profileNames.Count > 0 && GUILayout.Button("Delete Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
-        {
-            DeleteProfile(selectedProfileIndex);
-        }
+            selectedProfileIndex = EditorGUILayout.Popup("Select Profile", selectedProfileIndex, profileList.ToArray(), GUILayout.MinWidth(250));
 
-        EditorGUILayout.EndHorizontal();
-
-        GetProfileList();
-
-        if(profileNames.Count > 0) LoadProfile(profileNames[selectedProfileIndex]);
-
-        if (PCData != null)
-        {
-            if (!addProfilePopup && GUILayout.Button("New Profile"))
+            if (profileList.Count > 0 && GUILayout.Button("Delete Profile", GUILayout.Width(150), GUILayout.MinWidth(100)))
             {
-                addProfilePopup = true;
+                DeleteProfile(selectedProfileIndex);
             }
 
-            EditorGUILayout.BeginHorizontal();
-            if (addProfilePopup)
+            EditorGUILayout.EndHorizontal();
+
+            if (hideNewProfileSettings)
             {
+                if (GUILayout.Button("New Profile"))
+                {
+                    profileName = baseProfileName;
+                    hideNewProfileSettings = false;
+                }
+            } 
+
+            if (!hideNewProfileSettings)
+            {
+                EditorGUILayout.BeginHorizontal();
                 profileName = EditorGUILayout.TextField("Profile Name", profileName, GUILayout.MinWidth(250));
                 if (GUILayout.Button("Add", GUILayout.Width(150), GUILayout.MinWidth(100)))
                 {
-                    addProfilePopup = false;
-                    NewProfile(profileName, PCData);
+                    hideNewProfileSettings = true;
+                    NewProfile(profileName);
+                    selectedProfileIndex = GetProfileIndex(profileName);
                 }
-            }
-            EditorGUILayout.EndHorizontal();
-
-            GUILayout.Space(15);
-
-            showMovementSettings = EditorGUILayout.Foldout(showMovementSettings, "Movement Settings", true, header2Style);
-            if (showMovementSettings)
-            {
-                EditorGUI.indentLevel++;
-
-                PCData.maxSpeed = EditorGUILayout.Slider("Max Speed", PCData.maxSpeed, 0f, 100f);
-                PCSphere.maxSpeed = PCData.maxSpeed;
-
-                PCData.maxAcceleration = EditorGUILayout.Slider("Max Acceleration", PCData.maxAcceleration, 0f, 100f);
-                PCSphere.maxAcceleration = PCData.maxAcceleration;
-
-                PCData.maxAirAcceleration = EditorGUILayout.Slider("Max Air Acceleration", PCData.maxAirAcceleration, 0f, 10f);
-                PCSphere.maxAirAcceleration = PCData.maxAirAcceleration;
-
-                PCData.maxGroundAngle = EditorGUILayout.Slider("Max Ground Angle", PCData.maxGroundAngle, 0f, 90f);
-                PCSphere.maxGroundAngle = PCData.maxGroundAngle;
-
-                PCData.maxSnapSpeed = EditorGUILayout.Slider("Max Snap Speed", PCData.maxSnapSpeed, 0, 100);
-                PCSphere.maxSnapSpeed = PCData.maxSnapSpeed;
-
-                EditorGUI.indentLevel--;
-            }
-
-            showProbeSettings = EditorGUILayout.Foldout(showProbeSettings, "Probe Settings", true, header2Style);
-            if (showProbeSettings)
-            {
-                EditorGUI.indentLevel++;
-
-                PCData.probeDistance = EditorGUILayout.Slider("Probe Distance", PCData.probeDistance, 0f, 1f);
-                PCSphere.probeDistance = PCData.probeDistance;
-
-                PCData.probeMask = EditorGUILayout.MaskField("Probe Mask", PCData.probeMask, InternalEditorUtility.layers);
-                PCSphere.probeMask = PCData.probeMask;
-
-                EditorGUI.indentLevel--;
-            }
-
-            showMaterialSettings = EditorGUILayout.Foldout(showMaterialSettings, "Material Settings", true, header2Style);
-            if (showMaterialSettings)
-            {
-                EditorGUI.indentLevel++;
-
-                PCData.normalMaterial = (Material)EditorGUILayout.ObjectField(PCData.normalMaterial, typeof(Material), true);
-                PCSphere.normalMaterial = PCData.normalMaterial;
-
-                EditorGUI.indentLevel--;
-            }
-
-            showBallSettings = EditorGUILayout.Foldout(showBallSettings, "Ball Settings", true, header2Style);
-            if(showBallSettings)
-            {
-                EditorGUI.indentLevel++;
-
-                PCData.ballRadius = EditorGUILayout.Slider("Ball Radius", PCData.ballRadius, 0f, 1f);
-                PCSphere.ballRadius = PCData.ballRadius;
-
-                PCData.ballAlignSpeed = EditorGUILayout.Slider("Ball Align Speed ", PCData.ballAlignSpeed, 0f, 360f);
-                PCSphere.ballAlignSpeed = PCData.ballAlignSpeed;
-
-                PCData.ballAirRotation = EditorGUILayout.Slider("Ball Air rotation", PCData.ballAirRotation, 0f, 1f);
-                PCSphere.ballAirRotation = PCData.ballAirRotation;
-
-                EditorGUI.indentLevel--;
+                EditorGUILayout.EndHorizontal();
             }
         }
+
+        if (profileList.Count > 0) LoadProfile(profileList[selectedProfileIndex]);
 
         EditorGUILayout.EndScrollView();
         GUILayout.EndArea();
@@ -178,40 +111,57 @@ public class PlayerControllerEditor : EditorWindow
 
     private void GetProfileList()
     {
-        profileNames.Clear();
-        string[] guids = AssetDatabase.FindAssets("t:PlayerControllerData", new[] { "Assets/Profiles/Player" });
+        profileList.Clear();
+        string[] guids = AssetDatabase.FindAssets("t:PlayerControllerData", new[] {profilePath});
         foreach (string guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            profileNames.Add(Path.GetFileNameWithoutExtension(path));
+            profileList.Add(Path.GetFileNameWithoutExtension(path));
         }
-
-        if (PCData == null)
+        if (profileList.Count == 0)
         {
-            PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>("Assets/ScriptableObject/PlayerController/PlayerControllerData.asset");
+            profileName = baseProfileName;
         }
     }
 
     private void LoadProfile(string profileName)
     {
-        string path = $"Assets/Profiles/Player/{profileName}.asset";
+        string path = profilePath + profileName + ".asset";
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
+        GetProfileList();
     }
 
-    private void NewProfile(string profileName, PlayerControllerData settings)
+    private void NewProfile(string profileName)
     {
-        string path = $"Assets/Profiles/Player/{profileName}.asset";
+        string path = profilePath + profileName + ".asset";
+
         PlayerControllerData newProfile = CreateInstance<PlayerControllerData>();
-        if(settings != null) EditorUtility.CopySerialized(settings, newProfile);
+
+        if (PCData != null) EditorUtility.CopySerialized(PCData, newProfile);
+
         AssetDatabase.CreateAsset(newProfile, path);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+
+        GetProfileList();
     }
     private void DeleteProfile(int index)
     {
-        string path = $"Assets/Profiles/Player/{profileNames[index]}.asset";
+        string path = profilePath + profileList[index]+ ".asset";
         AssetDatabase.DeleteAsset(path);
         selectedProfileIndex = index > 0 ? index - 1 : 0;
         GetProfileList();
+    }
+
+    private int GetProfileIndex(string profileName)
+    {
+        for (int i = 0; i < profileList.Count; i++)
+        {
+            if (profileList[i] == profileName)
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 }

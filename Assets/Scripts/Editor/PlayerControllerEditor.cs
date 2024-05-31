@@ -14,6 +14,9 @@ using UnityEngine.UI;
 
 public class PlayerControllerEditor : EditorWindow
 {
+    private SerializedProperty floatListProperty;
+    private SerializedObject data;
+
     private PC_MovingSphere PCSphere;
     private PlayerControllerData PCData;
 
@@ -132,33 +135,7 @@ public class PlayerControllerEditor : EditorWindow
                     PCData.maxGroundAngle = EditorGUILayout.Slider("Max Ground Angle", PCData.maxGroundAngle, 0f, 90f);
                     PCData.maxSnapSpeed = EditorGUILayout.Slider("Max Snap Speed", PCData.maxSnapSpeed, 0f, 100f);
                     PCData.probeDistance = EditorGUILayout.Slider("Probe Distance", PCData.probeDistance, 0f, 100f);
-
-                    EditorGUILayout.BeginHorizontal();
-                    showSpeedLimit = EditorGUILayout.Foldout(showSpeedLimit, "Speed Limit");
-
-                    int newCount = Mathf.Max(0, EditorGUILayout.IntField("", PCData.speedLimits.Count, GUILayout.MaxWidth(100)));
-
-                    EditorGUILayout.EndHorizontal();
-
-                    while (newCount < PCData.speedLimits.Count)
-                    {
-                        PCData.speedLimits.RemoveAt(PCData.speedLimits.Count - 1);
-                    }
-                    while (newCount > PCData.speedLimits.Count)
-                    {
-                        PCData.speedLimits.Add(0);
-                    }
-
-                    if (showSpeedLimit)
-                    {
-                        for (int i = 0; i < PCData.speedLimits.Count; i++)
-                        {
-                            EditorGUI.indentLevel++;
-                            PCData.speedLimits[i] = EditorGUILayout.FloatField("Limits " + i, PCData.speedLimits[i]);
-                            EditorGUI.indentLevel--;
-                        }
-                    }
-
+                    
                     PCData.speedLimitMargin = EditorGUILayout.FloatField("Speed Limit Margin", PCData.speedLimitMargin);
 
                     PCData.rollingMaterial = (Material)EditorGUILayout.ObjectField(PCData.rollingMaterial, typeof(Material), true);
@@ -166,12 +143,9 @@ public class PlayerControllerEditor : EditorWindow
 
                     PCData.shootingAngle = EditorGUILayout.FloatField("Shooting Angle", PCData.shootingAngle);
 
-                    shootCurve = EditorGUILayout.CurveField("Animation Curve", shootCurve);
-                    PCData.shootCurve = shootCurve;
+                    PCData.shootCurve = EditorGUILayout.CurveField("Animation Curve", PCData.shootCurve);
                 }
             }
-
-
         }
         EditorGUILayout.EndScrollView();
         GUILayout.EndArea();
@@ -197,6 +171,7 @@ public class PlayerControllerEditor : EditorWindow
         string path = profilePath + profileName + ".asset";
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
         PCSphere.SetPCData(PCData);
+
         GetProfileList();
     }
 

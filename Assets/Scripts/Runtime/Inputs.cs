@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inputs : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject players;
     public GameObject panelMenu;
 
     void Update()
@@ -33,7 +34,7 @@ public class Inputs : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            GameManager.instance.Respawn(player);
+            GameManager.instance.Respawn(players);
         }
     }
 }

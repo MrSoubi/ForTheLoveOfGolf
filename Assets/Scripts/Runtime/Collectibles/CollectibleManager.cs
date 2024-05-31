@@ -22,12 +22,9 @@ public class CollectibleManager : MonoBehaviour
     public int holeCount;
     public int holeValue;
 
-<<<<<<< HEAD
-=======
     bool showCollectibleCount = true;
     [SerializeField] Animator collectibleCountAnim;
 
->>>>>>> dev
     public Action<int> onCollectedCoin;
     public Action<int> onCollectedHole;
 
@@ -68,12 +65,11 @@ public class CollectibleManager : MonoBehaviour
     /// </summary>
     public void RefreshInterface()
     {
-<<<<<<< HEAD
         textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue + " Coins";
         textHoleCounter.text = holeCount.ToString() + "/" + holeValue + " Holes";
         textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
         textHoleCounter.text = holeCount.ToString() + "/" + holeValue;
-=======
+
         if (textCollectibleCounter != null && collectibles.Count > 0)
         {
             textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue + " Coins";
@@ -81,7 +77,6 @@ public class CollectibleManager : MonoBehaviour
             textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
             textHoleCounter.text = holeCount.ToString() + "/" + holeValue;
         }
->>>>>>> dev
     }
 
     /// <summary>

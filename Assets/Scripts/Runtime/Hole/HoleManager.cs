@@ -31,7 +31,6 @@ public class HoleManager : MonoBehaviour
         {
             collectibleManager.holeCount += 1;
             holeInGame[id].wasFinish = true;
-<<<<<<< HEAD
 
             collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);
 
@@ -53,47 +52,6 @@ public class HoleManager : MonoBehaviour
 
             collectibleManager.RefreshInterface();
         }
-=======
-
-            collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);
-
-            if(holesCount[id].finish)
-            {
-                if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
-                {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
-                }
-                else
-                {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-                }
-            }
-            else
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-            }
-
-            collectibleManager.RefreshInterface();
-        }
-
-        if (holesCount[id].finish)
-        {
-            if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
-            }
-            else
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-            }
-        }
-        else
-        {
-            holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-        }
-
-        collectibleManager.RefreshInterface();
->>>>>>> dev
     }
 }
 

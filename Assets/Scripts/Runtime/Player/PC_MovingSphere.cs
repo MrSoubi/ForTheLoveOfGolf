@@ -169,6 +169,11 @@ public class PC_MovingSphere : MonoBehaviour
     bool isAiming;
     void Update()
     {
+        if (isBlocked)
+        {
+            return;
+        }
+
         if (shouldToogleRoll)
         {
             shouldToogleRoll = false;
@@ -318,6 +323,11 @@ public class PC_MovingSphere : MonoBehaviour
     bool shouldToogleRoll;
     void FixedUpdate()
     {
+        if (isBlocked)
+        {
+            return;
+        }
+
         Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
         UpdateState();
 
@@ -742,17 +752,19 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void Teleport(Vector3 position)
     {
-
+        body.position = position;
     }
 
     public void Teleport(Transform transform)
     {
-
+        body.position = transform.position;
+        body.rotation = transform.rotation;
     }
 
     public void Teleport(Vector3 position, Quaternion rotation)
     {
-
+        body.position = position;
+        body.rotation = rotation;
     }
 
     public Vector3 GetVelocity()
@@ -760,13 +772,32 @@ public class PC_MovingSphere : MonoBehaviour
         return body.velocity;
     }
 
+
+    private Vector3 savedVelocity;
+    private bool isBlocked;
+
+    /// <summary>
+    /// Arrête la balle en cours de déplacement et sauvegarde sa vélocité. La balle ne réagira plus aux intéractions venants de l'environnement ou du joueur. 
+    /// </summary>
     public void Block()
     {
-
+        savedVelocity = body.velocity;
+        body.velocity = Vector3.zero;
+        isBlocked = true;
     }
 
+    /// <summary>
+    /// Débloque la balle. Si le paramètre resetMovement est "true", la balle reprend la trajectoire qu'elle avait avant bloquage, sinon elle aura une vélocité nulle.
+    /// </summary>
+    /// <param name="resetMovement"></param>
     public void UnBlock(bool resetMovement)
     {
+        if (!resetMovement)
+        {
+            body.velocity = savedVelocity;
+            savedVelocity = Vector3.zero;
+        }
 
+        isBlocked = false;
     }
 }

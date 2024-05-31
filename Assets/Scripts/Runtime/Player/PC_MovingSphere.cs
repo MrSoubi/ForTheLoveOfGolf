@@ -8,7 +8,7 @@ public class PC_MovingSphere : MonoBehaviour
 {
 
     [SerializeField]
-    [Tooltip("Utiliser la caméra suivant la balle")]
+    [Tooltip("Utiliser la camï¿½ra suivant la balle")]
     Transform playerInputSpace = default;
 
     [SerializeField]
@@ -34,19 +34,19 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField]
     int maxShoots = 1;
 
-    [Tooltip("Angle maximum du sol au delà duquel la balle ne prendre plus d'accélération")]
+    [Tooltip("Angle maximum du sol au delï¿½ duquel la balle ne prendre plus d'accï¿½lï¿½ration")]
     [SerializeField, Range(0, 90)]
     float maxGroundAngle = 25f;
     
-    float maxStairsAngle = 50f; // Non utilisé
+    float maxStairsAngle = 50f; // Non utilisï¿½
 
-    float maxClimbAngle = 140f; // Non utilisé
+    float maxClimbAngle = 140f; // Non utilisï¿½
 
-    [Tooltip("Vitesse maximale au delà de laquelle la balle n'accrochera plus au sol en cas de collision avec un léger rebord")]
+    [Tooltip("Vitesse maximale au delï¿½ de laquelle la balle n'accrochera plus au sol en cas de collision avec un lï¿½ger rebord")]
     [SerializeField, Range(0f, 100f)]
     float maxSnapSpeed = 100f;
 
-    [Tooltip("Distance de détection du sol")]
+    [Tooltip("Distance de dï¿½tection du sol")]
     [SerializeField, Min(0f)]
     float probeDistance = 1f;
 
@@ -82,11 +82,11 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField, Min(0.1f)]
     float ballRadius = 0.5f;
 
-    [Tooltip("Utilisé pour l'affichage de la texture")]
+    [Tooltip("Utilisï¿½ pour l'affichage de la texture")]
     [SerializeField, Min(0f)]
     float ballAlignSpeed = 180f;
 
-    [Tooltip("Utilisé pour l'affichage de la texture")]
+    [Tooltip("Utilisï¿½ pour l'affichage de la texture")]
     [SerializeField, Min(0f)]
     float ballAirRotation = 0.5f;
         
@@ -202,7 +202,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     /// <summary>
-    /// Active le mode Roll. Si reset est true, la caméra reprendra la place qu'elle avait lors de la désactivation du mode Roll.
+    /// Active le mode Roll. Si reset est true, la camï¿½ra reprendra la place qu'elle avait lors de la dï¿½sactivation du mode Roll.
     /// </summary>
     /// <param name="reset"></param>
     void ToggleRoll(bool reset)
@@ -603,7 +603,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     [SerializeField]
-    [Tooltip("Garder les keys entre 0 et 1 en X. Les valeurs en Y peuvent varier de n'importe quelle façon mais devraient rester entre 1 et 2.")]
+    [Tooltip("Garder les keys entre 0 et 1 en X. Les valeurs en Y peuvent varier de n'importe quelle faï¿½on mais devraient rester entre 1 et 2.")]
     AnimationCurve shootCurve;
     //public float minShootFactor, maxShootFactor;
     float EvaluateShootFactor()

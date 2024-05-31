@@ -726,4 +726,34 @@ public class PC_MovingSphere : MonoBehaviour
     {
         return PCData;
     }
+
+    public void Teleport(Vector3 position)
+    {
+
+    }
+
+    public void Teleport(Transform transform)
+    {
+
+    }
+
+    public void Teleport(Vector3 position, Quaternion rotation)
+    {
+
+    }
+
+    public Vector3 GetVelocity()
+    {
+        return body.velocity;
+    }
+
+    public void Block()
+    {
+
+    }
+
+    public void UnBlock(bool resetMovement)
+    {
+
+    }
 }

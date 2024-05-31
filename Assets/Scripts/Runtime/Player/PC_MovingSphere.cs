@@ -505,7 +505,7 @@ public class PC_MovingSphere : MonoBehaviour
     void ResetMaxSpeed()
     {
         maxSpeedIndex = 0;
-        maxSpeed = speedLimits[0];
+        maxSpeed =  speedLimits.Count > 0 ? speedLimits[0] : 20f;
     }
 
     void AdjustMaxSpeed()

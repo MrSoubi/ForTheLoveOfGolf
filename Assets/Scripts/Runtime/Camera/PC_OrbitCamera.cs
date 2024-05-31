@@ -134,9 +134,17 @@ public class PC_OrbitCamera : MonoBehaviour
         SetSensitivity(AimingXSensitivity, AimingYSensitivity);
     }
 
-    public void ToggleFollowMode()
+    public void ToggleFollowMode(bool reset)
     {
-        orbitAngles = savedOrbitAngles;
+        if (reset)
+        {
+            orbitAngles = savedOrbitAngles;
+        }
+        else
+        {
+            orbitAngles.x = savedOrbitAngles.x;
+        }
+        
         UpdateFocusPoint();
         UpdatePositionAndRotation(Quaternion.Euler(orbitAngles));
         SetSensitivity(RollingXSensitivity, RollingYSensitivity);

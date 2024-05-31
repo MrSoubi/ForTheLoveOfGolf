@@ -425,7 +425,7 @@ public class PlayerController : MonoBehaviour
     #region Freeze
 
     private Vector3 savedVelocity;
-    private bool isFreezed;
+   // private bool isFreezed;
 
     /// <summary>
     /// Bloque tous les mouvements de la balle
@@ -434,7 +434,7 @@ public class PlayerController : MonoBehaviour
     {
         savedVelocity = rb.velocity;
         rb.velocity = Vector3.zero;
-        isFreezed = true;
+        //isFreezed = true;
     }
 
     /// <summary>
@@ -443,7 +443,7 @@ public class PlayerController : MonoBehaviour
     public void UnFreeze()
     {
         rb.velocity = savedVelocity;
-        isFreezed = false;
+        //isFreezed = false;
     }
     #endregion
     #region Block

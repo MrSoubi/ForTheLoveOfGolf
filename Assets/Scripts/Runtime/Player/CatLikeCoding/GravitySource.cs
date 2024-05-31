@@ -2,8 +2,11 @@
 
 public class GravitySource : MonoBehaviour {
 
+	[SerializeField]
+	float m_Gravity = Physics.gravity.y;
+
 	public virtual Vector3 GetGravity (Vector3 position) {
-		return Physics.gravity;
+		return new Vector3(0, m_Gravity, 0);
 	}
 
 	void OnEnable () {

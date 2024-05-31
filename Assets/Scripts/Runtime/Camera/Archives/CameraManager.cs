@@ -27,7 +27,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineFreeLook aimingCam;
     private CinemachineBrain brain;
 
-    bool isAiming = false;
+    //bool isAiming = false;
 
     void Start()
     {

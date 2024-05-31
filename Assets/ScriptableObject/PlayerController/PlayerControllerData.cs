@@ -30,7 +30,7 @@ public class PlayerControllerData : ScriptableObject
     public Material materialOpaque;
     public Material materialTransparent;
 
-    private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
+   // private EnvironmentEffect environmentEffect = EnvironmentEffect.NORMAL;
 
     private Rigidbody rb;
     public CameraManager cameraManager;

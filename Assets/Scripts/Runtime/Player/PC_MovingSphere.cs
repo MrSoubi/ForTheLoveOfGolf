@@ -73,10 +73,10 @@ public class PC_MovingSphere : MonoBehaviour
     
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-        
-    Material 
-        climbingMaterial = default,
-        swimmingMaterial = default;
+
+   // Material
+       // climbingMaterial = default,
+        //swimmingMaterial = default;
 
     [Tooltip("")]
     [SerializeField, Min(0.1f)]
@@ -90,7 +90,7 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField, Min(0f)]
     float ballAirRotation = 0.5f;
         
-    float ballSwimRotation = 2f;
+    //float ballSwimRotation = 2f;
 
     Rigidbody body, connectedBody, previousConnectedBody;
 
@@ -125,7 +125,7 @@ public class PC_MovingSphere : MonoBehaviour
     float submergence;
 
 
-    bool isJumpAllowed = false;
+    //bool isJumpAllowed = false;
 
     int shootPhase;
 

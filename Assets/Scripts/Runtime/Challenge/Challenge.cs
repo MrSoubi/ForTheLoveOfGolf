@@ -41,6 +41,7 @@ public class Challenge : MonoBehaviour
 
         if (coinsToGet == 0) coinsToGet = currentCollectibles.Length;
         challengeRewards.SetActive(false);
+        SetActiveCollectible(false);
     }
 
     public void AddCoin(int coin)

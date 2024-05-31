@@ -11,5 +11,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Level/Scenes/AreaTemplate.unity
     guid: bdbf25018db935d47a019c13c6c243fa
+  - enabled: 1
+    path: Assets/Level/Scenes/TestAreaTemplate.unity
+    guid: fe3dc6e206cc58b41ae44fbf5d90a302
+  - enabled: 1
+    path: Assets/Level/Scenes/Menu.unity
+    guid: b8d349e1a0cd0d349a42a20a3f0982a0
+  - enabled: 1
+    path: Assets/Level/Scenes/LevelArea.unity
+    guid: b10245f563110bd4299af6258fdbe4c0
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

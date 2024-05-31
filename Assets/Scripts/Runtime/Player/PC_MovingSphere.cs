@@ -40,19 +40,14 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField, Min(0f)]
     float probeDistance = 1f;
 
-    // Ajouter des vérifications :
-    // Au moins un élément
-    // Limites dans l'ordre croissant
     [Tooltip("Paliers de limite de vitesse")]
     [SerializeField]
     List<float> speedLimits;
 
-    // Vérifier que la marge n'est pas supérieure à l'écart entre deux paliers
     [Tooltip("Marge de vitesse pour la détection du passage au palier précédant (ex : Palier 1 = 20, Marge = 3, si la vitesse du joueur descend en dessous de 17, il repasse au palier 0 et sera limité à une vitesse de 20")]
     [SerializeField]
     float speedLimitMargin;
 
-    // Vérifier qu'ils sont opaques et transparents
     [SerializeField]
     Material rollingMaterial, aimingMaterial;
 
@@ -141,6 +136,25 @@ public class PC_MovingSphere : MonoBehaviour
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
         minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
         minClimbDotProduct = Mathf.Cos(maxClimbAngle * Mathf.Deg2Rad);
+
+        if(speedLimits.Count < 1)
+        {
+            Debug.LogWarning("Speed Limits doit contenir au moins 1 élément.");
+        }
+        else
+        {
+            for(int i = 1; i < speedLimits.Count; i++)
+            {
+                if (speedLimits[i] <= speedLimits[i - 1])
+                {
+                    Debug.LogWarning("Le palier " + i + " des Speed Limits est inférieur ou égal à son prédécesseur");
+                }
+                if (speedLimits[i] - speedLimitMargin <= speedLimits[i - 1])
+                {
+                    Debug.LogWarning("Speed Limit Margin est plus grand que le palier " + (i - 1));
+                }
+            }
+        }
     }
 
     void Awake()

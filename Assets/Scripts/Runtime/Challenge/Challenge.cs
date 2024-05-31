@@ -67,11 +67,11 @@ public class Challenge : MonoBehaviour
     }
     void StartChallenge()
     {
-        timerCoroutine = StartCoroutine(ChallengeTimer());
-        active = true;
-
         gameObject.GetComponent<BoxCollider>().enabled = false;
         door.GetComponent<MeshRenderer>().enabled = false;
+
+        timerCoroutine = StartCoroutine(ChallengeTimer());
+        active = true;
     }
     public void EndChallenge()
     {

@@ -62,13 +62,10 @@ public class CollectibleManager : MonoBehaviour
     /// </summary>
     public void RefreshInterface()
     {
-        if (textCollectibleCounter != null && collectibles.Count > 0)
-        {
-            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue + " Coins";
-            textHoleCounter.text = holeCount.ToString() + "/" + holeValue + " Holes";
-            textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
-            textHoleCounter.text = holeCount.ToString() + "/" + holeValue;
-        }
+        textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue + " Coins";
+        textHoleCounter.text = holeCount.ToString() + "/" + holeValue + " Holes";
+        textCollectibleCounter.text = collectibleCount.ToString() + "/" + collectibleValue;
+        textHoleCounter.text = holeCount.ToString() + "/" + holeValue;
     }
 
     /// <summary>

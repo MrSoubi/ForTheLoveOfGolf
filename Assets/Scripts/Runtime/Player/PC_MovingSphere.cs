@@ -8,6 +8,64 @@ using Unity.VisualScripting;
 public class PC_MovingSphere : MonoBehaviour
 {
 
+
+    // ----------
+    // -- Tool --
+    // ----------
+
+    public PlayerControllerData PCData;
+
+    #region TOOL PARAMETERS
+    [SerializeField, Range(0f, 100f)]
+    public float
+        maxAcceleration = 10f,
+        maxAirAcceleration = 1f;
+
+    [SerializeField, Range(0f, 100f)]
+    float shootHeight = 2f;
+
+    [Tooltip("Nombre de tirs max avant de retomber au sol")]
+    [SerializeField]
+    int maxShoots = 1;
+
+    [Tooltip("Angle maximum du sol au del� duquel la balle ne prendre plus d'acc�l�ration")]
+    [SerializeField, Range(0, 90)]
+    float maxGroundAngle = 25f;
+
+    [Tooltip("Vitesse maximale au del� de laquelle la balle n'accrochera plus au sol en cas de collision avec un l�ger rebord")]
+    [SerializeField, Range(0f, 100f)]
+    float maxSnapSpeed = 100f;
+
+    [Tooltip("Distance de d�tection du sol")]
+    [SerializeField, Min(0f)]
+    float probeDistance = 1f;
+
+    // Ajouter des vérifications :
+    // Au moins un élément
+    // Limites dans l'ordre croissant
+    [Tooltip("Paliers de limite de vitesse")]
+    [SerializeField]
+    List<float> speedLimits;
+
+    // Vérifier que la marge n'est pas supérieure à l'écart entre deux paliers
+    [Tooltip("Marge de vitesse pour la détection du passage au palier précédant (ex : Palier 1 = 20, Marge = 3, si la vitesse du joueur descend en dessous de 17, il repasse au palier 0 et sera limité à une vitesse de 20")]
+    [SerializeField]
+    float speedLimitMargin;
+
+    // Vérifier qu'ils sont opaques et transparents
+    [SerializeField]
+    Material rollingMaterial, aimingMaterial;
+
+    [SerializeField]
+    float shootingAngle;
+
+    [SerializeField]
+    [Tooltip("Garder les keys entre 0 et 1 en X. Les valeurs en Y peuvent varier de n'importe quelle fa�on mais devraient rester entre 1 et 2.")]
+    AnimationCurve shootCurve;
+
+    #endregion
+
+
     [SerializeField]
     [Tooltip("Utiliser la cam�ra suivant la balle")]
     Transform playerInputSpace = default;
@@ -20,120 +78,55 @@ public class PC_MovingSphere : MonoBehaviour
         
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
-    [SerializeField, Range(0f, 100f)]
-    float
-        maxAcceleration = 10f,
-        maxAirAcceleration = 1f;
-
     float
         maxClimbAcceleration = 40f,
         maxSwimAcceleration = 5f;
-
-    [SerializeField]
-    float shootHeight = 2f;
-
-    [SerializeField]
-    int maxShoots = 1;
-
-    [Tooltip("Angle maximum du sol au del� duquel la balle ne prendre plus d'acc�l�ration")]
-    [SerializeField, Range(0, 90)]
-    float maxGroundAngle = 25f;
     
     float maxStairsAngle = 50f; // Non utilis�
-
     float maxClimbAngle = 140f; // Non utilis�
-
-    [Tooltip("Vitesse maximale au del� de laquelle la balle n'accrochera plus au sol en cas de collision avec un l�ger rebord")]
-    [SerializeField, Range(0f, 100f)]
-    float maxSnapSpeed = 100f;
-
-    [Tooltip("Distance de d�tection du sol")]
-    [SerializeField, Min(0f)]
-    float probeDistance = 1f;
-
-    [SerializeField]
-    List<float> speedLimits;
-
     float submergenceOffset = 0.5f;
-
-
     float submergenceRange = 1f;
-
-
     float buoyancy = 1f;
-
-
     float waterDrag = 1f;
-
-
     float swimThreshold = 0.5f;
 
     [Tooltip("")]
     [SerializeField]
     LayerMask probeMask = -1;
-    
+
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
-
-
-   // Material
-       // climbingMaterial = default,
-        //swimmingMaterial = default;
 
     [Tooltip("")]
     [SerializeField, Min(0.1f)]
     float ballRadius = 0.5f;
 
-    [Tooltip("Utilis� pour l'affichage de la texture")]
+    [Tooltip("Utilisé pour l'affichage de la texture")]
     [SerializeField, Min(0f)]
     float ballAlignSpeed = 180f;
 
-    [Tooltip("Utilis� pour l'affichage de la texture")]
+    [Tooltip("Utilisé pour l'affichage de la texture")]
     [SerializeField, Min(0f)]
     float ballAirRotation = 0.5f;
-        
-    //float ballSwimRotation = 2f;
 
     Rigidbody body, connectedBody, previousConnectedBody;
-
     Vector3 playerInput;
-
     Vector3 velocity, connectionVelocity;
-
     public float Velocity;
-
     Vector3 connectionWorldPosition, connectionLocalPosition;
-
     Vector3 upAxis, rightAxis, forwardAxis;
-
     bool desiredShoot, desiresClimbing;
-
     Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
-
     Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
-
     int groundContactCount, steepContactCount, climbContactCount;
-
     bool OnGround => groundContactCount > 0;
-
     bool OnSteep => steepContactCount > 0;
-
     bool Climbing => false; // climbContactCount > 0 && stepsSinceLastJump > 2;
-
     bool InWater => false; // submergence > 0f;
-
     bool Swimming => false; // submergence >= swimThreshold;
-
     float submergence;
-
-
-    //bool isJumpAllowed = false;
-
     int shootPhase;
-
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
-
     int stepsSinceLastGrounded, stepsSinceLastJump;
-
     MeshRenderer meshRenderer;
 
 
@@ -191,8 +184,7 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
-    [SerializeField]
-    Material rollingMaterial, aimingMaterial;
+
 
     void ToggleAim()
     {
@@ -570,7 +562,7 @@ public class PC_MovingSphere : MonoBehaviour
         Velocity = velocity.magnitude;
     }
 
-    public float shootingAngle;
+    
 
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
@@ -598,9 +590,7 @@ public class PC_MovingSphere : MonoBehaviour
         IncreaseMaxSpeed();
     }
 
-    [SerializeField]
-    [Tooltip("Garder les keys entre 0 et 1 en X. Les valeurs en Y peuvent varier de n'importe quelle fa�on mais devraient rester entre 1 et 2.")]
-    AnimationCurve shootCurve;
+
     //public float minShootFactor, maxShootFactor;
     float EvaluateShootFactor()
     {

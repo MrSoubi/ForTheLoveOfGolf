@@ -40,6 +40,16 @@ public class PauseMenu : MonoBehaviour
         CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
     }
 
+    public void Menu()
+    {
+
+    }
+
+    public void SaveGame()
+    {
+
+    }
+
     public void Quit()
     {
         EventSystem.current.SetSelectedGameObject(null);

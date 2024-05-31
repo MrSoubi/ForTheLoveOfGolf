@@ -4,6 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using RangeAttribute = UnityEngine.RangeAttribute;
 using Unity.VisualScripting;
+using UnityEditor;
 
 public class PC_MovingSphere : MonoBehaviour
 {

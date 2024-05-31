@@ -159,7 +159,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (shouldToogleRoll)
         {
             shouldToogleRoll = false;
-            ToggleRoll();
+            ToggleRoll(false);
         }
         else
         {
@@ -167,9 +167,9 @@ public class PC_MovingSphere : MonoBehaviour
             {
                 ToggleAim();
             }
-            if (Input.GetMouseButtonUp(1)) // Desactivation du mode Aim
+            if (isAiming && Input.GetMouseButtonUp(1)) // Desactivation du mode Aim
             {
-                ToggleRoll();
+                ToggleRoll(true);
             }
         }
 
@@ -196,12 +196,16 @@ public class PC_MovingSphere : MonoBehaviour
         Time.timeScale = 0.1f;
     }
 
-    void ToggleRoll()
+    /// <summary>
+    /// Active le mode Roll. Si reset est true, la caméra reprendra la place qu'elle avait lors de la désactivation du mode Roll.
+    /// </summary>
+    /// <param name="reset"></param>
+    void ToggleRoll(bool reset)
     {
         Time.timeScale = 1.0f;
         isAiming = false;
         meshRenderer.material = rollingMaterial;
-        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode();
+        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode(reset);
     }
 
     void HandleAim()

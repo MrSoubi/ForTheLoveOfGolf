@@ -26,5 +26,5 @@ public class PlayerControllerData : ScriptableObject
 
     public float shootingAngle;
 
-    public AnimationCurve shootCurve;
+    public AnimationCurve shootCurve = AnimationCurve.Linear(0,0,1,1);
 }

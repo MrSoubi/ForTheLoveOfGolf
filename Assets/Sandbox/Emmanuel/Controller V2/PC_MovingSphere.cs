@@ -1,5 +1,8 @@
 using DG.Tweening;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
+using RangeAttribute = UnityEngine.RangeAttribute;
 
 public class PC_MovingSphere : MonoBehaviour
 {
@@ -12,8 +15,7 @@ public class PC_MovingSphere : MonoBehaviour
     [Tooltip("Mettre l'enfant Ball")]
     Transform ball = default;
 
-    [SerializeField, Range(0f, 100f)]
-    float maxSpeed = 10f;
+    float maxSpeed;
         
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
@@ -48,6 +50,8 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField, Min(0f)]
     float probeDistance = 1f;
 
+    [SerializeField]
+    List<float> speedLimits;
 
     float submergenceOffset = 0.5f;
 
@@ -69,8 +73,6 @@ public class PC_MovingSphere : MonoBehaviour
     
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-
-    //Material        normalMaterial = default;
         
     Material 
         climbingMaterial = default,
@@ -95,6 +97,8 @@ public class PC_MovingSphere : MonoBehaviour
     Vector3 playerInput;
 
     Vector3 velocity, connectionVelocity;
+
+    public float Velocity;
 
     Vector3 connectionWorldPosition, connectionLocalPosition;
 
@@ -147,6 +151,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     void Awake()
     {
+        ResetMaxSpeed();
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -315,6 +320,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         AdjustVelocity();
+        AdjustMaxSpeed();
 
         if (desiredShoot)
         {
@@ -345,6 +351,8 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         body.velocity = velocity;
+
+        
 
         ClearState();
     }
@@ -485,6 +493,35 @@ public class PC_MovingSphere : MonoBehaviour
         return false;
     }
 
+    int maxSpeedIndex = 0;
+    public void IncreaseMaxSpeed()
+    {
+        maxSpeedIndex++;
+        maxSpeedIndex = Mathf.Clamp(maxSpeedIndex, 0, speedLimits.Count - 1);
+        maxSpeed = speedLimits[maxSpeedIndex];
+    }
+
+    void LowerMaxSpeed()
+    {
+        maxSpeedIndex--;
+        maxSpeedIndex = Mathf.Clamp(maxSpeedIndex, 0, speedLimits.Count- 1);
+        maxSpeed = speedLimits[maxSpeedIndex];
+    }
+
+    void ResetMaxSpeed()
+    {
+        maxSpeedIndex = 0;
+        maxSpeed = speedLimits[0];
+    }
+
+    void AdjustMaxSpeed()
+    {
+        if (maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - 5f)
+        {
+            LowerMaxSpeed();
+        }
+    }
+
     void AdjustVelocity()
     {
         float acceleration, speed;
@@ -507,7 +544,7 @@ public class PC_MovingSphere : MonoBehaviour
         else
         {
             acceleration = OnGround ? maxAcceleration : maxAirAcceleration;
-            speed = OnGround && desiresClimbing ? maxClimbSpeed : maxSpeed;
+            speed = OnGround && desiresClimbing ? maxClimbSpeed : maxSpeed; // GESTION DE LA VITESSE MAX PAR PALIER ICI !
             xAxis = rightAxis;
             zAxis = forwardAxis;
         }
@@ -528,6 +565,8 @@ public class PC_MovingSphere : MonoBehaviour
         {
             velocity += upAxis * adjustment.y;
         }
+
+        Velocity = velocity.magnitude;
     }
 
     public float shootingAngle;
@@ -557,7 +596,9 @@ public class PC_MovingSphere : MonoBehaviour
             shootSpeed = Mathf.Max(shootSpeed - alignedSpeed, 0f);
         }
 
-        velocity = shootDirection * shootSpeed;
+        velocity += shootDirection * shootSpeed;
+
+        IncreaseMaxSpeed();
     }
 
     void OnCollisionEnter(Collision collision)

@@ -13,7 +13,8 @@ public class HoleManager : MonoBehaviour
 
     private void Awake()
     {
-        Hole[] holes = FindObjectsByType<Hole>(FindObjectsSortMode.None);
+        Hole[] holes = FindObjectsByType<Hole>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
         for (int i = 0; i < holes.Length; i++)
         {
             holes[i].holeManager = this;

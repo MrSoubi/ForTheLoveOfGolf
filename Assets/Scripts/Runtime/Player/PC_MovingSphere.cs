@@ -137,6 +137,7 @@ public class PC_MovingSphere : MonoBehaviour
         minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
         minClimbDotProduct = Mathf.Cos(maxClimbAngle * Mathf.Deg2Rad);
 
+        /*
         if(speedLimits.Count < 1)
         {
             Debug.LogWarning("Speed Limits doit contenir au moins 1 élément.");
@@ -155,6 +156,7 @@ public class PC_MovingSphere : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     void Awake()

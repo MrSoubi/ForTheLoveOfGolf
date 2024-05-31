@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Sandbox/Eliot/MiniLevel_Test_Physique.unity
-    guid: 90d63f9a3464f2a4a93f3945b075a984
   - enabled: 1
     path: Assets/Level/Scenes/AreaTemplate.unity
     guid: bdbf25018db935d47a019c13c6c243fa

@@ -17,47 +17,24 @@ public class PC_MovingSphere : MonoBehaviour
     public PlayerControllerData PCData;
 
     #region TOOL PARAMETERS
-    [SerializeField, Range(0f, 100f)]
+
     public float
         maxAcceleration = 10f,
         maxAirAcceleration = 1f;
 
-    [SerializeField, Range(0f, 100f)]
     float shootHeight = 2f;
-
-    [Tooltip("Nombre de tirs max avant de retomber au sol")]
-    [SerializeField]
     int maxShoots = 1;
-
-    [Tooltip("Angle maximum du sol au del� duquel la balle ne prendre plus d'acc�l�ration")]
-    [SerializeField, Range(0, 90)]
     float maxGroundAngle = 25f;
-
-    [Tooltip("Vitesse maximale au del� de laquelle la balle n'accrochera plus au sol en cas de collision avec un l�ger rebord")]
-    [SerializeField, Range(0f, 100f)]
     float maxSnapSpeed = 100f;
-
-    [Tooltip("Distance de d�tection du sol")]
-    [SerializeField, Min(0f)]
     float probeDistance = 1f;
+    float speedLimitMargin;
+    Material rollingMaterial, aimingMaterial;
+    float shootingAngle;
+    AnimationCurve shootCurve;
 
     [Tooltip("Paliers de limite de vitesse")]
     [SerializeField]
     List<float> speedLimits;
-
-    [Tooltip("Marge de vitesse pour la détection du passage au palier précédant (ex : Palier 1 = 20, Marge = 3, si la vitesse du joueur descend en dessous de 17, il repasse au palier 0 et sera limité à une vitesse de 20")]
-    [SerializeField]
-    float speedLimitMargin;
-
-    [SerializeField]
-    Material rollingMaterial, aimingMaterial;
-
-    [SerializeField]
-    float shootingAngle;
-
-    [SerializeField]
-    [Tooltip("Garder les keys entre 0 et 1 en X. Les valeurs en Y peuvent varier de n'importe quelle fa�on mais devraient rester entre 1 et 2.")]
-    AnimationCurve shootCurve;
 
     #endregion
 
@@ -209,6 +186,7 @@ public class PC_MovingSphere : MonoBehaviour
     public GameObject shootingIndicator;
     void ShowShootingIndicator()
     {
+        shootingIndicator.transform.rotation = playerInputSpace.rotation;
         shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle, 0, 0);
         shootingIndicator.SetActive(true);
     }
@@ -220,6 +198,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     void ToggleAim()
     {
+        ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;
         playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleAimMode();
@@ -232,6 +211,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="reset"></param>
     void ToggleRoll(bool reset)
     {
+        HideShootingIndicator();
         Time.timeScale = 1.0f;
         isAiming = false;
         meshRenderer.material = rollingMaterial;
@@ -241,6 +221,8 @@ public class PC_MovingSphere : MonoBehaviour
     void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
+        Debug.Log(playerInputSpace.rotation.eulerAngles.y);
+        shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle + playerInputSpace.rotation.eulerAngles.x, playerInputSpace.rotation.eulerAngles.y, 0);
     }
 
     void HandleRoll()
@@ -546,7 +528,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     void AdjustMaxSpeed()
     {
-        if (maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - 5f)
+        if (maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
         {
             LowerMaxSpeed();
         }

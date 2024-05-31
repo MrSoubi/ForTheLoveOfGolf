@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1832406150492255385}
+  - {fileID: 8821900375423138904}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &5465853338243228102
@@ -175,19 +176,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInputSpace: {fileID: 0}
   ball: {fileID: 1832406150492255385}
-  maxSpeed: 10
   maxAcceleration: 10
   maxAirAcceleration: 1
+  shootHeight: 2
+  maxShoots: 1
   maxGroundAngle: 25
   maxSnapSpeed: 100
   probeDistance: 1
+  speedLimits: []
   probeMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  normalMaterial: {fileID: 2100000, guid: fcc6100d84022294fbac085a67ea3637, type: 2}
   ballRadius: 0.5
   ballAlignSpeed: 180
   ballAirRotation: 0.5
+  Velocity: 0
+  rollingMaterial: {fileID: 0}
+  aimingMaterial: {fileID: 0}
+  shootingAngle: 0
+  shootCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!54 &8980406981842156646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -298,3 +310,65 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &8682914458603759982
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2608575853528526071}
+    m_Modifications:
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7524592508117116110, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_Name
+      value: Shoot Indicator
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+--- !u!4 &8821900375423138904 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+  m_PrefabInstance: {fileID: 8682914458603759982}
+  m_PrefabAsset: {fileID: 0}

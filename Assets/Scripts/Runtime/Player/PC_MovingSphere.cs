@@ -203,7 +203,17 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
+    public GameObject shootingIndicator;
+    void ShowShootingIndicator()
+    {
+        shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle, 0, 0);
+        shootingIndicator.SetActive(true);
+    }
 
+    void HideShootingIndicator()
+    {
+        shootingIndicator.SetActive(false);
+    }
 
     void ToggleAim()
     {

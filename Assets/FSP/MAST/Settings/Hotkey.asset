@@ -32,8 +32,8 @@ MonoBehaviour:
   moveGridDownMod: 1
   deselectPrefabKey: 27
   deselectPrefabMod: 0
-  rotatePrefabKey: 32
-  rotatePrefabMod: 0
+  rotatePrefabKey: 0
+  rotatePrefabMod: 1
   flipPrefabKey: 0
   flipPrefabMod: 1
   paintMaterialKey: 109

@@ -697,4 +697,19 @@ public class PC_MovingSphere : MonoBehaviour
     {
         return (stairsMask & (1 << layer)) == 0 ? minGroundDotProduct : minStairsDotProduct;
     }
+
+    public void UpdatePCData()
+    {
+
+    }
+
+    public void SetPCData(PlayerControllerData PCData)
+    {
+
+    }
+
+    public PlayerControllerData GetPCData()
+    {
+        return PCData;
+    }
 }

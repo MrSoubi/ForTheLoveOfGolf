@@ -13,6 +13,7 @@ using UnityEngine.UI;
 
 public class PlayerCameraEditor : EditorWindow
 {
+    /*
     private PC_OrbitCamera PCOrbitCam;
     private PlayerCameraData CamData;
 
@@ -41,7 +42,7 @@ public class PlayerCameraEditor : EditorWindow
 
     private void OnGUI()
     {
-        PCOrbitCam = FindFirstObjectByType<PC_OrbitCamera>();
+       PCOrbitCam = FindFirstObjectByType<PC_OrbitCamera>();
 
         header1Style = new GUIStyle(EditorStyles.foldout);
         header1Style.fontStyle = FontStyle.Bold;
@@ -171,5 +172,5 @@ public class PlayerCameraEditor : EditorWindow
         AssetDatabase.DeleteAsset(path);
         selectedProfileIndex = index > 0 ? index - 1 : 0;
         GetProfileList();
-    }
+    }*/
 }

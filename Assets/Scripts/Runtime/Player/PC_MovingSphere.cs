@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using RangeAttribute = UnityEngine.RangeAttribute;
+using Unity.VisualScripting;
 
 public class PC_MovingSphere : MonoBehaviour
 {
@@ -570,7 +571,8 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     public float shootingAngle;
-    
+
+    Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
         Vector3 shootDirection;
@@ -590,14 +592,8 @@ public class PC_MovingSphere : MonoBehaviour
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
-
-        float alignedSpeed = Vector3.Dot(velocity, shootDirection);
-        if (alignedSpeed > 0f)
-        {
-            shootSpeed = Mathf.Max(shootSpeed - alignedSpeed, 0f);
-        }
-
-        velocity += shootDirection * shootSpeed * EvaluateShootFactor();
+                
+        velocity = shootDirection * (shootSpeed * EvaluateShootFactor() + velocity.magnitude);
 
         IncreaseMaxSpeed();
     }
@@ -614,6 +610,7 @@ public class PC_MovingSphere : MonoBehaviour
         float result = shootCurve.Evaluate(abs);
 
         Debug.Log(result);
+
         return result;
     }
 

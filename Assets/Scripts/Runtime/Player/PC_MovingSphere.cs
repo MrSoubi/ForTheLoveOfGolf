@@ -155,6 +155,7 @@ public class PC_MovingSphere : MonoBehaviour
     bool isAiming;
     void Update()
     {
+        UpdatePCData();
         if (isBlocked)
         {
             return;

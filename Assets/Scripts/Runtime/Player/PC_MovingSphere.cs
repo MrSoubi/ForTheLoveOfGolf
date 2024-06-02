@@ -146,6 +146,12 @@ public class PC_MovingSphere : MonoBehaviour
         OnValidate();
     }
 
+    private void Start()
+    {
+        UpdatePCData();
+    }
+
+
     bool isAiming;
     void Update()
     {

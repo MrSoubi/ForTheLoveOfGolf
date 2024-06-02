@@ -174,16 +174,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f7e545fe8ca0b46b9e1c23428e65ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInputSpace: {fileID: 0}
-  ball: {fileID: 1832406150492255385}
+  PCData: {fileID: 0}
   maxAcceleration: 10
   maxAirAcceleration: 1
-  shootHeight: 2
-  maxShoots: 1
-  maxGroundAngle: 25
-  maxSnapSpeed: 100
-  probeDistance: 1
-  speedLimits: []
+  speedLimits:
+  - 20
+  - 30
+  - 40
+  playerInputSpace: {fileID: 0}
+  ball: {fileID: 1832406150492255385}
   probeMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -191,15 +190,7 @@ MonoBehaviour:
   ballAlignSpeed: 180
   ballAirRotation: 0.5
   Velocity: 0
-  rollingMaterial: {fileID: 0}
-  aimingMaterial: {fileID: 0}
-  shootingAngle: 0
-  shootCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  shootingIndicator: {fileID: 1158359374877216160}
 --- !u!54 &8980406981842156646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -319,6 +310,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 2608575853528526071}
     m_Modifications:
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -358,6 +361,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391954880480795447, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391954880480795447, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391954880480795447, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7524592508117116110, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_Name
       value: Shoot Indicator
@@ -367,6 +386,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+--- !u!1 &1158359374877216160 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7524592508117116110, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
+  m_PrefabInstance: {fileID: 8682914458603759982}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8821900375423138904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}

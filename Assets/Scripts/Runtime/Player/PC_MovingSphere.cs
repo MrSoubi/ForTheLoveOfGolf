@@ -18,22 +18,21 @@ public class PC_MovingSphere : MonoBehaviour
 
     #region TOOL PARAMETERS
 
-    public float
-        maxAcceleration = 10f,
-        maxAirAcceleration = 1f;
+    float
+        maxAcceleration,
+        maxAirAcceleration;
 
-    float shootHeight = 2f;
-    int maxShoots = 1;
-    float maxGroundAngle = 25f;
-    float maxSnapSpeed = 100f;
-    float probeDistance = 1f;
+    float shootHeight;
+    int maxShoots;
+    float maxGroundAngle;
+    float maxSnapSpeed;
+    float probeDistance;
     float speedLimitMargin;
     Material rollingMaterial, aimingMaterial;
     float shootingAngle;
     AnimationCurve shootCurve;
 
-    [Tooltip("Paliers de limite de vitesse")]
-    [SerializeField]
+
     List<float> speedLimits;
 
     #endregion
@@ -47,7 +46,9 @@ public class PC_MovingSphere : MonoBehaviour
     [Tooltip("Mettre l'enfant Ball")]
     Transform ball = default;
 
-    float maxSpeed;
+    public GameObject shootingIndicator;
+
+    public float maxSpeed;
         
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
@@ -63,28 +64,23 @@ public class PC_MovingSphere : MonoBehaviour
     float waterDrag = 1f;
     float swimThreshold = 0.5f;
 
-    [Tooltip("")]
-    [SerializeField]
     LayerMask probeMask = -1;
 
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-    [Tooltip("")]
-    [SerializeField, Min(0.1f)]
+
     float ballRadius = 0.5f;
 
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
+
     float ballAlignSpeed = 180f;
 
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
+
     float ballAirRotation = 0.5f;
 
     Rigidbody body, connectedBody, previousConnectedBody;
     Vector3 playerInput;
     Vector3 velocity, connectionVelocity;
-    public float Velocity;
+    float Velocity;
     Vector3 connectionWorldPosition, connectionLocalPosition;
     Vector3 upAxis, rightAxis, forwardAxis;
     bool desiredShoot, desiresClimbing;
@@ -139,7 +135,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     void Awake()
     {
-        ResetMaxSpeed();
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -148,7 +143,9 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void Start()
     {
-        UpdatePCData();
+        //UpdatePCData();
+        //UnFreeze();
+        ResetMaxSpeed();
     }
 
 
@@ -189,7 +186,7 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
-    public GameObject shootingIndicator;
+    
     void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = playerInputSpace.rotation;
@@ -227,7 +224,6 @@ public class PC_MovingSphere : MonoBehaviour
     void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
-        Debug.Log(playerInputSpace.rotation.eulerAngles.y);
         shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle + playerInputSpace.rotation.eulerAngles.x, playerInputSpace.rotation.eulerAngles.y, 0);
     }
 
@@ -300,7 +296,11 @@ public class PC_MovingSphere : MonoBehaviour
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
         }
-        ball.localRotation = rotation;
+
+        if (canTurn)
+        {
+            ball.localRotation = rotation;
+        }
     }
 
     Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
@@ -368,9 +368,10 @@ public class PC_MovingSphere : MonoBehaviour
             velocity += gravity * Time.deltaTime;
         }
 
-        body.velocity = velocity;
-
-        
+        if (!isFreezed)
+        {
+            body.velocity = velocity;
+        }
 
         ClearState();
     }
@@ -742,6 +743,8 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void SetPCData(PlayerControllerData PCData)
     {
+        Debug.Log("SetPCData from " + this.name);
+        Debug.Log("PC Data : " + PCData.name);
         this.PCData = PCData;
         UpdatePCData();
     }
@@ -819,8 +822,39 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = false;
     }
 
+    bool canTurn = true;
+    /// <summary>
+    /// Bloque la direction du joueur, il ne peut plus tourner mais continue de subir la gravité et les frottements
+    /// </summary>
+    public void FreezeDirection()
+    {
+        canTurn = false;
+    }
+
+    /// <summary>
+    /// Débloque le freeze de la direction
+    /// </summary>
+    public void UnFreezeDirection()
+    {
+        canTurn = true;
+    }
+
+    bool isFreezed = false;
+    /// <summary>
+    /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner.
+    /// </summary>
     public void Freeze()
     {
+        FreezeDirection();
+        isFreezed = true;
+    }
 
+    /// <summary>
+    /// Débloque le freeze
+    /// </summary>
+    public void UnFreeze()
+    {
+        UnFreezeDirection();
+        isFreezed = false;
     }
 }

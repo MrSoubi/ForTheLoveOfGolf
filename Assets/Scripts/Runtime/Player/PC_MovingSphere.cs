@@ -868,4 +868,37 @@ public class PC_MovingSphere : MonoBehaviour
     {
         shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
     }
+
+    /// <summary>
+    /// Change la direction de déplacement du player
+    /// </summary>
+    /// <param name="direction"></param>
+    public void SetDirection(Vector3 direction)
+    {
+        body.velocity = direction.normalized * body.velocity.magnitude;
+    }
+
+    /// <summary>
+    /// Augmente la limite de vitesse actuelle au prochain palier
+    /// </summary>
+    public void IncreaseSpeedLimit()
+    {
+        maxSpeedIndex = Mathf.Min(maxSpeedIndex + 1, speedLimits.Count - 1);
+    }
+
+    /// <summary>
+    /// Augmente la limite de vitesse au palier maximum
+    /// </summary>
+    public void IncreaseSpeedLimitToMaximum()
+    {
+        maxSpeedIndex = speedLimits.Count - 1;
+    }
+
+    /// <summary>
+    /// Augmente la vitesse du player à la vitesse max actuelle
+    /// </summary>
+    public void IncreaseVelocityToCurrentSpeedLimit()
+    {
+        body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
+    }
 }

@@ -583,7 +583,8 @@ public class PC_MovingSphere : MonoBehaviour
 
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
-        velocity += xAxis * adjustment.x + zAxis * adjustment.z;
+        float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
+        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * turningFactor);
         if (Swimming)
         {
             velocity += upAxis * adjustment.y;

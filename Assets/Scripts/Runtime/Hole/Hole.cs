@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class Hole : MonoBehaviour
 {
@@ -37,8 +36,8 @@ public class Hole : MonoBehaviour
             StartCoroutine(SpawnPoint());
 
             virtualBall.transform.localScale = collision.transform.localScale;
-            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponent<MeshFilter>().mesh; 
-            virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponent<MeshRenderer>().materials; 
+            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh; 
+            virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
         }
     }
 
@@ -46,9 +45,16 @@ public class Hole : MonoBehaviour
     {
         yield return new WaitForSeconds(1.1f);
 
-        collision.GetComponent<PlayerController>().Teleport(transform.position + respawnPoint);
         collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);
+
+
+        PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
+
+        tmp.Block();
+        tmp.Teleport(transform.position + respawnPoint);
+        tmp.UnBlock(true);
+
         collision = null;
 
         flagVisual.Bump();

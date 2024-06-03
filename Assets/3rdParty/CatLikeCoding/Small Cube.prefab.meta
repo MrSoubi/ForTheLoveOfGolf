@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Level/UI/CanvasMenu.prefab.meta
+guid: 81e5cc6d3edbdf14ea998f4de9010690
+========
 guid: a55a2e30aea25e24aa47bbf9862b2c13
+>>>>>>>> dev:Assets/3rdParty/CatLikeCoding/Small Cube.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

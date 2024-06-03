@@ -9,6 +9,9 @@ public class Door : MonoBehaviour
     [HideInInspector]
     public bool openVertical;
 
+    [HideInInspector]
+    public int index;
+
     [Header("Animation")]
     public int animeDuration;
 
@@ -46,6 +49,8 @@ public class Door : MonoBehaviour
         {
             OpenPivot();
         }
+
+        SaveManager.doors[index] = true;
     }
 
     /// <summary>

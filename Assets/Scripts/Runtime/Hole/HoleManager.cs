@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +11,7 @@ public class HoleManager : MonoBehaviour
     [SerializeField] private Material flagMaterialComplete;
 
     Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
+    [HideInInspector]
     public List<Hole> holesCount = new List<Hole>();
 
     private void Awake()
@@ -30,6 +33,8 @@ public class HoleManager : MonoBehaviour
         if (!holeInGame[id].wasFinish)
         {
             collectibleManager.holeCount += 1;
+            SaveManager.holes = collectibleManager.holeCount;
+            SaveManager.holesObject[id] = true;
             holeInGame[id].wasFinish = true;
 
             collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);
@@ -52,24 +57,6 @@ public class HoleManager : MonoBehaviour
 
             collectibleManager.RefreshInterface();
         }
-
-        if (holesCount[id].finish)
-        {
-            if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
-            }
-            else
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-            }
-        }
-        else
-        {
-            holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-        }
-
-        collectibleManager.RefreshInterface();
     }
 }
 

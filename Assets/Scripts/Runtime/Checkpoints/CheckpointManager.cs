@@ -12,11 +12,13 @@ public class CheckpointManager : MonoBehaviour
 
     public void Awake() => instance = Utils.Singleton(this, instance, () => Destroy(gameObject));
 
+
     public void SetCheckpoint(Vector3 newCheckPoints, CheckpointTrigger trigger)
     {
         if (newCheckPoints != checkPoints) 
         { 
             checkPoints = newCheckPoints;
+            SaveManager.positionSpawn = newCheckPoints;
             if (lastTrigger != null) lastTrigger.ChangeMaterial(materials[0]);
             lastTrigger = trigger;
             lastTrigger.ChangeMaterial(materials[1]);

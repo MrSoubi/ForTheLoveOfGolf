@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
             Shoot(shootDirection);
             isAiming = false;
             MakePlayerOpaque();
-            cameraManager.ToggleFollowMode();
+            cameraManager.RollShoot();
         }
     }
 
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour
             Freeze();
             isAiming = true;
             MakePlayerTransparent();
-            cameraManager.ToggleAimMode();
+            cameraManager.AimShoot();
         }
 
         //if (isAiming && Input.GetKeyUp(PCData.aimingInput))
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             UnFreeze();
             isAiming = false;
             MakePlayerOpaque();
-            cameraManager.ToggleFollowMode();
+            cameraManager.RollShoot();
         }
     }
 

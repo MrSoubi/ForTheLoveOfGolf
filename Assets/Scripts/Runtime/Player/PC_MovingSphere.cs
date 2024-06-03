@@ -5,6 +5,8 @@ using UnityEngine;
 using RangeAttribute = UnityEngine.RangeAttribute;
 using Unity.VisualScripting;
 using UnityEditor;
+using System;
+
 
 public class PC_MovingSphere : MonoBehaviour
 {
@@ -30,8 +32,8 @@ public class PC_MovingSphere : MonoBehaviour
     float speedLimitMargin;
     Material rollingMaterial, aimingMaterial;
     float shootingAngle;
-    AnimationCurve shootCurve;
 
+    public AnimationCurve rotationCurve;
 
     List<float> speedLimits;
 
@@ -68,7 +70,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-
     float ballRadius = 0.5f;
 
 
@@ -93,7 +94,8 @@ public class PC_MovingSphere : MonoBehaviour
     bool InWater => false; // submergence > 0f;
     bool Swimming => false; // submergence >= swimThreshold;
     float submergence;
-    int shootPhase;
+    int shootCharges;
+
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     int stepsSinceLastGrounded, stepsSinceLastJump;
     MeshRenderer meshRenderer;
@@ -136,6 +138,7 @@ public class PC_MovingSphere : MonoBehaviour
     void Awake()
     {
         UpdatePCData();
+
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -147,12 +150,15 @@ public class PC_MovingSphere : MonoBehaviour
         //UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
+
     }
 
 
     bool isAiming;
     void Update()
     {
+        UpdatePCData();
+
         if (isBlocked)
         {
             return;
@@ -187,7 +193,6 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
-    
     void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = playerInputSpace.rotation;
@@ -297,7 +302,6 @@ public class PC_MovingSphere : MonoBehaviour
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
         }
-
         if (canTurn)
         {
             ball.localRotation = rotation;
@@ -374,6 +378,7 @@ public class PC_MovingSphere : MonoBehaviour
             body.velocity = velocity;
         }
 
+
         ClearState();
     }
 
@@ -400,7 +405,7 @@ public class PC_MovingSphere : MonoBehaviour
             stepsSinceLastGrounded = 0;
             if (stepsSinceLastJump > 1)
             {
-                shootPhase = 0;
+                shootCharges = 1;
             }
             if (groundContactCount > 1)
             {
@@ -580,7 +585,8 @@ public class PC_MovingSphere : MonoBehaviour
 
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
-        velocity += xAxis * adjustment.x + zAxis * adjustment.z;
+        float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
+        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * turningFactor);
         if (Swimming)
         {
             velocity += upAxis * adjustment.y;
@@ -590,45 +596,45 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     
-
+    float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
         Vector3 shootDirection;
 
-        if (maxShoots <= 0 || shootPhase >= maxShoots)
+        if (maxShoots <= 0 || shootCharges <= 0)
         {
             return;
         }
 
         stepsSinceLastJump = 0;
-        shootPhase += 1;
+        shootCharges -= 1;
+        
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
-        if (InWater)
-        {
-            shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-        }
+        //if (InWater)
+        //{
+        //    shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+        //}
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
-                
-        velocity = shootDirection * (shootSpeed * EvaluateShootFactor() + velocity.magnitude);
 
         IncreaseMaxSpeed();
     }
+        //float shootForce = shootSpeed * EvaluateShootFactor();
+        //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
 
+        //velocity = shootDirection * (shootForce + velocity.magnitude);
 
-    //public float minShootFactor, maxShootFactor;
-    float EvaluateShootFactor()
-    {
-        float abs = velocity.magnitude / speedLimits[speedLimits.Count - 1];
-        abs *= shootCurve.keys[shootCurve.length - 1].time;
-
-        float result = shootCurve.Evaluate(abs);
-
-        Debug.Log(result);
-
-        return result;
+        if (maxSpeedIndex == speedLimits.Count - 1)
+        {
+            velocity = shootDirection * maxSpeed;
+        }
+        else
+        {
+            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
+            IncreaseMaxSpeed();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -731,6 +737,7 @@ public class PC_MovingSphere : MonoBehaviour
         maxAirAcceleration = PCData.maxAirAcceleration;
         shootHeight = PCData.shootHeight;
         maxShoots = PCData.maxShoots;
+        shootingFactor = PCData.shootingFactor;
         maxGroundAngle = PCData.maxGroundAngle;
         maxSnapSpeed = PCData.maxSnapSpeed;
         probeDistance = PCData.probeDistance;
@@ -739,13 +746,11 @@ public class PC_MovingSphere : MonoBehaviour
         rollingMaterial = PCData.rollingMaterial;
         aimingMaterial = PCData.aimingMaterial;
         shootingAngle = PCData.shootingAngle;
-        shootCurve = PCData.shootCurve;
+        rotationCurve = PCData.rotationCurve;
     }
 
     public void SetPCData(PlayerControllerData PCData)
     {
-        Debug.Log("SetPCData from " + this.name);
-        Debug.Log("PC Data : " + PCData.name);
         this.PCData = PCData;
         UpdatePCData();
     }
@@ -857,5 +862,52 @@ public class PC_MovingSphere : MonoBehaviour
     {
         UnFreezeDirection();
         isFreezed = false;
+    }
+
+    /// <summary>
+    /// Ajoute amount charges de tir, dans la limite du max de charges déterminées par le GD
+    /// </summary>
+    /// <param name="amount"></param>
+    public void AddShootCharges(int amount)
+    {
+        shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
+    }
+
+    /// <summary>
+    /// Change la direction de déplacement du player
+    /// </summary>
+    /// <param name="direction"></param>
+    public void SetDirection(Vector3 direction)
+    {
+        body.velocity = direction.normalized * body.velocity.magnitude;
+    }
+
+    /// <summary>
+    /// Augmente la limite de vitesse actuelle au prochain palier
+    /// </summary>
+    public void IncreaseSpeedLimit()
+    {
+        maxSpeedIndex = Mathf.Min(maxSpeedIndex + 1, speedLimits.Count - 1);
+    }
+
+    /// <summary>
+    /// Augmente la limite de vitesse au palier maximum
+    /// </summary>
+    public void IncreaseSpeedLimitToMaximum()
+    {
+        maxSpeedIndex = speedLimits.Count - 1;
+    }
+
+    /// <summary>
+    /// Augmente la vitesse du player à la vitesse max actuelle
+    /// </summary>
+    public void IncreaseVelocityToCurrentSpeedLimit()
+    {
+        body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
+    }
+
+    public float GetCurrentSpeedLimit()
+    {
+        return speedLimits[maxSpeedIndex];
     }
 }

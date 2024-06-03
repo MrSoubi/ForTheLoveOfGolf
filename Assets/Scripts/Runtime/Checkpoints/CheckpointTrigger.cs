@@ -18,7 +18,7 @@ public class CheckpointTrigger : MonoBehaviour
 
     public void SetCheckpoint()
     {
-        CheckpointManager.instance.SetCheckpoint(transform.position + Vector3.up * 1.5f, this);
+        CheckpointManager.instance.SetCheckpoint(transform.position + Vector3.up, this);
     }
 
     public void ChangeMaterial(Material material)

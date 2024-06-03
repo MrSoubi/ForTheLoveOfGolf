@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Challenge : MonoBehaviour
 {
+    public GameObject door;
+
     [Header("Challenge conditions")]
     [Tooltip("Coin require to finish le challenge")]
     [SerializeField] int coinsToGet; 
@@ -18,11 +20,12 @@ public class Challenge : MonoBehaviour
 
     [Header("Challenge rewards")]
     [Tooltip("Objects that will appear if you win the challenge")] 
-    [SerializeField] GameObject[] challengeRewards;
+    public GameObject challengeRewards;
 
     Coroutine timerCoroutine;
 
     [HideInInspector] public bool active;
+    [HideInInspector] public int index;
 
     private void Awake()
     {
@@ -38,10 +41,8 @@ public class Challenge : MonoBehaviour
         SetActiveCollectible(false);
 
         if (coinsToGet == 0) coinsToGet = currentCollectibles.Length;
-        for (int i = 0; i < challengeRewards.Length; i++)
-        {
-            challengeRewards[i].SetActive(false);
-        }
+        challengeRewards.SetActive(false);
+        SetActiveCollectible(false);
     }
 
     public void AddCoin(int coin)
@@ -51,12 +52,7 @@ public class Challenge : MonoBehaviour
         if(coinsToGet <= currentCoinGet)
         {
             isAlreadyFinish = true;
-
-            for (int i = 0; i < challengeRewards.Length; i++)
-            {
-                challengeRewards[i].SetActive(true);
-                challengeRewards[i].transform.SetParent(null);
-            }
+            
             EndChallenge();
         }
     }
@@ -72,6 +68,9 @@ public class Challenge : MonoBehaviour
     }
     void StartChallenge()
     {
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        door.GetComponent<MeshRenderer>().enabled = false;
+
         timerCoroutine = StartCoroutine(ChallengeTimer());
         active = true;
     }
@@ -83,7 +82,15 @@ public class Challenge : MonoBehaviour
         SetActiveCollectible(false);
         StopCoroutine(timerCoroutine);
 
-        if (isAlreadyFinish) Destroy(gameObject);
+        if (isAlreadyFinish)
+        {
+            challengeRewards.SetActive(true);
+            SaveManager.challenges[index] = true;
+            Destroy(gameObject);
+        }
+
+        gameObject.GetComponent<BoxCollider>().enabled = true;
+        door.GetComponent<MeshRenderer>().enabled = true;
     }
 
     IEnumerator ChallengeTimer()

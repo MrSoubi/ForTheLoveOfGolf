@@ -20,31 +20,32 @@ MonoBehaviour:
   maxGroundAngle: 25
   maxSnapSpeed: 100
   probeDistance: 1
-  speedLimits: []
+  speedLimits:
+  - 10
   speedLimitMargin: 0
-  rollingMaterial: {fileID: 0}
-  aimingMaterial: {fileID: 0}
-  shootingAngle: 0
+  rollingMaterial: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
+  aimingMaterial: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
+  shootingAngle: -20
   shootCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
-      outSlope: 1
-      tangentMode: 0
+      outSlope: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
+      inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

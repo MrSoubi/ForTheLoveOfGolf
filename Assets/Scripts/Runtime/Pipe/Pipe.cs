@@ -1,26 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] Pipe backroomPipe;
-    public Vector3 respawnPoint;
+    [SerializeField] CheckpointTrigger checkpointExit;
+    public Vector3 respawnPointOffset;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && checkpointExit)
         {
-            if (backroomPipe)
-            {
-                StartCoroutine(TeleportCoroutine(other.gameObject));
-            }
+            StartCoroutine(TeleportCoroutine(other.gameObject));
         }
     }
 
     IEnumerator TeleportCoroutine(GameObject player)
-    {        
-        player.TryGetComponent(out PlayerController controller);
+    {
+        player.TryGetComponent(out PC_MovingSphere controller);
         if (controller)
         {
             controller.Block();
@@ -31,23 +27,19 @@ public class Pipe : MonoBehaviour
 
             yield return new WaitForSeconds(1.2f);
 
-            controller.Teleport(backroomPipe.transform.position + backroomPipe.respawnPoint);
+            checkpointExit.SetCheckpoint();
+            controller.Teleport(checkpointExit.transform.position + respawnPointOffset);
 
             UIManager.instance?.FadeOut();
 
             yield return new WaitForSeconds(.8f);
-            controller.UnBlock();
+            controller.UnBlock(true);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if(backroomPipe) Gizmos.DrawSphere(backroomPipe.respawnPoint, .2f);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + respawnPoint, .1f);
+        if(checkpointExit) Gizmos.DrawSphere(checkpointExit.transform.position + respawnPointOffset, .1f);
     }
 }

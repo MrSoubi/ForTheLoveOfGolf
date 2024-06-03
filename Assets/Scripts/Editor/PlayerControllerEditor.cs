@@ -15,7 +15,7 @@ using UnityEngine.UI;
 public class PlayerControllerEditor : EditorWindow
 {
     private SerializedProperty floatListProperty;
-    private SerializedObject data;
+    private SerializedObject serializedObject;
 
     private PC_MovingSphere PCSphere;
     private PlayerControllerData PCData;
@@ -126,6 +126,8 @@ public class PlayerControllerEditor : EditorWindow
                 showMovementSettings = EditorGUILayout.Foldout(showMovementSettings, "Movement Settings");
                 if (showMovementSettings)
                 {
+                    EditorGUI.indentLevel++;
+
                     PCData.maxAcceleration = EditorGUILayout.Slider("Max Acceleration", PCData.maxAcceleration, 1f, 100f);
                     PCData.maxAirAcceleration = EditorGUILayout.Slider("Max Air Acceleration", PCData.maxAirAcceleration, 1f, 100f);
 
@@ -135,15 +137,55 @@ public class PlayerControllerEditor : EditorWindow
                     PCData.maxGroundAngle = EditorGUILayout.Slider("Max Ground Angle", PCData.maxGroundAngle, 0f, 90f);
                     PCData.maxSnapSpeed = EditorGUILayout.Slider("Max Snap Speed", PCData.maxSnapSpeed, 0f, 100f);
                     PCData.probeDistance = EditorGUILayout.Slider("Probe Distance", PCData.probeDistance, 0f, 100f);
-                    
+
+                    GUILayout.BeginHorizontal();
+                    showSpeedLimit = EditorGUILayout.Foldout(showSpeedLimit, "Speed Limits");
+                    int newCount = Mathf.Max(0, EditorGUILayout.IntField(PCData.speedLimits.Count, GUILayout.MaxWidth(100)));
+                    GUILayout.EndHorizontal();
+
+                    while (newCount < PCData.speedLimits.Count) PCData.speedLimits.RemoveAt(PCData.speedLimits.Count - 1);
+                    while (newCount > PCData.speedLimits.Count) PCData.speedLimits.Add(0);
+
+                    if (showSpeedLimit)
+                    {
+                        GUILayout.Space(5);
+                        EditorGUI.indentLevel++;
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Space(30);
+                        GUILayout.BeginVertical("HelpBox");
+                        
+                        if(PCData.speedLimits.Count > 0)
+                        {
+                            for (int i = 0; i < PCData.speedLimits.Count; i++)
+                            {
+                                GUILayout.BeginHorizontal();
+                                GUILayout.Label("Limit " + (i + 1).ToString());
+                                PCData.speedLimits[i] = EditorGUILayout.FloatField(PCData.speedLimits[i]);
+                                GUILayout.EndHorizontal();
+                            } 
+                        }
+                        else
+                        {
+                            GUILayout.Space(5);
+                            GUILayout.Label("Speed Limits est vide");
+                            GUILayout.Space(5);
+                        }
+                        GUILayout.EndVertical();
+                        GUILayout.EndHorizontal();
+                        EditorGUI.indentLevel--;
+                        GUILayout.Space(5);
+                    }
+
                     PCData.speedLimitMargin = EditorGUILayout.FloatField("Speed Limit Margin", PCData.speedLimitMargin);
 
-                    PCData.rollingMaterial = (Material)EditorGUILayout.ObjectField(PCData.rollingMaterial, typeof(Material), true);
-                    PCData.aimingMaterial = (Material)EditorGUILayout.ObjectField(PCData.aimingMaterial, typeof(Material), true);
+                    PCData.rollingMaterial = (Material)EditorGUILayout.ObjectField("Rolling Material", PCData.rollingMaterial, typeof(Material), true);
+                    PCData.aimingMaterial = (Material)EditorGUILayout.ObjectField("Aiming Material", PCData.aimingMaterial, typeof(Material), true);
 
                     PCData.shootingAngle = EditorGUILayout.FloatField("Shooting Angle", PCData.shootingAngle);
 
                     PCData.shootCurve = EditorGUILayout.CurveField("Animation Curve", PCData.shootCurve);
+
+                    EditorGUI.indentLevel--;
                 }
             }
         }
@@ -171,7 +213,6 @@ public class PlayerControllerEditor : EditorWindow
         string path = profilePath + profileName + ".asset";
         PCData = AssetDatabase.LoadAssetAtPath<PlayerControllerData>(path);
         PCSphere.SetPCData(PCData);
-
         GetProfileList();
     }
 

@@ -5,10 +5,8 @@ using UnityEngine;
 using RangeAttribute = UnityEngine.RangeAttribute;
 using Unity.VisualScripting;
 using UnityEditor;
-<<<<<<< HEAD
 using System;
-=======
->>>>>>> Save
+
 
 public class PC_MovingSphere : MonoBehaviour
 {
@@ -22,7 +20,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     #region TOOL PARAMETERS
 
-<<<<<<< HEAD
     float
         maxAcceleration,
         maxAirAcceleration;
@@ -32,28 +29,12 @@ public class PC_MovingSphere : MonoBehaviour
     float maxGroundAngle;
     float maxSnapSpeed;
     float probeDistance;
-=======
-    public float
-        maxAcceleration = 10f,
-        maxAirAcceleration = 1f;
-
-    float shootHeight = 2f;
-    int maxShoots = 1;
-    float maxGroundAngle = 25f;
-    float maxSnapSpeed = 100f;
-    float probeDistance = 1f;
->>>>>>> Save
     float speedLimitMargin;
     Material rollingMaterial, aimingMaterial;
     float shootingAngle;
-    AnimationCurve shootCurve;
 
-<<<<<<< HEAD
+    public AnimationCurve rotationCurve;
 
-=======
-    [Tooltip("Paliers de limite de vitesse")]
-    [SerializeField]
->>>>>>> Save
     List<float> speedLimits;
 
     #endregion
@@ -67,13 +48,9 @@ public class PC_MovingSphere : MonoBehaviour
     [Tooltip("Mettre l'enfant Ball")]
     Transform ball = default;
 
-<<<<<<< HEAD
     public GameObject shootingIndicator;
 
     public float maxSpeed;
-=======
-    float maxSpeed;
->>>>>>> Save
         
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
@@ -89,45 +66,22 @@ public class PC_MovingSphere : MonoBehaviour
     float waterDrag = 1f;
     float swimThreshold = 0.5f;
 
-<<<<<<< HEAD
-=======
-    [Tooltip("")]
-    [SerializeField]
->>>>>>> Save
     LayerMask probeMask = -1;
 
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-<<<<<<< HEAD
-
     float ballRadius = 0.5f;
 
 
     float ballAlignSpeed = 180f;
 
 
-=======
-    [Tooltip("")]
-    [SerializeField, Min(0.1f)]
-    float ballRadius = 0.5f;
-
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
-    float ballAlignSpeed = 180f;
-
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
->>>>>>> Save
     float ballAirRotation = 0.5f;
 
     Rigidbody body, connectedBody, previousConnectedBody;
     Vector3 playerInput;
     Vector3 velocity, connectionVelocity;
-<<<<<<< HEAD
     float Velocity;
-=======
-    public float Velocity;
->>>>>>> Save
     Vector3 connectionWorldPosition, connectionLocalPosition;
     Vector3 upAxis, rightAxis, forwardAxis;
     bool desiredShoot, desiresClimbing;
@@ -140,11 +94,8 @@ public class PC_MovingSphere : MonoBehaviour
     bool InWater => false; // submergence > 0f;
     bool Swimming => false; // submergence >= swimThreshold;
     float submergence;
-<<<<<<< HEAD
     int shootCharges;
-=======
-    int shootPhase;
->>>>>>> Save
+
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     int stepsSinceLastGrounded, stepsSinceLastJump;
     MeshRenderer meshRenderer;
@@ -186,11 +137,8 @@ public class PC_MovingSphere : MonoBehaviour
 
     void Awake()
     {
-<<<<<<< HEAD
         UpdatePCData();
-=======
-        ResetMaxSpeed();
->>>>>>> Save
+
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -199,19 +147,18 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void Start()
     {
-<<<<<<< HEAD
         //UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
-=======
-        UpdatePCData();
->>>>>>> Save
+
     }
 
 
     bool isAiming;
     void Update()
     {
+        UpdatePCData();
+
         if (isBlocked)
         {
             return;
@@ -246,11 +193,6 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
-<<<<<<< HEAD
-    
-=======
-    public GameObject shootingIndicator;
->>>>>>> Save
     void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = playerInputSpace.rotation;
@@ -288,10 +230,6 @@ public class PC_MovingSphere : MonoBehaviour
     void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
-<<<<<<< HEAD
-=======
-        Debug.Log(playerInputSpace.rotation.eulerAngles.y);
->>>>>>> Save
         shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle + playerInputSpace.rotation.eulerAngles.x, playerInputSpace.rotation.eulerAngles.y, 0);
     }
 
@@ -364,15 +302,10 @@ public class PC_MovingSphere : MonoBehaviour
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
         }
-<<<<<<< HEAD
-
         if (canTurn)
         {
             ball.localRotation = rotation;
         }
-=======
-        ball.localRotation = rotation;
->>>>>>> Save
     }
 
     Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
@@ -440,16 +373,11 @@ public class PC_MovingSphere : MonoBehaviour
             velocity += gravity * Time.deltaTime;
         }
 
-<<<<<<< HEAD
         if (!isFreezed)
         {
             body.velocity = velocity;
         }
-=======
-        body.velocity = velocity;
 
-        
->>>>>>> Save
 
         ClearState();
     }
@@ -477,11 +405,7 @@ public class PC_MovingSphere : MonoBehaviour
             stepsSinceLastGrounded = 0;
             if (stepsSinceLastJump > 1)
             {
-<<<<<<< HEAD
                 shootCharges = 1;
-=======
-                shootPhase = 0;
->>>>>>> Save
             }
             if (groundContactCount > 1)
             {
@@ -612,11 +536,7 @@ public class PC_MovingSphere : MonoBehaviour
     void ResetMaxSpeed()
     {
         maxSpeedIndex = 0;
-<<<<<<< HEAD
         maxSpeed =  speedLimits.Count > 0 ? speedLimits[0] : 20f;
-=======
-        maxSpeed = speedLimits[0];
->>>>>>> Save
     }
 
     void AdjustMaxSpeed()
@@ -665,7 +585,8 @@ public class PC_MovingSphere : MonoBehaviour
 
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
-        velocity += xAxis * adjustment.x + zAxis * adjustment.z;
+        float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
+        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * turningFactor);
         if (Swimming)
         {
             velocity += upAxis * adjustment.y;
@@ -675,65 +596,45 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     
-<<<<<<< HEAD
-    float minShootForce, maxShootForce;
-=======
->>>>>>> Save
-
+    float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
         Vector3 shootDirection;
 
-<<<<<<< HEAD
         if (maxShoots <= 0 || shootCharges <= 0)
-=======
-        if (maxShoots <= 0 || shootPhase >= maxShoots)
->>>>>>> Save
         {
             return;
         }
 
         stepsSinceLastJump = 0;
-<<<<<<< HEAD
         shootCharges -= 1;
-=======
-        shootPhase += 1;
->>>>>>> Save
+        
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
-        if (InWater)
-        {
-            shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-        }
+        //if (InWater)
+        //{
+        //    shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+        //}
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
-<<<<<<< HEAD
-
-        float shootForce = shootSpeed * EvaluateShootFactor();
-        shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
-
-        velocity = shootDirection * (shootForce + velocity.magnitude);
-=======
-                
-        velocity = shootDirection * (shootSpeed * EvaluateShootFactor() + velocity.magnitude);
->>>>>>> Save
 
         IncreaseMaxSpeed();
     }
+        //float shootForce = shootSpeed * EvaluateShootFactor();
+        //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
 
+        //velocity = shootDirection * (shootForce + velocity.magnitude);
 
-    //public float minShootFactor, maxShootFactor;
-    float EvaluateShootFactor()
-    {
-        float abs = velocity.magnitude / speedLimits[speedLimits.Count - 1];
-        abs *= shootCurve.keys[shootCurve.length - 1].time;
-
-        float result = shootCurve.Evaluate(abs);
-
-        Debug.Log(result);
-
-        return result;
+        if (maxSpeedIndex == speedLimits.Count - 1)
+        {
+            velocity = shootDirection * maxSpeed;
+        }
+        else
+        {
+            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
+            IncreaseMaxSpeed();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -836,6 +737,7 @@ public class PC_MovingSphere : MonoBehaviour
         maxAirAcceleration = PCData.maxAirAcceleration;
         shootHeight = PCData.shootHeight;
         maxShoots = PCData.maxShoots;
+        shootingFactor = PCData.shootingFactor;
         maxGroundAngle = PCData.maxGroundAngle;
         maxSnapSpeed = PCData.maxSnapSpeed;
         probeDistance = PCData.probeDistance;
@@ -844,16 +746,11 @@ public class PC_MovingSphere : MonoBehaviour
         rollingMaterial = PCData.rollingMaterial;
         aimingMaterial = PCData.aimingMaterial;
         shootingAngle = PCData.shootingAngle;
-        shootCurve = PCData.shootCurve;
+        rotationCurve = PCData.rotationCurve;
     }
 
     public void SetPCData(PlayerControllerData PCData)
     {
-<<<<<<< HEAD
-        Debug.Log("SetPCData from " + this.name);
-        Debug.Log("PC Data : " + PCData.name);
-=======
->>>>>>> Save
         this.PCData = PCData;
         UpdatePCData();
     }
@@ -863,52 +760,40 @@ public class PC_MovingSphere : MonoBehaviour
         return PCData;
     }
 
-<<<<<<< HEAD
     /// <summary>
     /// Téléporte le joueur à la position donnée, en gardant son orientation et sa vélocité
     /// </summary>
     /// <param name="position"></param>
-=======
->>>>>>> Save
     public void Teleport(Vector3 position)
     {
         body.position = position;
     }
 
-<<<<<<< HEAD
     /// <summary>
     /// Téléporte le joueur à la position et la rotation donnée par transform, en gardant sa vélocité
     /// </summary>
     /// <param name="transform"></param>
-=======
->>>>>>> Save
     public void Teleport(Transform transform)
     {
         body.position = transform.position;
         body.rotation = transform.rotation;
     }
 
-<<<<<<< HEAD
     /// <summary>
     /// Téléporte le joueur à la position et la rotation données, en gardant sa vélocité
     /// </summary>
     /// <param name="position"></param>
     /// <param name="rotation"></param>
-=======
->>>>>>> Save
     public void Teleport(Vector3 position, Quaternion rotation)
     {
         body.position = position;
         body.rotation = rotation;
     }
 
-<<<<<<< HEAD
     /// <summary>
     /// Renvoie le vecteur vélocité du joueur. Utiliser la fonction Vector3.magnitude pour obtenir la vitesse en m/s. Utiliser Vector3.normalized pour obtenir la direction de la vitesse.
     /// </summary>
     /// <returns>Vector3</returns>
-=======
->>>>>>> Save
     public Vector3 GetVelocity()
     {
         return body.velocity;
@@ -942,7 +827,6 @@ public class PC_MovingSphere : MonoBehaviour
 
         isBlocked = false;
     }
-<<<<<<< HEAD
 
     bool canTurn = true;
     /// <summary>
@@ -1021,6 +905,9 @@ public class PC_MovingSphere : MonoBehaviour
     {
         body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
     }
-=======
->>>>>>> Save
+
+    public float GetCurrentSpeedLimit()
+    {
+        return speedLimits[maxSpeedIndex];
+    }
 }

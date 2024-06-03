@@ -49,7 +49,7 @@ public class CameraManager : MonoBehaviour
     /// <summary>
     /// Active la caméra de visée
     /// </summary>
-    public void AimShoot()
+    public void ToggleAimMode()
     {
         aimingCam.m_YAxis.Value = 0.5f;
 
@@ -61,7 +61,7 @@ public class CameraManager : MonoBehaviour
     /// <summary>
     /// Active la caméra de suivi de la balle
     /// </summary>
-    public void RollShoot()
+    public void ToggleFollowMode()
     {
         rollingCam.enabled = true;
     }

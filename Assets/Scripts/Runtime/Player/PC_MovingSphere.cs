@@ -48,7 +48,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     public GameObject shootingIndicator;
 
-    float maxSpeed;
+    public float maxSpeed;
         
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
@@ -135,7 +135,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     void Awake()
     {
-        ResetMaxSpeed();
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -144,7 +143,9 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void Start()
     {
-        UpdatePCData();
+        //UpdatePCData();
+        //UnFreeze();
+        ResetMaxSpeed();
     }
 
 
@@ -223,7 +224,6 @@ public class PC_MovingSphere : MonoBehaviour
     void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
-        Debug.Log(playerInputSpace.rotation.eulerAngles.y);
         shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle + playerInputSpace.rotation.eulerAngles.x, playerInputSpace.rotation.eulerAngles.y, 0);
     }
 
@@ -743,6 +743,8 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void SetPCData(PlayerControllerData PCData)
     {
+        Debug.Log("SetPCData from " + this.name);
+        Debug.Log("PC Data : " + PCData.name);
         this.PCData = PCData;
         UpdatePCData();
     }
@@ -820,7 +822,7 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = false;
     }
 
-    bool canTurn;
+    bool canTurn = true;
     /// <summary>
     /// Bloque la direction du joueur, il ne peut plus tourner mais continue de subir la gravité et les frottements
     /// </summary>
@@ -837,7 +839,7 @@ public class PC_MovingSphere : MonoBehaviour
         canTurn = true;
     }
 
-    bool isFreezed;
+    bool isFreezed = false;
     /// <summary>
     /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner.
     /// </summary>

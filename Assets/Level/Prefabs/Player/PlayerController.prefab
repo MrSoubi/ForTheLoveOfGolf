@@ -349,28 +349,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: PCData
+      value: 
+      objectReference: {fileID: 11400000, guid: 1dec3c79e0fd9a748948f92eb494a195, type: 2}
+    - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: shootHeight
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: shootingAngle
-      value: -45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: aimingMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: rollingMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: playerInputSpace
       value: 
       objectReference: {fileID: 7841067282669498414}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: speedLimits.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: 'speedLimits.Array.data[0]'
@@ -394,19 +398,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: shootCurve.m_Curve.Array.data[0].value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: shootCurve.m_Curve.Array.data[1].value
-      value: 1.3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: shootCurve.m_Curve.Array.data[1].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: shootCurve.m_Curve.Array.data[0].outSlope
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: shootCurve.m_Curve.Array.data[1].inWeight
-      value: 0.43422586
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6034257999391254221, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: shootCurve.m_Curve.Array.data[0].outWeight
-      value: 0.059371363
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

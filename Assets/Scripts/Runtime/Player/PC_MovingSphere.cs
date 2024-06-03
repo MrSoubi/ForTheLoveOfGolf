@@ -296,7 +296,11 @@ public class PC_MovingSphere : MonoBehaviour
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
         }
-        ball.localRotation = rotation;
+
+        if (canTurn)
+        {
+            ball.localRotation = rotation;
+        }
     }
 
     Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
@@ -364,9 +368,10 @@ public class PC_MovingSphere : MonoBehaviour
             velocity += gravity * Time.deltaTime;
         }
 
-        body.velocity = velocity;
-
-        
+        if (!isFreezed)
+        {
+            body.velocity = velocity;
+        }
 
         ClearState();
     }
@@ -815,33 +820,39 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = false;
     }
 
+    bool canTurn;
+    /// <summary>
+    /// Bloque la direction du joueur, il ne peut plus tourner mais continue de subir la gravité et les frottements
+    /// </summary>
     public void FreezeDirection()
     {
-
+        canTurn = false;
     }
 
-    public void FreezeVelocity()
-    {
-
-    }
-
-    public void FreezeAll()
-    {
-
-    }
-
+    /// <summary>
+    /// Débloque le freeze de la direction
+    /// </summary>
     public void UnFreezeDirection()
     {
-
+        canTurn = true;
     }
 
-    public void UnFreezeVelocity()
+    bool isFreezed;
+    /// <summary>
+    /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner.
+    /// </summary>
+    public void Freeze()
     {
-
+        FreezeDirection();
+        isFreezed = true;
     }
 
-    public void UnFreezeAll()
+    /// <summary>
+    /// Débloque le freeze
+    /// </summary>
+    public void UnFreeze()
     {
-
+        UnFreezeDirection();
+        isFreezed = false;
     }
 }

@@ -591,8 +591,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     
-    float minShootForce, maxShootForce;
-
+    float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
@@ -605,21 +604,31 @@ public class PC_MovingSphere : MonoBehaviour
 
         stepsSinceLastJump = 0;
         shootCharges -= 1;
+        
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
-        if (InWater)
-        {
-            shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-        }
+        //if (InWater)
+        //{
+        //    shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+        //}
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
-        float shootForce = shootSpeed * EvaluateShootFactor();
-        shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
+        //float shootForce = shootSpeed * EvaluateShootFactor();
+        //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
 
-        velocity = shootDirection * (shootForce + velocity.magnitude);
+        //velocity = shootDirection * (shootForce + velocity.magnitude);
 
-        IncreaseMaxSpeed();
+        if (maxSpeedIndex == speedLimits.Count - 1)
+        {
+            velocity = shootDirection * maxSpeed;
+        }
+        else
+        {
+            velocity = shootDirection * maxSpeed;
+            IncreaseMaxSpeed();
+            velocity += shootDirection * (speedLimits[maxSpeedIndex] - maxSpeed) / shootingFactor;
+        }
     }
 
 
@@ -736,6 +745,7 @@ public class PC_MovingSphere : MonoBehaviour
         maxAirAcceleration = PCData.maxAirAcceleration;
         shootHeight = PCData.shootHeight;
         maxShoots = PCData.maxShoots;
+        shootingFactor = PCData.shootingFactor;
         maxGroundAngle = PCData.maxGroundAngle;
         maxSnapSpeed = PCData.maxSnapSpeed;
         probeDistance = PCData.probeDistance;

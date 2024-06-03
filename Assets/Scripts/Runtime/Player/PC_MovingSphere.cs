@@ -530,7 +530,7 @@ public class PC_MovingSphere : MonoBehaviour
     void ResetMaxSpeed()
     {
         maxSpeedIndex = 0;
-        maxSpeed = speedLimits[0];
+        maxSpeed =  speedLimits.Count > 0 ? speedLimits[0] : 20f;
     }
 
     void AdjustMaxSpeed()
@@ -752,23 +752,40 @@ public class PC_MovingSphere : MonoBehaviour
         return PCData;
     }
 
+    /// <summary>
+    /// Téléporte le joueur à la position donnée, en gardant son orientation et sa vélocité
+    /// </summary>
+    /// <param name="position"></param>
     public void Teleport(Vector3 position)
     {
         body.position = position;
     }
 
+    /// <summary>
+    /// Téléporte le joueur à la position et la rotation donnée par transform, en gardant sa vélocité
+    /// </summary>
+    /// <param name="transform"></param>
     public void Teleport(Transform transform)
     {
         body.position = transform.position;
         body.rotation = transform.rotation;
     }
 
+    /// <summary>
+    /// Téléporte le joueur à la position et la rotation données, en gardant sa vélocité
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
     public void Teleport(Vector3 position, Quaternion rotation)
     {
         body.position = position;
         body.rotation = rotation;
     }
 
+    /// <summary>
+    /// Renvoie le vecteur vélocité du joueur. Utiliser la fonction Vector3.magnitude pour obtenir la vitesse en m/s. Utiliser Vector3.normalized pour obtenir la direction de la vitesse.
+    /// </summary>
+    /// <returns>Vector3</returns>
     public Vector3 GetVelocity()
     {
         return body.velocity;
@@ -801,5 +818,10 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         isBlocked = false;
+    }
+
+    public void Freeze()
+    {
+
     }
 }

@@ -628,9 +628,8 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            velocity = shootDirection * maxSpeed;
+            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
             IncreaseMaxSpeed();
-            velocity += shootDirection * (speedLimits[maxSpeedIndex] - maxSpeed) / shootingFactor;
         }
     }
 
@@ -903,5 +902,10 @@ public class PC_MovingSphere : MonoBehaviour
     public void IncreaseVelocityToCurrentSpeedLimit()
     {
         body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
+    }
+
+    public float GetCurrentSpeedLimit()
+    {
+        return speedLimits[maxSpeedIndex];
     }
 }

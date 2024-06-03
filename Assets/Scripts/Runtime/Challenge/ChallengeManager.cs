@@ -43,7 +43,6 @@ public class ChallengeManager : MonoBehaviour
         timerTxt.text = "0.00";
         timerAnim.SetBool("Show", true);
         collectibleAnim.SetBool("Show", true);
-        CollectibleManager.instance.HidCollectibleCount();
     }
 
     public void SetCollectibleCount(int current, int max)
@@ -61,6 +60,5 @@ public class ChallengeManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         timerAnim.SetBool("Show", false);
         collectibleAnim.SetBool("Show", false);
-        CollectibleManager.instance.ShowCollectibleCount();
     }
 }

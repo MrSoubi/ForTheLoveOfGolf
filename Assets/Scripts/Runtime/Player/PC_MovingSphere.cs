@@ -5,6 +5,7 @@ using UnityEngine;
 using RangeAttribute = UnityEngine.RangeAttribute;
 using Unity.VisualScripting;
 using UnityEditor;
+using System;
 
 public class PC_MovingSphere : MonoBehaviour
 {
@@ -93,7 +94,7 @@ public class PC_MovingSphere : MonoBehaviour
     bool InWater => false; // submergence > 0f;
     bool Swimming => false; // submergence >= swimThreshold;
     float submergence;
-    int shootPhase;
+    int shootCharges;
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     int stepsSinceLastGrounded, stepsSinceLastJump;
     MeshRenderer meshRenderer;
@@ -400,7 +401,7 @@ public class PC_MovingSphere : MonoBehaviour
             stepsSinceLastGrounded = 0;
             if (stepsSinceLastJump > 1)
             {
-                shootPhase = 0;
+                shootCharges = 1;
             }
             if (groundContactCount > 1)
             {
@@ -596,13 +597,13 @@ public class PC_MovingSphere : MonoBehaviour
     {
         Vector3 shootDirection;
 
-        if (maxShoots <= 0 || shootPhase >= maxShoots)
+        if (maxShoots <= 0 || shootCharges <= 0)
         {
             return;
         }
 
         stepsSinceLastJump = 0;
-        shootPhase += 1;
+        shootCharges -= 1;
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
         if (InWater)
         {
@@ -857,5 +858,14 @@ public class PC_MovingSphere : MonoBehaviour
     {
         UnFreezeDirection();
         isFreezed = false;
+    }
+
+    /// <summary>
+    /// Ajoute amount charges de tir, dans la limite du max de charges déterminées par le GD
+    /// </summary>
+    /// <param name="amount"></param>
+    public void AddShootCharges(int amount)
+    {
+        shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
     }
 }

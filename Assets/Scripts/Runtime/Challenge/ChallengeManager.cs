@@ -42,6 +42,22 @@ public class ChallengeManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        challenge = GetGameObjects.instance.challenges;
+
+        for (int i = 0; i < challenge.Count; i++)
+        {
+            challenge[i].index = i;
+
+            if (SaveManager.challenges[i])
+            {
+                challenge[i].challengeRewards.SetActive(true);
+                Destroy(challenge[i].gameObject);
+            }
+        }
+    }
+
     public void StopCurrentChallenge()
     {
         StartCoroutine(HidUIAnim());

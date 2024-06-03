@@ -20,7 +20,7 @@ public class Challenge : MonoBehaviour
 
     [Header("Challenge rewards")]
     [Tooltip("Objects that will appear if you win the challenge")] 
-    [SerializeField] GameObject challengeRewards;
+    public GameObject challengeRewards;
 
     Coroutine timerCoroutine;
 

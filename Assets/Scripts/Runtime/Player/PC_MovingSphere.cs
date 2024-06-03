@@ -31,8 +31,8 @@ public class PC_MovingSphere : MonoBehaviour
     float speedLimitMargin;
     Material rollingMaterial, aimingMaterial;
     float shootingAngle;
-    AnimationCurve shootCurve;
 
+    public AnimationCurve rotationCurve;
 
     List<float> speedLimits;
 
@@ -154,6 +154,8 @@ public class PC_MovingSphere : MonoBehaviour
     bool isAiming;
     void Update()
     {
+        UpdatePCData();
+
         if (isBlocked)
         {
             return;
@@ -581,7 +583,8 @@ public class PC_MovingSphere : MonoBehaviour
 
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
-        velocity += xAxis * adjustment.x + zAxis * adjustment.z;
+        float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
+        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * turningFactor);
         if (Swimming)
         {
             velocity += upAxis * adjustment.y;
@@ -591,8 +594,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     
-    float minShootForce, maxShootForce;
-
+    float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
@@ -605,35 +607,30 @@ public class PC_MovingSphere : MonoBehaviour
 
         stepsSinceLastJump = 0;
         shootCharges -= 1;
+        
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
-        if (InWater)
-        {
-            shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-        }
+        //if (InWater)
+        //{
+        //    shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
+        //}
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
-        float shootForce = shootSpeed * EvaluateShootFactor();
-        shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
+        //float shootForce = shootSpeed * EvaluateShootFactor();
+        //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
 
-        velocity = shootDirection * (shootForce + velocity.magnitude);
+        //velocity = shootDirection * (shootForce + velocity.magnitude);
 
-        IncreaseMaxSpeed();
-    }
-
-
-    //public float minShootFactor, maxShootFactor;
-    float EvaluateShootFactor()
-    {
-        float abs = velocity.magnitude / speedLimits[speedLimits.Count - 1];
-        abs *= shootCurve.keys[shootCurve.length - 1].time;
-
-        float result = shootCurve.Evaluate(abs);
-
-        Debug.Log(result);
-
-        return result;
+        if (maxSpeedIndex == speedLimits.Count - 1)
+        {
+            velocity = shootDirection * maxSpeed;
+        }
+        else
+        {
+            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
+            IncreaseMaxSpeed();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -736,6 +733,7 @@ public class PC_MovingSphere : MonoBehaviour
         maxAirAcceleration = PCData.maxAirAcceleration;
         shootHeight = PCData.shootHeight;
         maxShoots = PCData.maxShoots;
+        shootingFactor = PCData.shootingFactor;
         maxGroundAngle = PCData.maxGroundAngle;
         maxSnapSpeed = PCData.maxSnapSpeed;
         probeDistance = PCData.probeDistance;
@@ -744,7 +742,7 @@ public class PC_MovingSphere : MonoBehaviour
         rollingMaterial = PCData.rollingMaterial;
         aimingMaterial = PCData.aimingMaterial;
         shootingAngle = PCData.shootingAngle;
-        shootCurve = PCData.shootCurve;
+        rotationCurve = PCData.rotationCurve;
     }
 
     public void SetPCData(PlayerControllerData PCData)
@@ -904,5 +902,10 @@ public class PC_MovingSphere : MonoBehaviour
     public void IncreaseVelocityToCurrentSpeedLimit()
     {
         body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
+    }
+
+    public float GetCurrentSpeedLimit()
+    {
+        return speedLimits[maxSpeedIndex];
     }
 }

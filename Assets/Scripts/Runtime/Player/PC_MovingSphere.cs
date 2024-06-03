@@ -18,22 +18,21 @@ public class PC_MovingSphere : MonoBehaviour
 
     #region TOOL PARAMETERS
 
-    public float
-        maxAcceleration = 10f,
-        maxAirAcceleration = 1f;
+    float
+        maxAcceleration,
+        maxAirAcceleration;
 
-    float shootHeight = 2f;
-    int maxShoots = 1;
-    float maxGroundAngle = 25f;
-    float maxSnapSpeed = 100f;
-    float probeDistance = 1f;
+    float shootHeight;
+    int maxShoots;
+    float maxGroundAngle;
+    float maxSnapSpeed;
+    float probeDistance;
     float speedLimitMargin;
     Material rollingMaterial, aimingMaterial;
     float shootingAngle;
     AnimationCurve shootCurve;
 
-    [Tooltip("Paliers de limite de vitesse")]
-    [SerializeField]
+
     List<float> speedLimits;
 
     #endregion
@@ -46,6 +45,8 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField]
     [Tooltip("Mettre l'enfant Ball")]
     Transform ball = default;
+
+    public GameObject shootingIndicator;
 
     float maxSpeed;
         
@@ -63,28 +64,23 @@ public class PC_MovingSphere : MonoBehaviour
     float waterDrag = 1f;
     float swimThreshold = 0.5f;
 
-    [Tooltip("")]
-    [SerializeField]
     LayerMask probeMask = -1;
 
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-    [Tooltip("")]
-    [SerializeField, Min(0.1f)]
+
     float ballRadius = 0.5f;
 
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
+
     float ballAlignSpeed = 180f;
 
-    [Tooltip("Utilisé pour l'affichage de la texture")]
-    [SerializeField, Min(0f)]
+
     float ballAirRotation = 0.5f;
 
     Rigidbody body, connectedBody, previousConnectedBody;
     Vector3 playerInput;
     Vector3 velocity, connectionVelocity;
-    public float Velocity;
+    float Velocity;
     Vector3 connectionWorldPosition, connectionLocalPosition;
     Vector3 upAxis, rightAxis, forwardAxis;
     bool desiredShoot, desiresClimbing;
@@ -189,7 +185,7 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
-    public GameObject shootingIndicator;
+    
     void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = playerInputSpace.rotation;
@@ -819,7 +815,32 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = false;
     }
 
-    public void Freeze()
+    public void FreezeDirection()
+    {
+
+    }
+
+    public void FreezeVelocity()
+    {
+
+    }
+
+    public void FreezeAll()
+    {
+
+    }
+
+    public void UnFreezeDirection()
+    {
+
+    }
+
+    public void UnFreezeVelocity()
+    {
+
+    }
+
+    public void UnFreezeAll()
     {
 
     }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
   m_Name: PC_Eliot
   m_EditorClassIdentifier: 
-  maxSpeed: 10
-  maxAcceleration: 10
+  maxSpeed: 20
+  maxAcceleration: 20
   maxAirAcceleration: 1
   shootHeight: 2
   maxShoots: 1
@@ -21,11 +21,11 @@ MonoBehaviour:
   maxSnapSpeed: 100
   probeDistance: 1
   speedLimits:
-  - 10
+  - 20
   speedLimitMargin: 5
   rollingMaterial: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
   aimingMaterial: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}
-  shootingAngle: 0
+  shootingAngle: -20
   shootCurve:
     serializedVersion: 2
     m_Curve:

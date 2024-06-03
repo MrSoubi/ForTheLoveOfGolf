@@ -22,8 +22,8 @@ MonoBehaviour:
   probeDistance: 1
   speedLimits:
   - 17
-  - 24
-  - 30
+  - 23
+  - 28
   speedLimitMargin: 10
   rollingMaterial: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
   aimingMaterial: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}

@@ -3,16 +3,16 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class PC_OrbitCamera : MonoBehaviour
 {
-    [HideInInspector] public Transform focus = default;
-    [HideInInspector] public float distance = 5f;
-    [HideInInspector] public float focusRadius = 5f;
-    [HideInInspector] public float focusCentering = 0.5f;
-    [HideInInspector] public float rotationSpeed = 90f;
-    [HideInInspector] public float minVerticalAngle = -45f, maxVerticalAngle = 45f;
-    [HideInInspector] public float alignDelay = 5f;
-    [HideInInspector] public float alignSmoothRange = 45f;
-    [HideInInspector] public LayerMask obstructionMask = -1;
-    [HideInInspector] public Vector2 orbitAngles = new Vector2(45f, 0f);
+    public Transform focus = default;
+    public float distance = 5f;
+    public float focusRadius = 5f;
+    public float focusCentering = 0.5f;
+    public float rotationSpeed = 90f;
+    public float minVerticalAngle = -45f, maxVerticalAngle = 45f;
+    public float alignDelay = 5f;
+    public float alignSmoothRange = 45f;
+    public LayerMask obstructionMask = -1;
+    public Vector2 orbitAngles = new Vector2(45f, 0f);
 
     Camera regularCamera;
 

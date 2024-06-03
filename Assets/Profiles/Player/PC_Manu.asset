@@ -12,40 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
   m_Name: PC_Manu
   m_EditorClassIdentifier: 
-  minShootForce: 1
-  maxShootForce: 1
+  shootingFactor: 0.5
   shootHeight: 2
   maxShoots: 1
   shootingAngle: -20
-  shootCurve:
+  maxAcceleration: 10
+  maxAirAcceleration: 1
+  rotationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      inSlope: 0.082245804
+      outSlope: 0.082245804
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0.11959223
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      value: 2
+      inSlope: 0.0256043
+      outSlope: 0.0256043
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.11044562
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxAcceleration: 10
-  maxAirAcceleration: 1
   speedLimits:
-  - 10
-  speedLimitMargin: 0
+  - 5
+  - 20
+  - 25
+  speedLimitMargin: 2
   maxGroundAngle: 25
   maxSnapSpeed: 100
   probeDistance: 1

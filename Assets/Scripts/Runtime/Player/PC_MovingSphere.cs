@@ -137,8 +137,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     void Awake()
     {
-        UpdatePCData();
-
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -147,7 +145,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void Start()
     {
-        //UpdatePCData();
+        UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
 

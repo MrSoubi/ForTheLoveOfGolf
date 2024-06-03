@@ -15,19 +15,17 @@ public class PlayerControllerData : ScriptableObject
 
     public float shootingAngle;
 
-    public AnimationCurve shootCurve = AnimationCurve.Linear(0, 0, 1, 1);
-
     [Space]
 
     public float maxAcceleration = 10f;
     public float maxAirAcceleration = 1f;
 
+    public AnimationCurve rotationCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
     public List<float> speedLimits = new List<float>();
     public float speedLimitMargin = 1f;
 
     [Space]
-
-
 
     public float maxGroundAngle = 25f;
     public float maxSnapSpeed = 100f;

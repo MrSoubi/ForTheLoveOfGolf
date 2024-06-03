@@ -31,8 +31,8 @@ public class PC_MovingSphere : MonoBehaviour
     float speedLimitMargin;
     Material rollingMaterial, aimingMaterial;
     float shootingAngle;
-    AnimationCurve shootCurve;
 
+    public AnimationCurve rotationCurve;
 
     List<float> speedLimits;
 
@@ -154,6 +154,8 @@ public class PC_MovingSphere : MonoBehaviour
     bool isAiming;
     void Update()
     {
+        UpdatePCData();
+
         if (isBlocked)
         {
             return;
@@ -631,20 +633,6 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
-
-    //public float minShootFactor, maxShootFactor;
-    float EvaluateShootFactor()
-    {
-        float abs = velocity.magnitude / speedLimits[speedLimits.Count - 1];
-        abs *= shootCurve.keys[shootCurve.length - 1].time;
-
-        float result = shootCurve.Evaluate(abs);
-
-        Debug.Log(result);
-
-        return result;
-    }
-
     void OnCollisionEnter(Collision collision)
     {
         EvaluateCollision(collision);
@@ -754,7 +742,7 @@ public class PC_MovingSphere : MonoBehaviour
         rollingMaterial = PCData.rollingMaterial;
         aimingMaterial = PCData.aimingMaterial;
         shootingAngle = PCData.shootingAngle;
-        shootCurve = PCData.shootCurve;
+        rotationCurve = PCData.rotationCurve;
     }
 
     public void SetPCData(PlayerControllerData PCData)

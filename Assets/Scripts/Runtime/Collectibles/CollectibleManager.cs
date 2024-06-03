@@ -9,6 +9,7 @@ public class CollectibleManager : MonoBehaviour
 {
     [HideInInspector]
     public List<Collectible> collectibles = new List<Collectible>();
+    public List<PannelCollectible> pannelCollectibles = new List<PannelCollectible>();
 
     [Header("Interface")]
     public TextMeshProUGUI textCollectibleCounter;
@@ -41,7 +42,11 @@ public class CollectibleManager : MonoBehaviour
             {
                 collectibles.Add(currentCollectible);
             }
-            if (tmp[i].TryGetComponent(out Buttons currentButton))
+            else if(tmp[i].TryGetComponent(out PannelCollectible currentPannelCollectible))
+            {
+                pannelCollectibles.Add(currentPannelCollectible);
+            }
+            else if (tmp[i].TryGetComponent(out Buttons currentButton))
             {
                 currentButton.collectibleManager = this;
             }
@@ -55,6 +60,11 @@ public class CollectibleManager : MonoBehaviour
             collectibleValue += collectibles[i].value;
             collectibles[i].CollectibleManager = this;
             collectibles[i].index = i;
+        }
+
+        for (int i = 0; i < pannelCollectibles.Count; i++)
+        {
+            pannelCollectibles[i].index = i;
         }
 
         RefreshInterface();
@@ -80,26 +90,12 @@ public class CollectibleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour les index dans la liste
-    /// </summary>
-    private void ResetCollectibleIndex()
-    {
-        for (int i = 0; i < collectibles.Count; i++)
-        {
-            collectibles[i].index = i;
-        }
-    }
-
-    /// <summary>
     /// Detruit le GameObject puis appelle la fonction ResetCollectibleIndex qui met à jour les index dans la liste
     /// </summary>
     /// <param name="index">L'index de la piece</param>
     public void DelCollectible(int index)
     {
         Destroy(collectibles[index].gameObject);
-        collectibles.RemoveAt(index);
-
-        ResetCollectibleIndex();
     }
 
     /// <summary>
@@ -110,6 +106,9 @@ public class CollectibleManager : MonoBehaviour
     public void AddCollectible(int index, int value)
     {
         collectibleCount += value;
+        SaveManager.coins = collectibleCount;
+        SaveManager.coinsObject[index] = true;
+        Debug.Log(index);
         onCollectedCoin?.Invoke(collectibleCount);
 
         RefreshInterface();

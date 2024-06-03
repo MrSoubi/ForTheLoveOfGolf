@@ -32,8 +32,6 @@ public class PlayerControllerData : ScriptableObject
 
     public float probeDistance = 1f;
 
-
-
     [Space]
     public Material rollingMaterial;
     public Material aimingMaterial;

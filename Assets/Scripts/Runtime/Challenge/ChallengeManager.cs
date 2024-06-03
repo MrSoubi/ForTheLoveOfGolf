@@ -16,10 +16,46 @@ public class ChallengeManager : MonoBehaviour
 
     public static ChallengeManager instance;
 
+    [HideInInspector]
+    public List<Challenge> challenge = new List<Challenge>();
+
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
+
+        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            if (tmp[i].TryGetComponent(out Challenge currentChallenge))
+            {
+                challenge.Add(currentChallenge);
+            }
+        }
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < challenge.Count; i++)
+        {
+            challenge[i].index = i;
+        }
+    }
+
+    private void Start()
+    {
+        challenge = GetGameObjects.instance.challenges;
+
+        for (int i = 0; i < challenge.Count; i++)
+        {
+            challenge[i].index = i;
+
+            if (SaveManager.challenges[i])
+            {
+                challenge[i].challengeRewards.SetActive(true);
+                Destroy(challenge[i].gameObject);
+            }
+        }
     }
 
     public void StopCurrentChallenge()

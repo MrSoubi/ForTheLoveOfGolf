@@ -20,11 +20,12 @@ public class Challenge : MonoBehaviour
 
     [Header("Challenge rewards")]
     [Tooltip("Objects that will appear if you win the challenge")] 
-    [SerializeField] GameObject challengeRewards;
+    public GameObject challengeRewards;
 
     Coroutine timerCoroutine;
 
     [HideInInspector] public bool active;
+    [HideInInspector] public int index;
 
     private void Awake()
     {
@@ -84,6 +85,7 @@ public class Challenge : MonoBehaviour
         if (isAlreadyFinish)
         {
             challengeRewards.SetActive(true);
+            SaveManager.challenges[index] = true;
             Destroy(gameObject);
         }
 

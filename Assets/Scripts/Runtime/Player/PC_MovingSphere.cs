@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using System;
 
+
 public class PC_MovingSphere : MonoBehaviour
 {
 
@@ -69,7 +70,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-
     float ballRadius = 0.5f;
 
 
@@ -95,6 +95,7 @@ public class PC_MovingSphere : MonoBehaviour
     bool Swimming => false; // submergence >= swimThreshold;
     float submergence;
     int shootCharges;
+
     float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
     int stepsSinceLastGrounded, stepsSinceLastJump;
     MeshRenderer meshRenderer;
@@ -137,6 +138,7 @@ public class PC_MovingSphere : MonoBehaviour
     void Awake()
     {
         UpdatePCData();
+
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
         meshRenderer = ball.GetComponent<MeshRenderer>();
@@ -148,6 +150,7 @@ public class PC_MovingSphere : MonoBehaviour
         //UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
+
     }
 
 
@@ -190,7 +193,6 @@ public class PC_MovingSphere : MonoBehaviour
         UpdateBall();
     }
 
-    
     void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = playerInputSpace.rotation;
@@ -300,7 +302,6 @@ public class PC_MovingSphere : MonoBehaviour
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
         }
-
         if (canTurn)
         {
             ball.localRotation = rotation;
@@ -376,6 +377,7 @@ public class PC_MovingSphere : MonoBehaviour
         {
             body.velocity = velocity;
         }
+
 
         ClearState();
     }
@@ -617,6 +619,8 @@ public class PC_MovingSphere : MonoBehaviour
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
+        IncreaseMaxSpeed();
+    }
         //float shootForce = shootSpeed * EvaluateShootFactor();
         //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
 
@@ -747,8 +751,6 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void SetPCData(PlayerControllerData PCData)
     {
-        Debug.Log("SetPCData from " + this.name);
-        Debug.Log("PC Data : " + PCData.name);
         this.PCData = PCData;
         UpdatePCData();
     }

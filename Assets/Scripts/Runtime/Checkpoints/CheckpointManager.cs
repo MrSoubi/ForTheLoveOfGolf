@@ -18,6 +18,7 @@ public class CheckpointManager : MonoBehaviour
         if (newCheckPoints != checkPoints) 
         { 
             checkPoints = newCheckPoints;
+            SaveManager.positionSpawn = newCheckPoints;
             if (lastTrigger != null) lastTrigger.ChangeMaterial(materials[0]);
             lastTrigger = trigger;
             lastTrigger.ChangeMaterial(materials[1]);

@@ -586,6 +586,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: respawnPoint.x
+      value: -2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalScale.x
       value: 2

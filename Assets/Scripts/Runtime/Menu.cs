@@ -4,10 +4,28 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class Menu : MonoBehaviour
 {
+    public Button buttonContinue;
     public Texture2D handCursor;
+
+    private void Start()
+    {
+        string filePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Save", "Save.json");
+        if (File.Exists(filePath))
+        {
+            buttonContinue.GetComponent<Button>().interactable = true;
+            buttonContinue.GetComponent<EventTrigger>().enabled = true;
+        }
+        else
+        {
+            buttonContinue.GetComponent<Button>().interactable = false;
+            buttonContinue.GetComponent<EventTrigger>().enabled = false;
+        }
+
+    }
 
     public void CursorEnter(Button button)
     {
@@ -35,6 +53,11 @@ public class Menu : MonoBehaviour
     public void Continue()
     {
         EventSystem.current.SetSelectedGameObject(null);
+
+        if (SaveManager.LoadFile())
+        {
+            SceneManager.LoadScene("LevelArea");
+        }
     }
 
     public void Quit()

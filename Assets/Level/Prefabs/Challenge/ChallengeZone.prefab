@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 1301709280299638982}
   coinsToGet: 5
-  maxTime: 30
+  maxTime: 15
   challengeRewards: {fileID: 0}
   active: 0
 --- !u!1001 &849088985501792918

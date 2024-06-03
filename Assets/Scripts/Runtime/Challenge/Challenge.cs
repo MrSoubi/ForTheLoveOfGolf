@@ -25,6 +25,7 @@ public class Challenge : MonoBehaviour
     Coroutine timerCoroutine;
 
     [HideInInspector] public bool active;
+    [HideInInspector] public int index;
 
     private void Awake()
     {
@@ -84,6 +85,7 @@ public class Challenge : MonoBehaviour
         if (isAlreadyFinish)
         {
             challengeRewards.SetActive(true);
+            SaveManager.challenges[index] = true;
             Destroy(gameObject);
         }
 

@@ -43,6 +43,8 @@ public class PauseMenu : MonoBehaviour
     public void SaveGame()
     {
         EventSystem.current.SetSelectedGameObject(null);
+
+        SaveManager.SaveToFile();
     }
 
     public void Menu()

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PannelCollectible : MonoBehaviour
 {
+    [HideInInspector]
+    public int index;
+
     [Header("References")]
     [SerializeField] private TMP_Text textCollectibles;
     [SerializeField] private GameObject holeRef;
@@ -40,6 +43,7 @@ public class PannelCollectible : MonoBehaviour
 
             Destroy(transform.GetChild(0).gameObject);
             holeRef.SetActive(true);
+            SaveManager.panneaux[index] = true;
         }
     }
 }

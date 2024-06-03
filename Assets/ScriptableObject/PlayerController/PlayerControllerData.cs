@@ -18,7 +18,11 @@ public class PlayerControllerData : ScriptableObject
 
     public float probeDistance = 1f;
 
+<<<<<<< HEAD
     public List<float> speedLimits = new List<float>();
+=======
+    public List<float> speedLimits;
+>>>>>>> Save
     public float speedLimitMargin;
 
     public Material rollingMaterial;

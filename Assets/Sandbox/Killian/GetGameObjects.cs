@@ -40,7 +40,7 @@ public class GetGameObjects : MonoBehaviour
             if (tmp[i].TryGetComponent(out PannelCollectible currentPannel))
             {
                 pannels.Add(currentPannel);
-                SaveManager.pannel.Add(false);
+                SaveManager.pannels.Add(false);
             }
             if (tmp[i].TryGetComponent(out Challenge currentChallenge))
             {

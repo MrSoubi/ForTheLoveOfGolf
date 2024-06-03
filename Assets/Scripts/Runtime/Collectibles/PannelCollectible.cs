@@ -43,7 +43,7 @@ public class PannelCollectible : MonoBehaviour
 
             Destroy(transform.GetChild(0).gameObject);
             holeRef.SetActive(true);
-            SaveManager.panneaux[index] = true;
+            SaveManager.pannels[index] = true;
         }
     }
 }

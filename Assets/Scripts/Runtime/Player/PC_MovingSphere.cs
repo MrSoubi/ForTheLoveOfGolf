@@ -620,7 +620,7 @@ public class PC_MovingSphere : MonoBehaviour
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
         IncreaseMaxSpeed();
-    }
+
         //float shootForce = shootSpeed * EvaluateShootFactor();
         //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
 

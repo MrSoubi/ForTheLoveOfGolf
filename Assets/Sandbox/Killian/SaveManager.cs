@@ -14,7 +14,7 @@ public class PlayerData
     public List<bool> coinsObject;
     public List<bool> holesObject;
     public List<bool> doors;
-    public List<bool> panneaux;
+    public List<bool> pannels;
     public List<bool> challenges;
 }
 
@@ -29,7 +29,7 @@ public class SaveManager
     public static List<bool> coinsObject = new List<bool>();
     public static List<bool> holesObject = new List<bool>();
     public static List<bool> doors = new List<bool>();
-    public static List<bool> panneaux = new List<bool>();
+    public static List<bool> pannels = new List<bool>();
     public static List<bool> challenges = new List<bool>();
 
     private static string Encrypt(string plainText, string key)
@@ -107,7 +107,7 @@ public class SaveManager
             coinsObject = coinsObject,
             holesObject = holesObject,
             doors = doors,
-            panneaux = panneaux,
+            pannels = pannels,
             challenges = challenges,
         };
 
@@ -133,7 +133,7 @@ public class SaveManager
         if (data.coinsObject == null) return false;
         if (data.holesObject == null) return false;
         if (data.doors == null) return false;
-        if (data.panneaux == null) return false;
+        if (data.pannels == null) return false;
         if (data.challenges == null) return false;
 
         return true;
@@ -159,7 +159,7 @@ public class SaveManager
                     coinsObject = data.coinsObject;
                     holesObject = data.holesObject;
                     doors = data.doors;
-                    panneaux = data.panneaux;
+                    pannels = data.pannels;
                     challenges = data.challenges;
 
                     return true;

@@ -591,6 +591,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     
+    float minShootForce, maxShootForce;
 
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
@@ -612,8 +613,11 @@ public class PC_MovingSphere : MonoBehaviour
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
-                
-        velocity = shootDirection * (shootSpeed * EvaluateShootFactor() + velocity.magnitude);
+
+        float shootForce = shootSpeed * EvaluateShootFactor();
+        shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
+
+        velocity = shootDirection * (shootForce + velocity.magnitude);
 
         IncreaseMaxSpeed();
     }

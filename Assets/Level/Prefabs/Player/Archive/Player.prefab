@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7311884581465759139}
   - component: {fileID: 3982923495089131998}
   - component: {fileID: 5858678838221024211}
-  - component: {fileID: 6592609069013781268}
   - component: {fileID: 5031055350452207861}
   - component: {fileID: 3997950000825705159}
   - component: {fileID: -5788535909043824210}
+  - component: {fileID: 3588532416337375810}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -59,10 +59,10 @@ MonoBehaviour:
   shootingAngle: 0
   isAiming: 0
   isGrounded: 0
+  onStickySurface: 0
   contactPoint: {x: 0, y: 0, z: 0}
   complexDetection: 1
   groundDetectionLength: 0.002
-  onStickySurface: 0
 --- !u!54 &5858678838221024211
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -90,27 +90,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!135 &6592609069013781268
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6737611680261338443}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &5031055350452207861
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -177,3 +156,24 @@ MonoBehaviour:
   horizontal: 0
   inputX: 0
   inputY: 0
+--- !u!135 &3588532416337375810
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6737611680261338443}
+  m_Material: {fileID: 13400000, guid: 789fed406160976428c1a4bbd2ad21ee, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

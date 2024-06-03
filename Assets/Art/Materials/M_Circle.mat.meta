@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Materials/M_Circle.mat.meta
+guid: 2695c59dff72c9c49820d3495d69ac2d
+========
+guid: 23e24bea6f3f9974aa8176ba666ef832
+>>>>>>>> dev:Assets/Art/Materials/Red.mat.meta
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

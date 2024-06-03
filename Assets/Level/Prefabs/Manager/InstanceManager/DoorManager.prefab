@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7725678597231809887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3c98a6157f9486499c0b7d255313425, type: 3}
+  m_Script: {fileID: 11500000, guid: 06bbe28215df2ba4f897e46ff8fa6c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   doors: []

@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using System;
+using UnityEngine.Windows.WebCam;
 
 public class CameraManager : MonoBehaviour
 {
@@ -13,7 +14,12 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineFreeLook aimCam;
     [SerializeField] CinemachineBrain brain;
 
+    bool isOnCinematic = false;
+    Vector3 lastLookingirection = Vector3.zero;
+    CinemachineVirtualCamera cinematicCam;
+
     public static CameraManager instance;
+
     void Awake()
     {
         instance = this;
@@ -28,52 +34,21 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
-        SetCameraType();
+        SetCameraType(cameraType);
     }
 
-    // For testing
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) SetType(CameraType.Aim);
-        if (Input.GetKeyDown(KeyCode.O)) SetType(CameraType.Follow);
-    }
-
-    /// <summary>
-    /// Mettre le camera type en parametre, change la camera actuel en le type voulu
-    /// </summary>
-    /// <param name="type"></param>
-    public void SetType(CameraType type)
-    {
-        cameraType = type;
-        SetCameraType();
-    }
-
-    void SetCameraType()
-    {
-        followCam.gameObject.SetActive(false);
-        aimCam.gameObject.SetActive(false);
-
-        switch(cameraType)
-        {
-            case CameraType.Follow:
-                followCam.gameObject.SetActive(true);
-                ToggleFollowMode();
-                break;
-            
-            case CameraType.Aim:
-                aimCam.gameObject.SetActive(true);
-                ToggleAimMode();
-                break;
-        }
+        if(Input.GetKeyDown(KeyCode.Mouse1)) ToggleAimMode();
+        if(Input.GetKeyUp(KeyCode.Mouse1)) ToggleFollowMode();
     }
 
     /// <summary>
     /// Active la caméra de visée
     /// </summary>
-    void ToggleAimMode()
+    public void ToggleAimMode()
     {
-        aimCam.m_YAxis.Value = 0.5f;
-        aimCam.m_XAxis.Value = followCam.transform.rotation.eulerAngles.y;
+        SetCameraType(CameraType.Aim);
     }
 
     /// <summary>
@@ -81,24 +56,89 @@ public class CameraManager : MonoBehaviour
     /// </summary>
     public void ToggleFollowMode()
     {
+        SetCameraType(CameraType.Follow);
     }
 
     /// <summary>
-    /// Renvoie la direction dans laquelle la caméra actuelle regarde
+    /// Active le camera manager en mode "Cinematique". Necessite la camera de la cinematiqe en reference
     /// </summary>
-    /// <returns></returns>
-    public Vector3 GetShootingDirection()
+    /// <param name="newCam"></param>
+    public void ToggleCinematic(CinemachineVirtualCamera newCam)
     {
-        Transform liveCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform;
-        Transform target = brain.ActiveVirtualCamera.LookAt;
+        cinematicCam = newCam;
+        SetCameraType(CameraType.Cinematic);
+    }
 
-        Vector3 shootingDirection = target.position - liveCamera.position;
+    /// <summary>
+    /// Retire le mode "Cinematique" et retourne en mode "Follow"
+    /// </summary>
+    /// <param name="newCam"></param>
+    public void ToggleToNotCinematic()
+    {
+        SetCameraType(CameraType.Follow);
+        isOnCinematic = false;
 
-        return shootingDirection;
+        cinematicCam.Priority = 0;
+        cinematicCam = null;
+    }
+
+    void SetCameraType(CameraType type)
+    {
+        cameraType = type;
+
+        switch (cameraType)
+        {
+            case CameraType.Follow:
+                aimCam.Priority = 0;
+                followCam.Priority = 100;
+                
+                //aimcam.m_yaxis.value = 0.5f;
+                //aimcam.m_xaxis.value = followcam.transform.rotation.eulerangles.y;
+                break;
+
+            case CameraType.Aim:
+                aimCam.Priority = 100;
+                followCam.Priority = 0;
+                break;
+
+            case CameraType.Cinematic:
+                cinematicCam.Priority = 110;
+                followCam.Priority = 0;
+                aimCam.Priority = 0;
+
+                lastLookingirection = LookingDirection;
+
+                isOnCinematic = true;
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Return the looking direction of the current camera
+    /// </summary>
+    public Vector3 LookingDirection
+    {
+        get
+        {
+            if (isOnCinematic)
+            {
+                Vector3 liveCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform.position;
+                Vector3 target = brain.ActiveVirtualCamera.LookAt.position;
+
+                Vector3 shootingDirection = target - liveCamera;
+
+                return shootingDirection;
+            }
+            else
+            {
+                return lastLookingirection;
+            }
+            
+        }
     }
 }
 
-public enum CameraType { Follow, Aim}
+public enum CameraType { Follow, Aim, Cinematic}
 
 /*private static CameraManager instance = null;
     public static CameraManager Instance => instance;

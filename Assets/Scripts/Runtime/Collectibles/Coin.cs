@@ -3,24 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Collectible : MonoBehaviour
+public class Coin : MonoBehaviour
 {
-    [HideInInspector] 
-    public CollectibleManager CollectibleManager;
+    [Header("References")]
+    public GameObject mesh;
 
-    [HideInInspector]
-    public int index;
-
-    [Header("Value Collectible")]
+    [Header("Coin Value")]
     public int value;
 
-    [Header("Animation Speed")]
-    public float speed;
-
-    private void Update()
-    {
-        transform.Rotate(0, speed * Time.deltaTime, 0);
-    }
+    [HideInInspector] public CollectibleManager CollectibleManager;
+    [HideInInspector] public int index;
 
     /// <summary>
     /// Quand le joueur est détecter, il appelle le manager et ajoute la valeur de la pièce

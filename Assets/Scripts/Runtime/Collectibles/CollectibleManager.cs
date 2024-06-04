@@ -8,7 +8,7 @@ using UnityEngine;
 public class CollectibleManager : MonoBehaviour
 {
     [HideInInspector]
-    public List<Collectible> collectibles = new List<Collectible>();
+    public List<Coin> collectibles = new List<Coin>();
     public List<PannelCollectible> pannelCollectibles = new List<PannelCollectible>();
 
     [Header("Interface")]
@@ -38,7 +38,7 @@ public class CollectibleManager : MonoBehaviour
         GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
         for (int i = 0; i < tmp.Length; i++)
         {
-            if (tmp[i].TryGetComponent(out Collectible currentCollectible))
+            if (tmp[i].TryGetComponent(out Coin currentCollectible))
             {
                 collectibles.Add(currentCollectible);
             }

@@ -11,18 +11,16 @@ public class Coin : MonoBehaviour
     [Header("Coin Value")]
     public int value;
 
-    [HideInInspector] public CollectibleManager CollectibleManager;
-    [HideInInspector] public int index;
+    private void Start()
+    {
+        StartCoroutine(Utils.Delay(() => CoinManager.instance.AddCoin(this), .001f));
+    }
 
-    /// <summary>
-    /// Quand le joueur est détecter, il appelle le manager et ajoute la valeur de la pièce
-    /// </summary>
-    /// <param name="other">le collider qui entre en contact</param>
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            CollectibleManager.AddCollectible(index, value);
+            CoinManager.instance.CollectCoin(this);
         }
     }
 }

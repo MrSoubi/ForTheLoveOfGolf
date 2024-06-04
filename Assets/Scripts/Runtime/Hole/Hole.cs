@@ -1,33 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] Vector3 respawnPoint;
 
-    [SerializeField] int ID;
-    [HideInInspector] public HoleManager holeManager;
-    public bool finish;
+    [Header("References")]
+    [SerializeField] private Animator ballContentAnim;
+    [SerializeField] private Transform virtualBall;
+    [SerializeField] private MeshRenderer flagMesh;
+    [SerializeField] private ParticleSystem completedParticle;
+
+    [Header("DEBUG")]
+    public bool completed;
 
     GameObject collision;
 
-    public void SetID(int id) => ID = id;
-
-    [SerializeField] Animator ballContentAnim;
-    [SerializeField] Transform virtualBall;
-    [SerializeField] Transform flagVisual;
+    public MeshRenderer GetFlagMesh() 
+    {
+        if (flagMesh != null) return flagMesh;
+        else Debug.LogError("Flag Mesh is null"); return null;
+    }
 
     private void Start()
     {
         virtualBall.gameObject.SetActive(false);
+
+        StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(this), .001f));
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player"))
+        if (other.transform.CompareTag("Player") && !completed)
         {
-            holeManager.FinishSelectedHole(ID);
+            completed = true;
+
+            HoleManager.instance.CompleteHole(this);
+
             collision = other.gameObject;
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);
@@ -48,7 +61,6 @@ public class Hole : MonoBehaviour
         collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);
 
-
         PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
 
         tmp.Block();
@@ -57,12 +69,12 @@ public class Hole : MonoBehaviour
 
         collision = null;
 
-        flagVisual.Bump();
+        flagMesh.GetComponent<Transform>().Bump();
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + respawnPoint, .1f);
+        Gizmos.DrawSphere(transform.position + respawnPoint, 0.1f);
     }
 }

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Buttons : MonoBehaviour
 {
-    [HideInInspector]
-    public CollectibleManager collectibleManager;
+    /*[HideInInspector]
+    //public CollectibleManager collectibleManager;
 
     [Header("Door")]
     public Door door;
@@ -100,5 +100,5 @@ public class Buttons : MonoBehaviour
         {
             transform.DOMove(new Vector3(position.x, position.y, position.z), animeDuration);
         }
-    }
+    }*/
 }

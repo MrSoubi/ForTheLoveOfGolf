@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
+  m_Name: MaxControl
+  m_EditorClassIdentifier: 
+  shootingFactor: 0.5
+  shootHeight: 2
+  maxShoots: 2
+  shootingAngle: -45
+  maxAcceleration: 12
+  maxAirAcceleration: 5
+  rotationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 5
+      inSlope: -2.8
+      outSlope: -2.8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 2.2
+      inSlope: -2.8
+      outSlope: -2.8
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedLimits:
+  - 17
+  - 20
+  - 23
+  - 26
+  - 29
+  - 32
+  - 35
+  speedLimitMargin: 10
+  maxGroundAngle: 30
+  maxSnapSpeed: 30
+  probeDistance: 1
+  rollingMaterial: {fileID: 2100000, guid: 03937d4accb645f4899555841c9ddd8a, type: 2}
+  aimingMaterial: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CustomBlends:
   - m_From: '**ANY CAMERA**'
-    m_To: FreeLook Camera
+    m_To: LookAt_vCam
     m_Blend:
       m_Style: 1
       m_Time: 0.2
@@ -24,8 +24,8 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: FreeLook Camera
-    m_To: RollingCamera
+  - m_From: '**ANY CAMERA**'
+    m_To: Movement_vCam
     m_Blend:
       m_Style: 1
       m_Time: 0.5

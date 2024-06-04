@@ -6,6 +6,8 @@ public class Hole : MonoBehaviour
 {
     [SerializeField] Vector3 respawnPoint;
 
+    public GameObject flag;
+
     [SerializeField] int ID;
     [HideInInspector] public HoleManager holeManager;
     public bool finish;

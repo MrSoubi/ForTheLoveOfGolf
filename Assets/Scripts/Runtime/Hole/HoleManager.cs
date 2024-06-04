@@ -33,8 +33,8 @@ public class HoleManager : MonoBehaviour
         if (!holeInGame[id].wasFinish)
         {
             collectibleManager.holeCount += 1;
-            SaveManager.holes = collectibleManager.holeCount;
-            SaveManager.holesObject[id] = true;
+            //SaveManager.holes = collectibleManager.holeCount;
+            //SaveManager.holesObject[id] = true;
             holeInGame[id].wasFinish = true;
 
             collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);
@@ -43,16 +43,16 @@ public class HoleManager : MonoBehaviour
             {
                 if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
                 {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
+                    holesCount[id].flag.GetComponent<MeshRenderer>().material = flagMaterialComplete;
                 }
                 else
                 {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
+                    holesCount[id].flag.GetComponent<MeshRenderer>().material = flagMaterial;
                 }
             }
             else
             {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
+                holesCount[id].flag.GetComponent<MeshRenderer>().material = flagMaterial;
             }
 
             collectibleManager.RefreshInterface();

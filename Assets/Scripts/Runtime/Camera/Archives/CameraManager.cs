@@ -5,78 +5,47 @@ using System;
 
 public class CameraManager : MonoBehaviour
 {
-    private static CameraManager instance = null;
-    public static CameraManager Instance => instance;
-    private void Awake()
+    [Header("Initial Var")]
+    [SerializeField] CameraType cameraType;
+    public CameraType Type {get {return cameraType;}}
+
+    [Header("Virtuals Cameras References")]
+    [SerializeField] GameObject movementCam;
+    [SerializeField] GameObject lookAtCam;
+    
+    public static CameraManager instance;
+    void Awake()
     {
-        if (instance != null && instance != this)
+        instance = this;
+    }
+
+    private void Start()
+    {
+        SetCameraType();
+    }
+
+    public void SetType(CameraType type)
+    {
+        cameraType = type;
+        SetCameraType();
+    }
+
+    void SetCameraType()
+    {
+        movementCam.SetActive(false);
+        lookAtCam.SetActive(false);
+
+        switch(cameraType)
         {
-            Destroy(this.gameObject);
-            return;
+            case CameraType.Movement:
+                movementCam.SetActive(true);
+                break;
+            
+            case CameraType.LooktAt:
+                lookAtCam.SetActive(true);
+                break;
         }
-        else
-        {
-            instance = this;
-        }
-        DontDestroyOnLoad(this.gameObject);
-
-        // Initialisation du Game Manager...
-    }
-
-    [SerializeField] private CinemachineVirtualCamera rollingCam;
-    [SerializeField] private CinemachineFreeLook aimingCam;
-    private CinemachineBrain brain;
-
-    //bool isAiming = false;
-
-    void Start()
-    {
-        rollingCam.enabled = true;
-        aimingCam.enabled = true;
-
-        brain = GetComponentInChildren<CinemachineBrain>();
-    }
-
-    public void UseCamera(CinemachineVirtualCamera camera)
-    {
-
-    }
-
-    private void Update()
-    {
-        //Debug.Log(brain.transform.rotation.y * 180);
-    }
-    /// <summary>
-    /// Active la caméra de visée
-    /// </summary>
-    public void ToggleAimMode()
-    {
-        aimingCam.m_YAxis.Value = 0.5f;
-
-        aimingCam.m_XAxis.Value = rollingCam.transform.rotation.eulerAngles.y;
-
-        rollingCam.enabled = false;
-    }
-
-    /// <summary>
-    /// Active la caméra de suivi de la balle
-    /// </summary>
-    public void ToggleFollowMode()
-    {
-        rollingCam.enabled = true;
-    }
-
-    /// <summary>
-    /// Renvoie la direction dans laquelle la caméra actuelle regarde
-    /// </summary>
-    /// <returns></returns>
-    public Vector3 GetShootingDirection()
-    {
-        Transform liveCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform;
-        Transform target = brain.ActiveVirtualCamera.LookAt;
-
-        Vector3 shootingDirection = target.position - liveCamera.position;
-
-        return shootingDirection;
     }
 }
+
+public enum CameraType { Movement, LooktAt}

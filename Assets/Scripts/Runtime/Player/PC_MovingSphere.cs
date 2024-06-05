@@ -38,7 +38,7 @@ public class PC_MovingSphere : MonoBehaviour
     #endregion
 
 
-    Transform playerInputSpace => CameraManager.instance.LookingDirection;
+    Transform playerInputSpace;
 
 
 
@@ -146,13 +146,14 @@ public class PC_MovingSphere : MonoBehaviour
         UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
-
+        playerInputSpace = CameraManager.instance.LookingDirection;
     }
 
 
     bool isAiming;
     void Update()
     {
+        playerInputSpace = CameraManager.instance.LookingDirection;
         UpdatePCData();
 
         if (isBlocked)
@@ -206,7 +207,7 @@ public class PC_MovingSphere : MonoBehaviour
         ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;
-        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleAimMode();
+        CameraManager.instance.ToggleAimMode();
         Time.timeScale = 0.1f;
     }
 
@@ -220,7 +221,7 @@ public class PC_MovingSphere : MonoBehaviour
         Time.timeScale = 1.0f;
         isAiming = false;
         meshRenderer.material = rollingMaterial;
-        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode(reset);
+        CameraManager.instance.ToggleFollowMode();
     }
 
     void HandleAim()

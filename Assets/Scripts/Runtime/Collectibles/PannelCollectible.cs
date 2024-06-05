@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PannelCollectible : MonoBehaviour
 {
-    [HideInInspector]
+    /*[HideInInspector]
     public int index;
 
     [Header("References")]
@@ -45,5 +45,5 @@ public class PannelCollectible : MonoBehaviour
             holeRef.SetActive(true);
             GetGameObjects.instance.pannelsObject[index] = true;
         }
-    }
+    }*/
 }

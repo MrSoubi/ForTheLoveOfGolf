@@ -16,36 +16,36 @@ MonoBehaviour:
   shootHeight: 2
   maxShoots: 1
   shootingAngle: -20
-  maxAcceleration: 10
-  maxAirAcceleration: 1
+  maxAcceleration: 12
+  maxAirAcceleration: 5
   rotationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0.082245804
-      outSlope: 0.082245804
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.11959223
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 2
-      inSlope: 0.0256043
-      outSlope: 0.0256043
+      value: 5
+      inSlope: 1
+      outSlope: 1
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.11044562
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   speedLimits:
-  - 5
+  - 15
   - 20
-  - 25
+  - 60
   speedLimitMargin: 2
   maxGroundAngle: 25
   maxSnapSpeed: 100

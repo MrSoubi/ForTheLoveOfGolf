@@ -14,18 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CustomBlends:
   - m_From: '**ANY CAMERA**'
-    m_To: FreeLook Camera
+    m_To: Aim_vCam
     m_Blend:
       m_Style: 1
-      m_Time: 0.2
+      m_Time: 1
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: FreeLook Camera
-    m_To: RollingCamera
+  - m_From: '**ANY CAMERA**'
+    m_To: Follow_vCam
+    m_Blend:
+      m_Style: 1
+      m_Time: 1
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: '**ANY CAMERA**'
+    m_To: Virtual Camera
     m_Blend:
       m_Style: 1
       m_Time: 0.5

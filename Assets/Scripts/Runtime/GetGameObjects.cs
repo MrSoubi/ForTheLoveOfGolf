@@ -6,7 +6,7 @@ public class GetGameObjects : MonoBehaviour
 {
     public static GetGameObjects instance;
 
-    public List<Collectible> collectibles = new List<Collectible>();
+    public List<Coin> collectibles = new List<Coin>();
     public List<Hole> holes = new List<Hole>();
     public List<Door> doors = new List<Door>();
     public List<PannelCollectible> pannels = new List<PannelCollectible>();
@@ -32,7 +32,7 @@ public class GetGameObjects : MonoBehaviour
 
         for (int i = 0; i < tmp.Length; i++)
         {
-            if (tmp[i].TryGetComponent(out Collectible currentCollectible))
+            if (tmp[i].TryGetComponent(out Coin currentCollectible))
             {
                 collectibles.Add(currentCollectible);
 

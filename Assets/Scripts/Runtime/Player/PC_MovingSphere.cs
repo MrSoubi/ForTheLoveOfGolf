@@ -10,8 +10,6 @@ using System;
 
 public class PC_MovingSphere : MonoBehaviour
 {
-
-
     // ----------
     // -- Tool --
     // ----------
@@ -40,9 +38,9 @@ public class PC_MovingSphere : MonoBehaviour
     #endregion
 
 
-    [SerializeField]
-    [Tooltip("Utiliser la cam�ra suivant la balle")]
-    Transform playerInputSpace = default;
+    Transform playerInputSpace;
+
+
 
     [SerializeField]
     [Tooltip("Mettre l'enfant Ball")]
@@ -148,13 +146,14 @@ public class PC_MovingSphere : MonoBehaviour
         UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
-
+        playerInputSpace = CameraManager.instance.LookingDirection;
     }
 
 
     bool isAiming;
     void Update()
     {
+        playerInputSpace = CameraManager.instance.LookingDirection;
         UpdatePCData();
 
         if (isBlocked)
@@ -208,7 +207,7 @@ public class PC_MovingSphere : MonoBehaviour
         ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;
-        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleAimMode();
+        CameraManager.instance.ToggleAimMode();
         Time.timeScale = 0.1f;
     }
 
@@ -222,7 +221,7 @@ public class PC_MovingSphere : MonoBehaviour
         Time.timeScale = 1.0f;
         isAiming = false;
         meshRenderer.material = rollingMaterial;
-        playerInputSpace.GetComponent<PC_OrbitCamera>().ToggleFollowMode(reset);
+        CameraManager.instance.ToggleFollowMode();
     }
 
     void HandleAim()
@@ -539,12 +538,13 @@ public class PC_MovingSphere : MonoBehaviour
 
     void AdjustMaxSpeed()
     {
-        if (maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
+        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
         {
             LowerMaxSpeed();
         }
     }
 
+    bool isVelocityClamped = true;
     void AdjustVelocity()
     {
         float acceleration, speed;
@@ -584,7 +584,7 @@ public class PC_MovingSphere : MonoBehaviour
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
         float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
-        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * turningFactor);
+        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * 1);
         if (Swimming)
         {
             velocity += upAxis * adjustment.y;
@@ -593,7 +593,32 @@ public class PC_MovingSphere : MonoBehaviour
         Velocity = velocity.magnitude;
     }
 
-    
+
+    public void ClampVelocity()
+    {
+        isVelocityClamped = true;
+
+        for (int i = 0; i < speedLimits.Count; i++)
+        {
+            if (velocity.magnitude < speedLimits[i])
+            {
+                maxSpeedIndex = i;
+                maxSpeed = speedLimits[maxSpeedIndex];
+                break;
+            }
+        }
+
+        maxSpeedIndex = speedLimits.Count - 1;
+        maxSpeed = speedLimits[maxSpeedIndex];
+    }
+
+    public void UnClampVelocity()
+    {
+        isVelocityClamped = false;
+        IncreaseSpeedLimitToMaximum();
+    }
+
+
     float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
@@ -624,13 +649,15 @@ public class PC_MovingSphere : MonoBehaviour
 
         //velocity = shootDirection * (shootForce + velocity.magnitude);
 
+        float localMaxSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
+
         if (maxSpeedIndex == speedLimits.Count - 1)
         {
-            velocity = shootDirection * maxSpeed;
+            velocity = shootDirection * localMaxSpeed;
         }
         else
         {
-            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
+            velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
             IncreaseMaxSpeed();
         }
     }
@@ -894,6 +921,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void IncreaseSpeedLimitToMaximum()
     {
         maxSpeedIndex = speedLimits.Count - 1;
+        maxSpeed = speedLimits[maxSpeedIndex];
     }
 
     /// <summary>

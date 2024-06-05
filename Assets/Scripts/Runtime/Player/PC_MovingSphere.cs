@@ -959,6 +959,11 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="limitIndex"></param>
     public void SetSpeedLimit(int limitIndex)
     {
+        if (limitIndex < 0 || limitIndex >= speedLimits.Count)
+        {
+            throw new Exception("SpeedLimitIndex out of bounds");
+        }
+
         maxSpeedIndex = limitIndex;
         maxSpeed = speedLimits[speedLimits.Count - 1];
     }

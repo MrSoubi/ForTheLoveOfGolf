@@ -6,62 +6,35 @@ using UnityEngine;
 
 public class HoleManager : MonoBehaviour
 {
-    public CollectibleManager collectibleManager;
-    [SerializeField] private Material flagMaterial;
-    [SerializeField] private Material flagMaterialComplete;
+    [Header("Materials")]
+    [SerializeField] private Material completedMaterial;
+    [Header("__DEBUG__")]
+    public int holeQuantity;
+    public int holeCompleted;
 
-    Dictionary<int, HoleStatistic> holeInGame = new Dictionary<int, HoleStatistic>();
-    [HideInInspector]
-    public List<Hole> holesCount = new List<Hole>();
+    public List<Hole> holesList = new List<Hole>();
+
+    public static HoleManager instance;
 
     private void Awake()
     {
-        Hole[] holes = FindObjectsByType<Hole>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
-        for (int i = 0; i < holes.Length; i++)
-        {
-            holes[i].holeManager = this;
-            holes[i].SetID(i);
-            holeInGame.Add(i, new HoleStatistic());
-            holesCount.Add(holes[i]);
-            collectibleManager.holeValue += 1;
-        }
+        instance = this.Singleton(instance, () => Destroy(gameObject));
     }
 
-    public void FinishSelectedHole(int id)
+    public void AddHole(Hole hole)
     {
-        if (!holeInGame[id].wasFinish)
-        {
-            collectibleManager.holeCount += 1;
-            SaveManager.holes = collectibleManager.holeCount;
-            SaveManager.holesObject[id] = true;
-            holeInGame[id].wasFinish = true;
-
-            collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);
-
-            if(holesCount[id].finish)
-            {
-                if(collectibleManager.collectibleCount >= collectibleManager.collectibleValue && collectibleManager.holeCount >= collectibleManager.holeValue)
-                {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterialComplete;
-                }
-                else
-                {
-                    holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-                }
-            }
-            else
-            {
-                holesCount[id].gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material = flagMaterial;
-            }
-
-            collectibleManager.RefreshInterface();
-        }
+        holesList.Add(hole);
+        holeQuantity++;
     }
-}
 
-[System.Serializable]
-public class HoleStatistic
-{
-    public bool wasFinish = false;
+    public void RemoveHole(Hole hole)
+    {
+        if(holesList.Count > 0) holesList.Remove(hole);
+    }
+
+    public void CompleteHole(Hole hole)
+    {
+        holeCompleted += 1;
+        hole.GetFlagMesh().material = completedMaterial;
+    }
 }

@@ -38,9 +38,9 @@ public class PC_MovingSphere : MonoBehaviour
     #endregion
 
 
-    [SerializeField]
-    [Tooltip("Utiliser la cam�ra suivant la balle")]
-    Transform playerInputSpace = default;
+    Transform playerInputSpace => CameraManager.instance.LookingDirection;
+
+
 
     [SerializeField]
     [Tooltip("Mettre l'enfant Ball")]

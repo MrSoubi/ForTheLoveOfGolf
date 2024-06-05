@@ -39,11 +39,6 @@ public class CameraManager : MonoBehaviour
 
         SetCameraType(cameraType);
     }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Mouse1)) ToggleAimMode();
-        if(Input.GetKeyUp(KeyCode.Mouse1)) ToggleFollowMode();
-    }
 
     /// <summary>
     /// Active la caméra de visée

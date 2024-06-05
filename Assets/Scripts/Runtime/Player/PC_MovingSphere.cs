@@ -515,12 +515,6 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     int maxSpeedIndex = 0;
-    public void IncreaseMaxSpeed()
-    {
-        maxSpeedIndex++;
-        maxSpeedIndex = Mathf.Clamp(maxSpeedIndex, 0, speedLimits.Count - 1);
-        maxSpeed = speedLimits[maxSpeedIndex];
-    }
 
     void LowerMaxSpeed()
     {
@@ -641,7 +635,7 @@ public class PC_MovingSphere : MonoBehaviour
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
-        IncreaseMaxSpeed();
+        IncreaseSpeedLimit();
 
         //float shootForce = shootSpeed * EvaluateShootFactor();
         //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
@@ -657,7 +651,6 @@ public class PC_MovingSphere : MonoBehaviour
         else
         {
             velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
-            IncreaseMaxSpeed();
         }
     }
 
@@ -912,6 +905,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void IncreaseSpeedLimit()
     {
         maxSpeedIndex = Mathf.Min(maxSpeedIndex + 1, speedLimits.Count - 1);
+        maxSpeed = speedLimits[maxSpeedIndex];
     }
 
     /// <summary>
@@ -931,8 +925,41 @@ public class PC_MovingSphere : MonoBehaviour
         body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
     }
 
+    /// <summary>
+    /// Renvoi la vitesse max actuelle
+    /// </summary>
+    /// <returns></returns>
     public float GetCurrentSpeedLimit()
     {
         return speedLimits[maxSpeedIndex];
+    }
+
+    /// <summary>
+    /// Renvoi la limite de vitesse maximale
+    /// </summary>
+    /// <returns></returns>
+    public float GetMaxSpeedLimit()
+    {
+        return speedLimits[speedLimits.Count - 1];
+    }
+
+    /// <summary>
+    /// Renvoi l'index de la limite de vitesse actuelle
+    /// </summary>
+    /// <returns></returns>
+    public int GetSpeedLimitIndex()
+    {
+        return maxSpeedIndex;
+    }
+
+
+    /// <summary>
+    /// Mets la limite de vitesse au palier indiqué par limitIndex
+    /// </summary>
+    /// <param name="limitIndex"></param>
+    public void SetSpeedLimit(int limitIndex)
+    {
+        maxSpeedIndex = limitIndex;
+        maxSpeed = speedLimits[speedLimits.Count - 1];
     }
 }

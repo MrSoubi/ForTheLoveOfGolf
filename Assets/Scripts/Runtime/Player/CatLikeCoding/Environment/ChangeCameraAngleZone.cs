@@ -22,7 +22,6 @@ public class ChangeCameraAngleZone : MonoBehaviour
             ChangeAngle();
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.CompareTag("Player") && ChangeCamOnCollision)

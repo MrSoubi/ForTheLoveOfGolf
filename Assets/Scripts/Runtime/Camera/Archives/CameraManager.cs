@@ -15,7 +15,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineBrain brain;
 
     bool isOnCinematic = false;
-    Vector3 lastLookingirection = Vector3.zero;
+    Transform lastLookingirection, tmpTransform;
     CinemachineVirtualCamera cinematicCam;
 
     public static CameraManager instance;
@@ -34,9 +34,11 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
+        tmpTransform = new GameObject("Transform Helper === DONT TOUCH !!!").transform;
+        tmpTransform.SetParent(transform);
+
         SetCameraType(cameraType);
     }
-
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Mouse1)) ToggleAimMode();
@@ -114,26 +116,39 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Return the looking direction of the current camera
+    /// Return if is on cinematic
     /// </summary>
-    public Vector3 LookingDirection
+    public bool IsOnCinematic
     {
         get
         {
-            if (isOnCinematic)
+            return isOnCinematic;
+        }
+    }
+
+    /// <summary>
+    /// Return the looking direction of the current camera
+    /// </summary>
+    public Transform LookingDirection
+    {
+        get
+        {
+            if (!isOnCinematic)
             {
                 Vector3 liveCamera = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform.position;
                 Vector3 target = brain.ActiveVirtualCamera.LookAt.position;
 
                 Vector3 shootingDirection = target - liveCamera;
 
-                return shootingDirection;
+                tmpTransform.position = liveCamera;
+                tmpTransform.rotation = Quaternion.LookRotation(shootingDirection);
+
+                return tmpTransform;
             }
             else
             {
                 return lastLookingirection;
             }
-            
         }
     }
 }

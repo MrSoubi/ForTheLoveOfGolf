@@ -32,10 +32,10 @@ public class ChangeCameraAngleZone : MonoBehaviour
 
     public void ChangeAngle()
     {
-        CameraManager.instance.ToggleCinematic(newCam);
+        //CameraManager.Instance.ToggleCinematic(newCam);
     }
     public void ResetAngle()
     {
-        CameraManager.instance.ToggleToNotCinematic();
+        //CameraManager.Instance.ToggleToNotCinematic();
     }
 }

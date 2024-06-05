@@ -41,7 +41,6 @@ public class PC_MovingSphere : MonoBehaviour
     Transform playerInputSpace;
 
 
-
     [SerializeField]
     [Tooltip("Mettre l'enfant Ball")]
     Transform ball = default;
@@ -146,14 +145,14 @@ public class PC_MovingSphere : MonoBehaviour
         UpdatePCData();
         //UnFreeze();
         ResetMaxSpeed();
-        playerInputSpace = CameraManager.instance.LookingDirection;
+        playerInputSpace = CameraManager.Instance.GetLookingDirection();
     }
 
 
     bool isAiming;
     void Update()
     {
-        playerInputSpace = CameraManager.instance.LookingDirection;
+        playerInputSpace = CameraManager.Instance.GetLookingDirection();
         UpdatePCData();
 
         if (isBlocked)
@@ -207,7 +206,7 @@ public class PC_MovingSphere : MonoBehaviour
         ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;
-        CameraManager.instance.ToggleAimMode();
+        CameraManager.Instance.ToggleAimMode();
         Time.timeScale = 0.1f;
     }
 
@@ -221,7 +220,7 @@ public class PC_MovingSphere : MonoBehaviour
         Time.timeScale = 1.0f;
         isAiming = false;
         meshRenderer.material = rollingMaterial;
-        CameraManager.instance.ToggleFollowMode();
+        CameraManager.Instance.ToggleFollowMode(reset);
     }
 
     void HandleAim()

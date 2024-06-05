@@ -543,6 +543,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
+    bool isVelocityClamped = true;
     void AdjustVelocity()
     {
         float acceleration, speed;
@@ -579,6 +580,8 @@ public class PC_MovingSphere : MonoBehaviour
         adjustment.z = playerInput.z * speed - Vector3.Dot(relativeVelocity, zAxis);
         adjustment.y = Swimming ? playerInput.y * speed - Vector3.Dot(relativeVelocity, upAxis) : 0f;
 
+        acceleration = isVelocityClamped ? acceleration : Mathf.Infinity;
+
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
         float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
@@ -591,7 +594,17 @@ public class PC_MovingSphere : MonoBehaviour
         Velocity = velocity.magnitude;
     }
 
-    
+    public void ClampVelocity()
+    {
+        isVelocityClamped = true;
+    }
+
+    public void UnClampVelocity()
+    {
+        isVelocityClamped = false;
+    }
+
+
     float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)

@@ -622,13 +622,15 @@ public class PC_MovingSphere : MonoBehaviour
 
         //velocity = shootDirection * (shootForce + velocity.magnitude);
 
+        float localMaxSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
+
         if (maxSpeedIndex == speedLimits.Count - 1)
         {
-            velocity = shootDirection * maxSpeed;
+            velocity = shootDirection * localMaxSpeed;
         }
         else
         {
-            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
+            velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
             IncreaseMaxSpeed();
         }
     }

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
-  m_Name: BaptisteProfile
+  m_Name: NoAirControl
   m_EditorClassIdentifier: 
   shootingFactor: 0.5
   shootHeight: 2
-  maxShoots: 1
+  maxShoots: 2
   shootingAngle: -45
   maxAcceleration: 15
-  maxAirAcceleration: 10
+  maxAirAcceleration: 5
   rotationCurve:
     serializedVersion: 2
     m_Curve:

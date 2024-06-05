@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpointExit: {fileID: 0}
-  respawnPointOffset: {x: 0, y: 3, z: 0}
+  respawnPointOffset: {x: 0, y: 1.5, z: 0}
 --- !u!65 &7565695151338504644
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -133,6 +133,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: addab75dd0464464e8e1ae592418cbb0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 23e24bea6f3f9974aa8176ba666ef832, type: 2}
     - target: {fileID: 919132149155446097, guid: addab75dd0464464e8e1ae592418cbb0, type: 3}
       propertyPath: m_Name
       value: Pipe

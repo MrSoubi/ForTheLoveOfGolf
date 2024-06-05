@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class Buttons : MonoBehaviour
 {
-    /*[HideInInspector]
-    //public CollectibleManager collectibleManager;
-
     [Header("Door")]
+    [HideInInspector]
     public Door door;
-    public TextMeshProUGUI textCollectible;
+    [HideInInspector]
+    public TextMeshProUGUI textCoin;
+    [HideInInspector]
     public TextMeshProUGUI textHole;
 
     [Header("Animation")]
@@ -19,24 +19,27 @@ public class Buttons : MonoBehaviour
 
     private Vector3 position;
 
+    [HideInInspector]
+    public AudioSource sfx;
+
     private void Start()
     {
         position = transform.position;
 
         if(door.collectibleNeed)
         {
-            textCollectible.text = collectibleManager.collectibleCount.ToString() + "/" + door.collectibleQuantity.ToString() + " Coins";
-            StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollectedCoin += UpdatePannelCoin, 0.05f));
+            textCoin.text = CoinManager.instance.coinCollected.ToString() + "/" + door.collectibleQuantity.ToString() + " Coins";
+            StartCoroutine(Utils.Delay(() => CoinManager.instance.onCollectedCoin += UpdatePannelCoin, 0.05f));
         }
         else
         {
-            textCollectible.text = "";
+            textCoin.text = "";
         }
 
         if (door.holeNeed)
         {
-            textHole.text = collectibleManager.holeCount.ToString() + "/" + door.holeQuantity.ToString() + " Holes";
-            StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollectedHole += UpdatePannelHole, 0.05f));
+            textHole.text = HoleManager.instance.holeCompleted.ToString() + "/" + door.holeQuantity.ToString() + " Holes";
+            StartCoroutine(Utils.Delay(() => HoleManager.instance.onCollectedHole += UpdatePannelHole, 0.05f));
         }
         else
         {
@@ -47,7 +50,7 @@ public class Buttons : MonoBehaviour
     private void UpdatePannelCoin(int nbCollected)
     {
         if (!door.collectibleNeed) return;
-        textCollectible.text = nbCollected + "/" + door.collectibleQuantity.ToString() + " Coins";
+        textCoin.text = nbCollected + "/" + door.collectibleQuantity.ToString() + " Coins";
     }
 
     private void UpdatePannelHole(int nbCollected)
@@ -64,13 +67,14 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            sfx.Play();
             transform.DOMove(new Vector3(position.x, position.y - 0.3f, position.z), animeDuration);
 
             if (!door.open)
             {
-                if(door.collectibleNeed && collectibleManager.collectibleCount >= door.collectibleQuantity)
+                if(door.collectibleNeed && CoinManager.instance.coinCollected >= door.collectibleQuantity)
                 {
-                    if(door.holeNeed && collectibleManager.holeCount >= door.holeQuantity)
+                    if(door.holeNeed && HoleManager.instance.holeCompleted >= door.holeQuantity)
                     {
                         door.OpenDoor();
                     }
@@ -79,9 +83,9 @@ public class Buttons : MonoBehaviour
                         door.OpenDoor();
                     }
                 }
-                else if(door.holeNeed && collectibleManager.holeCount >= door.holeQuantity)
+                else if(door.holeNeed && HoleManager.instance.holeCompleted >= door.holeQuantity)
                 {
-                    if (door.collectibleNeed && collectibleManager.collectibleCount >= door.collectibleQuantity)
+                    if (door.collectibleNeed && CoinManager.instance.coinCollected >= door.collectibleQuantity)
                     {
                         door.OpenDoor();
                     }
@@ -98,7 +102,8 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            sfx.Play();
             transform.DOMove(new Vector3(position.x, position.y, position.z), animeDuration);
         }
-    }*/
+    }
 }

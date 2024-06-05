@@ -118,7 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d12bd8bf14600c48821db128a3f86fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollectibleManager: {fileID: 0}
-  index: 0
+  mesh: {fileID: 8986821413852619165}
   value: 10
-  speed: 50

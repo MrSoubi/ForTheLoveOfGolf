@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class PannelCollectible : MonoBehaviour
 {
-    /*[HideInInspector]
-    public int index;
-
     [Header("References")]
     [SerializeField] private TMP_Text textCollectibles;
     [SerializeField] private GameObject holeRef;
@@ -23,7 +20,7 @@ public class PannelCollectible : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
+        StartCoroutine(Utils.Delay(() => CoinManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
         holeRef.SetActive(false);
     }
 
@@ -33,7 +30,7 @@ public class PannelCollectible : MonoBehaviour
         textCollectibles.text = nbCollected + "/" + nbCollectibles;
         if (nbCollected >= nbCollectibles)
         {
-            if (CollectibleManager.instance) CollectibleManager.instance.onCollectedCoin -= UpdatePannel;
+            if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
             //particleEffect.Play();
             //StartCoroutine(Utils.Delay(() => 
             //{
@@ -43,7 +40,7 @@ public class PannelCollectible : MonoBehaviour
 
             Destroy(transform.GetChild(0).gameObject);
             holeRef.SetActive(true);
-            GetGameObjects.instance.pannelsObject[index] = true;
+            //GetGameObjects.instance.pannelsObject[index] = true;
         }
-    }*/
+    }
 }

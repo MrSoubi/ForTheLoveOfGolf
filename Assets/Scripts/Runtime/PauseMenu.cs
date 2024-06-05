@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,14 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public Texture2D handCursor;
+    public TextMeshProUGUI textCoins;
+    public TextMeshProUGUI textHoles;
+
+    private void Start()
+    {
+        textCoins.text = CoinManager.instance.coinCollected.ToString() + "/" + CoinManager.instance.coinQuantity.ToString();
+        textHoles.text = HoleManager.instance.holeCompleted.ToString() + "/" + HoleManager.instance.holeQuantity.ToString();
+    }
 
     public void CursorEnter()
     {

@@ -11,11 +11,16 @@ public class CoinManager : MonoBehaviour
     [SerializeField] private ParticleSystem starsParticle;
 
     [Header("__DEBUG__")]
-    public int coinQuanity;
+    public int coinQuantity;
     public int coinCollected;
     public List<Coin> coinLists = new List<Coin>();
 
     public static CoinManager instance;
+
+    [HideInInspector]
+    public Action<int> onCollectedCoin;
+    [HideInInspector]
+    public AudioSource sfx;
 
     private void Awake()
     {
@@ -25,7 +30,7 @@ public class CoinManager : MonoBehaviour
     public void AddCoin(Coin coin)
     {
         coinLists.Add(coin);
-        coinQuanity++;
+        coinQuantity += coin.value;
     }
     public void RemoveCoin(Coin coin)
     {
@@ -39,6 +44,8 @@ public class CoinManager : MonoBehaviour
     public void CollectCoin(Coin coin)
     {
         coinCollected++;
+        sfx.Play();
+        onCollectedCoin?.Invoke(coinCollected);
         Instantiate(starsParticle, coin.mesh.transform.position, coin.mesh.transform.rotation);
         coin.mesh.GetComponent<Animator>().Play("CoinGetAnimation");
         StartCoroutine(Utils.Delay(() => instance.RemoveCoin(coin), 0.2f));

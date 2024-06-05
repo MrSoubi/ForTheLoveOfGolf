@@ -26,6 +26,9 @@ public class Door : MonoBehaviour
     public bool holeNeed;
     public int holeQuantity;
 
+    [HideInInspector]
+    public AudioSource sfx;
+
     private void Start()
     {
         if (open)
@@ -50,6 +53,7 @@ public class Door : MonoBehaviour
             OpenPivot();
         }
 
+        sfx.Play();
         GetGameObjects.instance.doorsObject[index] = true;
     }
 

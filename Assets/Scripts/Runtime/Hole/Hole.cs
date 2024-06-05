@@ -8,6 +8,7 @@ public class Hole : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] Vector3 respawnPoint;
+    public bool finishFlag;
 
     [Header("References")]
     [SerializeField] private Animator ballContentAnim;
@@ -35,11 +36,9 @@ public class Hole : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player") && !completed)
+        if (other.transform.CompareTag("Player"))
         {
-            completed = true;
-
-            HoleManager.instance.CompleteHole(this);
+             HoleManager.instance.CompleteHole(this);
 
             collision = other.gameObject;
             collision.SetActive(false);
@@ -48,7 +47,7 @@ public class Hole : MonoBehaviour
             ballContentAnim.SetTrigger("WinAnim");
             StartCoroutine(SpawnPoint());
 
-            virtualBall.transform.localScale = collision.transform.localScale;
+            virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
             virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh; 
             virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
         }
@@ -56,10 +55,10 @@ public class Hole : MonoBehaviour
 
     IEnumerator SpawnPoint()
     {
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(1.3f);
 
-        collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);
+        collision.SetActive(true);
 
         PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
 

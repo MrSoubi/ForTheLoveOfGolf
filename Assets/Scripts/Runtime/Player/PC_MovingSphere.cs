@@ -537,12 +537,13 @@ public class PC_MovingSphere : MonoBehaviour
 
     void AdjustMaxSpeed()
     {
-        if (maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
+        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
         {
             LowerMaxSpeed();
         }
     }
 
+    bool isVelocityClamped = true;
     void AdjustVelocity()
     {
         float acceleration, speed;
@@ -591,7 +592,32 @@ public class PC_MovingSphere : MonoBehaviour
         Velocity = velocity.magnitude;
     }
 
-    
+
+    public void ClampVelocity()
+    {
+        isVelocityClamped = true;
+
+        for (int i = 0; i < speedLimits.Count; i++)
+        {
+            if (velocity.magnitude < speedLimits[i])
+            {
+                maxSpeedIndex = i;
+                maxSpeed = speedLimits[maxSpeedIndex];
+                break;
+            }
+        }
+
+        maxSpeedIndex = speedLimits.Count - 1;
+        maxSpeed = speedLimits[maxSpeedIndex];
+    }
+
+    public void UnClampVelocity()
+    {
+        isVelocityClamped = false;
+        IncreaseSpeedLimitToMaximum();
+    }
+
+
     float shootingFactor = 0.5f;
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
@@ -894,6 +920,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void IncreaseSpeedLimitToMaximum()
     {
         maxSpeedIndex = speedLimits.Count - 1;
+        maxSpeed = speedLimits[maxSpeedIndex];
     }
 
     /// <summary>

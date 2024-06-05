@@ -537,7 +537,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     void AdjustMaxSpeed()
     {
-        if (maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
+        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
         {
             LowerMaxSpeed();
         }
@@ -580,8 +580,6 @@ public class PC_MovingSphere : MonoBehaviour
         adjustment.z = playerInput.z * speed - Vector3.Dot(relativeVelocity, zAxis);
         adjustment.y = Swimming ? playerInput.y * speed - Vector3.Dot(relativeVelocity, upAxis) : 0f;
 
-        acceleration = isVelocityClamped ? acceleration : Mathf.Infinity;
-
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
         float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
@@ -594,14 +592,29 @@ public class PC_MovingSphere : MonoBehaviour
         Velocity = velocity.magnitude;
     }
 
+
     public void ClampVelocity()
     {
         isVelocityClamped = true;
+
+        for (int i = 0; i < speedLimits.Count; i++)
+        {
+            if (velocity.magnitude < speedLimits[i])
+            {
+                maxSpeedIndex = i;
+                maxSpeed = speedLimits[maxSpeedIndex];
+                break;
+            }
+        }
+
+        maxSpeedIndex = speedLimits.Count - 1;
+        maxSpeed = speedLimits[maxSpeedIndex];
     }
 
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
+        IncreaseSpeedLimitToMaximum();
     }
 
 
@@ -907,6 +920,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void IncreaseSpeedLimitToMaximum()
     {
         maxSpeedIndex = speedLimits.Count - 1;
+        maxSpeed = speedLimits[maxSpeedIndex];
     }
 
     /// <summary>

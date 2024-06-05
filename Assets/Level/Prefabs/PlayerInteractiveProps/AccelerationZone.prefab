@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6789633342006159609}
   - component: {fileID: 1278595938139560433}
   - component: {fileID: 5928957614225027608}
-  - component: {fileID: 7387901204210031472}
+  - component: {fileID: 1206456752102445406}
   m_Layer: 0
   m_Name: AccelerationZone
   m_TagString: Untagged
@@ -107,7 +107,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7387901204210031472
+--- !u!114 &1206456752102445406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,12 +116,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2765025483321896693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d08edad2c3c8b7741a48a55daf5bbcc6, type: 3}
+  m_Script: {fileID: 11500000, guid: c7bd64e7c1c8f93478ab6fff8d59d6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 200
+  acceleration: 10
   speed: 10
-  giveShoot: 1
+  teleport: 0
+  freeze: 0
+  giveShoot: 0
 --- !u!1001 &5559833657655553742
 PrefabInstance:
   m_ObjectHideFlags: 0

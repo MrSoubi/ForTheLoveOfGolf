@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
-public class AccelerationZone : MonoBehaviour {
-
+public class AccelerationZone : MonoBehaviour 
+{
+	[Header("Settings")]
 	[SerializeField, Min(0f)]
 	float acceleration = 10f, speed = 10f;
 	[SerializeField] private bool giveShoot;

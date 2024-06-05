@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8980406981842156646}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,22 +175,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PCData: {fileID: 0}
-  maxAcceleration: 10
-  maxAirAcceleration: 1
-  speedLimits:
-  - 20
-  - 30
-  - 40
+  rotationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   playerInputSpace: {fileID: 0}
   ball: {fileID: 1832406150492255385}
-  probeMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  ballRadius: 0.5
-  ballAlignSpeed: 180
-  ballAirRotation: 0.5
-  Velocity: 0
   shootingIndicator: {fileID: 1158359374877216160}
+  maxSpeed: 0
 --- !u!54 &8980406981842156646
 Rigidbody:
   m_ObjectHideFlags: 0

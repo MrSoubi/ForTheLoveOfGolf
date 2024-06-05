@@ -4,10 +4,12 @@ public class AccelerationZone : MonoBehaviour {
 
 	[SerializeField, Min(0f)]
 	float acceleration = 10f, speed = 10f;
+	[SerializeField] private bool giveShoot;
 
 	void OnTriggerEnter (Collider other) {
 		Rigidbody body = other.attachedRigidbody;
 		if (body) {
+			if (giveShoot) body.GetComponent<PC_MovingSphere>().AddShootCharges(1);
 			Accelerate(body);
 		}
 	}

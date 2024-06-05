@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
-  m_Name: MaxControl
+  m_Name: MoreLimis
   m_EditorClassIdentifier: 
   shootingFactor: 0.5
   shootHeight: 2
   maxShoots: 1
   shootingAngle: -45
-  maxAcceleration: 12
+  maxAcceleration: 10
   maxAirAcceleration: 6
   rotationCurve:
     serializedVersion: 2
@@ -24,17 +24,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 5
-      inSlope: -2.8
-      outSlope: -2.8
+      inSlope: -2
+      outSlope: -2
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 2.2
-      inSlope: -2.8
-      outSlope: -2.8
+      value: 3
+      inSlope: -2
+      outSlope: -2
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -43,6 +43,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   speedLimits:
+  - 14
   - 17
   - 20
   - 23
@@ -50,6 +51,8 @@ MonoBehaviour:
   - 29
   - 32
   - 35
+  - 38
+  - 41
   speedLimitMargin: 2
   maxGroundAngle: 30
   maxSnapSpeed: 30

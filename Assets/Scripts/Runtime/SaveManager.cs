@@ -13,9 +13,9 @@ public class PlayerData
     public Vector3 positionSpawn;
     public List<bool> coinsObject;
     public List<bool> holesObject;
-    public List<bool> doors;
-    public List<bool> pannels;
-    public List<bool> challenges;
+    public List<bool> doorsObject;
+    public List<bool> pannelsObject;
+    public List<bool> challengesObject;
 }
 
 [System.Serializable]
@@ -28,9 +28,9 @@ public class SaveManager
     public static Vector3 positionSpawn = new Vector3(0,0,0);
     public static List<bool> coinsObject = new List<bool>();
     public static List<bool> holesObject = new List<bool>();
-    public static List<bool> doors = new List<bool>();
-    public static List<bool> pannels = new List<bool>();
-    public static List<bool> challenges = new List<bool>();
+    public static List<bool> doorsObject = new List<bool>();
+    public static List<bool> pannelsObject = new List<bool>();
+    public static List<bool> challengesObject = new List<bool>();
 
     private static string Encrypt(string plainText, string key)
     {
@@ -99,6 +99,12 @@ public class SaveManager
 
     public static void SaveToFile()
     {
+        coinsObject = GetGameObjects.instance.coinsObject;
+        holesObject = GetGameObjects.instance.holesObject;
+        doorsObject = GetGameObjects.instance.doorsObject;
+        pannelsObject = GetGameObjects.instance.pannelsObject;
+        challengesObject = GetGameObjects.instance.challengesObject;
+
         PlayerData data = new PlayerData
         {
             coins = coins,
@@ -106,9 +112,9 @@ public class SaveManager
             positionSpawn = positionSpawn,
             coinsObject = coinsObject,
             holesObject = holesObject,
-            doors = doors,
-            pannels = pannels,
-            challenges = challenges,
+            doorsObject = doorsObject,
+            pannelsObject = pannelsObject,
+            challengesObject = challengesObject,
         };
 
         string playerDataJson = JsonUtility.ToJson(data);
@@ -132,9 +138,9 @@ public class SaveManager
         if (data.positionSpawn == null) return false;
         if (data.coinsObject == null) return false;
         if (data.holesObject == null) return false;
-        if (data.doors == null) return false;
-        if (data.pannels == null) return false;
-        if (data.challenges == null) return false;
+        if (data.doorsObject == null) return false;
+        if (data.pannelsObject == null) return false;
+        if (data.challengesObject == null) return false;
 
         return true;
     }
@@ -148,8 +154,8 @@ public class SaveManager
             if (File.Exists(filePath))
             {
                 string encryptedJson = File.ReadAllText(filePath);
-                string decryptedJson = Decrypt(encryptedJson, EncryptionKey);
-                PlayerData data = JsonUtility.FromJson<PlayerData>(decryptedJson);
+                //string decryptedJson = Decrypt(encryptedJson, EncryptionKey);
+                PlayerData data = JsonUtility.FromJson<PlayerData>(encryptedJson);
 
                 if (ValidateData(data))
                 {
@@ -158,9 +164,9 @@ public class SaveManager
                     positionSpawn = data.positionSpawn;
                     coinsObject = data.coinsObject;
                     holesObject = data.holesObject;
-                    doors = data.doors;
-                    pannels = data.pannels;
-                    challenges = data.challenges;
+                    doorsObject = data.doorsObject;
+                    pannelsObject = data.pannelsObject;
+                    challengesObject = data.challengesObject;
 
                     return true;
                 }

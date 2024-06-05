@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Level/Scenes/LevelArea.unity
     guid: 9e7eba29a93e7194395bb109762fe86e
+  - enabled: 1
+    path: Assets/Sandbox/Killian/LevelAreaKillian.unity
+    guid: 3513f977169cd4a43af38256f74144ad
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

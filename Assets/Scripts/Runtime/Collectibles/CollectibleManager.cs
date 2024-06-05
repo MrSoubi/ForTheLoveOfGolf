@@ -38,15 +38,7 @@ public class CollectibleManager : MonoBehaviour
         GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
         for (int i = 0; i < tmp.Length; i++)
         {
-            if (tmp[i].TryGetComponent(out Collectible currentCollectible))
-            {
-                collectibles.Add(currentCollectible);
-            }
-            else if(tmp[i].TryGetComponent(out PannelCollectible currentPannelCollectible))
-            {
-                pannelCollectibles.Add(currentPannelCollectible);
-            }
-            else if (tmp[i].TryGetComponent(out Buttons currentButton))
+            if (tmp[i].TryGetComponent(out Buttons currentButton))
             {
                 currentButton.collectibleManager = this;
             }
@@ -55,13 +47,23 @@ public class CollectibleManager : MonoBehaviour
 
     private void Start()
     {
+        collectibleCount = SaveManager.coins;
+        holeCount = SaveManager.holes;
+
+        collectibles = GetGameObjects.instance.collectibles;
         for (int i = 0; i < collectibles.Count; i++)
         {
             collectibleValue += collectibles[i].value;
             collectibles[i].CollectibleManager = this;
             collectibles[i].index = i;
+
+            if (GetGameObjects.instance.coinsObject[i])
+            {
+                //DelCollectible(i);
+            }
         }
 
+        pannelCollectibles = GetGameObjects.instance.pannels;
         for (int i = 0; i < pannelCollectibles.Count; i++)
         {
             pannelCollectibles[i].index = i;
@@ -107,8 +109,7 @@ public class CollectibleManager : MonoBehaviour
     {
         collectibleCount += value;
         SaveManager.coins = collectibleCount;
-        SaveManager.coinsObject[index] = true;
-        Debug.Log(index);
+        GetGameObjects.instance.coinsObject[index] = true;
         onCollectedCoin?.Invoke(collectibleCount);
 
         RefreshInterface();

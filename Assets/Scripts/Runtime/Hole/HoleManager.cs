@@ -14,16 +14,15 @@ public class HoleManager : MonoBehaviour
     [HideInInspector]
     public List<Hole> holesCount = new List<Hole>();
 
-    private void Awake()
+    private void Start()
     {
-        Hole[] holes = FindObjectsByType<Hole>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        holesCount = GetGameObjects.instance.holes;
 
-        for (int i = 0; i < holes.Length; i++)
+        for (int i = 0; i < holesCount.Count; i++)
         {
-            holes[i].holeManager = this;
-            holes[i].SetID(i);
+            holesCount[i].holeManager = this;
+            holesCount[i].SetID(i);
             holeInGame.Add(i, new HoleStatistic());
-            holesCount.Add(holes[i]);
             collectibleManager.holeValue += 1;
         }
     }
@@ -34,7 +33,7 @@ public class HoleManager : MonoBehaviour
         {
             collectibleManager.holeCount += 1;
             SaveManager.holes = collectibleManager.holeCount;
-            SaveManager.holesObject[id] = true;
+            GetGameObjects.instance.holesObject[id] = true;
             holeInGame[id].wasFinish = true;
 
             collectibleManager.onCollectedHole?.Invoke(collectibleManager.holeCount);

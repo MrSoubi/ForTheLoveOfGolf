@@ -10,7 +10,7 @@ public class DeathTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if(Challenges.active)
+            if(Challenges != null && Challenges.active)
             {
                 Challenges.EndChallenge();
             }

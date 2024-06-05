@@ -56,7 +56,7 @@ public class Menu : MonoBehaviour
 
         if (SaveManager.LoadFile())
         {
-            SceneManager.LoadScene("LevelArea");
+            SceneManager.LoadScene("LevelAreaKillian");
         }
     }
 

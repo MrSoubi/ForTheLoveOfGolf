@@ -8,7 +8,6 @@ public class Collectible : MonoBehaviour
     [HideInInspector] 
     public CollectibleManager CollectibleManager;
 
-    [HideInInspector]
     public int index;
 
     [Header("Value Collectible")]

@@ -85,7 +85,7 @@ public class Challenge : MonoBehaviour
         if (isAlreadyFinish)
         {
             challengeRewards.SetActive(true);
-            SaveManager.challenges[index] = true;
+            GetGameObjects.instance.challengesObject[index] = true;
             Destroy(gameObject);
         }
 

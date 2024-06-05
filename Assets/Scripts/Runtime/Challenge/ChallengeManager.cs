@@ -23,15 +23,6 @@ public class ChallengeManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
-
-        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
-        for (int i = 0; i < tmp.Length; i++)
-        {
-            if (tmp[i].TryGetComponent(out Challenge currentChallenge))
-            {
-                challenge.Add(currentChallenge);
-            }
-        }
     }
 
     private void Start()
@@ -41,12 +32,6 @@ public class ChallengeManager : MonoBehaviour
         for (int i = 0; i < challenge.Count; i++)
         {
             challenge[i].index = i;
-
-            if (SaveManager.challenges[i])
-            {
-                challenge[i].challengeRewards.SetActive(true);
-                Destroy(challenge[i].gameObject);
-            }
         }
     }
 

@@ -50,7 +50,7 @@ public class Door : MonoBehaviour
             OpenPivot();
         }
 
-        SaveManager.doors[index] = true;
+        GetGameObjects.instance.doorsObject[index] = true;
     }
 
     /// <summary>

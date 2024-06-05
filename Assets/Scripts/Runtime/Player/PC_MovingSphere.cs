@@ -10,8 +10,6 @@ using System;
 
 public class PC_MovingSphere : MonoBehaviour
 {
-
-
     // ----------
     // -- Tool --
     // ----------
@@ -584,7 +582,7 @@ public class PC_MovingSphere : MonoBehaviour
         adjustment = Vector3.ClampMagnitude(adjustment, acceleration * Time.deltaTime);
 
         float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
-        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * turningFactor);
+        velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * 1);
         if (Swimming)
         {
             velocity += upAxis * adjustment.y;
@@ -624,13 +622,15 @@ public class PC_MovingSphere : MonoBehaviour
 
         //velocity = shootDirection * (shootForce + velocity.magnitude);
 
+        float localMaxSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
+
         if (maxSpeedIndex == speedLimits.Count - 1)
         {
-            velocity = shootDirection * maxSpeed;
+            velocity = shootDirection * localMaxSpeed;
         }
         else
         {
-            velocity = shootDirection * (maxSpeed + (speedLimits[maxSpeedIndex + 1] - maxSpeed) * shootingFactor);
+            velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
             IncreaseMaxSpeed();
         }
     }

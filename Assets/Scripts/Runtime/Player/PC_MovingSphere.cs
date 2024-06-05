@@ -10,8 +10,6 @@ using System;
 
 public class PC_MovingSphere : MonoBehaviour
 {
-
-
     // ----------
     // -- Tool --
     // ----------

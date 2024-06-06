@@ -8,6 +8,7 @@ public class HoleManager : MonoBehaviour
 {
     [Header("Materials")]
     [SerializeField] private Material completedMaterial;
+    [SerializeField] private Material goldenMaterial;
     [Header("__DEBUG__")]
     public int holeQuantity;
     public int holeCompleted;
@@ -35,6 +36,7 @@ public class HoleManager : MonoBehaviour
     public void CompleteHole(Hole hole)
     {
         holeCompleted += 1;
-        hole.GetFlagMesh().material = completedMaterial;
+        if (hole.isGoldenFlag) hole.GetFlagMesh().material = goldenMaterial;
+        else hole.GetFlagMesh().material = completedMaterial;
     }
 }

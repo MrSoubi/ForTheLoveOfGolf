@@ -69,10 +69,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76664273647b4b478ff0163fdab1cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {x: 3, y: 1, z: 0}
+  respawnPoint: {x: 0, y: 1, z: -3}
+  isGoldenFlag: 0
   ballContentAnim: {fileID: 795155549243242335}
   virtualBall: {fileID: 412713680079169280}
   flagMesh: {fileID: 1774826917425163257}
+  completedParticle: {fileID: 508684538438028551, guid: df8e8b5724eb5d3468391b1b2afbe288, type: 3}
   completed: 0
 --- !u!1 &152936828435465319
 GameObject:

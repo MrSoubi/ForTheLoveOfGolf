@@ -12,14 +12,14 @@ public class TimeChallengeCoin : MonoBehaviour
     public int value;
 
     [Header("__DEBUG__")]
-    public bool isPickingUp;
-    public static event Action<TimeChallengeCoin> onCollected;
+    private bool isPickingUp;
+    public Action onCollected;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !isPickingUp)
         {
-            onCollected?.Invoke(this);
+            onCollected?.Invoke();
             isPickingUp = true;
         }
     }

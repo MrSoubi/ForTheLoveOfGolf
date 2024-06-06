@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
-  m_Name: MaxControl
+  m_Name: LessLimits
   m_EditorClassIdentifier: 
   shootingFactor: 0.5
-  shootHeight: 2
+  shootHeight: 2.5
   maxShoots: 1
   shootingAngle: -45
-  maxAcceleration: 12
+  maxAcceleration: 10
   maxAirAcceleration: 6
   rotationCurve:
     serializedVersion: 2
@@ -43,14 +43,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   speedLimits:
-  - 17
-  - 20
-  - 23
+  - 16
+  - 21
   - 26
-  - 29
-  - 32
-  - 35
-  speedLimitMargin: 2
+  - 31
+  - 36
+  speedLimitMargin: 4
   maxGroundAngle: 30
   maxSnapSpeed: 30
   probeDistance: 1

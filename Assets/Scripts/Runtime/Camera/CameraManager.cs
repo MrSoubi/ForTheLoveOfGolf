@@ -49,7 +49,7 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Active la caméra donnée en paramètre en utilisant les transitions définies par le SCO Main Camera Blend
+    /// Active la camÃ©ra donnÃ©e en paramÃ¨tre en utilisant les transitions dÃ©finies par le SCO Main Camera Blend
     /// </summary>
     /// <param name="camera"></param>
     public void ActivateCamera(CinemachineVirtualCamera camera)
@@ -59,13 +59,13 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Désactive la caméra en cours et retourne à la caméra précédente
+    /// DÃ©sactive la camÃ©ra en cours et retourne Ã  la camÃ©ra prÃ©cÃ©dente
     /// </summary>
     public void DeActivateCurrentCamera()
     {
         if (aimingCam.isActiveAndEnabled || followingCam.isActiveAndEnabled)
         {
-            Debug.LogWarning("Caméra de suivi ou de visée active, aucune caméra externe ne peut être désactivée.");
+            Debug.LogWarning("CamÃ©ra de suivi ou de visÃ©e active, aucune camÃ©ra externe ne peut Ãªtre dÃ©sactivÃ©e.");
             return;
         }
 
@@ -73,7 +73,7 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Active la caméra de visée
+    /// Active la camÃ©ra de visÃ©e
     /// </summary>
     public void ActivateAimMode()
     {
@@ -86,7 +86,7 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Active la caméra de suivi de la balle
+    /// Active la camÃ©ra de suivi de la balle
     /// </summary>
     public void ActivateFollowMode(bool reset)
     {
@@ -95,23 +95,23 @@ public class CameraManager : MonoBehaviour
             followingCam.transform.position = aimingCam.transform.position;
             followingCam.transform.rotation = aimingCam.transform.rotation;
         }
-
+        
         aimingCam.Priority = 99;
         followingCam.Priority = 100;
     }
 
     /// <summary>
-    /// Renvoie la direction dans laquelle la caméra actuelle regarde
+    /// Renvoie la direction dans laquelle la camÃ©ra actuelle regarde
     /// </summary>
-    /// <returns>Transform de la caméra active</returns>
+    /// <returns>Transform de la camÃ©ra active</returns>
     public Transform GetLookingDirection()
     {
         return brain.transform;
     }
 
     /// <summary>
-    /// Place la caméra à la position et dans la rotation définie par le Transform lookingDirection.
-    /// Ne fonctionne que si la caméra active est la caméra de suvi de déplacement.
+    /// Place la camÃ©ra Ã  la position et dans la rotation dÃ©finie par le Transform lookingDirection.
+    /// Ne fonctionne que si la camÃ©ra active est la camÃ©ra de suvi de dÃ©placement.
     /// </summary>
     /// <param name="lookingDirection"></param>
     public void SetLookingDirection(Transform lookingDirection)
@@ -126,8 +126,8 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Tourne la caméra dans la rotation définie par le Quaternion lookingDirection.
-    /// Ne fonctionne que si la caméra active est la caméra de suvi de déplacement.
+    /// Tourne la camÃ©ra dans la rotation dÃ©finie par le Quaternion lookingDirection.
+    /// Ne fonctionne que si la camÃ©ra active est la camÃ©ra de suvi de dÃ©placement.
     /// </summary>
     /// <param name="lookingDirection"></param>
     public void SetLookingDirection(Quaternion lookingDirection)

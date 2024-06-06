@@ -1,9 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
-public class Coin : MonoBehaviour
+public class TimeChallengeCoin : MonoBehaviour
 {
     [Header("References")]
     public GameObject mesh;
@@ -13,18 +13,14 @@ public class Coin : MonoBehaviour
 
     [Header("__DEBUG__")]
     private bool isPickingUp;
-
-    private void Start()
-    {
-        StartCoroutine(Utils.Delay(() => CoinManager.instance.AddCoin(this), .001f));
-    }
+    public Action onCollected;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player") && !isPickingUp)
+        if (other.CompareTag("Player") && !isPickingUp)
         {
+            onCollected?.Invoke();
             isPickingUp = true;
-            CoinManager.instance.CollectCoin(this);
         }
     }
 }

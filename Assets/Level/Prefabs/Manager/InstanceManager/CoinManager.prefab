@@ -44,9 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde4660aec2b2f04489876255565b7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectibles: []
-  textCollectibleCounter: {fileID: 0}
-  collectibleCount: 0
-  collectibleValue: 0
-  holeCount: 0
-  holeValue: 0
+  stars: {fileID: 3623493038056323974, guid: ce6405f5034ac884090b258e1c0be6f4, type: 3}
+  coinQuanity: 0
+  coinCollected: 0
+  coinLists: []

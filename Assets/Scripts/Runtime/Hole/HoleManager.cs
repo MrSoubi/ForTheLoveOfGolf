@@ -15,6 +15,8 @@ public class HoleManager : MonoBehaviour
 
     public List<Hole> holesList = new List<Hole>();
 
+    public Action onCollectedHole;
+
     public static HoleManager instance;
 
     private void Awake()
@@ -35,6 +37,7 @@ public class HoleManager : MonoBehaviour
 
     public void CompleteHole(Hole hole)
     {
+        onCollectedHole?.Invoke();
         holeCompleted += 1;
         if (hole.isGoldenFlag) hole.GetFlagMesh().material = goldenMaterial;
         else hole.GetFlagMesh().material = completedMaterial;

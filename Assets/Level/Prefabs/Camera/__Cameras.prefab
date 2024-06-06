@@ -403,6 +403,10 @@ PrefabInstance:
       propertyPath: m_XAxis.m_InputAxisName
       value: Mouse X
       objectReference: {fileID: 0}
+    - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
+      propertyPath: m_RecenterToTargetHeading.m_enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6150452727631028308, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Name
       value: VCAM Follow

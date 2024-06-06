@@ -11,6 +11,9 @@ public class Coin : MonoBehaviour
     [Header("Coin Value")]
     public int value;
 
+    [Header("__DEBUG__")]
+    private bool isPickingUp;
+
     private void Start()
     {
         StartCoroutine(Utils.Delay(() => CoinManager.instance.AddCoin(this), .001f));
@@ -18,8 +21,9 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") && !isPickingUp)
         {
+            isPickingUp = true;
             CoinManager.instance.CollectCoin(this);
         }
     }

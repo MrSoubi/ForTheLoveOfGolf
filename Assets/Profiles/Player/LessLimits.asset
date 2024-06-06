@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: LessLimits
   m_EditorClassIdentifier: 
   shootingFactor: 0.5
-  shootHeight: 2
+  shootHeight: 2.5
   maxShoots: 1
   shootingAngle: -45
-  maxAcceleration: 12
+  maxAcceleration: 10
   maxAirAcceleration: 6
   rotationCurve:
     serializedVersion: 2
@@ -48,7 +48,7 @@ MonoBehaviour:
   - 26
   - 31
   - 36
-  speedLimitMargin: 3
+  speedLimitMargin: 4
   maxGroundAngle: 30
   maxSnapSpeed: 30
   probeDistance: 1

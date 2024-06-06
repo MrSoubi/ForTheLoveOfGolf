@@ -4,7 +4,7 @@ using UnityEngine;
 public class Pipe : MonoBehaviour
 {
     [SerializeField] CheckpointTrigger checkpointExit;
-    public Vector3 respawnPointOffset;
+    [SerializeField] Vector3 respawnPointOffset;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,8 +16,7 @@ public class Pipe : MonoBehaviour
 
     IEnumerator TeleportCoroutine(GameObject player)
     {
-        player.TryGetComponent(out PC_MovingSphere controller);
-        if (controller)
+        if (player.TryGetComponent(out PC_MovingSphere controller))
         {
             controller.Block();
 

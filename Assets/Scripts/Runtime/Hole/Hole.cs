@@ -7,7 +7,8 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] Vector3 respawnPoint;
+    [SerializeField] private Vector3 respawnPoint;
+    public bool isGoldenFlag;
 
     [Header("References")]
     [SerializeField] private Animator ballContentAnim;
@@ -57,6 +58,8 @@ public class Hole : MonoBehaviour
     IEnumerator SpawnPoint()
     {
         yield return new WaitForSeconds(1.1f);
+        Instantiate(completedParticle,transform).Play();
+        yield return new WaitForSeconds(0.2f);
 
         collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);

@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private ParticleSystem stars;
+
     [Header("__DEBUG__")]
     public int coinQuanity;
     public int coinCollected;
@@ -20,7 +23,7 @@ public class CoinManager : MonoBehaviour
     }
 
     public void AddCoin(Coin coin)
-    {
+    {      
         coinLists.Add(coin);
         coinQuanity++;
     }
@@ -36,6 +39,7 @@ public class CoinManager : MonoBehaviour
     public void CollectCoin(Coin coin)
     {
         coinCollected++;
+        Instantiate(stars, coin.transform.position, coin.transform.rotation);
         RemoveCoin(coin);
     }
 }

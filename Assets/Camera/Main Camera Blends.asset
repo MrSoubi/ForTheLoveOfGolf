@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CustomBlends:
   - m_From: '**ANY CAMERA**'
-    m_To: Aim_vCam
+    m_To: FLCAM Aim
     m_Blend:
       m_Style: 1
-      m_Time: 1
+      m_Time: 0.4
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
@@ -25,10 +25,10 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
   - m_From: '**ANY CAMERA**'
-    m_To: Follow_vCam
+    m_To: VCAM Follow
     m_Blend:
       m_Style: 1
-      m_Time: 1
+      m_Time: 0.3
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

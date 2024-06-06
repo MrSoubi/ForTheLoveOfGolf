@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 10
   speed: 10
-  giveShoot: 0
+  giveShoot: 1
 --- !u!1001 &5559833657655553742
 PrefabInstance:
   m_ObjectHideFlags: 0

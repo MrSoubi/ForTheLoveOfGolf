@@ -616,6 +616,11 @@ public class PC_MovingSphere : MonoBehaviour
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
+        if (!canShoot)
+        {
+            return;
+        }
+
         Vector3 shootDirection;
 
         if (maxShoots <= 0 || shootCharges <= 0)
@@ -864,7 +869,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     bool isFreezed = false;
     /// <summary>
-    /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner.
+    /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner. Peut être désactivé avec la fonction UnFreeze().
     /// </summary>
     public void Freeze()
     {
@@ -926,7 +931,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     /// <summary>
-    /// Renvoi la vitesse max actuelle
+    /// Renvoi la vitesse maximum actuelle
     /// </summary>
     /// <returns></returns>
     public float GetCurrentSpeedLimit()
@@ -952,7 +957,6 @@ public class PC_MovingSphere : MonoBehaviour
         return maxSpeedIndex;
     }
 
-
     /// <summary>
     /// Mets la limite de vitesse au palier indiqué par limitIndex
     /// </summary>
@@ -966,5 +970,22 @@ public class PC_MovingSphere : MonoBehaviour
 
         maxSpeedIndex = limitIndex;
         maxSpeed = speedLimits[speedLimits.Count - 1];
+    }
+    
+        private bool canShoot = true;
+    /// <summary>
+    /// Empêche le joueur de tirer. Peut être réactivé avec la fonction ActivateShoot().
+    /// </summary>
+    public void DeactivateShoot()
+    {
+        canShoot = false;
+    }
+
+    /// <summary>
+    /// Autorise le joueur à tirer.
+    /// </summary>
+    public void ActivateShoot()
+    {
+        canShoot = true;
     }
 }

@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   materials:
-  - {fileID: 2100000, guid: 7d22fc6b9a431b043a917fb89a80bcfc, type: 2}
-  - {fileID: 2100000, guid: f685a57b9da560a448bb95374a652f90, type: 2}
+  - {fileID: 2100000, guid: 37623649f002ae2489527f314000f374, type: 2}
+  - {fileID: 2100000, guid: 9dcf2dfac72f5ef4ea40acc3febc4045, type: 2}

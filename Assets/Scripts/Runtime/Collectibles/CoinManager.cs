@@ -15,6 +15,8 @@ public class CoinManager : MonoBehaviour
     public int coinCollected;
     public List<Coin> coinLists = new List<Coin>();
 
+    public Action onCollectedCoin;
+
     public static CoinManager instance;
 
     private void Awake()
@@ -38,6 +40,7 @@ public class CoinManager : MonoBehaviour
 
     public void CollectCoin(Coin coin)
     {
+        onCollectedCoin?.Invoke();
         coinCollected++;
         Instantiate(stars, coin.transform.position, coin.transform.rotation);
         RemoveCoin(coin);

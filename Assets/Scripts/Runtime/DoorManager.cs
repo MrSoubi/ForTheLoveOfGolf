@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class DoorManager : MonoBehaviour
 {
-    [HideInInspector]
-    public List<Door> doors = new List<Door>();
+    [HideInInspector] public List<Door> doors = new List<Door>();
 
     private void Awake()
     {
-        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
-        for (int i = 0; i < tmp.Length; i++)
+        Door[] tmp = FindObjectsByType<Door>(FindObjectsSortMode.None);
+        foreach (Door door in tmp)
         {
-            if (tmp[i].TryGetComponent(out Door currentDoor))
-            {
-                doors.Add(currentDoor);
-            }
+            doors.Add(door);
         }
     }
 

@@ -876,7 +876,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     bool isFreezed = false;
     /// <summary>
-    /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner.
+    /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner. Peut être désactivé avec la fonction UnFreeze().
     /// </summary>
     public void Freeze()
     {
@@ -936,17 +936,27 @@ public class PC_MovingSphere : MonoBehaviour
         body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
     }
 
+    /// <summary>
+    /// Renvoi la vitesse maximum actuelle
+    /// </summary>
+    /// <returns></returns>
     public float GetCurrentSpeedLimit()
     {
         return speedLimits[maxSpeedIndex];
     }
 
     private bool canShoot = true;
+    /// <summary>
+    /// Empêche le joueur de tirer. Peut être réactivé avec la fonction ActivateShoot().
+    /// </summary>
     public void DeactivateShoot()
     {
         canShoot = false;
     }
 
+    /// <summary>
+    /// Autorise le joueur à tirer.
+    /// </summary>
     public void ActivateShoot()
     {
         canShoot = true;

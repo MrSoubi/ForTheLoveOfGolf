@@ -206,7 +206,7 @@ public class PC_MovingSphere : MonoBehaviour
         ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;
-        CameraManager.Instance.ToggleAimMode();
+        CameraManager.Instance.ActivateAimMode();
         Time.timeScale = 0.1f;
     }
 
@@ -220,7 +220,7 @@ public class PC_MovingSphere : MonoBehaviour
         Time.timeScale = 1.0f;
         isAiming = false;
         meshRenderer.material = rollingMaterial;
-        CameraManager.Instance.ToggleFollowMode(reset);
+        CameraManager.Instance.ActivateFollowMode(reset);
     }
 
     void HandleAim()

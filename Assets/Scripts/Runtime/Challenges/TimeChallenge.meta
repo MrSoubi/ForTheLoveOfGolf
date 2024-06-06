@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/Runtime/Challenges/TimeChallenge.meta
 guid: 56b00fa9e19eba5499f4cf8107399be6
 folderAsset: yes
 DefaultImporter:
+========
+guid: 37623649f002ae2489527f314000f374
+NativeFormatImporter:
+>>>>>>>> d54470e (Feat: particle checkpoint + remove double partcle + patch pipe):Assets/Art/Materials/CheckpointMaterials/M_Checkpoint_Red.mat.meta
   externalObjects: {}
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

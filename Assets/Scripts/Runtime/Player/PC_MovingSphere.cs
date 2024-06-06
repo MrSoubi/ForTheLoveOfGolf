@@ -10,6 +10,8 @@ using System;
 
 public class PC_MovingSphere : MonoBehaviour
 {
+    public ParticleSystem particleSystem;
+
     // ----------
     // -- Tool --
     // ----------
@@ -271,6 +273,15 @@ public class PC_MovingSphere : MonoBehaviour
             }
         }
 
+        if (body.velocity.magnitude > 0.1 && particleSystem.isStopped)
+        {
+            particleSystem.Play();
+        }
+        else if (body.velocity.magnitude <= 0.1 && particleSystem.isPlaying)
+        {
+            particleSystem.Stop();
+        }
+
         Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
         movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
 
@@ -294,6 +305,7 @@ public class PC_MovingSphere : MonoBehaviour
         float angle = distance * rotationFactor * (180f / Mathf.PI) / ballRadius;
         Vector3 rotationAxis = Vector3.Cross(rotationPlaneNormal, movement).normalized;
         rotation = Quaternion.Euler(rotationAxis * angle) * rotation;
+
         if (ballAlignSpeed > 0f)
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
@@ -302,6 +314,8 @@ public class PC_MovingSphere : MonoBehaviour
         {
             ball.localRotation = rotation;
         }
+
+
     }
 
     Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)

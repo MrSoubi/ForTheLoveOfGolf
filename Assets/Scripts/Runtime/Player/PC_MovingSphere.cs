@@ -622,6 +622,11 @@ public class PC_MovingSphere : MonoBehaviour
     Vector3 shootdirectiondebug;
     void Shoot(Vector3 gravity)
     {
+        if (!canShoot)
+        {
+            return;
+        }
+
         Vector3 shootDirection;
 
         if (maxShoots <= 0 || shootCharges <= 0)
@@ -934,5 +939,16 @@ public class PC_MovingSphere : MonoBehaviour
     public float GetCurrentSpeedLimit()
     {
         return speedLimits[maxSpeedIndex];
+    }
+
+    private bool canShoot = true;
+    public void DeactivateShoot()
+    {
+        canShoot = false;
+    }
+
+    public void ActivateShoot()
+    {
+        canShoot = true;
     }
 }

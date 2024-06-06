@@ -10,7 +10,8 @@ public class AccelerationZone : MonoBehaviour
 
 	void OnTriggerEnter (Collider other) {
 		Rigidbody body = other.attachedRigidbody;
-		if (body) {
+		if (body) 
+		{
 			if (giveShoot) body.GetComponent<PC_MovingSphere>().AddShootCharges(1);
 			Accelerate(body);
 		}
@@ -18,7 +19,8 @@ public class AccelerationZone : MonoBehaviour
 
 	void OnTriggerStay (Collider other) {
 		Rigidbody body = other.attachedRigidbody;
-		if (body) {
+		if (body) 
+		{
 			Accelerate(body);
 		}
 	}

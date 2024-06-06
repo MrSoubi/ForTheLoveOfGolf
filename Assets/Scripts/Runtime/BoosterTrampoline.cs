@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Booster : MonoBehaviour
+public class BoosterTrampoline : MonoBehaviour
 {
+    private enum Type
+    {
+        BOOSTER,
+        TRAMPOLINE
+    }
+
     [SerializeField, Min(0f)] private float acceleration = 10f;
     [SerializeField, Min(0f)] private float targetSpeedLimit = 10f;
 
+    [SerializeField] private Type type;
     [SerializeField] private Vector3 teleportLocation;
 
     [SerializeField] private bool teleport;
@@ -20,7 +27,7 @@ public class Booster : MonoBehaviour
         {
             if (teleport)
             {
-                PC.SetDirection(transform.forward);
+                PC.SetDirection(type == Type.BOOSTER ? transform.forward : transform.up);
                 PC.Teleport(transform.position + teleportLocation);
             }
             if (freeze)

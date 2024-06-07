@@ -203,7 +203,7 @@ public class PC_MovingSphere : MonoBehaviour
         shootingIndicator.SetActive(false);
     }
 
-    void ToggleAim()
+    public void ToggleAim()
     {
         ShowShootingIndicator();
         isAiming = true;
@@ -216,7 +216,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// Active le mode Roll. Si reset est true, la cam�ra reprendra la place qu'elle avait lors de la d�sactivation du mode Roll.
     /// </summary>
     /// <param name="reset"></param>
-    void ToggleRoll(bool reset)
+    public void ToggleRoll(bool reset)
     {
         HideShootingIndicator();
         Time.timeScale = 1.0f;

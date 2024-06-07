@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdf040531ed53d44f9b205ae8351758e, type: 3}
   m_Name: LessLimits
   m_EditorClassIdentifier: 
-  shootingFactor: 0.5
-  shootHeight: 2
+  shootingFactor: 0.35
+  shootHeight: 0.6
   maxShoots: 1
   shootingAngle: -45
   maxAcceleration: 12

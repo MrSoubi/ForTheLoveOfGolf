@@ -26,7 +26,7 @@ public class CoinManager : MonoBehaviour
     public void AddCoin(Coin coin)
     {      
         coinLists.Add(coin);
-        coinQuantity++;
+        coinQuantity += coin.value;
     }
     public void RemoveCoin(Coin coin)
     {

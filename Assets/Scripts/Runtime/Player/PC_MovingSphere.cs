@@ -193,8 +193,8 @@ public class PC_MovingSphere : MonoBehaviour
 
     void ShowShootingIndicator()
     {
-        shootingIndicator.transform.rotation = playerInputSpace.rotation;
-        shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle, 0, 0);
+        shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
+        //shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
         shootingIndicator.SetActive(true);
     }
 

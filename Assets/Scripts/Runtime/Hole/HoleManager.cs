@@ -9,6 +9,7 @@ public class HoleManager : MonoBehaviour
     [Header("Materials")]
     [SerializeField] private Material completedMaterial;
     [SerializeField] private Material goldenMaterial;
+
     [Header("__DEBUG__")]
     public int holeQuantity;
     public int holeCompleted;
@@ -18,6 +19,9 @@ public class HoleManager : MonoBehaviour
     public Action onCollectedHole;
 
     public static HoleManager instance;
+
+    [SerializeField] private AudioSource sfx;
+    [SerializeField] private AudioSource goldenSfx;
 
     private void Awake()
     {
@@ -37,9 +41,26 @@ public class HoleManager : MonoBehaviour
 
     public void CompleteHole(Hole hole)
     {
+        holeCompleted++;
         onCollectedHole?.Invoke();
-        holeCompleted += 1;
-        if (hole.isGoldenFlag) hole.GetFlagMesh().material = goldenMaterial;
-        else hole.GetFlagMesh().material = completedMaterial;
+
+        if (hole.isGoldenFlag)
+        {
+            if (holeQuantity >= holeCompleted && CoinManager.instance.coinCollected >= CoinManager.instance.coinQuantity)
+            {
+                sfx.Play();
+                hole.GetFlagMesh().material = goldenMaterial;
+            }
+            else
+            {
+                sfx.Play();
+                hole.GetFlagMesh().material = completedMaterial;
+            }
+        }
+        else
+        {
+            sfx.Play();
+            hole.GetFlagMesh().material = completedMaterial;
+        }
     }
 }

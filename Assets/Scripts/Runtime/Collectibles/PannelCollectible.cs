@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PannelCollectible : MonoBehaviour
 {
-    /*[HideInInspector]
+    [HideInInspector]
     public int index;
 
     [Header("References")]
     [SerializeField] private TMP_Text textCollectibles;
-    [SerializeField] private GameObject holeRef;
-    [SerializeField] private ParticleSystem particleEffect;
+    [SerializeField] private GameObject holeGo;
+    [SerializeField] private VisualEffect particleEffect;
+    [SerializeField] private GameObject pannelGo;
+    [SerializeField] private float timeAnimation;
     [Space]
     [SerializeField][Min(0)] private int nbCollectibles;
 
@@ -23,27 +26,23 @@ public class PannelCollectible : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Utils.Delay(() => CollectibleManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
-        holeRef.SetActive(false);
+        if(CoinManager.instance) StartCoroutine(Utils.Delay(() => CoinManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
+        holeGo.SetActive(false);
     }
 
-    private void UpdatePannel(int nbCollected)
+    private void UpdatePannel()
     {
         if (!textCollectibles) return;
-        textCollectibles.text = nbCollected + "/" + nbCollectibles;
-        if (nbCollected >= nbCollectibles)
+        textCollectibles.text = CoinManager.instance.coinCollected + "/" + nbCollectibles;
+        if (CoinManager.instance.coinCollected >= nbCollectibles)
         {
-            if (CollectibleManager.instance) CollectibleManager.instance.onCollectedCoin -= UpdatePannel;
-            //particleEffect.Play();
-            //StartCoroutine(Utils.Delay(() => 
-            //{
-            //    Destroy(transform.GetChild(0).gameObject);
-            //    Instantiate(holePrefab, transform);
-            //}, particleEffect.totalTime * 0.6f));
-
-            Destroy(transform.GetChild(0).gameObject);
-            holeRef.SetActive(true);
-            SaveManager.pannels[index] = true;
+            if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
+            particleEffect?.Play();
+            StartCoroutine(Utils.Delay(() =>
+            {
+                Destroy(transform.GetChild(0).gameObject);
+                holeGo.SetActive(true);
+            }, timeAnimation * 0.7f));
         }
-    }*/
+    }
 }

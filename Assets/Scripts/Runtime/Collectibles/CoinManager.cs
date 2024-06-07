@@ -8,13 +8,15 @@ using UnityEngine;
 public class CoinManager : MonoBehaviour
 {
     [Header("__DEBUG__")]
-    public int coinQuanity;
+    public int coinQuantity;
     public int coinCollected;
     public List<Coin> coinLists = new List<Coin>();
 
     public Action onCollectedCoin;
 
     public static CoinManager instance;
+
+    [SerializeField] private AudioSource sfx;
 
     private void Awake()
     {
@@ -24,7 +26,7 @@ public class CoinManager : MonoBehaviour
     public void AddCoin(Coin coin)
     {      
         coinLists.Add(coin);
-        coinQuanity++;
+        coinQuantity++;
     }
     public void RemoveCoin(Coin coin)
     {
@@ -37,9 +39,15 @@ public class CoinManager : MonoBehaviour
 
     public void CollectCoin(Coin coin)
     {
-        onCollectedCoin?.Invoke();
         coinCollected++;
-        Instantiate(coin.stars, coin.transform.position, coin.transform.rotation);
+        onCollectedCoin?.Invoke();
+        sfx.Play();
+
+        if (coin.stars != null)
+        {
+            Instantiate(coin.stars, coin.transform.position, coin.transform.rotation);
+        }
+
         RemoveCoin(coin);
     }
 }

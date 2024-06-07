@@ -26,6 +26,7 @@ public class Door : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textHole;
     [SerializeField] private ParticleSystem particleLeft;
     [SerializeField] private ParticleSystem particleRight;
+    [SerializeField] private AudioSource sfx;
 
     private int holeCompleted;
     private int coinCollected;
@@ -44,9 +45,9 @@ public class Door : MonoBehaviour
 
     private void LinkEvent()
     {
-        //if (CoinManager.instance) CoinManager.instance.onCollectedCoin += UpdatePannelCoin;
+        if (CoinManager.instance) CoinManager.instance.onCollectedCoin += UpdatePannelCoin;
 
-        //if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdatePannelHole;
+        if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdatePannelHole;
     }
 
     private void UpdatePannelCoin()
@@ -100,8 +101,18 @@ public class Door : MonoBehaviour
         {
             OpenPivot();
         }
-        particleLeft?.Play();
-        particleRight?.Play();
+
+        if (particleLeft != null)
+        {
+            particleLeft?.Play();
+        }
+            
+        if(particleRight != null)
+        {
+            particleRight?.Play();
+        }
+
+        sfx.Play();
     }
 
     /// <summary>

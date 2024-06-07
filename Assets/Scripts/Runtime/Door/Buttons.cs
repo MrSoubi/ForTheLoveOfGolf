@@ -9,10 +9,18 @@ public class Buttons : MonoBehaviour
 
     [Header("Door")]
     [SerializeField] private Door door;
-    [SerializeField] private Vector3 positionBtnAnchor;
 
     [Header("Animation")]
     [SerializeField] private int animeDuration;
+    [SerializeField] private Vector3 posButton;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfx;
+
+    private void Start()
+    {
+        posButton = transform.position;
+    }
 
     /// <summary>
     /// Quand le joueur est détecter, il ouvre la porte uniquement si l'objectif est bon
@@ -22,8 +30,9 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            sfx.Play();
             door?.TriggerOpen();
-            transform.DOMove(new Vector3(positionBtnAnchor.x, positionBtnAnchor.y - 0.3f, positionBtnAnchor.z), animeDuration);
+            transform.DOMove(new Vector3(posButton.x, posButton.y - 0.2f, posButton.z), animeDuration);
         }
     }
 
@@ -31,7 +40,8 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            transform.DOMove(new Vector3(positionBtnAnchor.x, positionBtnAnchor.y, positionBtnAnchor.z), animeDuration);
+            sfx.Play();
+            transform.DOMove(new Vector3(posButton.x, posButton.y, posButton.z), animeDuration);
         }
     }
 }

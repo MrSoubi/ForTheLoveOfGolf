@@ -59,7 +59,12 @@ public class Hole : MonoBehaviour
     IEnumerator SpawnPoint()
     {
         yield return new WaitForSeconds(1.1f);
-        Instantiate(completedParticle,transform).Play();
+
+        if(completedParticle != null)
+        {
+            Instantiate(completedParticle, transform).Play();
+        }
+        
         yield return new WaitForSeconds(0.2f);
 
         collision.SetActive(true);

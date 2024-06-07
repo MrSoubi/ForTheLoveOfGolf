@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +10,8 @@ public class TimeChallenge : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject triggerBox;
-    [SerializeField] private TimeChallengeCoin[] coinList;
+    [SerializeField] private ParticleSystem stars;
+    [SerializeField] private  List<TimeChallengeCoin> coinList = new List<TimeChallengeCoin>();
 
     [Header("Settings")]
     [SerializeField] private Vector3 respawnPoint;
@@ -24,19 +27,19 @@ public class TimeChallenge : MonoBehaviour
 
     private void Start()
     {
-        CollectCoin();
+        TimeChallengeCoin.onCollected += CollectCoin;
 
         CoinSetActive(false);
         RewardSetActive(false);
         TriggerBoxSetActive(true);
     }
 
-    private void CollectCoin()
+    private void CollectCoin(TimeChallengeCoin coin)
     {
-        for(int i = 0; i < coinList.Length; i++)
-        {
-            //coinList[i].onCollected;
-        }
+        coinCollected += coin.value;
+        Instantiate(stars, coin.transform.position, coin.transform.rotation);
+        if (coinCollected >= coinList.Count) EndChallenge();
+        else coin.gameObject.SetActive(false);
     }
 
     private void CoinSetActive(bool state)
@@ -44,6 +47,7 @@ public class TimeChallenge : MonoBehaviour
         for(int i = 0; i < coinList.Count(); i++)
         {
             coinList[i].gameObject.SetActive(state);
+            coinList[i].isPickingUp = false;
         }
     }
 
@@ -67,13 +71,37 @@ public class TimeChallenge : MonoBehaviour
         StartCoroutine(Timer());
     }
 
+    void EndChallenge()
+    {
+        started = false;
+
+        StopAllCoroutines();
+
+        TriggerBoxSetActive(false);
+        CoinSetActive(false);
+        rewardHole.SetActive(true);
+    }
+
+    void ResetChallenge()
+    {
+        started = false;
+
+        coinCollected = 0;
+
+        TriggerBoxSetActive(true);
+        CoinSetActive(false);
+    }
+
     IEnumerator Timer()
     {
-        while(timeToComplete > 0)
+        float timer = timeToComplete;
+        while(timer > 0)
         {
-            timeToComplete -= Time.deltaTime;
+            timer -= Time.deltaTime;
             yield return null;
         }
+
+        ResetChallenge();
     }
 
     private void OnTriggerEnter(Collider other)

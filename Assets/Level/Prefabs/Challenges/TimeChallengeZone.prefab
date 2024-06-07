@@ -188,15 +188,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerBox: {fileID: 1301709280299638982}
+  stars: {fileID: 3623493038056323974, guid: ce6405f5034ac884090b258e1c0be6f4, type: 3}
   coinList:
   - {fileID: 1633992540465275639}
   - {fileID: 8345204810561695283}
   - {fileID: 5494539694655347866}
   - {fileID: 3029374996197699782}
   respawnPoint: {x: 0, y: 0, z: 0}
-  timeToComplete: 0
+  timeToComplete: 10
   rewardHole: {fileID: 2636597490068318151}
-  timer: 0
   started: 0
   completed: 0
   coinCollected: 0
@@ -251,6 +251,10 @@ PrefabInstance:
     - target: {fileID: 3089545500877877862, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810604825880435497, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: value
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -325,10 +329,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3810604825880435497, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4670136236263857313, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7737731289364459489}
   m_SourcePrefab: {fileID: 100100000, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
 --- !u!4 &625052754617256888 stripped
 Transform:
@@ -346,6 +357,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11f7ec36a11989f49a346c61c956b7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7098604580048725375 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4670136236263857313, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+  m_PrefabInstance: {fileID: 2471604732568549854}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7737731289364459489
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7098604580048725375}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 357ba28dc9a5a0b468072611cdce2e9e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2664947103746569421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -465,6 +503,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3810604825880435497, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -537,6 +579,10 @@ PrefabInstance:
     - target: {fileID: 3089545500877877862, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3810604825880435497, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: value
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -340,12 +340,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 91549553482475834, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
-      propertyPath: timeToComplete
-      value: 30
+      propertyPath: stars
+      value: 
+      objectReference: {fileID: 3623493038056323974, guid: ce6405f5034ac884090b258e1c0be6f4, type: 3}
+    - target: {fileID: 1633992540465275639, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3029374996197699782, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+      propertyPath: value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4274632649571144924, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
       propertyPath: m_Name
       value: TimeChallengeZone
+      objectReference: {fileID: 0}
+    - target: {fileID: 5494539694655347866, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345204810561695283, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+      propertyPath: value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8816914175032020808, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
       propertyPath: m_LocalPosition.x

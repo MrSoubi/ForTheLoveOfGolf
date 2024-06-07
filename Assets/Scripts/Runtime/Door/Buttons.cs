@@ -30,7 +30,11 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            sfx.Play();
+            if (sfx != null)
+            {
+                sfx.Play();
+            }
+
             door?.TriggerOpen();
             transform.DOMove(new Vector3(posButton.x, posButton.y - 0.2f, posButton.z), animeDuration);
         }
@@ -40,7 +44,11 @@ public class Buttons : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            sfx.Play();
+            if(sfx != null)
+            {
+                sfx.Play();
+            }
+            
             transform.DOMove(new Vector3(posButton.x, posButton.y, posButton.z), animeDuration);
         }
     }

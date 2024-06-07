@@ -112,7 +112,10 @@ public class Door : MonoBehaviour
             particleRight?.Play();
         }
 
-        sfx.Play();
+        if (sfx != null)
+        {
+            sfx.Play();
+        }
     }
 
     /// <summary>

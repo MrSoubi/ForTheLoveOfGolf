@@ -41,7 +41,11 @@ public class CoinManager : MonoBehaviour
     {
         coinCollected++;
         onCollectedCoin?.Invoke();
-        sfx.Play();
+
+        if(sfx != null)
+        {
+            sfx.Play();
+        }
 
         if (coin.stars != null)
         {

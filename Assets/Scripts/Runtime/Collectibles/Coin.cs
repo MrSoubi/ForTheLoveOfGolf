@@ -8,7 +8,7 @@ public class Coin : MonoBehaviour
     [Header("References")]
     public GameObject mesh;
 
-    [Header("Coin Value")]
+    [Header("Settings")]
     public int value;
 
     [Header("__DEBUG__")]

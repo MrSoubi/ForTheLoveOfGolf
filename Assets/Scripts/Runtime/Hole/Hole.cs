@@ -7,7 +7,8 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] Vector3 respawnPoint;
+    [SerializeField] private Vector3 respawnPoint;
+    public bool isGoldenFlag;
 
     [Header("References")]
     [SerializeField] private Animator ballContentAnim;
@@ -39,7 +40,8 @@ public class Hole : MonoBehaviour
         {
             completed = true;
 
-            HoleManager.instance.CompleteHole(this);
+            if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
+            else Debug.LogError("No Hole Manager on scene");
 
             collision = other.gameObject;
             collision.SetActive(false);
@@ -57,6 +59,8 @@ public class Hole : MonoBehaviour
     IEnumerator SpawnPoint()
     {
         yield return new WaitForSeconds(1.1f);
+        Instantiate(completedParticle,transform).Play();
+        yield return new WaitForSeconds(0.2f);
 
         collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);

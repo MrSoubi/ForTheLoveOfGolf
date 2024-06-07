@@ -10,7 +10,7 @@ public class GetGameObjects : MonoBehaviour
     public List<Hole> holes = new List<Hole>();
     public List<Door> doors = new List<Door>();
     public List<PannelCollectible> pannels = new List<PannelCollectible>();
-    public List<Challenge> challenges = new List<Challenge>();
+    public List<TimeChallenge> challenges = new List<TimeChallenge>();
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class GetGameObjects : MonoBehaviour
                 pannels.Add(currentPannel);
                 SaveManager.pannels.Add(false);
             }
-            if (tmp[i].TryGetComponent(out Challenge currentChallenge))
+            if (tmp[i].TryGetComponent(out TimeChallenge currentChallenge))
             {
                 challenges.Add(currentChallenge);
                 SaveManager.challenges.Add(false);

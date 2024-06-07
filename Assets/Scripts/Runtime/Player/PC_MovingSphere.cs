@@ -194,7 +194,7 @@ public class PC_MovingSphere : MonoBehaviour
     void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
-        //shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
+        //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
         shootingIndicator.SetActive(true);
     }
 
@@ -233,7 +233,7 @@ public class PC_MovingSphere : MonoBehaviour
     void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
-        shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle + playerInputSpace.rotation.eulerAngles.x, playerInputSpace.rotation.eulerAngles.y, 0);
+        shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
     void HandleRoll()

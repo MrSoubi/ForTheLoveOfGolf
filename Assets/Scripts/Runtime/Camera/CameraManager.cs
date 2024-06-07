@@ -7,7 +7,7 @@ using System.Collections;
 public class CameraManager : MonoBehaviour
 {
 
-    private static CameraManager instance = null;
+    private static CameraManager instance = null; 
     public static CameraManager Instance => instance;
     private void Awake()
     {

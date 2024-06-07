@@ -10,6 +10,12 @@ public class DeathTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            /*if(challenge != null && challenge.active)
+            {
+                challenge.EndChallenge();
+            }*/
+            
+            GameManager.instance?.Respawn(other.gameObject);
         }
     }
 }

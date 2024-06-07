@@ -50,7 +50,7 @@ public class Hole : MonoBehaviour
             ballContentAnim.SetTrigger("WinAnim");
             StartCoroutine(SpawnPoint());
 
-            virtualBall.transform.localScale = collision.transform.localScale;
+            virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
             virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh; 
             virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
         }

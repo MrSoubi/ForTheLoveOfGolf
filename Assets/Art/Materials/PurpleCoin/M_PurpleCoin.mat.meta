@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Materials/PurpleCoin/M_PurpleCoin.mat.meta
+guid: e01bfd7bd525579488705d415dc1e05c
+========
+guid: 5b2c181811f8df24c9012217628c369c
+>>>>>>>> Inte_Particle_System:Assets/Art/Materials/Coin/M_BigCoin.mat.meta
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

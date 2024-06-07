@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Coin : MonoBehaviour
 {
     [Header("References")]
+    public ParticleSystem stars;
     public GameObject mesh;
 
     [Header("Settings")]

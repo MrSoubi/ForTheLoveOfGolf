@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3089545500877877862}
   - component: {fileID: 8283964824473817157}
   - component: {fileID: 3810604825880435497}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TimeChallengeCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1657822034514389365}
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 2443693470602753911}
   - component: {fileID: 9206152609187629799}
   - component: {fileID: 8401663985398626480}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3089545500877877862}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -111,7 +111,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4670136236263857313}
-  m_Mesh: {fileID: 4300000, guid: 44042356cd03d904fa501e1014eef3c8, type: 3}
+  m_Mesh: {fileID: 1063890885330572780, guid: fc9c028ac6cfc59409b2bdfbf2519cd1, type: 3}
 --- !u!23 &9206152609187629799
 MeshRenderer:
   m_ObjectHideFlags: 0

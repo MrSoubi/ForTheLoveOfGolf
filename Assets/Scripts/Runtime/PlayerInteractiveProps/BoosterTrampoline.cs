@@ -12,7 +12,7 @@ public class BoosterTrampoline : MonoBehaviour
     [SerializeField, Range(0,10)] private int targetSpeedLimit = 10;
 
     [SerializeField] private Type type;
-    [SerializeField] private Vector3 teleportLocation;
+    [SerializeField] private Transform teleportLocation;
 
     [SerializeField] private bool teleport;
     [SerializeField] private bool freeze;
@@ -25,7 +25,7 @@ public class BoosterTrampoline : MonoBehaviour
         {
             if (teleport)
             {
-                PC.Teleport(transform.position + teleportLocation);
+                PC.Teleport(teleportLocation);
             }
             if (freeze)
             {
@@ -36,7 +36,7 @@ public class BoosterTrampoline : MonoBehaviour
                 PC.AddShootCharges(1);
             }
 
-            if(targetSpeedLimit > PC.GetCurrentSpeedLimit())
+            if(targetSpeedLimit > PC.GetSpeedLimitIndex())
             {
                 PC.SetSpeedLimit(targetSpeedLimit);
             }
@@ -47,13 +47,7 @@ public class BoosterTrampoline : MonoBehaviour
 
             PC.IncreaseVelocityToCurrentSpeedLimit();
 
-            PC.SetDirection(type == Type.BOOSTER ? transform.forward : Vector3.up);
+            PC.SetDirection(type == Type.BOOSTER ? transform.forward : transform.up);
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position + teleportLocation, 0.1f);
     }
 }

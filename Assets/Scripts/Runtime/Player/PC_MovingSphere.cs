@@ -817,7 +817,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void Teleport(Transform transform)
     {
         body.position = transform.position;
-        body.rotation = transform.rotation;
+        //body.rotation = transform.rotation;
     }
 
     /// <summary>
@@ -828,7 +828,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void Teleport(Vector3 position, Quaternion rotation)
     {
         body.position = position;
-        body.rotation = rotation;
+        //body.rotation = rotation;
     }
 
     /// <summary>
@@ -988,7 +988,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         maxSpeedIndex = limitIndex;
-        maxSpeed = speedLimits[speedLimits.Count - 1];
+        maxSpeed = speedLimits[maxSpeedIndex];
     }
     
         private bool canShoot = true;

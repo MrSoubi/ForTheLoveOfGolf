@@ -39,18 +39,12 @@ public class CoinManager : MonoBehaviour
 
     public void CollectCoin(Coin coin)
     {
-        coinCollected++;
+        coinCollected += coin.value;
         onCollectedCoin?.Invoke();
 
-        if(sfx != null)
-        {
-            sfx.Play();
-        }
+        if(sfx != null) sfx.Play();
 
-        if (coin.stars != null)
-        {
-            Instantiate(coin.stars, coin.transform.position, coin.transform.rotation);
-        }
+        if (coin.stars != null) Instantiate(coin.stars, coin.transform.position, coin.transform.rotation);
 
         RemoveCoin(coin);
     }

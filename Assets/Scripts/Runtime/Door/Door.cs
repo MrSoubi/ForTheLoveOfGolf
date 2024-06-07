@@ -67,7 +67,7 @@ public class Door : MonoBehaviour
     {
         if (holeTreshold)
         {
-            if (HoleManager.instance) holeCompleted = HoleManager.instance.holeCompleted;
+            if (HoleManager.instance) holeCompleted = HoleManager.instance.holeCollected;
             textHole.text = holeCompleted.ToString() + "/" + holeQuantity.ToString() + " Holes";
         }
         else

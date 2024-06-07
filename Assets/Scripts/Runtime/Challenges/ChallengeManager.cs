@@ -1,11 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChallengeManager : MonoBehaviour
 {
-    [HideInInspector]
+    [Header("__DEBUG__")]
+    public int challengeQuantity;
+    public int challengeCollected;
+
     public List<TimeChallenge> challenge = new List<TimeChallenge>();
+
+    public Action onStartedChallenge;
 
     public TimeChallenge currentChallenge;
 

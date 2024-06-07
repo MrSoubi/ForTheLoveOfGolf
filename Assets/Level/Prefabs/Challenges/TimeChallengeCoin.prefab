@@ -69,6 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mesh: {fileID: 4670136236263857313}
   value: 0
+  isPickingUp: 0
 --- !u!1 &4670136236263857313
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,6 +81,7 @@ GameObject:
   - component: {fileID: 1657822034514389365}
   - component: {fileID: 2443693470602753911}
   - component: {fileID: 9206152609187629799}
+  - component: {fileID: 8401663985398626480}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -152,3 +154,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &8401663985398626480
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670136236263857313}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 357ba28dc9a5a0b468072611cdce2e9e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

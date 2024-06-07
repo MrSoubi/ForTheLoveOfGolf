@@ -22,14 +22,14 @@ public class Pipe : MonoBehaviour
 
             yield return new WaitForSeconds(.4f);
 
-            UIManager.instance?.FadeIn();
+            UIManager.instance.FadeIn();
 
             yield return new WaitForSeconds(1.2f);
 
             checkpointExit.SetCheckpoint();
             controller.Teleport(checkpointExit.transform.position + respawnPointOffset);
 
-            UIManager.instance?.FadeOut();
+            UIManager.instance.FadeOut();
 
             yield return new WaitForSeconds(.8f);
             controller.UnBlock(true);

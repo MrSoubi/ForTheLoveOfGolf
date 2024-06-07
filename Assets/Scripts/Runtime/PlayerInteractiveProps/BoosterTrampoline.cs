@@ -39,11 +39,11 @@ public class BoosterTrampoline : MonoBehaviour
 
             if(targetSpeedLimit >= PC.GetCurrentSpeedLimit())
             {
-                PC.IncreaseSpeedLimit();
+                PC.SetSpeedLimit(targetSpeedLimit);
             }
             else
             {
-                PC.IncreaseVelocityToCurrentSpeedLimit();
+                PC.IncreaseSpeedLimit();
             }
             PC.IncreaseVelocityToCurrentSpeedLimit();
         }

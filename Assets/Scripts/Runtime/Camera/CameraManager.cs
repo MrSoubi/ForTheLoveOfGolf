@@ -140,10 +140,16 @@ public class CameraManager : MonoBehaviour
         followingCam.transform.rotation = lookingDirection;
     }
 
-    public void BoostEffect()
+    IEnumerator BoostEffect()
     {
         followingCam.Priority--;
         aimingCam.Priority--;
         boostCam.Priority = 100;
+
+        yield return new WaitForSeconds(1);
+
+        followingCam.Priority++;
+        aimingCam.Priority++;
+        boostCam.Priority = 0;
     }
 }

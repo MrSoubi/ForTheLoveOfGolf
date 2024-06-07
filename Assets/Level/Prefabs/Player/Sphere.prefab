@@ -174,6 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f7e545fe8ca0b46b9e1c23428e65ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particleSystem: {fileID: 0}
   PCData: {fileID: 0}
   rotationCurve:
     serializedVersion: 2
@@ -181,7 +182,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  playerInputSpace: {fileID: 0}
   ball: {fileID: 1832406150492255385}
   shootingIndicator: {fileID: 1158359374877216160}
   maxSpeed: 0
@@ -321,31 +321,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.00000011920929
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 149259891445667126, guid: 2058673d9a0c37445a92f1bc71dd51eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

@@ -10,6 +10,8 @@ using System;
 
 public class PC_MovingSphere : MonoBehaviour
 {
+    public ParticleSystem particleSystem;
+
     // ----------
     // -- Tool --
     // ----------
@@ -191,8 +193,8 @@ public class PC_MovingSphere : MonoBehaviour
 
     void ShowShootingIndicator()
     {
-        shootingIndicator.transform.rotation = playerInputSpace.rotation;
-        shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle, 0, 0);
+        shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
+        //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
         shootingIndicator.SetActive(true);
     }
 
@@ -201,8 +203,13 @@ public class PC_MovingSphere : MonoBehaviour
         shootingIndicator.SetActive(false);
     }
 
-    void ToggleAim()
+    public void ToggleAim()
     {
+        if (!canShoot || shootCharges < 1)
+        {
+            return;
+        }
+
         ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;
@@ -214,7 +221,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// Active le mode Roll. Si reset est true, la cam�ra reprendra la place qu'elle avait lors de la d�sactivation du mode Roll.
     /// </summary>
     /// <param name="reset"></param>
-    void ToggleRoll(bool reset)
+    public void ToggleRoll(bool reset)
     {
         HideShootingIndicator();
         Time.timeScale = 1.0f;
@@ -226,7 +233,7 @@ public class PC_MovingSphere : MonoBehaviour
     void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
-        shootingIndicator.transform.rotation = Quaternion.Euler(shootingAngle + playerInputSpace.rotation.eulerAngles.x, playerInputSpace.rotation.eulerAngles.y, 0);
+        shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
     void HandleRoll()
@@ -271,6 +278,15 @@ public class PC_MovingSphere : MonoBehaviour
             }
         }
 
+        if (body.velocity.magnitude > 0.1 && particleSystem.isStopped)
+        {
+            particleSystem.Play();
+        }
+        else if (body.velocity.magnitude <= 0.1 && particleSystem.isPlaying)
+        {
+            particleSystem.Stop();
+        }
+
         Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
         movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
 
@@ -294,6 +310,7 @@ public class PC_MovingSphere : MonoBehaviour
         float angle = distance * rotationFactor * (180f / Mathf.PI) / ballRadius;
         Vector3 rotationAxis = Vector3.Cross(rotationPlaneNormal, movement).normalized;
         rotation = Quaternion.Euler(rotationAxis * angle) * rotation;
+
         if (ballAlignSpeed > 0f)
         {
             rotation = AlignBallRotation(rotationAxis, rotation, distance);
@@ -302,6 +319,8 @@ public class PC_MovingSphere : MonoBehaviour
         {
             ball.localRotation = rotation;
         }
+
+
     }
 
     Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)

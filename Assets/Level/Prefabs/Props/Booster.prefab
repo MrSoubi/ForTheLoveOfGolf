@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6801280672129783488}
   - component: {fileID: 8112089791231112082}
-  - component: {fileID: 8284680764268736179}
+  - component: {fileID: 3685531193091876576}
   m_Layer: 0
   m_Name: Booster
   m_TagString: Untagged
@@ -55,7 +55,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2895079, y: 1.5508533, z: 0.29464692}
   m_Center: {x: -0.008204073, y: -0.006529974, z: 0}
---- !u!114 &8284680764268736179
+--- !u!114 &3685531193091876576
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,11 +64,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7958809883264162075}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d08edad2c3c8b7741a48a55daf5bbcc6, type: 3}
+  m_Script: {fileID: 11500000, guid: f5eb851a70479c545829a31933b881e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
-  speed: 10
+  targetSpeedLimit: 3
+  type: 0
+  teleportLocation: {x: 0, y: 0.5, z: 0}
+  teleport: 0
+  freeze: 0
+  giveShoot: 1
 --- !u!1001 &4891783919468991419
 PrefabInstance:
   m_ObjectHideFlags: 0

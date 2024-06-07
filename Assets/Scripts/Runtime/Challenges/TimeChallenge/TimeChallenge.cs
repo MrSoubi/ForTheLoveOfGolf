@@ -37,7 +37,12 @@ public class TimeChallenge : MonoBehaviour
     private void CollectCoin(TimeChallengeCoin coin)
     {
         coinCollected += coin.value;
-        Instantiate(stars, coin.transform.position, coin.transform.rotation);
+
+        if (stars != null)
+        {
+            Instantiate(stars, coin.transform.position, coin.transform.rotation);
+        }
+
         if (coinCollected >= coinList.Count) EndChallenge();
         else coin.gameObject.SetActive(false);
     }
@@ -64,6 +69,7 @@ public class TimeChallenge : MonoBehaviour
     void StartChallenge()
     {
         started = true;
+        ChallengeManager.instance.currentChallenge = this;
 
         TriggerBoxSetActive(false);
         CoinSetActive(true);
@@ -74,6 +80,7 @@ public class TimeChallenge : MonoBehaviour
     void EndChallenge()
     {
         started = false;
+        ChallengeManager.instance.currentChallenge = null;
 
         StopAllCoroutines();
 
@@ -82,9 +89,10 @@ public class TimeChallenge : MonoBehaviour
         rewardHole.SetActive(true);
     }
 
-    void ResetChallenge()
+    public void ResetChallenge()
     {
         started = false;
+        ChallengeManager.instance.currentChallenge = null;
 
         coinCollected = 0;
 

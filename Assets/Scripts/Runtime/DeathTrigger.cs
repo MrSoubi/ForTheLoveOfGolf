@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class DeathTrigger : MonoBehaviour
 {
-    //public Challenge challenge;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            /*if(challenge != null && challenge.active)
+            if(ChallengeManager.instance.currentChallenge != null)
             {
-                challenge.EndChallenge();
-            }*/
+                ChallengeManager.instance.currentChallenge.ResetChallenge();
+            }
             
             GameManager.instance?.Respawn(other.gameObject);
         }

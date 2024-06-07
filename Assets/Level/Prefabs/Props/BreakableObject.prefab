@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   threasholdSpeed: 1
-  particleDestroyed: {fileID: 0}
+  particleDestroyed: {fileID: 5685720398038812440, guid: 7caaa8aa980a7e14ab980ce13c3e7b9a, type: 3}
   colliderMesh: {fileID: 1603927615509813302}
 --- !u!65 &5323626077938210485
 BoxCollider:

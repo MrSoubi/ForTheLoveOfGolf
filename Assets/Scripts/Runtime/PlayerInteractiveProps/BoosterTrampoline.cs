@@ -25,7 +25,6 @@ public class BoosterTrampoline : MonoBehaviour
         {
             if (teleport)
             {
-                PC.SetDirection(type == Type.BOOSTER ? transform.forward : transform.up);
                 PC.Teleport(transform.position + teleportLocation);
             }
             if (freeze)
@@ -37,7 +36,7 @@ public class BoosterTrampoline : MonoBehaviour
                 PC.AddShootCharges(1);
             }
 
-            if(targetSpeedLimit >= PC.GetCurrentSpeedLimit())
+            if(targetSpeedLimit > PC.GetCurrentSpeedLimit())
             {
                 PC.SetSpeedLimit(targetSpeedLimit);
             }
@@ -45,7 +44,10 @@ public class BoosterTrampoline : MonoBehaviour
             {
                 PC.IncreaseSpeedLimit();
             }
+
             PC.IncreaseVelocityToCurrentSpeedLimit();
+
+            PC.SetDirection(type == Type.BOOSTER ? transform.forward : Vector3.up);
         }
     }
 

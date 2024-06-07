@@ -4342,10 +4342,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.3
       objectReference: {fileID: 0}
-    - target: {fileID: 1774826917425163257, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 7d22fc6b9a431b043a917fb89a80bcfc, type: 2}
     - target: {fileID: 2441265557319686960, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalScale.y
       value: 2
@@ -4867,14 +4863,6 @@ PrefabInstance:
       propertyPath: collectibleCountTxt
       value: 
       objectReference: {fileID: 2701675486377981019}
-    - target: {fileID: 8035819136616856544, guid: 681c49181eafbf1428bb37f65f286426, type: 3}
-      propertyPath: goldenMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 40347e2344b3ed04a8165ea238a93a0b, type: 2}
-    - target: {fileID: 8035819136616856544, guid: 681c49181eafbf1428bb37f65f286426, type: 3}
-      propertyPath: completedMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: f685a57b9da560a448bb95374a652f90, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

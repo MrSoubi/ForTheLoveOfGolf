@@ -205,6 +205,11 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void ToggleAim()
     {
+        if (!canShoot || shootCharges < 1)
+        {
+            return;
+        }
+
         ShowShootingIndicator();
         isAiming = true;
         meshRenderer.material = aimingMaterial;

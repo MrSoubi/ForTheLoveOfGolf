@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7725678597231809887
+--- !u!1 &3685735788422042533
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2509865290710766818}
-  - component: {fileID: 7823414864228734633}
+  - component: {fileID: 7322846090818132337}
+  - component: {fileID: 8822606324789559466}
   m_Layer: 0
-  m_Name: DoorManager
+  m_Name: ChallengeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2509865290710766818
+--- !u!4 &7322846090818132337
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725678597231809887}
+  m_GameObject: {fileID: 3685735788422042533}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,16 +32,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7823414864228734633
+--- !u!114 &8822606324789559466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725678597231809887}
+  m_GameObject: {fileID: 3685735788422042533}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06bbe28215df2ba4f897e46ff8fa6c61, type: 3}
+  m_Script: {fileID: 11500000, guid: a121d0aff67dc684c99f2c2f6498247c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doors: []
+  challenge: []
+  currentChallenge: {fileID: 0}

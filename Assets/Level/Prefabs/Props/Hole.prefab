@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4109211731532102096}
   - component: {fileID: 6699806484178002083}
   - component: {fileID: 606018989725004980}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 3052466546978908342}
   - component: {fileID: 2498016656083770424}
   - component: {fileID: 3036120183087112082}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_WallCurved_2x2_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   - component: {fileID: 4017239287107953974}
   - component: {fileID: 6599225338849897349}
   - component: {fileID: 8457325623890347728}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_FloorHole_5x5_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 8547712688197789357}
   - component: {fileID: 6781410710703086148}
   - component: {fileID: 3310754232186353651}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_WallCurved_2x2_01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 9036596995676947095}
   - component: {fileID: 7796149548152799336}
   - component: {fileID: 8045236054331139977}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_FloorInner_Curved_2x2_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 1651679429641116113}
   - component: {fileID: 1263666913432469085}
   - component: {fileID: 1774826917425163257}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FlagMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 5268827631128526759}
   - component: {fileID: 8438177480310496240}
   - component: {fileID: 4408937386247647668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_FloorInner_Curved_2x2_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7997106487289032068}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_Hole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +735,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4091341312518104748}
   - component: {fileID: 795155549243242335}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -792,7 +792,7 @@ GameObject:
   - component: {fileID: 6811692270225620385}
   - component: {fileID: 6655637007579676045}
   - component: {fileID: 516859094706346666}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_WallCurved_2x2_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -898,7 +898,7 @@ GameObject:
   - component: {fileID: 6501187438438606562}
   - component: {fileID: 1465893018516519978}
   - component: {fileID: 1990304759601554501}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_FloorInner_Curved_2x2_01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,7 +1001,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7340281129687853037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OtherMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1040,7 +1040,7 @@ GameObject:
   - component: {fileID: 412713680079169280}
   - component: {fileID: 7204066240346172892}
   - component: {fileID: 9033513888996621705}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VirtualBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 7513453072713203140}
   - component: {fileID: 2066032889948478436}
   - component: {fileID: 5912477988663987711}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_FloorInner_Curved_2x2_01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1230,7 +1230,7 @@ GameObject:
   - component: {fileID: 7871490612667035842}
   - component: {fileID: 9117637525627877874}
   - component: {fileID: 3842421393826738862}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Buildings_WallCurved_2x2_01 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1336,7 +1336,7 @@ GameObject:
   - component: {fileID: 4331884136684896820}
   - component: {fileID: 1975345195853105357}
   - component: {fileID: 3484235512188389601}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Target_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

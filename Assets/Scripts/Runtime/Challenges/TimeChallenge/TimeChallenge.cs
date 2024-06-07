@@ -30,7 +30,7 @@ public class TimeChallenge : MonoBehaviour
         TimeChallengeCoin.onCollected += CollectCoin;
 
         CoinSetActive(false);
-        RewardSetActive(false);
+        StartCoroutine(Utils.Delay(() => RewardSetActive(false), .005f));
         TriggerBoxSetActive(true);
     }
 

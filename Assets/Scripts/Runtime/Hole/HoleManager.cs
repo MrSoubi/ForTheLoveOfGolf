@@ -12,7 +12,7 @@ public class HoleManager : MonoBehaviour
 
     [Header("__DEBUG__")]
     public int holeQuantity;
-    public int holeCompleted;
+    public int holeCollected;
 
     public List<Hole> holesList = new List<Hole>();
 
@@ -41,25 +41,17 @@ public class HoleManager : MonoBehaviour
 
     public void CompleteHole(Hole hole)
     {
-        holeCompleted++;
+        holeCollected++;
         onCollectedHole?.Invoke();
 
-        if (hole.isGoldenFlag)
+        if ((hole.isGoldenFlag) && (holeCollected >= holeQuantity) && (CoinManager.instance.coinCollected >= CoinManager.instance.coinQuantity))
         {
-            if (holeQuantity >= holeCompleted && CoinManager.instance.coinCollected >= CoinManager.instance.coinQuantity)
-            {
-                sfx.Play();
-                hole.GetFlagMesh().material = goldenMaterial;
-            }
-            else
-            {
-                sfx.Play();
-                hole.GetFlagMesh().material = completedMaterial;
-            }
+            if(goldenSfx != null) goldenSfx.Play();
+            hole.GetFlagMesh().material = goldenMaterial;
         }
         else
         {
-            sfx.Play();
+            if (sfx != null)  sfx.Play();
             hole.GetFlagMesh().material = completedMaterial;
         }
     }

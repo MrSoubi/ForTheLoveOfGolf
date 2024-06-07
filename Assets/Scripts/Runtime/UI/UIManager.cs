@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject shootIcon;
     [Header("Other")]
     [SerializeField] private Animator circularFadeAnim;
+    [Header("__DEBUG__")]
 
     public static UIManager instance;
 
@@ -24,19 +25,32 @@ public class UIManager : MonoBehaviour
         instance = this.Singleton(instance, () => Destroy(gameObject));
     }
 
+    private void Start()
+    {
+        StartCoroutine(Utils.Delay(LinkEvent, 0.05f));
+
+        StartCoroutine(Utils.Delay(() => UpdateCoinText(), .002f));
+        StartCoroutine(Utils.Delay(() => UpdateHoleText(), .002f));
+    }
+
+    private void LinkEvent() {
+        if (CoinManager.instance) CoinManager.instance.onCollectedCoin += UpdateCoinText;
+        if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdateCoinText;
+    }
+
     public void TimerSetActive(bool state)
     {
         timeChallenge.SetActive(state);
     }
 
-    public void UpdateCoinText(string value, string maxValue)
+    public void UpdateCoinText()
     {
-        coinValueText.text = value + "/" + maxValue;
+        coinValueText.text = CoinManager.instance.coinCollected + "/" + CoinManager.instance.coinQuantity;
     }
 
-    public void UpdateHoleText(string value, string maxValue)
+    public void UpdateHoleText()
     {
-        holeValueText.text = value + "/" + maxValue;
+        holeValueText.text = HoleManager.instance.holeCollected + "/" + HoleManager.instance.holeQuantity;
     }
 
     public void UpdateTimerText(string value)

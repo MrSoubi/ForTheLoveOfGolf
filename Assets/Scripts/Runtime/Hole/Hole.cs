@@ -40,7 +40,8 @@ public class Hole : MonoBehaviour
         {
             completed = true;
 
-            HoleManager.instance.CompleteHole(this);
+            if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
+            else Debug.LogError("No Hole Manager on scene");
 
             collision = other.gameObject;
             collision.SetActive(false);

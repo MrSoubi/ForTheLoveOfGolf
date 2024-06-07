@@ -194,9 +194,8 @@ MonoBehaviour:
   - {fileID: 5494539694655347866}
   - {fileID: 3029374996197699782}
   respawnPoint: {x: 0, y: 0, z: 0}
-  timeToComplete: 0
+  timeToComplete: 10
   rewardHole: {fileID: 2636597490068318151}
-  timer: 0
   started: 0
   completed: 0
   coinCollected: 0

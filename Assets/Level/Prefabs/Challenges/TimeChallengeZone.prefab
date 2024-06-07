@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7606462990483758903}
   - component: {fileID: 1637994740383842632}
   - component: {fileID: 2431226737434053105}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TriggerBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7119466752902512574}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CoinList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 8816914175032020808}
   - component: {fileID: 5063100104198491608}
   - component: {fileID: 91549553482475834}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TimeChallengeZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,6 +212,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TimeChallengeCoin_04
       objectReference: {fileID: 0}
+    - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3089545500877877862, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10
@@ -256,6 +260,10 @@ PrefabInstance:
       propertyPath: value
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4670136236263857313, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -288,6 +296,10 @@ PrefabInstance:
     - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_Name
       value: TimeChallengeCoin_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3089545500877877862, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -332,6 +344,10 @@ PrefabInstance:
     - target: {fileID: 3810604825880435497, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670136236263857313, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -396,6 +412,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reward Hole
       objectReference: {fileID: 0}
+    - target: {fileID: 30637031762711306, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 152936828435465319, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 513898515261935734, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 574112772822770780, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1549808837370130395, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695050661328585209, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633876031960143506, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2655343776279516782, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2896396196220198779, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3677883666375470339, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.x
       value: 20.12
@@ -436,6 +492,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5502595694873968629, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101308677282775988, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6340635614447143658, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6803624950976610558, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061487965378341157, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821446147384734238, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -462,6 +542,10 @@ PrefabInstance:
     - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_Name
       value: TimeChallengeCoin_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3089545500877877862, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -507,6 +591,10 @@ PrefabInstance:
       propertyPath: value
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4670136236263857313, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -539,6 +627,10 @@ PrefabInstance:
     - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_Name
       value: TimeChallengeCoin_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 2390355445538045704, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3089545500877877862, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -583,6 +675,10 @@ PrefabInstance:
     - target: {fileID: 3810604825880435497, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
       propertyPath: value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670136236263857313, guid: 4a1eac49a12fb5349b700e261708ed24, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

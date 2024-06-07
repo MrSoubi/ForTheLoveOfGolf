@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - {fileID: 2100000, guid: 37623649f002ae2489527f314000f374, type: 2}
-  - {fileID: 2100000, guid: 9dcf2dfac72f5ef4ea40acc3febc4045, type: 2}
+  - {fileID: 2100000, guid: 6968e89851431104b8f931c37d69356b, type: 2}

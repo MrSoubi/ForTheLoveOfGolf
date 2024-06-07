@@ -10,6 +10,7 @@ public class TimeChallenge : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject triggerBox;
+    [SerializeField] private ParticleSystem stars;
     [SerializeField] private  List<TimeChallengeCoin> coinList = new List<TimeChallengeCoin>();
 
     [Header("Settings")]
@@ -36,8 +37,8 @@ public class TimeChallenge : MonoBehaviour
     private void CollectCoin(TimeChallengeCoin coin)
     {
         coinCollected += coin.value;
-
-        if(coinCollected >= coinList.Count) EndChallenge();
+        Instantiate(stars, coin.transform.position, coin.transform.rotation);
+        if (coinCollected >= coinList.Count) EndChallenge();
         else coin.gameObject.SetActive(false);
     }
 

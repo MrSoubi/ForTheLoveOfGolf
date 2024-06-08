@@ -200,11 +200,11 @@ PrefabInstance:
     - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
       propertyPath: goldenMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 40347e2344b3ed04a8165ea238a93a0b, type: 2}
+      objectReference: {fileID: 2100000, guid: 5cfa60c6ab524c5488ca37d3c989f3ec, type: 2}
     - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
       propertyPath: completedMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: f685a57b9da560a448bb95374a652f90, type: 2}
+      objectReference: {fileID: 2100000, guid: e5057e39a51b1964db3af8ef96b8553f, type: 2}
     - target: {fileID: 4840930980294997156, guid: ab64b0913e3b0f745b45a7576ef1eb25, type: 3}
       propertyPath: CollectibleManager
       value: 

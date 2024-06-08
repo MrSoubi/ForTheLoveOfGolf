@@ -14,6 +14,7 @@ public class Hole : MonoBehaviour
     [SerializeField] private Animator ballContentAnim;
     [SerializeField] private Transform virtualBall;
     [SerializeField] private MeshRenderer flagMesh;
+    [SerializeField] private MeshRenderer flagMesh2;
     [SerializeField] private ParticleSystem completedParticle;
 
     [Header("DEBUG")]
@@ -21,9 +22,15 @@ public class Hole : MonoBehaviour
 
     GameObject collision;
 
-    public MeshRenderer GetFlagMesh() 
+    public MeshRenderer GetFlagMesh1() 
     {
         if (flagMesh != null) return flagMesh;
+        else Debug.LogError("Flag Mesh is null"); return null;
+    }
+
+    public MeshRenderer GetFlagMesh2()
+    {
+        if (flagMesh2 != null) return flagMesh2;
         else Debug.LogError("Flag Mesh is null"); return null;
     }
 
@@ -79,6 +86,7 @@ public class Hole : MonoBehaviour
         collision = null;
 
         flagMesh.GetComponent<Transform>().Bump();
+        flagMesh2.GetComponent<Transform>().Bump();
     }
 
     private void OnDrawGizmosSelected()

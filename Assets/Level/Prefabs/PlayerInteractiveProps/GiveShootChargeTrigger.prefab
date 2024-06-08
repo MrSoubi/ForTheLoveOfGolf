@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1321546284603774722}
   - component: {fileID: 1968681539906192476}
   - component: {fileID: 548742126594130318}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GiveShootChargeTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8, y: 1, z: 33.66}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5905803277567111607}
   m_Father: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 5328127726125017578}
   - component: {fileID: 943632636625639679}
   - component: {fileID: 3659338236118498723}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6687790777778640012}
   - component: {fileID: 7148565364112189507}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9069201251401360492}
   - component: {fileID: 5483326251928780637}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

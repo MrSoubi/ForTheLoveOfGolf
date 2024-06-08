@@ -238,10 +238,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f484ce0c6a8b54d8deaac544abdec8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  completedMaterial: {fileID: 2100000, guid: f685a57b9da560a448bb95374a652f90, type: 2}
-  goldenMaterial: {fileID: 2100000, guid: 40347e2344b3ed04a8165ea238a93a0b, type: 2}
+  completedMaterial: {fileID: 2100000, guid: e5057e39a51b1964db3af8ef96b8553f, type: 2}
+  goldenMaterial: {fileID: 2100000, guid: 5cfa60c6ab524c5488ca37d3c989f3ec, type: 2}
   holeQuantity: 0
-  holeCompleted: 0
+  holeCollected: 0
   holesList: []
   sfx: {fileID: -7556491571913348909}
   goldenSfx: {fileID: -2076275900030581253}

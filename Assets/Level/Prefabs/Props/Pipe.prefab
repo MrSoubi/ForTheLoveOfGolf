@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8394328725666514938}
   - component: {fileID: 4999902141005896095}
   - component: {fileID: 7565695151338504644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,8 +67,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.4, y: 1.2, z: 1.4}
-  m_Center: {x: 0, y: 0.75, z: 0}
+  m_Size: {x: 1.45, y: 2.5, z: 1.45}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6483968485239049689
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -140,6 +140,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: addab75dd0464464e8e1ae592418cbb0, type: 3}
       propertyPath: m_Name
       value: Pipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: addab75dd0464464e8e1ae592418cbb0, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

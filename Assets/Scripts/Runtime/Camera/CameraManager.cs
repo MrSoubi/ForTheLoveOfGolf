@@ -20,7 +20,7 @@ public class CameraManager : MonoBehaviour
         {
             instance = this;
         }
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
     }
 
     [SerializeField] private CinemachineVirtualCamera followingCam;

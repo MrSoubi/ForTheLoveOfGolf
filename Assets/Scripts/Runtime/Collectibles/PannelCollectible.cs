@@ -6,9 +6,6 @@ using UnityEngine.VFX;
 
 public class PannelCollectible : MonoBehaviour
 {
-    [HideInInspector]
-    public int index;
-
     [Header("References")]
     [SerializeField] private TMP_Text textCollectibles;
     [SerializeField] private GameObject holeGo;
@@ -27,6 +24,7 @@ public class PannelCollectible : MonoBehaviour
     private void Start()
     {
         if(CoinManager.instance) StartCoroutine(Utils.Delay(() => CoinManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
+        StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(pannelGo.GetComponent<Hole>()), .001f));
         holeGo.SetActive(false);
     }
 
@@ -37,7 +35,7 @@ public class PannelCollectible : MonoBehaviour
         if (CoinManager.instance.coinCollected >= nbCollectibles)
         {
             if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
-            particleEffect?.Play();
+            if (particleEffect != null) particleEffect.Play();
             StartCoroutine(Utils.Delay(() =>
             {
                 Destroy(transform.GetChild(0).gameObject);

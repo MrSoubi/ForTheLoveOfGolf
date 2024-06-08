@@ -418,9 +418,11 @@ public class PC_MovingSphere : MonoBehaviour
         if (CheckClimbing() || CheckSwimming() || OnGround || SnapToGround() || CheckSteepContacts())
         {
             stepsSinceLastGrounded = 0;
-            if (stepsSinceLastJump > 1)
+            if (stepsSinceLastJump > 1 & shootCharges <= 0)
             {
                 shootCharges = 1;
+
+                if (UIManager.instance != null) UIManager.instance.ShootUse(false);
             }
             if (groundContactCount > 1)
             {
@@ -649,7 +651,9 @@ public class PC_MovingSphere : MonoBehaviour
 
         stepsSinceLastJump = 0;
         shootCharges -= 1;
-        
+
+        if (UIManager.instance != null) UIManager.instance.ShootUse(true);
+
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
         //if (InWater)
         //{
@@ -912,6 +916,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void AddShootCharges(int amount)
     {
         shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
+        if (UIManager.instance != null) UIManager.instance.ShootUse(false);
     }
 
     /// <summary>

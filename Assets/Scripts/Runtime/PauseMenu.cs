@@ -35,7 +35,7 @@ public class PauseMenu : MonoBehaviour
 
         Time.timeScale = 1.0f;
 
-        SceneManager.LoadScene("LevelArea");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         CursorManager.instance.SetCursorVisibility(false);
         CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
     }

@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 4670136236263857313}
-  value: 0
+  value: 1
   isPickingUp: 0
 --- !u!1 &4670136236263857313
 GameObject:

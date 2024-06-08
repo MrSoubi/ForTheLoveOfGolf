@@ -492,8 +492,8 @@ MonoBehaviour:
   verticalMouvement: 0
   coinTreshold: 0
   coinQuantity: 0
-  holeTreshold: 1
-  holeQuantity: 2
+  holeTreshold: 0
+  holeQuantity: 0
   doorLeft: {fileID: 4209833157107885017}
   doorRight: {fileID: 127810273511404620}
   textCoin: {fileID: 3278299833988096289}

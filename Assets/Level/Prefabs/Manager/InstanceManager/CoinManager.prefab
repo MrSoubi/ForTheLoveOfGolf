@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 70917296606959109}
-  - component: {fileID: -7869801923764950038}
+  - component: {fileID: 7002099186111987149}
   - component: {fileID: 6956825872356218125}
   m_Layer: 0
   m_Name: CoinManager
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &-7869801923764950038
+--- !u!82 &7002099186111987149
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,4 +144,4 @@ MonoBehaviour:
   coinQuantity: 0
   coinCollected: 0
   coinLists: []
-  sfx: {fileID: -7869801923764950038}
+  sfx: {fileID: 7002099186111987149}

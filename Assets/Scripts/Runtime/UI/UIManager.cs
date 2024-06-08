@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,9 +14,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI timerCoinValueText;
     [Header("Shoot Icon")]
-    [SerializeField] private GameObject shootIcon;
+    [SerializeField] private Image shootIcon;
     [Header("Other")]
     [SerializeField] private Animator circularFadeAnim;
+    public Animator timerAnim;
     [Header("__DEBUG__")]
 
     public static UIManager instance;
@@ -35,7 +37,7 @@ public class UIManager : MonoBehaviour
 
     private void LinkEvent() {
         if (CoinManager.instance) CoinManager.instance.onCollectedCoin += UpdateCoinText;
-        if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdateCoinText;
+        if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdateHoleText;
     }
 
     public void TimerSetActive(bool state)
@@ -67,8 +69,40 @@ public class UIManager : MonoBehaviour
     {
         circularFadeAnim.SetTrigger("FadeIn");
     }
-    public  void FadeOut()
+    public void FadeOut()
     {
         circularFadeAnim.SetTrigger("FadeOut");
+    }
+
+    private IEnumerator HidUIAnim()
+    {
+        timerAnim.SetTrigger("Shake");
+
+        yield return new WaitForSeconds(1f);
+        timerAnim.SetBool("Show", false);
+    }
+
+    public void ChallengeInterface(bool val)
+    {
+        if(val)
+        {
+            timerAnim.SetBool("Show", true);
+        }
+        else
+        {
+            StartCoroutine(HidUIAnim());
+        }
+    }
+
+    public void ShootUse(bool val)
+    {
+        if(val)
+        {
+            shootIcon.color = new Color(1, 1, 1, 0.25f);
+        }
+        else
+        {
+            shootIcon.color = new Color(1, 1, 1, 1f);
+        }
     }
 }

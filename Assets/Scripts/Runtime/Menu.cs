@@ -11,6 +11,8 @@ public class Menu : MonoBehaviour
     public Button buttonContinue;
     public Texture2D handCursor;
 
+    public string level;
+
     private void Start()
     {
         string filePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Save", "Save.json");
@@ -47,7 +49,7 @@ public class Menu : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
 
-        SceneManager.LoadScene("LevelArea");
+        SceneManager.LoadScene(level);
     }
 
     public void Continue()
@@ -56,7 +58,7 @@ public class Menu : MonoBehaviour
 
         if (SaveManager.LoadFile())
         {
-            SceneManager.LoadScene("LevelArea");
+            SceneManager.LoadScene(level);
         }
     }
 

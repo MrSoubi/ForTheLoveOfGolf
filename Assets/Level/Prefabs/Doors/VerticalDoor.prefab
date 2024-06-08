@@ -632,10 +632,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  animeDuration: 1
+  animeDuration: 3
   verticalMouvement: 1
-  coinTreshold: 1
-  coinQuantity: 7
+  coinTreshold: 0
+  coinQuantity: 0
   holeTreshold: 0
   holeQuantity: 0
   doorLeft: {fileID: 1179479397367098228}

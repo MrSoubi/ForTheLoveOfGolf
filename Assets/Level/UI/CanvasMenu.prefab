@@ -537,7 +537,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4de570a25612e49b34c0d71207cc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonContinue: {fileID: 3352758314141560195}
   handCursor: {fileID: 2800000, guid: 4fc2dd7682de6b14ab6527a1febd083e, type: 3}
+  level: LevelAreaKillian
 --- !u!1 &7143355179895639348
 GameObject:
   m_ObjectHideFlags: 0

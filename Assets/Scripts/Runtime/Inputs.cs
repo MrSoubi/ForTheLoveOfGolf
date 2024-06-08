@@ -2,13 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Inputs : MonoBehaviour
 {
     public GameObject players;
     public GameObject panelMenu;
 
-    void Update()
+    private void Start()
+    {
+        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            if(tmp[i].TryGetComponent(out PC_MovingSphere player))
+            {
+                players = player.gameObject;
+                break;
+            }
+        }
+    }
+
+    private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {

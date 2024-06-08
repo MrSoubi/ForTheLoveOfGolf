@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Timeline;
+using UnityEngine.VFX;
 
 public class TimeChallenge : MonoBehaviour
 {
@@ -12,9 +12,9 @@ public class TimeChallenge : MonoBehaviour
     [SerializeField] private GameObject triggerBox;
     [SerializeField] private ParticleSystem stars;
     [SerializeField] private  List<TimeChallengeCoin> coinList = new List<TimeChallengeCoin>();
+    [SerializeField] private VisualEffect particleEffect;
 
     [Header("Settings")]
-    [SerializeField] private Vector3 respawnPoint;
     [SerializeField] private float timeToComplete;
 
     [Header("Rewards")]
@@ -43,6 +43,8 @@ public class TimeChallenge : MonoBehaviour
             Instantiate(stars, coin.transform.position, coin.transform.rotation);
         }
 
+        if (UIManager.instance != null) UIManager.instance.UpdateTimerCoinText(coinCollected.ToString(), coinList.Count.ToString());
+
         if (coinCollected >= coinList.Count) EndChallenge();
         else coin.gameObject.SetActive(false);
     }
@@ -70,6 +72,9 @@ public class TimeChallenge : MonoBehaviour
     {
         started = true;
         ChallengeManager.instance.currentChallenge = this;
+        if (UIManager.instance != null) UIManager.instance.UpdateTimerCoinText(coinCollected.ToString(), coinList.Count.ToString());
+        if (UIManager.instance != null) UIManager.instance.UpdateTimerText(timeToComplete.ToString());
+        if (UIManager.instance != null) UIManager.instance.ChallengeInterface(true);
 
         TriggerBoxSetActive(false);
         CoinSetActive(true);
@@ -79,25 +84,43 @@ public class TimeChallenge : MonoBehaviour
 
     void EndChallenge()
     {
-        started = false;
         ChallengeManager.instance.currentChallenge = null;
+        if (UIManager.instance != null) UIManager.instance.ChallengeInterface(false);
 
         StopAllCoroutines();
 
         TriggerBoxSetActive(false);
-        CoinSetActive(false);
+        CoinSetActive(false);   
         rewardHole.SetActive(true);
+        if (particleEffect != null) particleEffect.Play();
+    }
+
+    private IEnumerator TriggerBox()
+    {
+        yield return new WaitForSeconds(1);
+
+        started = false;
+        TriggerBoxSetActive(true);
     }
 
     public void ResetChallenge()
     {
-        started = false;
         ChallengeManager.instance.currentChallenge = null;
+        if (UIManager.instance != null) UIManager.instance.ChallengeInterface(false);
 
         coinCollected = 0;
 
-        TriggerBoxSetActive(true);
         CoinSetActive(false);
+        StartCoroutine(TriggerBox());
+    }
+
+    public void Respawn(GameObject player)
+    {
+        PC_MovingSphere tmp = player.GetComponent<PC_MovingSphere>();
+
+        tmp.Block();
+        player.transform.position = triggerBox.transform.position - new Vector3(0, 0.5f, 0);
+        tmp.UnBlock(true);
     }
 
     IEnumerator Timer()
@@ -106,6 +129,7 @@ public class TimeChallenge : MonoBehaviour
         while(timer > 0)
         {
             timer -= Time.deltaTime;
+            if (UIManager.instance != null) UIManager.instance.UpdateTimerText(timer.ToString("F2"));
             yield return null;
         }
 

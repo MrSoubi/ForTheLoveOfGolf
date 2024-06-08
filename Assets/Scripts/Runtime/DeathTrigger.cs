@@ -10,10 +10,12 @@ public class DeathTrigger : MonoBehaviour
         {
             if(ChallengeManager.instance.currentChallenge != null)
             {
-                ChallengeManager.instance.currentChallenge.ResetChallenge();
+                ChallengeManager.instance.currentChallenge.Respawn(other.gameObject);
             }
-            
-            GameManager.instance?.Respawn(other.gameObject);
+            else
+            {
+                GameManager.instance?.Respawn(other.gameObject);
+            }
         }
     }
 }

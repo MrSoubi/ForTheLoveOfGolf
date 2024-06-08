@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6459590840891199008}
-  - component: {fileID: -7556491571913348909}
-  - component: {fileID: -2076275900030581253}
+  - component: {fileID: 8126361791835527267}
+  - component: {fileID: 3019087962326956316}
   - component: {fileID: 4840930980294997156}
   m_Layer: 0
   m_Name: HoleManager
@@ -34,7 +34,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &-7556491571913348909
+--- !u!82 &8126361791835527267
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!82 &-2076275900030581253
+--- !u!82 &3019087962326956316
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -243,5 +243,5 @@ MonoBehaviour:
   holeQuantity: 0
   holeCollected: 0
   holesList: []
-  sfx: {fileID: -7556491571913348909}
-  goldenSfx: {fileID: -2076275900030581253}
+  sfx: {fileID: 8126361791835527267}
+  goldenSfx: {fileID: 3019087962326956316}

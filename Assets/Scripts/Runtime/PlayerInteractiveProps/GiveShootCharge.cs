@@ -7,6 +7,9 @@ public class GiveShootCharge : MonoBehaviour
     [SerializeField] private int quantityToGive = 1;
     [SerializeField] private int timeReset = 3;
 
+    public ParticleSystem stars;
+    [SerializeField] private AudioSource sfx;
+
     private bool take;
 
     private IEnumerator Reset()
@@ -23,6 +26,8 @@ public class GiveShootCharge : MonoBehaviour
         {
             take = true;
             StartCoroutine(Reset());
+            sfx.Play();
+            if (stars != null) Instantiate(stars, transform.position, transform.rotation);
             PC_MovingSphere PC = other.GetComponent<PC_MovingSphere>();
             PC.AddShootCharges(quantityToGive);
             gameObject.transform.GetChild(0).gameObject.SetActive(false);

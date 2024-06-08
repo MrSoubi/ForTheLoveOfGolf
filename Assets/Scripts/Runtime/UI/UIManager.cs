@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerCoinValueText;
     [Header("Shoot Icon")]
     [SerializeField] private Image shootIcon;
+    [SerializeField] private Sprite shoot;
+    [SerializeField] private Sprite shootTransparent;
     [Header("Other")]
     [SerializeField] private Animator circularFadeAnim;
     public Animator timerAnim;
@@ -98,11 +100,11 @@ public class UIManager : MonoBehaviour
     {
         if(val)
         {
-            shootIcon.color = new Color(1, 1, 1, 0.25f);
+            shootIcon.sprite = shootTransparent;
         }
         else
         {
-            shootIcon.color = new Color(1, 1, 1, 1f);
+            shootIcon.sprite = shoot;
         }
     }
 }

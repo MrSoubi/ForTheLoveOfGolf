@@ -20,7 +20,7 @@ public class Hole : MonoBehaviour
     [Header("DEBUG")]
     public bool completed;
 
-    GameObject collision;
+    private GameObject collision;
 
     public MeshRenderer GetFlagMesh1() 
     {
@@ -65,14 +65,12 @@ public class Hole : MonoBehaviour
 
     IEnumerator SpawnPoint()
     {
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(1.15f);
 
         if(completedParticle != null)
         {
             Instantiate(completedParticle, transform).Play();
-        }
-        
-        yield return new WaitForSeconds(0.2f);
+        }     
 
         collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);

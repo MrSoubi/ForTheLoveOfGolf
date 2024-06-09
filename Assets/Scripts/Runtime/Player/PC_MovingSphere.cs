@@ -249,15 +249,17 @@ public class PC_MovingSphere : MonoBehaviour
         isAiming = true;
         meshRenderer.material = aimingMaterial;
         CameraManager.Instance.ActivateAimMode();
+        shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
         Time.timeScale = 0.1f;
     }
 
     /// <summary>
-    /// Active le mode Roll. Si reset est true, la cam�ra reprendra la place qu'elle avait lors de la d�sactivation du mode Roll.
+    /// Active le mode Roll. Si reset est true, la caméra reprendra la place qu'elle avait lors de la désactivation du mode Roll.
     /// </summary>
     /// <param name="reset"></param>
     public void ToggleRoll(bool reset)
     {
+        shootingIndicator.GetComponent<Animator>().SetBool("Show", false);
         HideShootingIndicator();
         Time.timeScale = 1.0f;
         isAiming = false;
@@ -737,7 +739,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     /// <summary>
-    /// Renvoie ??? (A compléter)
+    /// ??? (A compléter)
     /// </summary>
     /// <param name="layer"></param>
     private float GetMinDot(int layer)

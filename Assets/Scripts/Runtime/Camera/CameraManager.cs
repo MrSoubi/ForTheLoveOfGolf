@@ -45,8 +45,6 @@ public class CameraManager : MonoBehaviour
         followingCam.LookAt = target.transform;
         aimingCam.Follow = target.transform;
         aimingCam.LookAt = target.transform;
-
-        brain = GetComponentInChildren<CinemachineBrain>();
     }
 
     /// <summary>

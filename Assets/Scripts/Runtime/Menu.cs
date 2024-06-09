@@ -13,6 +13,10 @@ public class Menu : MonoBehaviour
 
     public string level;
 
+    [SerializeField] private AudioSource sfx;
+
+    private AsyncOperation ao;
+
     private void Start()
     {
         string filePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Save", "Save.json");
@@ -26,7 +30,6 @@ public class Menu : MonoBehaviour
             buttonContinue.GetComponent<Button>().interactable = false;
             buttonContinue.GetComponent<EventTrigger>().enabled = false;
         }
-
     }
 
     public void CursorEnter(Button button)
@@ -45,26 +48,46 @@ public class Menu : MonoBehaviour
         }
     }
 
+    private IEnumerator ChangeLevel()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+        ao.allowSceneActivation = true;
+    }
+
     public void StartGame()
     {
         EventSystem.current.SetSelectedGameObject(null);
+        sfx.Play();
 
-        SceneManager.LoadScene(level);
+        ao = SceneManager.LoadSceneAsync(level);
+        ao.allowSceneActivation = false;
+
+        StartCoroutine(ChangeLevel());
     }
 
     public void Continue()
     {
         EventSystem.current.SetSelectedGameObject(null);
+        sfx.Play();
 
         if (SaveManager.LoadFile())
         {
-            SceneManager.LoadScene(level);
+            ao = SceneManager.LoadSceneAsync(level);
+            ao.allowSceneActivation = false;
+
+            StartCoroutine(ChangeLevel());
         }
     }
 
     public void Quit()
     {
         EventSystem.current.SetSelectedGameObject(null);
+        sfx.Play();
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         Application.Quit();
     }

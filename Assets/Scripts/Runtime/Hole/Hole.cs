@@ -54,7 +54,7 @@ public class Hole : MonoBehaviour
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);
 
-            ballContentAnim.SetTrigger("WinAnim");
+            ballContentAnim.SetTrigger("WinAnimation");
             StartCoroutine(SpawnPoint());
 
             virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;

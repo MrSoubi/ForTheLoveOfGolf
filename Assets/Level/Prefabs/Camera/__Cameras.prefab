@@ -51,6 +51,7 @@ MonoBehaviour:
   followingCam: {fileID: 3309169224371312152}
   boostCam: {fileID: 6150684680775691926}
   aimingCam: {fileID: 8266033704309864994}
+  brain: {fileID: 0}
 --- !u!1001 &176234362786128446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -337,7 +338,8 @@ PrefabInstance:
       propertyPath: m_IgnoreTimeScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7142984298639536114, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

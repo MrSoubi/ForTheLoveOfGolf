@@ -30,7 +30,7 @@ public class Pipe : MonoBehaviour
 
             if (sfx != null) sfx.Play();
 
-            ballContentAnim.SetTrigger("EnterAnim");
+            ballContentAnim.SetTrigger("EnterAnimation");
             StartCoroutine(TeleportCoroutine());
 
             virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;

@@ -25,6 +25,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1.0f;
 
         gameObject.SetActive(false);
+        CameraManager.Instance.brain.m_IgnoreTimeScale = true;
         CursorManager.instance.SetCursorVisibility(false);
         CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
     }

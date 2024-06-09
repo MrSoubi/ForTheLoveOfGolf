@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Windows.WebCam;
 using System.Collections;
+using Cinemachine.PostFX;
 
 public class CameraManager : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera boostCam;
     [SerializeField] private CinemachineFreeLook aimingCam;
 
-    private CinemachineBrain brain;
+    public CinemachineBrain brain;
 
     GameObject target;
 
@@ -82,6 +83,7 @@ public class CameraManager : MonoBehaviour
         aimingCam.m_XAxis.Value = followingCam.transform.rotation.eulerAngles.y;
 
         followingCam.Priority = 99;
+        aimingCam.gameObject.GetComponent<CinemachineVolumeSettings>().enabled = true;
         aimingCam.Priority = 100;
     }
 
@@ -95,9 +97,10 @@ public class CameraManager : MonoBehaviour
             followingCam.transform.position = aimingCam.transform.position;
             followingCam.transform.rotation = aimingCam.transform.rotation;
         }
-        
-        aimingCam.Priority = 99;
+
         followingCam.Priority = 100;
+        aimingCam.gameObject.GetComponent<CinemachineVolumeSettings>().enabled = false;
+        aimingCam.Priority = 99;
     }
 
     /// <summary>

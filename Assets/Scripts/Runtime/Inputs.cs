@@ -31,6 +31,7 @@ public class Inputs : MonoBehaviour
                 Time.timeScale = 0.0f;
 
                 panelMenu.SetActive(true);
+                CameraManager.Instance.brain.m_IgnoreTimeScale = false;
                 CursorManager.instance.SetCursorVisibility(true);
                 CursorManager.instance.SetCursorLockMod(CursorLockMode.None);
             }
@@ -39,6 +40,7 @@ public class Inputs : MonoBehaviour
                 Time.timeScale = 1.0f;
 
                 panelMenu.SetActive(false);
+                CameraManager.Instance.brain.m_IgnoreTimeScale = true;
                 CursorManager.instance.SetCursorVisibility(false);
                 CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
 
@@ -46,7 +48,7 @@ public class Inputs : MonoBehaviour
             }  
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && Time.timeScale > 0)
         {
             GameManager.instance.Respawn(players);
         }

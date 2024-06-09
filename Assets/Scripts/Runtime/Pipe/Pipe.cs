@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] CheckpointTrigger checkpointExit;
+    [SerializeField] GameObject pipeExit;
     [SerializeField] Vector3 respawnPointOffset;
 
     [SerializeField] private Animator ballContentAnim;
@@ -12,21 +12,25 @@ public class Pipe : MonoBehaviour
     private GameObject collision;
     private bool take;
 
+    [SerializeField] private AudioSource sfx;
+
     private void Start()
     {
-        virtualBall.gameObject.SetActive(false);
+        if(virtualBall != null) virtualBall.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && checkpointExit && !take)
+        if (other.CompareTag("Player") && pipeExit != null && !take)
         {
             take = true;
             collision = other.gameObject;
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);
 
-            ballContentAnim.SetTrigger("WinAnim");
+            if (sfx != null) sfx.Play();
+
+            ballContentAnim.SetTrigger("EnterAnim");
             StartCoroutine(TeleportCoroutine());
 
             virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
@@ -52,7 +56,7 @@ public class Pipe : MonoBehaviour
 
         collision.SetActive(true);
 
-        tmp.Teleport(checkpointExit.transform.position + respawnPointOffset);
+        tmp.Teleport(pipeExit.transform.position + respawnPointOffset);
 
         UIManager.instance.FadeOut();
 
@@ -65,6 +69,6 @@ public class Pipe : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        if(checkpointExit) Gizmos.DrawSphere(checkpointExit.transform.position + respawnPointOffset, .1f);
+        if(pipeExit) Gizmos.DrawSphere(pipeExit.transform.position + respawnPointOffset, .1f);
     }
 }

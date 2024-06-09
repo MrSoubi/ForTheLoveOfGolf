@@ -7,19 +7,19 @@ public class TimeChallengeCoin : MonoBehaviour
 {
     [Header("References")]
     public GameObject mesh;
+    public TimeChallenge challenge;
 
     [Header("Settings")]
     public int value;
 
     [Header("__DEBUG__")]
     public bool isPickingUp;
-    public static event Action<TimeChallengeCoin> onCollected;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !isPickingUp)
         {
-            onCollected?.Invoke(this);
+            challenge.CollectCoin(this);
             isPickingUp = true;
         }
     }

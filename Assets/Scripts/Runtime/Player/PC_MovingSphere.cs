@@ -1,16 +1,14 @@
-using DG.Tweening;
-using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEngine;
-using RangeAttribute = UnityEngine.RangeAttribute;
-using Unity.VisualScripting;
-using UnityEditor;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
 
 
 public class PC_MovingSphere : MonoBehaviour
 {
-    public ParticleSystem particleSystem;
+    public ParticleSystem particles;
+    [SerializeField] private AudioSource sfxShoot;
+    [SerializeField] private AudioSource sfxSpeed;
 
     // ----------
     // -- Tool --
@@ -20,9 +18,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     #region TOOL PARAMETERS
 
-    float
-        maxAcceleration,
-        maxAirAcceleration;
+    float maxAcceleration, maxAirAcceleration;
 
     float shootHeight;
     int maxShoots;
@@ -39,9 +35,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     #endregion
 
-
     Transform playerInputSpace;
-
 
     [SerializeField]
     [Tooltip("Mettre l'enfant Ball")]
@@ -50,15 +44,13 @@ public class PC_MovingSphere : MonoBehaviour
     public GameObject shootingIndicator;
 
     public float maxSpeed;
-        
+
     float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
-    float
-        maxClimbAcceleration = 40f,
-        maxSwimAcceleration = 5f;
+    float maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
     
-    float maxStairsAngle = 50f; // Non utilis�
-    float maxClimbAngle = 140f; // Non utilis�
+    float maxStairsAngle = 50f; // Non utilisé
+    float maxClimbAngle = 140f; // Non utilisé
     float submergenceOffset = 0.5f;
     float submergenceRange = 1f;
     float buoyancy = 1f;
@@ -71,9 +63,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     float ballRadius = 0.5f;
 
-
     float ballAlignSpeed = 180f;
-
 
     float ballAirRotation = 0.5f;
 
@@ -99,14 +89,7 @@ public class PC_MovingSphere : MonoBehaviour
     int stepsSinceLastGrounded, stepsSinceLastJump;
     MeshRenderer meshRenderer;
 
-
-
-    public void PreventSnapToGround()
-    {
-        stepsSinceLastJump = -1;
-    }
-
-    void OnValidate()
+    private void OnValidate()
     {
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
         minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
@@ -134,7 +117,7 @@ public class PC_MovingSphere : MonoBehaviour
         */
     }
 
-    void Awake()
+    private void Awake()
     {
         body = GetComponent<Rigidbody>();
         body.useGravity = false;
@@ -150,17 +133,14 @@ public class PC_MovingSphere : MonoBehaviour
         playerInputSpace = CameraManager.Instance.GetLookingDirection();
     }
 
+    private bool isAiming;
 
-    bool isAiming;
-    void Update()
+    private void Update()
     {
         playerInputSpace = CameraManager.Instance.GetLookingDirection();
         UpdatePCData();
 
-        if (isBlocked)
-        {
-            return;
-        }
+        if (isBlocked) return;
 
         if (shouldToogleRoll)
         {
@@ -169,46 +149,101 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButtonDown(1)) // Activation du mode Aim
-            {
-                ToggleAim();
-            }
-            if (isAiming && Input.GetMouseButtonUp(1)) // Desactivation du mode Aim
-            {
-                ToggleRoll(true);
-            }
+            if (Input.GetMouseButtonDown(1) && Time.timeScale > 0) ToggleAim(); // Activation du mode Aim
+
+            if (isAiming && Input.GetMouseButtonUp(1) && Time.timeScale > 0) ToggleRoll(true); // Desactivation du mode Aim
         }
 
-        if (isAiming)
-        {
-            HandleAim();
-        }
-        else
-        {
-            HandleRoll();
-        }
+        if (isAiming) HandleAim();
+        else HandleRoll();
 
         UpdateBall();
     }
 
-    void ShowShootingIndicator()
+    private bool shouldToogleRoll;
+
+    private void FixedUpdate()
+    {
+        if (isBlocked) return;
+
+        Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
+        UpdateState();
+
+        if (InWater) velocity *= 1f - waterDrag * submergence * Time.deltaTime;
+
+        AdjustVelocity();
+        AdjustMaxSpeed();
+
+        if (desiredShoot)
+        {
+            desiredShoot = false;
+            Shoot(gravity);
+            shouldToogleRoll = true;
+        }
+
+        if (Climbing) velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
+        else if (InWater) velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+        else if (OnGround && velocity.sqrMagnitude < 0.01f) velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
+        else if (desiresClimbing && OnGround) velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
+        else velocity += gravity * Time.deltaTime;
+
+        if (!isFreezed) body.velocity = velocity;
+
+        ClearState();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        EvaluateCollision(collision);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        EvaluateCollision(collision);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if ((waterMask & (1 << other.gameObject.layer)) != 0) EvaluateSubmergence(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if ((waterMask & (1 << other.gameObject.layer)) != 0) EvaluateSubmergence(other);
+    }
+
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    public void PreventSnapToGround()
+    {
+        stepsSinceLastJump = -1;
+    }
+
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
         //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
         shootingIndicator.SetActive(true);
     }
 
-    void HideShootingIndicator()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void HideShootingIndicator()
     {
         shootingIndicator.SetActive(false);
     }
 
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
     public void ToggleAim()
     {
-        if (!canShoot || shootCharges < 1)
-        {
-            return;
-        }
+        if (!canShoot || shootCharges < 1) return;
 
         ShowShootingIndicator();
         isAiming = true;
@@ -230,13 +265,19 @@ public class PC_MovingSphere : MonoBehaviour
         CameraManager.Instance.ActivateFollowMode(reset);
     }
 
-    void HandleAim()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
         shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
-    void HandleRoll()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void HandleRoll()
     {
         playerInput.x = Input.GetAxis("Horizontal");
         playerInput.z = Input.GetAxis("Vertical");
@@ -254,38 +295,28 @@ public class PC_MovingSphere : MonoBehaviour
             forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
         }
 
-        if (Swimming)
-        {
-            desiresClimbing = false;
-        }
-
+        if (Swimming) desiresClimbing = false;
     }
 
-    void UpdateBall()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void UpdateBall()
     {
         Vector3 rotationPlaneNormal = lastContactNormal;
         float rotationFactor = 1f;
 
         if (!OnGround)
         {
-            if (OnSteep)
-            {
-                rotationPlaneNormal = lastSteepNormal;
-            }
-            else
-            {
-                rotationFactor = ballAirRotation;
-            }
+            if (OnSteep) rotationPlaneNormal = lastSteepNormal;
+            else rotationFactor = ballAirRotation;
         }
 
-        if (body.velocity.magnitude > 0.1 && particleSystem.isStopped)
-        {
-            particleSystem.Play();
-        }
-        else if (body.velocity.magnitude <= 0.1 && particleSystem.isPlaying)
-        {
-            particleSystem.Stop();
-        }
+        if (body.velocity.magnitude > 10 && particles != null && particles.isStopped) particles.Play();
+        else if (body.velocity.magnitude <= 10 && particles != null && particles.isPlaying) particles.Stop();
+
+        if (body.velocity.magnitude > 10 && sfxSpeed != null && !sfxSpeed.isPlaying) sfxSpeed.Play();
+        else if (body.velocity.magnitude <= 10 && sfxSpeed != null && sfxSpeed.isPlaying) sfxSpeed.Stop();
 
         Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
         movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
@@ -296,34 +327,32 @@ public class PC_MovingSphere : MonoBehaviour
         if (connectedBody && connectedBody == previousConnectedBody)
         {
             rotation = Quaternion.Euler(connectedBody.angularVelocity * (Mathf.Rad2Deg * Time.deltaTime)) * rotation;
+
             if (distance < 0.001f)
             {
                 ball.localRotation = rotation;
+                
                 return;
             }
         }
-        else if (distance < 0.001f)
-        {
-            return;
-        }
+        else if (distance < 0.001f) return;
 
         float angle = distance * rotationFactor * (180f / Mathf.PI) / ballRadius;
         Vector3 rotationAxis = Vector3.Cross(rotationPlaneNormal, movement).normalized;
         rotation = Quaternion.Euler(rotationAxis * angle) * rotation;
 
-        if (ballAlignSpeed > 0f)
-        {
-            rotation = AlignBallRotation(rotationAxis, rotation, distance);
-        }
-        if (canTurn)
-        {
-            ball.localRotation = rotation;
-        }
+        if (ballAlignSpeed > 0f)  rotation = AlignBallRotation(rotationAxis, rotation, distance);
 
-
+        if (canTurn) ball.localRotation = rotation;
     }
 
-    Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    /// <param name="rotationAxis"></param>
+    /// <param name="rotation"></param>
+    /// <param name="traveledDistance"></param>
+    private Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
     {
         Vector3 ballAxis = ball.up;
         float dot = Mathf.Clamp(Vector3.Dot(ballAxis, rotationAxis), -1f, 1f);
@@ -331,73 +360,15 @@ public class PC_MovingSphere : MonoBehaviour
         float maxAngle = ballAlignSpeed * traveledDistance;
 
         Quaternion newAlignment = Quaternion.FromToRotation(ballAxis, rotationAxis) * rotation;
-        if (angle <= maxAngle)
-        {
-            return newAlignment;
-        }
-        else
-        {
-            return Quaternion.SlerpUnclamped(rotation, newAlignment, maxAngle / angle);
-        }
+
+        if (angle <= maxAngle) return newAlignment;
+        else return Quaternion.SlerpUnclamped(rotation, newAlignment, maxAngle / angle);
     }
 
-    bool shouldToogleRoll;
-    void FixedUpdate()
-    {
-        if (isBlocked)
-        {
-            return;
-        }
-
-        Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
-        UpdateState();
-
-        if (InWater)
-        {
-            velocity *= 1f - waterDrag * submergence * Time.deltaTime;
-        }
-
-        AdjustVelocity();
-        AdjustMaxSpeed();
-
-        if (desiredShoot)
-        {
-            desiredShoot = false;
-            Shoot(gravity);
-            shouldToogleRoll = true;
-        }
-
-        if (Climbing)
-        {
-            velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
-        }
-        else if (InWater)
-        {
-            velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
-        }
-        else if (OnGround && velocity.sqrMagnitude < 0.01f)
-        {
-            velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
-        }
-        else if (desiresClimbing && OnGround)
-        {
-            velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
-        }
-        else
-        {
-            velocity += gravity * Time.deltaTime;
-        }
-
-        if (!isFreezed)
-        {
-            body.velocity = velocity;
-        }
-
-
-        ClearState();
-    }
-
-    void ClearState()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void ClearState()
     {
         lastContactNormal = contactNormal;
         lastSteepNormal = steepNormal;
@@ -410,51 +381,52 @@ public class PC_MovingSphere : MonoBehaviour
         submergence = 0f;
     }
 
-    void UpdateState()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void UpdateState()
     {
         stepsSinceLastGrounded += 1;
         stepsSinceLastJump += 1;
         velocity = body.velocity;
+
         if (CheckClimbing() || CheckSwimming() || OnGround || SnapToGround() || CheckSteepContacts())
         {
             stepsSinceLastGrounded = 0;
+
             if (stepsSinceLastJump > 1 & shootCharges <= 0)
             {
                 shootCharges = 1;
 
                 if (UIManager.instance != null) UIManager.instance.ShootUse(false);
             }
-            if (groundContactCount > 1)
-            {
-                contactNormal.Normalize();
-            }
+            
+            if (groundContactCount > 1) contactNormal.Normalize();
         }
-        else
-        {
-            contactNormal = upAxis;
-        }
+        else contactNormal = upAxis;
 
-        if (connectedBody)
-        {
-            if (connectedBody.isKinematic || connectedBody.mass >= body.mass)
-            {
-                UpdateConnectionState();
-            }
-        }
+        if (connectedBody && (connectedBody.isKinematic || connectedBody.mass >= body.mass)) UpdateConnectionState();
     }
 
-    void UpdateConnectionState()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private void UpdateConnectionState()
     {
         if (connectedBody == previousConnectedBody)
         {
             Vector3 connectionMovement = connectedBody.transform.TransformPoint(connectionLocalPosition) - connectionWorldPosition;
             connectionVelocity = connectionMovement / Time.deltaTime;
         }
+
         connectionWorldPosition = body.position;
         connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
     }
 
-    bool CheckClimbing()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private bool CheckClimbing()
     {
         if (Climbing)
         {
@@ -462,107 +434,124 @@ public class PC_MovingSphere : MonoBehaviour
             {
                 climbNormal.Normalize();
                 float upDot = Vector3.Dot(upAxis, climbNormal);
-                if (upDot >= minGroundDotProduct)
-                {
-                    climbNormal = lastClimbNormal;
-                }
+                if (upDot >= minGroundDotProduct) climbNormal = lastClimbNormal;
             }
+
             groundContactCount = 1;
             contactNormal = climbNormal;
+
             return true;
         }
+
         return false;
     }
 
-    bool CheckSwimming()
+    /// <summary>
+    /// Retourne si la balle nage
+    /// </summary>
+    private bool CheckSwimming()
     {
         if (Swimming)
         {
             groundContactCount = 0;
             contactNormal = upAxis;
+
             return true;
         }
+
         return false;
     }
 
-    bool SnapToGround()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private bool SnapToGround()
     {
-        if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2 || InWater)
-        {
-            return false;
-        }
+        if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2 || InWater) return false;
+
         float speed = velocity.magnitude;
-        if (speed > maxSnapSpeed)
-        {
-            return false;
-        }
-        if (!Physics.Raycast(body.position, -upAxis, out RaycastHit hit, probeDistance, probeMask, QueryTriggerInteraction.Ignore))
-        {
-            return false;
-        }
+
+        if (speed > maxSnapSpeed) return false;
+        
+        if (!Physics.Raycast(body.position, -upAxis, out RaycastHit hit, probeDistance, probeMask, QueryTriggerInteraction.Ignore)) return false;
 
         float upDot = Vector3.Dot(upAxis, hit.normal);
-        if (upDot < GetMinDot(hit.collider.gameObject.layer))
-        {
-            return false;
-        }
+
+        if (upDot < GetMinDot(hit.collider.gameObject.layer)) return false;
 
         groundContactCount = 1;
         contactNormal = hit.normal;
         float dot = Vector3.Dot(velocity, hit.normal);
-        if (dot > 0f)
-        {
-            velocity = (velocity - hit.normal * dot).normalized * speed;
-        }
+
+        if (dot > 0f) velocity = (velocity - hit.normal * dot).normalized * speed;
+
         connectedBody = hit.rigidbody;
+
         return true;
     }
 
-    bool CheckSteepContacts()
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    private bool CheckSteepContacts()
     {
         if (steepContactCount > 1)
         {
             steepNormal.Normalize();
             float upDot = Vector3.Dot(upAxis, steepNormal);
+
             if (upDot >= minGroundDotProduct)
             {
                 steepContactCount = 0;
                 groundContactCount = 1;
                 contactNormal = steepNormal;
+
                 return true;
             }
         }
+
         return false;
     }
 
-    int maxSpeedIndex = 0;
+    private int maxSpeedIndex = 0;
 
-    void LowerMaxSpeed()
+    /// <summary>
+    /// Diminue la vitesse maximal de la balle
+    /// </summary>
+    private void LowerMaxSpeed()
     {
         maxSpeedIndex--;
         maxSpeedIndex = Mathf.Clamp(maxSpeedIndex, 0, speedLimits.Count- 1);
         maxSpeed = speedLimits[maxSpeedIndex];
     }
 
-    void ResetMaxSpeed()
+    /// <summary>
+    /// Réinitialise la vitesse maximal de la balle
+    /// </summary>
+    private void ResetMaxSpeed()
     {
         maxSpeedIndex = 0;
         maxSpeed =  speedLimits.Count > 0 ? speedLimits[0] : 20f;
     }
 
-    void AdjustMaxSpeed()
+    /// <summary>
+    /// Ajuste la vitesse maximal de la balle
+    /// </summary>
+    private void AdjustMaxSpeed()
     {
-        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
-        {
-            LowerMaxSpeed();
-        }
+        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin) LowerMaxSpeed();
     }
 
-    bool isVelocityClamped = true;
-    void AdjustVelocity()
+    private bool isVelocityClamped = true;
+
+    /// <summary>
+    /// Ajuste la vélocité de la balle
+    /// </summary>
+    private void AdjustVelocity()
     {
         float acceleration, speed;
         Vector3 xAxis, zAxis;
+
         if (Climbing)
         {
             acceleration = maxClimbAcceleration;
@@ -585,6 +574,7 @@ public class PC_MovingSphere : MonoBehaviour
             xAxis = rightAxis;
             zAxis = forwardAxis;
         }
+
         xAxis = ProjectDirectionOnPlane(xAxis, contactNormal);
         zAxis = ProjectDirectionOnPlane(zAxis, contactNormal);
 
@@ -599,15 +589,15 @@ public class PC_MovingSphere : MonoBehaviour
 
         float turningFactor = rotationCurve.Evaluate(velocity.magnitude / speedLimits[speedLimits.Count - 1]);
         velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * 1);
-        if (Swimming)
-        {
-            velocity += upAxis * adjustment.y;
-        }
+
+        if (Swimming) velocity += upAxis * adjustment.y;
 
         Velocity = velocity.magnitude;
     }
 
-
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
     public void ClampVelocity()
     {
         isVelocityClamped = true;
@@ -618,6 +608,7 @@ public class PC_MovingSphere : MonoBehaviour
             {
                 maxSpeedIndex = i;
                 maxSpeed = speedLimits[maxSpeedIndex];
+
                 break;
             }
         }
@@ -626,35 +617,39 @@ public class PC_MovingSphere : MonoBehaviour
         maxSpeed = speedLimits[maxSpeedIndex];
     }
 
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
         IncreaseSpeedLimitToMaximum();
     }
 
+    private float shootingFactor = 0.5f;
+    private Vector3 shootdirectiondebug;
 
-    float shootingFactor = 0.5f;
-    Vector3 shootdirectiondebug;
-    void Shoot(Vector3 gravity)
+    /// <summary>
+    /// La fonction tire de la balle
+    /// </summary>
+    /// <param name="gravity"></param>
+    private void Shoot(Vector3 gravity)
     {
-        if (!canShoot)
-        {
-            return;
-        }
+        if (!canShoot) return;
 
         Vector3 shootDirection;
 
-        if (maxShoots <= 0 || shootCharges <= 0)
-        {
-            return;
-        }
+        if (maxShoots <= 0 || shootCharges <= 0) return;
 
         stepsSinceLastJump = 0;
         shootCharges -= 1;
 
+        if (sfxShoot != null) sfxShoot.Play();
+
         if (UIManager.instance != null) UIManager.instance.ShootUse(true);
 
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
+        
         //if (InWater)
         //{
         //    shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
@@ -672,38 +667,26 @@ public class PC_MovingSphere : MonoBehaviour
 
         float localMaxSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
 
-        if (maxSpeedIndex == speedLimits.Count - 1)
-        {
-            velocity = shootDirection * localMaxSpeed;
-        }
-        else
-        {
-            velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
-        }
+        if (maxSpeedIndex == speedLimits.Count - 1) velocity = shootDirection * localMaxSpeed;
+        else velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
     }
 
-    void OnCollisionEnter(Collision collision)
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    /// <param name="collision"></param>
+    private void EvaluateCollision(Collision collision)
     {
-        EvaluateCollision(collision);
-    }
+        if (Swimming) return;
 
-    void OnCollisionStay(Collision collision)
-    {
-        EvaluateCollision(collision);
-    }
-
-    void EvaluateCollision(Collision collision)
-    {
-        if (Swimming)
-        {
-            return;
-        }
         int layer = collision.gameObject.layer;
         float minDot = GetMinDot(layer);
+
         for (int i = 0; i < collision.contactCount; i++)
         {
             Vector3 normal = collision.GetContact(i).normal;
             float upDot = Vector3.Dot(upAxis, normal);
+
             if (upDot >= minDot)
             {
                 groundContactCount += 1;
@@ -716,14 +699,11 @@ public class PC_MovingSphere : MonoBehaviour
                 {
                     steepContactCount += 1;
                     steepNormal += normal;
-                    if (groundContactCount == 0)
-                    {
-                        connectedBody = collision.rigidbody;
-                    }
+
+                    if (groundContactCount == 0) connectedBody = collision.rigidbody;
                 }
-                if (
-                    desiresClimbing && upDot >= minClimbDotProduct && (climbMask & (1 << layer)) != 0
-                )
+
+                if (desiresClimbing && upDot >= minClimbDotProduct && (climbMask & (1 << layer)) != 0)
                 {
                     climbContactCount += 1;
                     climbNormal += normal;
@@ -734,48 +714,40 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    /// <summary>
+    /// ??? (A compléter)
+    /// </summary>
+    /// <param name="collider"></param>
+    private void EvaluateSubmergence(Collider collider)
     {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
-        {
-            EvaluateSubmergence(other);
-        }
+        if (Physics.Raycast(body.position + upAxis * submergenceOffset, -upAxis, out RaycastHit hit, submergenceRange + 1f, waterMask, QueryTriggerInteraction.Collide)) submergence = 1f - hit.distance / submergenceRange;
+        else submergence = 1f;
+
+        if (Swimming) connectedBody = collider.attachedRigidbody;
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        if ((waterMask & (1 << other.gameObject.layer)) != 0)
-        {
-            EvaluateSubmergence(other);
-        }
-    }
-
-    void EvaluateSubmergence(Collider collider)
-    {
-        if (Physics.Raycast(body.position + upAxis * submergenceOffset, -upAxis, out RaycastHit hit, submergenceRange + 1f, waterMask, QueryTriggerInteraction.Collide))
-        {
-            submergence = 1f - hit.distance / submergenceRange;
-        }
-        else
-        {
-            submergence = 1f;
-        }
-        if (Swimming)
-        {
-            connectedBody = collider.attachedRigidbody;
-        }
-    }
-
-    Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
+    /// <summary>
+    /// Renvoie ??? (A compléter)
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <param name="normal"></param>
+    private Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
     {
         return (direction - normal * Vector3.Dot(direction, normal)).normalized;
     }
 
-    float GetMinDot(int layer)
+    /// <summary>
+    /// Renvoie ??? (A compléter)
+    /// </summary>
+    /// <param name="layer"></param>
+    private float GetMinDot(int layer)
     {
         return (stairsMask & (1 << layer)) == 0 ? minGroundDotProduct : minStairsDotProduct;
     }
 
+    /// <summary>
+    /// Met à jour les données du player controller
+    /// </summary>
     public void UpdatePCData()
     {
         maxAcceleration = PCData.maxAcceleration;
@@ -794,12 +766,19 @@ public class PC_MovingSphere : MonoBehaviour
         rotationCurve = PCData.rotationCurve;
     }
 
+    /// <summary>
+    /// Définit les données du player controller
+    /// </summary>
+    /// <param name="PCData"></param>
     public void SetPCData(PlayerControllerData PCData)
     {
         this.PCData = PCData;
         UpdatePCData();
     }
 
+    /// <summary>
+    /// Renvoie les données du player controller
+    /// </summary>
     public PlayerControllerData GetPCData()
     {
         return PCData;
@@ -844,7 +823,6 @@ public class PC_MovingSphere : MonoBehaviour
         return body.velocity;
     }
 
-
     private Vector3 savedVelocity;
     private bool isBlocked;
 
@@ -873,7 +851,8 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = false;
     }
 
-    bool canTurn = true;
+    private bool canTurn = true;
+
     /// <summary>
     /// Bloque la direction du joueur, il ne peut plus tourner mais continue de subir la gravité et les frottements
     /// </summary>
@@ -890,7 +869,8 @@ public class PC_MovingSphere : MonoBehaviour
         canTurn = true;
     }
 
-    bool isFreezed = false;
+    private bool isFreezed = false;
+
     /// <summary>
     /// Bloque la vélocité du joueur, il avance tout droit à vitesse constante sans pouvoir tourner. Peut être désactivé avec la fonction UnFreeze().
     /// </summary>
@@ -916,6 +896,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void AddShootCharges(int amount)
     {
         shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
+
         if (UIManager.instance != null) UIManager.instance.ShootUse(false);
     }
 
@@ -987,16 +968,14 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="limitIndex"></param>
     public void SetSpeedLimit(int limitIndex)
     {
-        if (limitIndex < 0 || limitIndex >= speedLimits.Count)
-        {
-            throw new Exception("SpeedLimitIndex out of bounds");
-        }
+        if (limitIndex < 0 || limitIndex >= speedLimits.Count) throw new Exception("SpeedLimitIndex out of bounds");
 
         maxSpeedIndex = limitIndex;
         maxSpeed = speedLimits[speedLimits.Count - 1];
     }
     
-        private bool canShoot = true;
+    private bool canShoot = true;
+
     /// <summary>
     /// Empêche le joueur de tirer. Peut être réactivé avec la fonction ActivateShoot().
     /// </summary>

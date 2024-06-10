@@ -25,7 +25,8 @@ public class CheckpointTrigger : MonoBehaviour
     {
         CheckpointManager.instance?.SetCheckpoint(transform.position + Vector3.up, this);
 
-        if(particle != null) particle.Play();
+        if (CheckpointManager.instance.sfx != null) CheckpointManager.instance.sfx.Play();
+        if (particle != null) particle.Play();
     }
 
     /// <summary>

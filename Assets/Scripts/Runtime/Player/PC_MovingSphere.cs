@@ -614,16 +614,6 @@ public class PC_MovingSphere : MonoBehaviour
         stepsSinceLastJump = 0;
         shootCharges -= 1;
 
-        if (sfxShoot != null)
-        {
-            sfxShoot.Play();
-        }
-
-        if (UIManager.instance != null)
-        {
-            UIManager.instance.ShootInterface(true);
-        }
-
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
         
         //if (InWater)
@@ -643,14 +633,35 @@ public class PC_MovingSphere : MonoBehaviour
 
         float localMaxSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
 
-        if (maxSpeedIndex == speedLimits.Count - 1) velocity = shootDirection * localMaxSpeed;
-        else velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
+        if (maxSpeedIndex == speedLimits.Count - 1)
+        {
+            velocity = shootDirection * localMaxSpeed;
+        }
+        else
+        {
+            velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
+        }
+
+        if (sfxShoot != null)
+        {
+            sfxShoot.Play();
+        }
+
+        if (UIManager.instance != null)
+        {
+            UIManager.instance.ShootInterface(true);
+        }
+
+        StartCoroutine(CameraManager.Instance.BoostEffect());
     }
 
 
     private void EvaluateCollision(Collision collision)
     {
-        if (Swimming) return;
+        if (Swimming)
+        {
+            return;
+        }
 
         int layer = collision.gameObject.layer;
         float minDot = GetMinDot(layer);

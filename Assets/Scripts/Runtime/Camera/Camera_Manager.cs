@@ -7,6 +7,7 @@ public class CameraManager : MonoBehaviour
 {
     private static CameraManager instance = null; 
     public static CameraManager Instance => instance;
+    public bool enableBoostEffect = false;
 
     private void Awake()
     {
@@ -33,6 +34,8 @@ public class CameraManager : MonoBehaviour
         followingCam.Priority = 100;
         aimingCam.enabled = true;
         aimingCam.Priority = 99;
+        boostCam.enabled = true;
+        boostCam.Priority = 0;
 
         target = GameObject.FindGameObjectWithTag("Player");
 
@@ -40,6 +43,8 @@ public class CameraManager : MonoBehaviour
         followingCam.LookAt = target.transform;
         aimingCam.Follow = target.transform;
         aimingCam.LookAt = target.transform;
+        boostCam.Follow = target.transform;
+        boostCam.LookAt = target.transform;
     }
 
     /// <summary>
@@ -131,16 +136,23 @@ public class CameraManager : MonoBehaviour
         followingCam.transform.rotation = lookingDirection;
     }
 
-    private IEnumerator BoostEffect()
+    public IEnumerator BoostEffect()
     {
-        followingCam.Priority--;
-        aimingCam.Priority--;
-        boostCam.Priority = 100;
+        if(enableBoostEffect)
+        {
+            followingCam.Priority--;
+            aimingCam.Priority--;
+            boostCam.Priority = 100;
 
-        yield return new WaitForSeconds(1);
+            Debug.Log("Activation de la boost cam");
 
-        followingCam.Priority++;
-        aimingCam.Priority++;
-        boostCam.Priority = 0;
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("Desactivation de la boost cam");
+
+            followingCam.Priority++;
+            aimingCam.Priority++;
+            boostCam.Priority = 0;
+        }
     }
 }

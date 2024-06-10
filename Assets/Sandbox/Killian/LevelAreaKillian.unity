@@ -259,7 +259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (2)
+      value: Coin (11)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -286,7 +286,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111047317454125105, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_Name
-      value: CheckpointTrigger (5)
+      value: Checkpoint_Trigger (4)
       objectReference: {fileID: 0}
     - target: {fileID: 2297650971129265574, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -401,7 +401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5159889163279066527, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_Name
-      value: PivotDoor
+      value: Pivot_Door
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalPosition.x
@@ -572,7 +572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible
+      value: Coin (13)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -670,7 +670,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (9)
+      value: Coin (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -690,9 +690,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 553776256}
     m_Modifications:
+    - target: {fileID: 3211849704584642681, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+      propertyPath: isGoldenFlag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3211849704584642681, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
+      propertyPath: respawnPoint.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4274632649571144924, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
       propertyPath: m_Name
-      value: ChallengeZone
+      value: Time_Challenge_Zone
       objectReference: {fileID: 0}
     - target: {fileID: 8816914175032020808, guid: 81809b8fa83d13c44ae2688a7139ea9e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -952,7 +960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (7)
+      value: Coin (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1019,7 +1027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (8)
+      value: Coin (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1232,7 +1240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7914691770137300108, guid: d3179cf4e40418d428170760bf338df4, type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: Canvas_Game
       objectReference: {fileID: 0}
     - target: {fileID: 7932479786931545250, guid: d3179cf4e40418d428170760bf338df4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1331,7 +1339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7754747069651594453, guid: c72b6350c56cde64aa29d6ae60352253, type: 3}
       propertyPath: m_Name
-      value: DeathBox
+      value: Death_Box
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1348,7 +1356,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111047317454125105, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_Name
-      value: CheckpointTrigger (3)
+      value: Checkpoint_Trigger (2)
       objectReference: {fileID: 0}
     - target: {fileID: 4480991639212362649, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1498,35 +1506,35 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 567512109}
   - {fileID: 55048866}
-  - {fileID: 1607762775}
+  - {fileID: 2015667314}
   - {fileID: 1115107835}
+  - {fileID: 1607762775}
+  - {fileID: 125620703}
   - {fileID: 1902905540}
   - {fileID: 208279526}
-  - {fileID: 283329353}
-  - {fileID: 1869663131}
-  - {fileID: 949534191}
   - {fileID: 329251550}
   - {fileID: 70239783}
   - {fileID: 973320552}
   - {fileID: 881633582}
   - {fileID: 1991232603}
-  - {fileID: 2015667314}
-  - {fileID: 103247239}
-  - {fileID: 695837334}
-  - {fileID: 567512109}
   - {fileID: 664513942}
-  - {fileID: 104688844}
+  - {fileID: 103247239}
+  - {fileID: 283329353}
+  - {fileID: 1869663131}
+  - {fileID: 949534191}
+  - {fileID: 695837334}
+  - {fileID: 91977399}
+  - {fileID: 807023380}
+  - {fileID: 184337542}
+  - {fileID: 1538112165}
   - {fileID: 346649204}
   - {fileID: 214739487}
+  - {fileID: 104688844}
   - {fileID: 1256197813}
   - {fileID: 8394328726425031916}
   - {fileID: 346894034}
-  - {fileID: 125620703}
-  - {fileID: 184337542}
-  - {fileID: 807023380}
-  - {fileID: 91977399}
-  - {fileID: 1538112165}
   - {fileID: 1754468731265859984}
   m_Father: {fileID: 679003548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1550,7 +1558,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111047317454125105, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_Name
-      value: CheckpointTrigger (2)
+      value: Checkpoint_Trigger (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4480991639212362649, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1601,17 +1609,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
---- !u!114 &612704134 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 580275826140843212, guid: a74e2b6075da9e847bfbbf2201f67683, type: 3}
-  m_PrefabInstance: {fileID: 1508307989}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &664513942 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4480991639212362649, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
@@ -1719,7 +1716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: c1e7b3ddbe4ebd8488b95ac5f41a373a, type: 3}
       propertyPath: m_Name
-      value: BigCollectible
+      value: Big_Coin
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1743,7 +1740,7 @@ GameObject:
   - component: {fileID: 705507994}
   - component: {fileID: 705507996}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: Directional_Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1899,7 +1896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (1)
+      value: Coin (12)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1921,7 +1918,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 30637031762711306, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_Name
-      value: Hole (3)
+      value: Hole (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: isGoldenFlag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: respawnPoint.x
@@ -2142,15 +2143,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 30637031762711306, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_Name
-      value: Hole
-      objectReference: {fileID: 0}
-    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-      propertyPath: respawnPoint.x
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-      propertyPath: respawnPoint.z
-      value: 0
+      value: Hole (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2367,7 +2360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (11)
+      value: Coin (8)
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Layer
@@ -2428,7 +2421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (13)
+      value: Coin (9)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2465,7 +2458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6680058021271971857, guid: bbd20666e4b20394286aa6ac325b8a72, type: 3}
       propertyPath: m_Name
-      value: Pipe (1)
+      value: Pipe_Enter (2)
       objectReference: {fileID: 0}
     - target: {fileID: 8394328725666514938, guid: bbd20666e4b20394286aa6ac325b8a72, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2691,7 +2684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6475847505128688897, guid: c41896462f855394d97efb998734467a, type: 3}
       propertyPath: m_Name
-      value: VerticalDoor
+      value: Vertical_Door
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2748,7 +2741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (15)
+      value: Coin (6)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2837,7 +2830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (14)
+      value: Coin (10)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3042,7 +3035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (10)
+      value: Coin (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3057,10 +3050,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5149849514076641611, guid: a74e2b6075da9e847bfbbf2201f67683, type: 3}
-      propertyPath: brain
-      value: 
-      objectReference: {fileID: 612704134}
     - target: {fileID: 6594041198591572194, guid: a74e2b6075da9e847bfbbf2201f67683, type: 3}
       propertyPath: m_Name
       value: __Cameras
@@ -3267,7 +3256,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 30637031762711306, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_Name
-      value: Hole (2)
+      value: Hole (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: isGoldenFlag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: respawnPoint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
+      propertyPath: respawnPoint.z
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalScale.x
@@ -3283,7 +3284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3460,7 +3461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (12)
+      value: Coin (5)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3517,7 +3518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2599920386103912642, guid: 6c9a18fa669d1734b906aa06e6a69202, type: 3}
       propertyPath: m_Name
-      value: PlayerController
+      value: Player_Controller
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3608,7 +3609,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3764372556851579968, guid: ff1cdd7634baffb4aa0ea6c462432a50, type: 3}
       propertyPath: m_Name
-      value: PannelCollectible
+      value: Pannel_Coin
       objectReference: {fileID: 0}
     - target: {fileID: 4242817762869939845, guid: ff1cdd7634baffb4aa0ea6c462432a50, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3648,18 +3649,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4242817762869939845, guid: ff1cdd7634baffb4aa0ea6c462432a50, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883156907206220422, guid: ff1cdd7634baffb4aa0ea6c462432a50, type: 3}
-      propertyPath: respawnPoint.x
-      value: -2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5883156907206220422, guid: ff1cdd7634baffb4aa0ea6c462432a50, type: 3}
-      propertyPath: respawnPoint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6458433658853981496, guid: ff1cdd7634baffb4aa0ea6c462432a50, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3888,7 +3877,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111047317454125105, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_Name
-      value: CheckpointTrigger (4)
+      value: Checkpoint_Trigger (3)
       objectReference: {fileID: 0}
     - target: {fileID: 111047317454125105, guid: 0e92eaa13f17b134e838c23284f713f4, type: 3}
       propertyPath: m_Layer
@@ -3965,19 +3954,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 30637031762711306, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_Name
-      value: Hole (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+      value: Hole (2)
       objectReference: {fileID: 0}
     - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: respawnPoint.x
       value: -2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-      propertyPath: respawnPoint.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4121,7 +4102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8986821413852619165, guid: ba405a2423d2d8e4382180d7b92bb594, type: 3}
       propertyPath: m_Name
-      value: Collectible (16)
+      value: Coin (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4178,7 +4159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8968353668200740027, guid: 71809ee897e545841ba73af824c6e27b, type: 3}
       propertyPath: m_Name
-      value: PipeExit (2)
+      value: Pipe_Exit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4195,7 +4176,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 506719455403886190, guid: 7bb123bbe9b7bdc4483d4da74cccfb3d, type: 3}
       propertyPath: m_Name
-      value: GiveShootChargeTrigger
+      value: Shoot_Charge_Trigger
       objectReference: {fileID: 0}
     - target: {fileID: 1321546284603774722, guid: 7bb123bbe9b7bdc4483d4da74cccfb3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4261,7 +4242,7 @@ PrefabInstance:
       objectReference: {fileID: 6680058022056966919}
     - target: {fileID: 6680058021271971857, guid: bbd20666e4b20394286aa6ac325b8a72, type: 3}
       propertyPath: m_Name
-      value: Pipe
+      value: Pipe_Enter (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8394328725666514938, guid: bbd20666e4b20394286aa6ac325b8a72, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4358,7 +4339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4179484520791219315, guid: 681c49181eafbf1428bb37f65f286426, type: 3}
       propertyPath: m_Name
-      value: GameManager
+      value: Game_Manager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4380,7 +4361,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5164298256987998500, guid: 8553e09bbaa1cb045b86a6f3cc221336, type: 3}
       propertyPath: m_Name
-      value: AudioGame
+      value: Audio_Game
       objectReference: {fileID: 0}
     - target: {fileID: 8050259005700090848, guid: 8553e09bbaa1cb045b86a6f3cc221336, type: 3}
       propertyPath: m_LocalPosition.x

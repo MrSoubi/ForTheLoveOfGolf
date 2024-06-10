@@ -3,16 +3,17 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] GameObject pipeExit;
-    [SerializeField] Vector3 respawnPointOffset;
-
+    [Header("References")]
+    [SerializeField] private AudioSource sfx;
     [SerializeField] private Animator ballContentAnim;
     [SerializeField] private Transform virtualBall;
 
+    [Header("Settings")]
+    [SerializeField] GameObject pipeExit;
+    [SerializeField] Vector3 respawnPointOffset;
+
     private GameObject collision;
     private bool take;
-
-    [SerializeField] private AudioSource sfx;
 
     private void Start()
     {
@@ -39,7 +40,17 @@ public class Pipe : MonoBehaviour
         }
     }
 
-    IEnumerator TeleportCoroutine()
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+        if (pipeExit) Gizmos.DrawSphere(pipeExit.transform.position + respawnPointOffset, .1f);
+    }
+
+    /// <summary>
+    /// Joue l'animation et téléporte le joueur
+    /// </summary>
+    private IEnumerator TeleportCoroutine()
     {
         yield return new WaitForSeconds(.5f);
 
@@ -50,7 +61,7 @@ public class Pipe : MonoBehaviour
 
         yield return new WaitForSeconds(.4f);
 
-        UIManager.instance.FadeIn();
+        UIManager.instance.InterfacePipe(true);
 
         yield return new WaitForSeconds(1.2f);
 
@@ -58,17 +69,12 @@ public class Pipe : MonoBehaviour
 
         tmp.Teleport(pipeExit.transform.position + respawnPointOffset);
 
-        UIManager.instance.FadeOut();
+        UIManager.instance.InterfacePipe(false);
 
         yield return new WaitForSeconds(.8f);
+
         tmp.UnBlock(true);
         collision = null;
         take = false;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        if(pipeExit) Gizmos.DrawSphere(pipeExit.transform.position + respawnPointOffset, .1f);
     }
 }

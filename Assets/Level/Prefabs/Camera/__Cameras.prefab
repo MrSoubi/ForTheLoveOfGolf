@@ -51,7 +51,7 @@ MonoBehaviour:
   followingCam: {fileID: 3309169224371312152}
   boostCam: {fileID: 6150684680775691926}
   aimingCam: {fileID: 8266033704309864994}
-  brain: {fileID: 0}
+  brain: {fileID: 580275826140843212}
 --- !u!1001 &176234362786128446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6150452727631028308, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Name
-      value: VCAM Boost
+      value: VCAM_Boost
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -203,7 +203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2204934163682270718, guid: df5cfda6428c90f48a82dac12137867e, type: 3}
       propertyPath: m_Name
-      value: FLCAM Aim
+      value: FLCAM_Aim
       objectReference: {fileID: 0}
     - target: {fileID: 5317688342828478022, guid: df5cfda6428c90f48a82dac12137867e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -284,7 +284,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3669677136300894346, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_Name
-      value: Camera
+      value: MainCamera
       objectReference: {fileID: 0}
     - target: {fileID: 5507888531032965200, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: field of view
@@ -344,6 +344,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+--- !u!114 &580275826140843212 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8060681946658140078, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+  m_PrefabInstance: {fileID: 7480697027780240226}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3043973504770512759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
@@ -411,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6150452727631028308, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Name
-      value: VCAM Follow
+      value: VCAM_Follow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

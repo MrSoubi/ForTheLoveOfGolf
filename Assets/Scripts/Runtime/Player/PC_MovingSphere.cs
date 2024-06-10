@@ -1,93 +1,88 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-
 
 public class PC_MovingSphere : MonoBehaviour
 {
-    public ParticleSystem particles;
+    [Header("References")]
+    [SerializeField] private ParticleSystem particles;
     [SerializeField] private AudioSource sfxShoot;
     [SerializeField] private AudioSource sfxSpeed;
+    [SerializeField] private Transform ball = default;
+    [SerializeField] private GameObject shootingIndicator;
 
     // ----------
     // -- Tool --
     // ----------
 
+    [Header("Player Controller")]
     public PlayerControllerData PCData;
+    public float maxSpeed;
 
     #region TOOL PARAMETERS
 
-    float maxAcceleration, maxAirAcceleration;
+    private float maxAcceleration, maxAirAcceleration;
 
-    float shootHeight;
-    int maxShoots;
-    float maxGroundAngle;
-    float maxSnapSpeed;
-    float probeDistance;
-    float speedLimitMargin;
-    Material rollingMaterial, aimingMaterial;
-    float shootingAngle;
+    private float shootHeight;
+    private int maxShoots;
+    private float maxGroundAngle;
+    private float maxSnapSpeed;
+    private float probeDistance;
+    private float speedLimitMargin;
+    private Material rollingMaterial, aimingMaterial;
+    private float shootingAngle;
 
     public AnimationCurve rotationCurve;
 
-    List<float> speedLimits;
+    private List<float> speedLimits;
 
     #endregion
 
-    Transform playerInputSpace;
+    private Transform playerInputSpace;
 
-    [SerializeField]
-    [Tooltip("Mettre l'enfant Ball")]
-    Transform ball = default;
+    private float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
 
-    public GameObject shootingIndicator;
+    private float maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
 
-    public float maxSpeed;
+    private float maxStairsAngle = 50f; // Non utilisé
+    private float maxClimbAngle = 140f; // Non utilisé
+    private float submergenceOffset = 0.5f;
+    private float submergenceRange = 1f;
+    private float buoyancy = 1f;
+    private float waterDrag = 1f;
+    private float swimThreshold = 0.5f;
 
-    float maxClimbSpeed = 4f, maxSwimSpeed = 5f;
+    private LayerMask probeMask = -1;
 
-    float maxClimbAcceleration = 40f, maxSwimAcceleration = 5f;
-    
-    float maxStairsAngle = 50f; // Non utilisé
-    float maxClimbAngle = 140f; // Non utilisé
-    float submergenceOffset = 0.5f;
-    float submergenceRange = 1f;
-    float buoyancy = 1f;
-    float waterDrag = 1f;
-    float swimThreshold = 0.5f;
+    private LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
 
-    LayerMask probeMask = -1;
+    private float ballRadius = 0.5f;
 
-    LayerMask stairsMask = -1, climbMask = -1, waterMask = 0;
+    private float ballAlignSpeed = 180f;
 
-    float ballRadius = 0.5f;
+    private float ballAirRotation = 0.5f;
 
-    float ballAlignSpeed = 180f;
+    private Rigidbody body, connectedBody, previousConnectedBody;
+    private Vector3 playerInput;
+    private Vector3 velocity, connectionVelocity;
+    private float Velocity;
+    private Vector3 connectionWorldPosition, connectionLocalPosition;
+    private Vector3 upAxis, rightAxis, forwardAxis;
+    private bool desiredShoot, desiresClimbing;
+    private Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
+    private Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
+    private int groundContactCount, steepContactCount, climbContactCount;
+    private bool OnGround => groundContactCount > 0;
+    private bool OnSteep => steepContactCount > 0;
+    private bool Climbing => false; // climbContactCount > 0 && stepsSinceLastJump > 2;
+    private bool InWater => false; // submergence > 0f;
+    private bool Swimming => false; // submergence >= swimThreshold;
+    private float submergence;
+    private int shootCharges;
 
-    float ballAirRotation = 0.5f;
-
-    Rigidbody body, connectedBody, previousConnectedBody;
-    Vector3 playerInput;
-    Vector3 velocity, connectionVelocity;
-    float Velocity;
-    Vector3 connectionWorldPosition, connectionLocalPosition;
-    Vector3 upAxis, rightAxis, forwardAxis;
-    bool desiredShoot, desiresClimbing;
-    Vector3 contactNormal, steepNormal, climbNormal, lastClimbNormal;
-    Vector3 lastContactNormal, lastSteepNormal, lastConnectionVelocity;
-    int groundContactCount, steepContactCount, climbContactCount;
-    bool OnGround => groundContactCount > 0;
-    bool OnSteep => steepContactCount > 0;
-    bool Climbing => false; // climbContactCount > 0 && stepsSinceLastJump > 2;
-    bool InWater => false; // submergence > 0f;
-    bool Swimming => false; // submergence >= swimThreshold;
-    float submergence;
-    int shootCharges;
-
-    float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
-    int stepsSinceLastGrounded, stepsSinceLastJump;
-    MeshRenderer meshRenderer;
+    private float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
+    private int stepsSinceLastGrounded, stepsSinceLastJump;
+    private MeshRenderer meshRenderer;
 
     private void OnValidate()
     {
@@ -247,7 +242,9 @@ public class PC_MovingSphere : MonoBehaviour
 
         ShowShootingIndicator();
         isAiming = true;
-        meshRenderer.material = aimingMaterial;
+
+        if (aimingMaterial != null) meshRenderer.material = aimingMaterial;
+
         CameraManager.Instance.ActivateAimMode();
         shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
         Time.timeScale = 0.1f;
@@ -263,7 +260,9 @@ public class PC_MovingSphere : MonoBehaviour
         HideShootingIndicator();
         Time.timeScale = 1.0f;
         isAiming = false;
-        meshRenderer.material = rollingMaterial;
+
+        if(rollingMaterial != null) meshRenderer.material = rollingMaterial;
+
         CameraManager.Instance.ActivateFollowMode(reset);
     }
 
@@ -400,7 +399,7 @@ public class PC_MovingSphere : MonoBehaviour
             {
                 shootCharges = 1;
 
-                if (UIManager.instance != null) UIManager.instance.ShootUse(false);
+                if (UIManager.instance != null) UIManager.instance.ShootInterface(false);
             }
             
             if (groundContactCount > 1) contactNormal.Normalize();
@@ -648,7 +647,7 @@ public class PC_MovingSphere : MonoBehaviour
 
         if (sfxShoot != null) sfxShoot.Play();
 
-        if (UIManager.instance != null) UIManager.instance.ShootUse(true);
+        if (UIManager.instance != null) UIManager.instance.ShootInterface(true);
 
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
         
@@ -899,7 +898,7 @@ public class PC_MovingSphere : MonoBehaviour
     {
         shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
 
-        if (UIManager.instance != null) UIManager.instance.ShootUse(false);
+        if (UIManager.instance != null) UIManager.instance.ShootInterface(false);
     }
 
     /// <summary>

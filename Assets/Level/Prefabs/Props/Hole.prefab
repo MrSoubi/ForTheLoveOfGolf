@@ -91,13 +91,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76664273647b4b478ff0163fdab1cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {x: 0, y: 1, z: -2.5}
-  isGoldenFlag: 1
   ballContentAnim: {fileID: 795155549243242335}
   virtualBall: {fileID: 412713680079169280}
   flagMesh: {fileID: 3629599025926604777}
   flagMesh2: {fileID: 8551940519195376273}
   completedParticle: {fileID: 508684538438028551, guid: df8e8b5724eb5d3468391b1b2afbe288, type: 3}
+  respawnPoint: {x: 2.5, y: 1, z: 0}
+  isGoldenFlag: 0
   completed: 0
 --- !u!1 &152936828435465319
 GameObject:
@@ -942,7 +942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7340281129687853037}
   m_Layer: 6
-  m_Name: OtherMesh
+  m_Name: Other_Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -981,7 +981,7 @@ GameObject:
   - component: {fileID: 6452548871486479585}
   - component: {fileID: 418535389137283291}
   m_Layer: 6
-  m_Name: FlagPillar
+  m_Name: Flag_Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

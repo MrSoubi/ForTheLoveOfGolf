@@ -387,6 +387,10 @@ PrefabInstance:
       propertyPath: holeTreshold
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
+      propertyPath: rotationDoorLeft
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 5159889163279066527, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_Name
       value: Pivot_Door (1)
@@ -3234,6 +3238,10 @@ PrefabInstance:
       propertyPath: holeTreshold
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
+      propertyPath: rotationDoorRight
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 5159889163279066527, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_Name
       value: Pivot_Door (3)
@@ -3457,6 +3465,14 @@ PrefabInstance:
     - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: holeTreshold
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
+      propertyPath: rotationDoorLeft
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
+      propertyPath: rotationDoorRight
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 5159889163279066527, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_Name
@@ -4836,6 +4852,14 @@ PrefabInstance:
       propertyPath: holeTreshold
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
+      propertyPath: rotationDoorLeft
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607355348971403495, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
+      propertyPath: rotationDoorRight
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 5159889163279066527, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_Name
       value: Pivot_Door (2)
@@ -4854,7 +4878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4866,7 +4890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4874,7 +4898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 360
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5810897294340468374, guid: 72b50794f4ebc1045967b1c2a04e2027, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

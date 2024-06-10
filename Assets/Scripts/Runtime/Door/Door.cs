@@ -29,6 +29,9 @@ public class Door : MonoBehaviour
     private int holeCompleted;
     private int coinCollected;
 
+    public float test1;
+    public float test2;
+
     private void Start()
     {
         StartCoroutine(Utils.Delay(LinkEvent, 0.001f));
@@ -108,7 +111,10 @@ public class Door : MonoBehaviour
     /// </summary>
     private void OpenPivot()
     {
-        doorLeft?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y - 90, transform.rotation.z), animeDuration);
-        doorRight?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + 90, transform.rotation.z), animeDuration);
+        //doorLeft?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + test1, transform.rotation.z), animeDuration);
+        //doorRight?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + test2, transform.rotation.z), animeDuration);
+
+        doorLeft?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + (doorLeft.transform.rotation.y - 90), transform.rotation.z), animeDuration);
+        doorRight?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + (doorRight.transform.rotation.y + 90), transform.rotation.z), animeDuration);
     }
 }

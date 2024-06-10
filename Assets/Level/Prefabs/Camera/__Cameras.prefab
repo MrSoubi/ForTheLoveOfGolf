@@ -126,6 +126,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
+      propertyPath: m_XAxis.m_InputAxisName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6150452727631028308, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Name
       value: VCAM_Boost
@@ -268,8 +272,16 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8805112899351470418, guid: df5cfda6428c90f48a82dac12137867e, type: 3}
-      propertyPath: m_Rigs.Array.size
-      value: 0
+      propertyPath: 'm_Rigs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8805112899351470418, guid: df5cfda6428c90f48a82dac12137867e, type: 3}
+      propertyPath: 'm_Rigs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8805112899351470418, guid: df5cfda6428c90f48a82dac12137867e, type: 3}
+      propertyPath: 'm_Rigs.Array.data[2]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8836804354507241542, guid: df5cfda6428c90f48a82dac12137867e, type: 3}
       propertyPath: m_BindingMode
@@ -1092,10 +1104,6 @@ PrefabInstance:
     - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Heading.m_Definition
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
-      propertyPath: m_XAxis.m_InputAxisName
-      value: Mouse X
       objectReference: {fileID: 0}
     - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_RecenterToTargetHeading.m_enabled

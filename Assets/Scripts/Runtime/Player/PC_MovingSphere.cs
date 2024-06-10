@@ -146,13 +146,25 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            if (Input.GetMouseButtonDown(1) && Time.timeScale > 0) ToggleAim(); // Activation du mode Aim
+            if (Input.GetButtonDown("Aim") && Time.timeScale > 0)
+            {
+                ToggleAim(); // Activation du mode Aim
+            }
 
-            if (isAiming && Input.GetMouseButtonUp(1) && Time.timeScale > 0) ToggleRoll(true); // Desactivation du mode Aim
+            if (isAiming && Input.GetButtonUp("Aim") && Time.timeScale > 0)
+            {
+                ToggleRoll(true); // Desactivation du mode Aim
+            }
         }
 
-        if (isAiming) HandleAim();
-        else HandleRoll();
+        if (isAiming)
+        {
+            HandleAim();
+        }
+        else
+        {
+            HandleRoll();
+        }
 
         UpdateBall();
     }
@@ -263,7 +275,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void HandleAim()
     {
-        desiredShoot |= Input.GetMouseButtonDown(0);
+        desiredShoot |= Input.GetButtonDown("Shoot");
         shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 

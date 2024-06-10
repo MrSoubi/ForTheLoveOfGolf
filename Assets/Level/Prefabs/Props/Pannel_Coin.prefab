@@ -49,6 +49,7 @@ MonoBehaviour:
   textCollectibles: {fileID: 6595625477531568989}
   holeGo: {fileID: 6458433658853981496}
   particleEffect: {fileID: 811598243674583484}
+  sfx: {fileID: 277379356905398769}
   pannelGo: {fileID: 673721895053015831}
   timeAnimation: 1
   nbCollectibles: 10
@@ -114,6 +115,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 343a362cd2f920440a92d2c3068a04fc, type: 3}
+--- !u!82 &277379356905398769 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 758475382467813400, guid: 343a362cd2f920440a92d2c3068a04fc, type: 3}
+  m_PrefabInstance: {fileID: 675494148119200233}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &670901880112195405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4595880652613284, guid: 343a362cd2f920440a92d2c3068a04fc, type: 3}
@@ -182,7 +188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalPosition.z

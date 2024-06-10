@@ -14,15 +14,17 @@ public class Breakable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             var player = other.transform.GetComponent<PC_MovingSphere>();
             var velocity = player.GetVelocity();
 
             if (velocity.magnitude >= threasholdSpeed)
             {
+                if (SoundManager.instance != null) SoundManager.instance.GetComponent<AudioSource>().Play();
+
                 if (particleDestroyed) Instantiate(particleDestroyed, transform.position, Quaternion.identity);
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 return;
             }
         }

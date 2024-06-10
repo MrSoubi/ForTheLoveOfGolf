@@ -17,8 +17,6 @@ public class CameraManager : MonoBehaviour
             return;
         }
         else instance = this;
-
-        //DontDestroyOnLoad(this.gameObject);
     }
 
     [Header("Ref Camera")]
@@ -133,9 +131,6 @@ public class CameraManager : MonoBehaviour
         followingCam.transform.rotation = lookingDirection;
     }
 
-    /// <summary>
-    /// ??? (A compléter) (Jamais appeler ?)
-    /// </summary>
     private IEnumerator BoostEffect()
     {
         followingCam.Priority--;

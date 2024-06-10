@@ -630,6 +630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c76988a269ee049419bfd05116974b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
   doorLeft: {fileID: 1179479397367098228}
   doorRight: {fileID: 0}
   textCoin: {fileID: 4981426132484779759}
@@ -639,8 +640,10 @@ MonoBehaviour:
   sfx: {fileID: 5046907676597321477}
   animeDuration: 3
   verticalMouvement: 1
-  coinTreshold: 0
-  coinQuantity: 0
+  rotationDoorLeft: 0
+  rotationDoorRight: 0
+  coinTreshold: 1
+  coinQuantity: 7
   holeTreshold: 0
   holeQuantity: 0
   open: 0

@@ -1,10 +1,12 @@
 using UnityEngine;
+using Cinemachine;
 using DG.Tweening;
 using TMPro;
 
 public class Door : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private Transform doorLeft;
     [SerializeField] private Transform doorRight;
     [SerializeField] private TextMeshProUGUI textCoin;
@@ -90,6 +92,8 @@ public class Door : MonoBehaviour
     {
         open = true;
 
+        CameraManager.Instance.ActivateCamera(cam);
+
         if(verticalMouvement) OpenVerticaly();
         else OpenPivot();
 
@@ -98,6 +102,8 @@ public class Door : MonoBehaviour
         if(particleRight != null) particleRight?.Play();
 
         if (sfx != null) sfx.Play();
+
+        //CameraManager.Instance.DeActivateCurrentCamera();
     }
 
     /// <summary>

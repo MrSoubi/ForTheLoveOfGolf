@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a521d33b8043c4a97d56b9674c3990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Gravity: -9.81
+  m_Gravity: -20
 --- !u!1 &627460090016248363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,6 +1215,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3186454902787695584, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3200318461797374878, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: m_Name
       value: SM_Icon_Arrow_Small_06 (2)
@@ -1290,6 +1294,14 @@ PrefabInstance:
     - target: {fileID: 4881370122395605803, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898329825225783527, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5890295738043185590, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5904174798811382216, guid: 91cb67c2d996c994da3a88c010c5929d, type: 3}
       propertyPath: m_Name

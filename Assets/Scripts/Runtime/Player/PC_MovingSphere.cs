@@ -6,8 +6,10 @@ public class PC_MovingSphere : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private ParticleSystem particles;
+
     [SerializeField] private AudioSource sfxShoot;
     [SerializeField] private AudioSource sfxSpeed;
+
     [SerializeField] private Transform ball = default;
     [SerializeField] private GameObject shootingIndicator;
 
@@ -207,17 +209,13 @@ public class PC_MovingSphere : MonoBehaviour
         if ((waterMask & (1 << other.gameObject.layer)) != 0) EvaluateSubmergence(other);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     public void PreventSnapToGround()
     {
         stepsSinceLastJump = -1;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
@@ -225,17 +223,13 @@ public class PC_MovingSphere : MonoBehaviour
         shootingIndicator.SetActive(true);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private void HideShootingIndicator()
     {
         shootingIndicator.SetActive(false);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     public void ToggleAim()
     {
         if (!canShoot || shootCharges < 1) return;
@@ -266,18 +260,14 @@ public class PC_MovingSphere : MonoBehaviour
         CameraManager.Instance.ActivateFollowMode(reset);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private void HandleAim()
     {
         desiredShoot |= Input.GetMouseButtonDown(0);
         shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private void HandleRoll()
     {
         playerInput.x = Input.GetAxis("Horizontal");
@@ -299,9 +289,6 @@ public class PC_MovingSphere : MonoBehaviour
         if (Swimming) desiresClimbing = false;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
     private void UpdateBall()
     {
         Vector3 rotationPlaneNormal = lastContactNormal;
@@ -313,11 +300,23 @@ public class PC_MovingSphere : MonoBehaviour
             else rotationFactor = ballAirRotation;
         }
 
-        if (body.velocity.magnitude > 10 && particles != null && particles.isStopped) particles.Play();
-        else if (body.velocity.magnitude <= 10 && particles != null && particles.isPlaying) particles.Stop();
+        if (body.velocity.magnitude > 10 && particles != null && particles.isStopped)
+        {
+            particles.Play();
+        }
+        else if (body.velocity.magnitude <= 10 && particles != null && particles.isPlaying)
+        {
+            particles.Stop();
+        }
 
-        if (body.velocity.magnitude > 10 && sfxSpeed != null && !sfxSpeed.isPlaying) sfxSpeed.Play();
-        else if (body.velocity.magnitude <= 10 && sfxSpeed != null && sfxSpeed.isPlaying) sfxSpeed.Stop();
+        if (body.velocity.magnitude > 10 && sfxSpeed != null && !sfxSpeed.isPlaying)
+        {
+            sfxSpeed.Play();
+        }
+        else if (body.velocity.magnitude <= 10 && sfxSpeed != null && sfxSpeed.isPlaying)
+        {
+            sfxSpeed.Stop();
+        }
 
         Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
         movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
@@ -347,12 +346,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (canTurn) ball.localRotation = rotation;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
-    /// <param name="rotationAxis"></param>
-    /// <param name="rotation"></param>
-    /// <param name="traveledDistance"></param>
+
     private Quaternion AlignBallRotation(Vector3 rotationAxis, Quaternion rotation, float traveledDistance)
     {
         Vector3 ballAxis = ball.up;
@@ -366,9 +360,7 @@ public class PC_MovingSphere : MonoBehaviour
         else return Quaternion.SlerpUnclamped(rotation, newAlignment, maxAngle / angle);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private void ClearState()
     {
         lastContactNormal = contactNormal;
@@ -382,9 +374,8 @@ public class PC_MovingSphere : MonoBehaviour
         submergence = 0f;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
+
     private void UpdateState()
     {
         stepsSinceLastGrounded += 1;
@@ -399,7 +390,10 @@ public class PC_MovingSphere : MonoBehaviour
             {
                 shootCharges = 1;
 
-                if (UIManager.instance != null) UIManager.instance.ShootInterface(false);
+                if (UIManager.instance != null)
+                {
+                    UIManager.instance.ShootInterface(false);
+                }
             }
             
             if (groundContactCount > 1) contactNormal.Normalize();
@@ -409,9 +403,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (connectedBody && (connectedBody.isKinematic || connectedBody.mass >= body.mass)) UpdateConnectionState();
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private void UpdateConnectionState()
     {
         if (connectedBody == previousConnectedBody)
@@ -424,9 +416,7 @@ public class PC_MovingSphere : MonoBehaviour
         connectionLocalPosition = connectedBody.transform.InverseTransformPoint(connectionWorldPosition);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private bool CheckClimbing()
     {
         if (Climbing)
@@ -447,9 +437,7 @@ public class PC_MovingSphere : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Retourne si la balle nage
-    /// </summary>
+
     private bool CheckSwimming()
     {
         if (Swimming)
@@ -463,9 +451,7 @@ public class PC_MovingSphere : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private bool SnapToGround()
     {
         if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2 || InWater) return false;
@@ -491,9 +477,7 @@ public class PC_MovingSphere : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     private bool CheckSteepContacts()
     {
         if (steepContactCount > 1)
@@ -516,9 +500,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     private int maxSpeedIndex = 0;
 
-    /// <summary>
-    /// Diminue la vitesse maximal de la balle
-    /// </summary>
+
     private void LowerMaxSpeed()
     {
         maxSpeedIndex--;
@@ -526,18 +508,14 @@ public class PC_MovingSphere : MonoBehaviour
         maxSpeed = speedLimits[maxSpeedIndex];
     }
 
-    /// <summary>
-    /// Réinitialise la vitesse maximal de la balle
-    /// </summary>
+
     private void ResetMaxSpeed()
     {
         maxSpeedIndex = 0;
         maxSpeed =  speedLimits.Count > 0 ? speedLimits[0] : 20f;
     }
 
-    /// <summary>
-    /// Ajuste la vitesse maximal de la balle
-    /// </summary>
+
     private void AdjustMaxSpeed()
     {
         if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin) LowerMaxSpeed();
@@ -545,9 +523,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     private bool isVelocityClamped = true;
 
-    /// <summary>
-    /// Ajuste la vélocité de la balle
-    /// </summary>
+
     private void AdjustVelocity()
     {
         float acceleration, speed;
@@ -596,9 +572,7 @@ public class PC_MovingSphere : MonoBehaviour
         Velocity = velocity.magnitude;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     public void ClampVelocity()
     {
         isVelocityClamped = true;
@@ -618,9 +592,7 @@ public class PC_MovingSphere : MonoBehaviour
         maxSpeed = speedLimits[maxSpeedIndex];
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
+
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
@@ -630,10 +602,7 @@ public class PC_MovingSphere : MonoBehaviour
     private float shootingFactor = 0.5f;
     private Vector3 shootdirectiondebug;
 
-    /// <summary>
-    /// La fonction tire de la balle
-    /// </summary>
-    /// <param name="gravity"></param>
+
     private void Shoot(Vector3 gravity)
     {
         if (!canShoot) return;
@@ -645,9 +614,15 @@ public class PC_MovingSphere : MonoBehaviour
         stepsSinceLastJump = 0;
         shootCharges -= 1;
 
-        if (sfxShoot != null) sfxShoot.Play();
+        if (sfxShoot != null)
+        {
+            sfxShoot.Play();
+        }
 
-        if (UIManager.instance != null) UIManager.instance.ShootInterface(true);
+        if (UIManager.instance != null)
+        {
+            UIManager.instance.ShootInterface(true);
+        }
 
         float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
         
@@ -672,10 +647,7 @@ public class PC_MovingSphere : MonoBehaviour
         else velocity = shootDirection * (localMaxSpeed + (speedLimits[maxSpeedIndex + 1] - localMaxSpeed) * shootingFactor);
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
-    /// <param name="collision"></param>
+
     private void EvaluateCollision(Collision collision)
     {
         if (Swimming) return;
@@ -715,10 +687,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
-    /// <param name="collider"></param>
+
     private void EvaluateSubmergence(Collider collider)
     {
         if (Physics.Raycast(body.position + upAxis * submergenceOffset, -upAxis, out RaycastHit hit, submergenceRange + 1f, waterMask, QueryTriggerInteraction.Collide)) submergence = 1f - hit.distance / submergenceRange;
@@ -727,20 +696,13 @@ public class PC_MovingSphere : MonoBehaviour
         if (Swimming) connectedBody = collider.attachedRigidbody;
     }
 
-    /// <summary>
-    /// Renvoie ??? (A compléter)
-    /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="normal"></param>
+
     private Vector3 ProjectDirectionOnPlane(Vector3 direction, Vector3 normal)
     {
         return (direction - normal * Vector3.Dot(direction, normal)).normalized;
     }
 
-    /// <summary>
-    /// ??? (A compléter)
-    /// </summary>
-    /// <param name="layer"></param>
+
     private float GetMinDot(int layer)
     {
         return (stairsMask & (1 << layer)) == 0 ? minGroundDotProduct : minStairsDotProduct;
@@ -898,7 +860,10 @@ public class PC_MovingSphere : MonoBehaviour
     {
         shootCharges = Mathf.Min(maxShoots, shootCharges + 1);
 
-        if (UIManager.instance != null) UIManager.instance.ShootInterface(false);
+        if (UIManager.instance != null)
+        {
+            UIManager.instance.ShootInterface(false);
+        }
     }
 
     /// <summary>

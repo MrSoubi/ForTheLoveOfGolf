@@ -8,6 +8,7 @@ public class PannelCollectible : MonoBehaviour
     [SerializeField] private TMP_Text textCollectibles;
     [SerializeField] private GameObject holeGo;
     [SerializeField] private VisualEffect particleEffect;
+    [SerializeField] private AudioSource sfx;
     [SerializeField] private GameObject pannelGo;
 
     [Header("Settings")]
@@ -35,7 +36,9 @@ public class PannelCollectible : MonoBehaviour
         {
             if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
 
-            if (particleEffect != null) particleEffect.Play();
+            if(sfx != null) sfx.Play();
+
+            if(particleEffect != null) particleEffect.Play();
 
             StartCoroutine(Utils.Delay(() =>
             {

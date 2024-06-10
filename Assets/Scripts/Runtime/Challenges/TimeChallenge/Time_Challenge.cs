@@ -12,6 +12,7 @@ public class TimeChallenge : MonoBehaviour
     [SerializeField] private List<TimeChallengeCoin> coinList = new List<TimeChallengeCoin>();
     [SerializeField] private VisualEffect particleEffect;
     [SerializeField] private AudioSource sfx;
+    [SerializeField] private AudioSource sfxReward;
 
     [Header("Time")]
     [SerializeField] private float timeToComplete;
@@ -119,6 +120,9 @@ public class TimeChallenge : MonoBehaviour
         TriggerBoxSetActive(false);
         CoinSetActive(false);   
         rewardHole.SetActive(true);
+
+        if (sfxReward != null) sfxReward.Play();
+
         if (particleEffect != null) particleEffect.Play();
     }
 

@@ -211,6 +211,7 @@ MonoBehaviour:
   - {fileID: 3029374996197699782}
   particleEffect: {fileID: 4028189076315227425}
   sfx: {fileID: 945452784334714776}
+  sfxReward: {fileID: 4574834632749634924}
   timeToComplete: 10
   rewardHole: {fileID: 2636597490068318151}
   started: 0
@@ -359,6 +360,11 @@ PrefabInstance:
 --- !u!2083052967 &4028189076315227425 stripped
 VisualEffect:
   m_CorrespondingSourceObject: {fileID: 3168928809040666455, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
+  m_PrefabInstance: {fileID: 2025858322413787766}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &4574834632749634924 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2549134923764879130, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
   m_PrefabInstance: {fileID: 2025858322413787766}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8978044164034466574 stripped

@@ -5,6 +5,9 @@ public class CheckpointManager : MonoBehaviour
     [Header("Ref materials")]
     [SerializeField][Tooltip("0)Unvalidate checkpoint, 1)Validate checkpoint ")] private Material[] materials;
 
+    [Header("Ref Audio")]
+    [SerializeField] private AudioSource sfx;
+
     private Vector3 checkPoints;
     private CheckpointTrigger lastTrigger;
 
@@ -20,7 +23,8 @@ public class CheckpointManager : MonoBehaviour
     public void SetCheckpoint(Vector3 newCheckPoints, CheckpointTrigger trigger)
     {
         if (newCheckPoints != checkPoints) 
-        { 
+        {
+            if (sfx != null) sfx.Play();
             checkPoints = newCheckPoints;
             if (lastTrigger != null) lastTrigger.ChangeMaterial(materials[0]);
             lastTrigger = trigger;

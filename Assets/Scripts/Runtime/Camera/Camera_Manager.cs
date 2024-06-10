@@ -2,6 +2,7 @@ using Cinemachine;
 using UnityEngine;
 using System.Collections;
 using Cinemachine.PostFX;
+using UnityEngine.VFX;
 
 public class CameraManager : MonoBehaviour
 {
@@ -27,8 +28,10 @@ public class CameraManager : MonoBehaviour
     public CinemachineBrain brain;
 
     private GameObject target;
+    private PC_MovingSphere playerController;
 
     [SerializeField] private AnimationCurve FOVCurve;
+    [SerializeField] private VisualEffect trailEffect;
 
     void Start()
     {
@@ -40,6 +43,11 @@ public class CameraManager : MonoBehaviour
         boostCam.Priority = 0;
 
         target = GameObject.FindGameObjectWithTag("Player");
+
+        if (target)
+        {
+            playerController = target.GetComponent<PC_MovingSphere>();
+        }
 
         followingCam.Follow = target.transform;
         followingCam.LookAt = target.transform;
@@ -53,8 +61,13 @@ public class CameraManager : MonoBehaviour
     {
         if (brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
         {
-            float speed = target.GetComponent<PC_MovingSphere>().GetVelocity().magnitude;
+            float speed = playerController.GetVelocity().magnitude;
             followingCam.m_Lens.FieldOfView = FOVCurve.Evaluate(speed);
+        }
+
+        if (trailEffect)
+        {
+            trailEffect.SetFloat("Speed_Lerp", playerController.GetVelocity().magnitude / playerController.GetMaxSpeedLimit());
         }
     }
 

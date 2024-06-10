@@ -174,17 +174,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f7e545fe8ca0b46b9e1c23428e65ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSystem: {fileID: 0}
+  particles: {fileID: 0}
+  sfxShoot: {fileID: 0}
+  sfxSpeed: {fileID: 0}
+  ball: {fileID: 1832406150492255385}
+  shootingIndicator: {fileID: 1158359374877216160}
   PCData: {fileID: 0}
+  maxSpeed: 0
   rotationCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ball: {fileID: 1832406150492255385}
-  shootingIndicator: {fileID: 1158359374877216160}
-  maxSpeed: 0
 --- !u!54 &8980406981842156646
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -211,7 +213,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &1382091051676722854
 GameObject:
   m_ObjectHideFlags: 0

@@ -54,7 +54,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.2
+  m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &3133650934405455891
 AudioSource:
@@ -164,10 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2551ec4ace7bc645843778671199ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  quantityToGive: 1
-  timeReset: 3
   stars: {fileID: 3623493038056323974, guid: ce6405f5034ac884090b258e1c0be6f4, type: 3}
   sfx: {fileID: 3133650934405455891}
+  quantityToGive: 1
+  timeReset: 3
+  take: 0
 --- !u!1 &6412900285845381578
 GameObject:
   m_ObjectHideFlags: 0

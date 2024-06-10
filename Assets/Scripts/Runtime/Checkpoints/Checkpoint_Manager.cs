@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class CheckpointManager : MonoBehaviour
 {
@@ -20,10 +21,17 @@ public class CheckpointManager : MonoBehaviour
     /// </summary>
     /// <param name="newCheckPoints"></param>
     /// <param name="trigger"></param>
-    public void SetCheckpoint(Vector3 newCheckPoints, CheckpointTrigger trigger)
+    public void SetCheckpoint(bool startingPoint, Vector3 newCheckPoints, CheckpointTrigger trigger)
     {
         if (newCheckPoints != checkPoints) 
         {
+            if(!startingPoint)
+            {
+                if (sfx != null) sfx.Play();
+
+                if (trigger.particle != null) trigger.particle.Play();
+            }
+
             checkPoints = newCheckPoints;
             if (lastTrigger != null) lastTrigger.ChangeMaterial(materials[0]);
             lastTrigger = trigger;

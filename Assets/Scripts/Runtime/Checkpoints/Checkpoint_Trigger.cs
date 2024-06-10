@@ -6,11 +6,11 @@ public class CheckpointTrigger : MonoBehaviour
     [SerializeField] private bool startingPoint;
 
     [Header("Reference")]
-    [SerializeField] private ParticleSystem particle;
+    public ParticleSystem particle;
 
     private void Start()
     {
-        if (startingPoint) StartCoroutine(Utils.Delay(() => CheckpointManager.instance?.SetCheckpoint(transform.position + Vector3.up *1.5f ,this),0.05f));
+        if (startingPoint) StartCoroutine(Utils.Delay(() => CheckpointManager.instance?.SetCheckpoint(true, transform.position + Vector3.up, this), 0.05f));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,10 +23,7 @@ public class CheckpointTrigger : MonoBehaviour
     /// </summary>
     public void SetCheckpoint()
     {
-        CheckpointManager.instance?.SetCheckpoint(transform.position + Vector3.up, this);
-
-        if (CheckpointManager.instance.sfx != null) CheckpointManager.instance.sfx.Play();
-        if (particle != null) particle.Play();
+        CheckpointManager.instance?.SetCheckpoint(false, transform.position + Vector3.up, this);
     }
 
     /// <summary>

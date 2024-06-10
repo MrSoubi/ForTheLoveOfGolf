@@ -5,7 +5,7 @@ using UnityEngine;
 public class PC_MovingSphere : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private ParticleSystem particles;
+    [SerializeField] private ParticleSystem particlesTrail, particlesShoot;
 
     [SerializeField] private AudioSource sfxShoot;
     [SerializeField] private AudioSource sfxSpeed;
@@ -312,13 +312,13 @@ public class PC_MovingSphere : MonoBehaviour
             else rotationFactor = ballAirRotation;
         }
 
-        if (body.velocity.magnitude > 10 && particles != null && particles.isStopped)
+        if (body.velocity.magnitude > 10 && particlesTrail != null && particlesTrail.isStopped)
         {
-            particles.Play();
+            particlesTrail.Play();
         }
-        else if (body.velocity.magnitude <= 10 && particles != null && particles.isPlaying)
+        else if (body.velocity.magnitude <= 10 && particlesTrail != null && particlesTrail.isPlaying)
         {
-            particles.Stop();
+            particlesTrail.Stop();
         }
 
         if (body.velocity.magnitude > 10 && sfxSpeed != null && !sfxSpeed.isPlaying)
@@ -662,6 +662,11 @@ public class PC_MovingSphere : MonoBehaviour
         if (UIManager.instance != null)
         {
             UIManager.instance.ShootInterface(true);
+        }
+
+        if (particlesShoot)
+        {
+            particlesShoot.Play();
         }
 
         StartCoroutine(CameraManager.Instance.BoostEffect());

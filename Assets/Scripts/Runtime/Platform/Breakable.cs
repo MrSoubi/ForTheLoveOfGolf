@@ -21,7 +21,7 @@ public class Breakable : MonoBehaviour
 
             if (velocity.magnitude >= threasholdSpeed)
             {
-                if (SoundManager.instance != null) SoundManager.instance.GetComponent<AudioSource>().Play();
+                if (SoundManager.instance != null && SoundManager.instance.sfx != null) SoundManager.instance.sfx.Play();
 
                 if (particleDestroyed) Instantiate(particleDestroyed, transform.position, Quaternion.identity);
                 gameObject.SetActive(false);

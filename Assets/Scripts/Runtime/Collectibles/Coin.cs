@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class Coin : MonoBehaviour
 {
     [Header("References")]
+    public ParticleSystem stars;
     public GameObject mesh;
 
     [Header("Settings")]
     public int value;
-
-    [Header("__DEBUG__")]
-    private bool isPickingUp;
 
     private void Start()
     {
@@ -21,10 +16,6 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player") && !isPickingUp)
-        {
-            isPickingUp = true;
-            CoinManager.instance.CollectCoin(this);
-        }
+        if(other.CompareTag("Player")) CoinManager.instance.CollectCoin(this);
     }
 }

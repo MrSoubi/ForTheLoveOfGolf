@@ -7,7 +7,7 @@ public class Breakable : MonoBehaviour
     [SerializeField] private float threasholdSpeed;
 
     [Header("References")]
-    [SerializeField] private ParticleSystem particleDestroyed;
+    [SerializeField] private GameObject particleDestroyed;
     [SerializeField] private Collider colliderMesh;
 
     private void Start() => EnableCollider(false);
@@ -21,6 +21,7 @@ public class Breakable : MonoBehaviour
 
             if (velocity.magnitude >= threasholdSpeed)
             {
+                if (particleDestroyed) Instantiate(particleDestroyed, transform.position, Quaternion.identity);
                 Destroy(gameObject);
                 return;
             }

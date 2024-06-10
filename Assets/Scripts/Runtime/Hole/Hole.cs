@@ -1,31 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private Vector3 respawnPoint;
-    public bool isGoldenFlag;
-
     [Header("References")]
     [SerializeField] private Animator ballContentAnim;
     [SerializeField] private Transform virtualBall;
     [SerializeField] private MeshRenderer flagMesh;
+    [SerializeField] private MeshRenderer flagMesh2;
     [SerializeField] private ParticleSystem completedParticle;
+
+    [Header("Settings")]
+    [SerializeField] private Vector3 respawnPoint;
+    public bool isGoldenFlag;
 
     [Header("DEBUG")]
     public bool completed;
 
-    GameObject collision;
-
-    public MeshRenderer GetFlagMesh() 
-    {
-        if (flagMesh != null) return flagMesh;
-        else Debug.LogError("Flag Mesh is null"); return null;
-    }
+    private GameObject collision;
 
     private void Start()
     {
@@ -36,7 +28,7 @@ public class Hole : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player") && !completed)
+        if (other.CompareTag("Player") && !completed)
         {
             completed = true;
 
@@ -47,38 +39,68 @@ public class Hole : MonoBehaviour
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);
 
-            ballContentAnim.SetTrigger("WinAnim");
+            ballContentAnim.SetTrigger("WinAnimation");
             StartCoroutine(SpawnPoint());
 
-            virtualBall.transform.localScale = collision.transform.localScale;
-            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh; 
+            virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
+            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh;
             virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
         }
-    }
-
-    IEnumerator SpawnPoint()
-    {
-        yield return new WaitForSeconds(1.1f);
-        Instantiate(completedParticle,transform).Play();
-        yield return new WaitForSeconds(0.2f);
-
-        collision.SetActive(true);
-        virtualBall.gameObject.SetActive(false);
-
-        PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
-
-        tmp.Block();
-        tmp.Teleport(transform.position + respawnPoint);
-        tmp.UnBlock(true);
-
-        collision = null;
-
-        flagMesh.GetComponent<Transform>().Bump();
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position + respawnPoint, 0.1f);
+    }
+
+    /// <summary>
+    /// Retour le drapeau 1
+    /// </summary>
+    public MeshRenderer GetFlagMesh1() 
+    {
+        if (flagMesh != null) return flagMesh;
+        else return null;
+    }
+
+    /// <summary>
+    /// Retour le drapeau 2
+    /// </summary>
+    public MeshRenderer GetFlagMesh2()
+    {
+        if (flagMesh2 != null) return flagMesh2;
+        else return null;
+    }
+
+    /// <summary>
+    /// Téléporte le joueur à un endroit précis
+    /// </summary>
+    private void Teleport()
+    {
+        PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
+
+        tmp.Block();
+        tmp.Teleport(transform.position + respawnPoint);
+        tmp.UnBlock(true);
+    }
+
+    /// <summary>
+    /// Joue l'animation et téléporte le joueur
+    /// </summary>
+    private IEnumerator SpawnPoint()
+    {
+        yield return new WaitForSeconds(1.15f);
+
+        if(completedParticle != null) Instantiate(completedParticle, transform).Play();  
+
+        collision.SetActive(true);
+        virtualBall.gameObject.SetActive(false);
+
+        Teleport();
+
+        collision = null;
+
+        if(flagMesh != null) flagMesh.GetComponent<Transform>().Bump();
+        if (flagMesh2 != null) flagMesh2.GetComponent<Transform>().Bump();
     }
 }

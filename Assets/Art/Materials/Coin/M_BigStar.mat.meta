@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Art/Materials/Coin/M_BigStar.mat.meta
+guid: 8fd63f0c9f03a8f40b99864880552154
+========
+guid: 173d1d8de3e417941a9112b69fc69dd2
+>>>>>>>> Sytem_Fix:Assets/Art/Materials/Coin/M_Coin.mat.meta
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

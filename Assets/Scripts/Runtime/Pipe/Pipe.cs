@@ -3,42 +3,78 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    [SerializeField] CheckpointTrigger checkpointExit;
+    [Header("References")]
+    [SerializeField] private AudioSource sfx;
+    [SerializeField] private Animator ballContentAnim;
+    [SerializeField] private Transform virtualBall;
+
+    [Header("Settings")]
+    [SerializeField] GameObject pipeExit;
     [SerializeField] Vector3 respawnPointOffset;
+
+    private GameObject collision;
+    private bool take;
+
+    private void Start()
+    {
+        if(virtualBall != null) virtualBall.gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && checkpointExit)
+        if (other.CompareTag("Player") && pipeExit != null && !take)
         {
-            StartCoroutine(TeleportCoroutine(other.gameObject));
-        }
-    }
+            take = true;
+            collision = other.gameObject;
+            collision.SetActive(false);
+            virtualBall.gameObject.SetActive(true);
 
-    IEnumerator TeleportCoroutine(GameObject player)
-    {
-        if (player.TryGetComponent(out PC_MovingSphere controller))
-        {
-            controller.Block();
+            if (sfx != null) sfx.Play();
 
-            yield return new WaitForSeconds(.4f);
+            ballContentAnim.SetTrigger("EnterAnimation");
+            StartCoroutine(TeleportCoroutine());
 
-            UIManager.instance?.FadeIn();
-
-            yield return new WaitForSeconds(1.2f);
-
-            checkpointExit.SetCheckpoint();
-            controller.Teleport(checkpointExit.transform.position + respawnPointOffset);
-
-            UIManager.instance?.FadeOut();
-
-            yield return new WaitForSeconds(.8f);
-            controller.UnBlock(true);
+            virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
+            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh;
+            virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
         }
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        if(checkpointExit) Gizmos.DrawSphere(checkpointExit.transform.position + respawnPointOffset, .1f);
+
+        if (pipeExit) Gizmos.DrawSphere(pipeExit.transform.position + respawnPointOffset, .1f);
+    }
+
+    /// <summary>
+    /// Joue l'animation et téléporte le joueur
+    /// </summary>
+    private IEnumerator TeleportCoroutine()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        virtualBall.gameObject.SetActive(false);
+        PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
+
+        tmp.Block();
+
+        yield return new WaitForSeconds(.4f);
+
+        UIManager.instance.InterfacePipe(true);
+
+        yield return new WaitForSeconds(1.2f);
+
+        collision.SetActive(true);
+
+        tmp.Teleport(pipeExit.transform.position + respawnPointOffset);
+
+        UIManager.instance.InterfacePipe(false);
+
+        yield return new WaitForSeconds(.8f);
+
+        tmp.UnBlock(true);
+        collision = null;
+        take = false;
     }
 }

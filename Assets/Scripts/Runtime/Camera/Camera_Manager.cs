@@ -28,6 +28,8 @@ public class CameraManager : MonoBehaviour
 
     private GameObject target;
 
+    [SerializeField] private AnimationCurve FOVCurve;
+
     void Start()
     {
         followingCam.enabled = true;
@@ -45,6 +47,15 @@ public class CameraManager : MonoBehaviour
         aimingCam.LookAt = target.transform;
         boostCam.Follow = target.transform;
         boostCam.LookAt = target.transform;
+    }
+
+    private void Update()
+    {
+        if (brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
+        {
+            float speed = target.GetComponent<PC_MovingSphere>().GetVelocity().magnitude;
+            followingCam.m_Lens.FieldOfView = FOVCurve.Evaluate(speed);
+        }
     }
 
     /// <summary>

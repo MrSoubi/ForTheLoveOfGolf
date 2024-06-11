@@ -1,10 +1,12 @@
 using TMPro;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.VFX;
 
 public class PannelCollectible : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private TMP_Text textCollectibles;
     [SerializeField] private GameObject holeGo;
     [SerializeField] private VisualEffect particleEffect;
@@ -12,7 +14,7 @@ public class PannelCollectible : MonoBehaviour
     [SerializeField] private GameObject pannelGo;
 
     [Header("Settings")]
-    [SerializeField] private float timeAnimation;
+    [SerializeField] private float animeDuration;
     [SerializeField] private int nbCollectibles;
 
     private void Start()
@@ -34,17 +36,19 @@ public class PannelCollectible : MonoBehaviour
 
         if (CoinManager.instance.coinCollected >= nbCollectibles)
         {
+            CameraManager.Instance.ActivateCamera(cam);
+
             if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
-
-            if(sfx != null) sfx.Play();
-
-            if(particleEffect != null) particleEffect.Play();
 
             StartCoroutine(Utils.Delay(() =>
             {
+                if (sfx != null) sfx.Play();
+                if (particleEffect != null) particleEffect.Play();
                 Destroy(transform.GetChild(0).gameObject);
                 holeGo.SetActive(true);
-            }, timeAnimation * 0.7f));
+            }, 1f));
+
+            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
         }
     }
 }

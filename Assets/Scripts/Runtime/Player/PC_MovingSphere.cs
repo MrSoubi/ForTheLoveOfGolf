@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PC_MovingSphere : MonoBehaviour
 {
@@ -426,6 +428,7 @@ public class PC_MovingSphere : MonoBehaviour
             if (stepsSinceLastShoot > 1 & shootCharges <= 0)
             {
                 StartCoroutine(CameraManager.Instance.LandingShake());
+                StartCoroutine(Rumble(0.2f, 0.4f, 0.4f));
 
                 shootCharges = 1;
                 jumpPhase = 0;
@@ -667,6 +670,15 @@ public class PC_MovingSphere : MonoBehaviour
         IncreaseSpeedLimitToMaximum();
     }
 
+    public IEnumerator Rumble(float lowFrequencyIntensity, float highFrequencyIntensity, float duration)
+    {
+        Gamepad.current.SetMotorSpeeds(lowFrequencyIntensity, highFrequencyIntensity);
+
+        yield return new WaitForSeconds(duration);
+
+        Gamepad.current.SetMotorSpeeds(0, 0);
+    }
+
     int jumpPhase;
     public int jumpHeight = 2, maxAirJumps = 1;
     void Jump(Vector3 gravity)
@@ -711,6 +723,8 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         velocity += jumpDirection * jumpSpeed;
+
+        StartCoroutine(Rumble(0.2f, 0.2f, 0.2f));
     }
 
     private float shootingFactor = 0.5f;
@@ -763,6 +777,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         StartCoroutine(CameraManager.Instance.BoostEffect());
+        StartCoroutine(Rumble(0.4f, 0.2f, 0.4f));
     }
 
 

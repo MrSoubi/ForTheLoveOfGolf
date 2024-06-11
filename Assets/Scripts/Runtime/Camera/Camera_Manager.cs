@@ -59,18 +59,36 @@ public class CameraManager : MonoBehaviour
         boostCam.LookAt = target.transform;
     }
 
+    [SerializeField] float minY = 1, maxY = 6, neutralY = 3;
+    float YOrientationDelta = 0;
+    [SerializeField] float YSensibility = 1;
     private void Update()
     {
         if (brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
         {
+            // FOV
             float speed = playerController.GetVelocity().magnitude;
             followingCam.m_Lens.FieldOfView = FOVCurve.Evaluate(speed);
+
+            // Y Orientation
+            float offsetX = followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_FollowOffset.x;
+            float offsetZ = followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_FollowOffset.z;
+
+            YOrientationDelta += -Input.GetAxis("Camera Y") * Time.deltaTime * YSensibility;
+
+            YOrientationDelta = Mathf.Clamp(YOrientationDelta, -1, 1);
+
+            float offsetY = Mathf.Lerp(minY, maxY, Mathf.InverseLerp(-1, 1, YOrientationDelta));
+
+            followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_FollowOffset = new Vector3(offsetX, offsetY, offsetZ);
         }
 
         if (trailEffect)
         {
             trailEffect.SetFloat("Speed_Lerp", playerController.GetVelocity().magnitude / playerController.GetMaxSpeedLimit());
         }
+
+
     }
 
     /// <summary>

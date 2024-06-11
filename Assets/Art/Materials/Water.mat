@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
-  m_Shader: {fileID: -6465566751694194690, guid: 9f2c385cdea4b7545bac7515e4ee83f3, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 9b670265ff887bf4aa32b8ef6c7b0c64, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -36,6 +36,18 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _EmissiveTexture:
+        m_Texture: {fileID: 2800000, guid: 82e1f644fb8e5504393566f67abc8f19, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: d11561a80694bd64f9b27f8577d16fbf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 2800000, guid: 680e77cf49a6fae4dbb07ba51303bb6f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -54,6 +66,7 @@ Material:
     - _FoamCutOff: 1.9
     - _FoamScale: 10
     - _FoamSpeed: 0.05
+    - _HeatControl: 5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RippleDensity: 8
@@ -62,7 +75,9 @@ Material:
     - _WaveScale: 0.5
     - _WaveSpeed: 0.2
     m_Colors:
+    - _Animationcontrol: {r: 0.01, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 0.05711352, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 0.48963165, b: 0, a: 1}
     - _RippleColor: {r: 0.8027794, g: 0.18463233, b: 0, a: 0}
+    - _TilingControl: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

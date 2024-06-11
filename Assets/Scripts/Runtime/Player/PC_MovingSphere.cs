@@ -400,6 +400,8 @@ public class PC_MovingSphere : MonoBehaviour
 
             if (stepsSinceLastJump > 1 & shootCharges <= 0)
             {
+                StartCoroutine(CameraManager.Instance.LandingShake());
+
                 shootCharges = 1;
 
                 if (UIManager.instance != null)
@@ -407,12 +409,24 @@ public class PC_MovingSphere : MonoBehaviour
                     UIManager.instance.ShootInterface(false);
                 }
             }
-            
-            if (groundContactCount > 1) contactNormal.Normalize();
-        }
-        else contactNormal = upAxis;
 
-        if (connectedBody && (connectedBody.isKinematic || connectedBody.mass >= body.mass)) UpdateConnectionState();
+            CameraManager.Instance.Shake(0);
+
+            if (groundContactCount > 1)
+            {
+                contactNormal.Normalize();
+            }
+        }
+        else
+        {
+            CameraManager.Instance.Shake(body.velocity.magnitude / GetMaxSpeedLimit());
+            contactNormal = upAxis;
+        }
+
+        if (connectedBody && (connectedBody.isKinematic || connectedBody.mass >= body.mass))
+        {
+            UpdateConnectionState();
+        }
     }
 
 
@@ -466,23 +480,38 @@ public class PC_MovingSphere : MonoBehaviour
 
     private bool SnapToGround()
     {
-        if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2 || InWater) return false;
+        if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2 || InWater)
+        {
+            return false;
+        }
 
         float speed = velocity.magnitude;
 
-        if (speed > maxSnapSpeed) return false;
-        
-        if (!Physics.Raycast(body.position, -upAxis, out RaycastHit hit, probeDistance, probeMask, QueryTriggerInteraction.Ignore)) return false;
+        if (speed > maxSnapSpeed)
+        {
+            return false;
+        }
+
+        if (!Physics.Raycast(body.position, -upAxis, out RaycastHit hit, probeDistance, probeMask, QueryTriggerInteraction.Ignore))
+        {
+            return false;
+        }
 
         float upDot = Vector3.Dot(upAxis, hit.normal);
 
-        if (upDot < GetMinDot(hit.collider.gameObject.layer)) return false;
+        if (upDot < GetMinDot(hit.collider.gameObject.layer))
+        {
+            return false;
+        }
 
         groundContactCount = 1;
         contactNormal = hit.normal;
         float dot = Vector3.Dot(velocity, hit.normal);
 
-        if (dot > 0f) velocity = (velocity - hit.normal * dot).normalized * speed;
+        if (dot > 0f)
+        {
+            velocity = (velocity - hit.normal * dot).normalized * speed;
+        }
 
         connectedBody = hit.rigidbody;
 

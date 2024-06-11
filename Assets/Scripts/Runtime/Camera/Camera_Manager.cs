@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections;
 using Cinemachine.PostFX;
 using UnityEngine.VFX;
+using DG.Tweening;
+
 
 public class CameraManager : MonoBehaviour
 {
@@ -177,6 +179,28 @@ public class CameraManager : MonoBehaviour
             followingCam.Priority++;
             aimingCam.Priority++;
             boostCam.Priority = 0;
+        }
+    }
+
+    public void Shake(float intensity)
+    {
+        followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = intensity;
+    }
+
+    public IEnumerator LandingShake()
+    {
+        float currentFrequency = 1.5f,
+              endFrequency = 0f;
+
+        float time = 0, duration = 1;
+
+        while (time < duration)
+        {
+            followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = Mathf.Lerp(currentFrequency, endFrequency, time / duration);
+
+            time += Time.deltaTime;
+
+            yield return null;
         }
     }
 }

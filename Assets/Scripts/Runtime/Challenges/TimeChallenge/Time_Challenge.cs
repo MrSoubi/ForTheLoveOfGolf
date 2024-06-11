@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,16 @@ using UnityEngine.VFX;
 public class TimeChallenge : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private GameObject triggerBox;
     [SerializeField] private ParticleSystem stars;
     [SerializeField] private List<TimeChallengeCoin> coinList = new List<TimeChallengeCoin>();
     [SerializeField] private VisualEffect particleEffect;
     [SerializeField] private AudioSource sfx;
     [SerializeField] private AudioSource sfxReward;
+
+    [Header("Settings")]
+    [SerializeField] private int animeDuration;
 
     [Header("Time")]
     [SerializeField] private float timeToComplete;
@@ -21,9 +26,11 @@ public class TimeChallenge : MonoBehaviour
     [SerializeField] private GameObject rewardHole;
 
     [Header("__DEBUG__")]
+    public Coroutine timer;
     public bool started;
     public bool completed;
     public int coinCollected;
+    public PC_MovingSphere pc;
 
     private void Start()
     {
@@ -34,7 +41,11 @@ public class TimeChallenge : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Player") && !started) StartChallenge();
+        if (other.transform.CompareTag("Player") && !started)
+        {
+            pc = other.GetComponent<PC_MovingSphere>();
+            StartChallenge();
+        }
     }
 
     /// <summary>
@@ -103,7 +114,7 @@ public class TimeChallenge : MonoBehaviour
         TriggerBoxSetActive(false);
         CoinSetActive(true);
 
-        StartCoroutine(Timer());
+        timer = StartCoroutine(Timer());
     }
 
     /// <summary>
@@ -115,15 +126,30 @@ public class TimeChallenge : MonoBehaviour
 
         if (UIManager.instance != null) UIManager.instance.ChallengeInterface(false);
 
-        StopAllCoroutines();
-
         TriggerBoxSetActive(false);
-        CoinSetActive(false);   
-        rewardHole.SetActive(true);
+        CoinSetActive(false);
 
-        if (sfxReward != null) sfxReward.Play();
+        StartCoroutine(Utils.Delay(() =>
+        {
+            pc.SetDirection(Vector3.zero);
+            pc.Freeze();
 
-        if (particleEffect != null) particleEffect.Play();
+            CameraManager.Instance.ActivateCamera(cam);
+        }, 0.2f));
+
+        StopCoroutine(timer);
+
+        StartCoroutine(Utils.Delay(() =>
+        {
+            rewardHole.SetActive(true);
+
+            if (sfxReward != null) sfxReward.Play();
+
+            if (particleEffect != null) particleEffect.Play();
+        }, 1f));
+
+        StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+        StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
     }
 
     /// <summary>

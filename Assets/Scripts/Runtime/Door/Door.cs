@@ -1,10 +1,12 @@
 using UnityEngine;
+using Cinemachine;
 using DG.Tweening;
 using TMPro;
 
 public class Door : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private Transform doorLeft;
     [SerializeField] private Transform doorRight;
     [SerializeField] private TextMeshProUGUI textCoin;
@@ -36,8 +38,6 @@ public class Door : MonoBehaviour
         StartCoroutine(Utils.Delay(LinkEvent, 0.001f));
         UpdatePannelCoin();
         UpdatePannelHole();
-
-        if (open) OpenDoor();
     }
 
     private void LinkEvent()
@@ -78,17 +78,22 @@ public class Door : MonoBehaviour
     /// <summary>
     /// Vérifie la condition d'ouverture
     /// </summary>
-    public void TriggerOpen()
+    public void TriggerOpen(PC_MovingSphere pc)
     {
-        if (!open && (holeCompleted >= holeQuantity || !holeTreshold) && (coinCollected >= coinQuantity || !coinTreshold)) OpenDoor();
+        if (!open && (holeCompleted >= holeQuantity || !holeTreshold) && (coinCollected >= coinQuantity || !coinTreshold)) OpenDoor(pc);
     }
 
     /// <summary>
     /// Ouvre la porte selon son type
     /// </summary>
-    private void OpenDoor()
+    private void OpenDoor(PC_MovingSphere pc)
     {
         open = true;
+
+        pc.SetDirection(Vector3.zero);
+        pc.Freeze();
+
+        CameraManager.Instance.ActivateCamera(cam);
 
         if(verticalMouvement) OpenVerticaly();
         else OpenPivot();
@@ -98,6 +103,9 @@ public class Door : MonoBehaviour
         if(particleRight != null) particleRight?.Play();
 
         if (sfx != null) sfx.Play();
+
+        StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+        StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
     }
 
     /// <summary>

@@ -1,9 +1,11 @@
 using System.Collections;
+using Cinemachine;
 using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private Animator ballContentAnim;
     [SerializeField] private Transform virtualBall;
     [SerializeField] private MeshRenderer flagMesh;
@@ -11,6 +13,7 @@ public class Hole : MonoBehaviour
     [SerializeField] private ParticleSystem completedParticle;
 
     [Header("Settings")]
+    [SerializeField] private int animeDuration;
     [SerializeField] private Vector3 respawnPoint;
     public bool isGoldenFlag;
 
@@ -30,7 +33,14 @@ public class Hole : MonoBehaviour
     {
         if (other.CompareTag("Player") && !completed)
         {
+            PC_MovingSphere pc = other.GetComponent<PC_MovingSphere>();
+
             completed = true;
+
+            pc.SetDirection(Vector3.zero);
+            pc.Freeze();
+
+            CameraManager.Instance.ActivateCamera(cam);
 
             if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
             else Debug.LogError("No Hole Manager on scene");
@@ -45,6 +55,9 @@ public class Hole : MonoBehaviour
             virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
             virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh;
             virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
+
+            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
         }
     }
 

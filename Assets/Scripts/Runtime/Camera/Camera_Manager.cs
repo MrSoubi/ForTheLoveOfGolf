@@ -202,7 +202,7 @@ public class CameraManager : MonoBehaviour
 
     public void Shake(float intensity)
     {
-        followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = intensity;
+        followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = intensity / 2;
     }
 
     public IEnumerator LandingShake()

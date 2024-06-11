@@ -81,7 +81,7 @@ MonoBehaviour:
   minY: 1
   maxY: 6
   neutralY: 3
-  YSensibility: 1
+  YSensibility: 15
 --- !u!1001 &176234362786128446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1043,7 +1043,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Damping
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Strategy
@@ -1059,7 +1059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_SmoothingTime
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_DampingWhenOccluded

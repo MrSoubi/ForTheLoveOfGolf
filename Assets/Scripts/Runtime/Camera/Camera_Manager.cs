@@ -86,7 +86,7 @@ public class CameraManager : MonoBehaviour
     /// </summary>
     public void DeActivateCurrentCamera()
     {
-        if (aimingCam.isActiveAndEnabled || followingCam.isActiveAndEnabled)
+        if (brain.ActiveVirtualCamera.VirtualCameraGameObject == aimingCam.gameObject || brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
         {
             Debug.LogWarning("Caméra de suivi ou de visée active, aucune caméra externe ne peut être désactivée.");
 

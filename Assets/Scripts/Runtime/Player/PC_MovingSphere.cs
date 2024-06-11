@@ -146,12 +146,12 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            if (Input.GetButtonDown("Aim") && Time.timeScale > 0)
+            if (Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1 && Time.timeScale > 0 && !isAiming)
             {
                 ToggleAim(); // Activation du mode Aim
             }
 
-            if (isAiming && Input.GetButtonUp("Aim") && Time.timeScale > 0)
+            if (isAiming && Input.GetButtonUp("Aim") || Input.GetAxisRaw("Aim GamePad") == 0 && Time.timeScale > 0)
             {
                 ToggleRoll(true); // Desactivation du mode Aim
             }
@@ -275,7 +275,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void HandleAim()
     {
-        desiredShoot |= Input.GetButtonDown("Shoot");
+        desiredShoot |= Input.GetButtonDown("Shoot") || Input.GetAxisRaw("Shoot GamePad") == 1;
         shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 

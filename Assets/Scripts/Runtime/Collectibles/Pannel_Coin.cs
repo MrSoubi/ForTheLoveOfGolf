@@ -14,6 +14,7 @@ public class PannelCollectible : MonoBehaviour
     [SerializeField] private GameObject pannelGo;
 
     [Header("Settings")]
+    [SerializeField] private bool camActivated;
     [SerializeField] private float animeDuration;
     [SerializeField] private int nbCollectibles;
 
@@ -36,8 +37,10 @@ public class PannelCollectible : MonoBehaviour
 
         if (CoinManager.instance.coinCollected >= nbCollectibles)
         {
-            CameraManager.Instance.ActivateCamera(cam);
-
+            if (camActivated)
+            {
+                CameraManager.Instance.ActivateCamera(cam);
+            }
             if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
 
             StartCoroutine(Utils.Delay(() =>
@@ -47,8 +50,10 @@ public class PannelCollectible : MonoBehaviour
                 Destroy(transform.GetChild(0).gameObject);
                 holeGo.SetActive(true);
             }, 1f));
-
-            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+            if (camActivated)
+            {
+                StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+            }
         }
     }
 }

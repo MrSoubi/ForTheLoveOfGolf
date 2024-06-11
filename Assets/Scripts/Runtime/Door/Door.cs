@@ -16,6 +16,7 @@ public class Door : MonoBehaviour
     [SerializeField] private AudioSource sfx;
 
     [Header("Settings")]
+    [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private bool verticalMouvement;
     [SerializeField] private float rotationDoorLeft;
@@ -90,10 +91,14 @@ public class Door : MonoBehaviour
     {
         open = true;
 
-        pc.SetDirection(Vector3.zero);
-        pc.Freeze();
+        if (camActivated)
+        {
+            pc.SetDirection(Vector3.zero);
+            pc.Freeze();
 
-        CameraManager.Instance.ActivateCamera(cam);
+            CameraManager.Instance.ActivateCamera(cam);
+        }
+        
 
         if(verticalMouvement) OpenVerticaly();
         else OpenPivot();
@@ -104,8 +109,12 @@ public class Door : MonoBehaviour
 
         if (sfx != null) sfx.Play();
 
-        StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-        StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
+        if (camActivated)
+        {
+
+            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
+        }
     }
 
     /// <summary>

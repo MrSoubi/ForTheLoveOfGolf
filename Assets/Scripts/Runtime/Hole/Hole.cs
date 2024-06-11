@@ -13,6 +13,7 @@ public class Hole : MonoBehaviour
     [SerializeField] private ParticleSystem completedParticle;
 
     [Header("Settings")]
+    [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private Vector3 respawnPoint;
     public bool isGoldenFlag;
@@ -36,11 +37,13 @@ public class Hole : MonoBehaviour
             PC_MovingSphere pc = other.GetComponent<PC_MovingSphere>();
 
             completed = true;
+            if (camActivated)
+            {
+                pc.SetDirection(Vector3.zero);
+                pc.Freeze();
 
-            pc.SetDirection(Vector3.zero);
-            pc.Freeze();
-
-            CameraManager.Instance.ActivateCamera(cam);
+                CameraManager.Instance.ActivateCamera(cam);
+            }
 
             if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
             else Debug.LogError("No Hole Manager on scene");
@@ -56,8 +59,11 @@ public class Hole : MonoBehaviour
             virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh;
             virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
 
-            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
+            if (camActivated)
+            {
+                StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+                StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
+            }  
         }
     }
 

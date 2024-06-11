@@ -83,7 +83,7 @@ public class PC_MovingSphere : MonoBehaviour
     private int shootCharges;
 
     private float minGroundDotProduct, minStairsDotProduct, minClimbDotProduct;
-    private int stepsSinceLastGrounded, stepsSinceLastJump;
+    private int stepsSinceLastGrounded, stepsSinceLastShoot;
     private MeshRenderer meshRenderer;
 
     private void OnValidate()
@@ -146,7 +146,6 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-
             if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming)
             {
                 ToggleAim(); // Activation du mode Aim
@@ -170,18 +169,26 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     private bool shouldToogleRoll;
+    bool desiredJump;
 
     private void FixedUpdate()
     {
-        if (isBlocked) return;
+        if (isBlocked)
+        {
+            return;
+        }
 
         Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
         UpdateState();
 
-        if (InWater) velocity *= 1f - waterDrag * submergence * Time.deltaTime;
-
         AdjustVelocity();
         AdjustMaxSpeed();
+
+        if (desiredJump)
+        {
+            desiredJump = false;
+            Jump(gravity);
+        }
 
         if (desiredShoot)
         {
@@ -190,13 +197,31 @@ public class PC_MovingSphere : MonoBehaviour
             shouldToogleRoll = true;
         }
 
-        if (Climbing) velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
-        else if (InWater) velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
-        else if (OnGround && velocity.sqrMagnitude < 0.01f) velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
-        else if (desiresClimbing && OnGround) velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
-        else velocity += gravity * Time.deltaTime;
+        if (Climbing)
+        {
+            velocity -= contactNormal * (maxClimbAcceleration * 0.9f * Time.deltaTime);
+        }
+        else if (InWater)
+        {
+            velocity += gravity * ((1f - buoyancy * submergence) * Time.deltaTime);
+        }
+        else if (OnGround && velocity.sqrMagnitude < 0.001f)
+        {
+            velocity += contactNormal * (Vector3.Dot(gravity, contactNormal) * Time.deltaTime);
+        }
+        else if (desiresClimbing && OnGround)
+        {
+            velocity += (gravity - contactNormal * (maxClimbAcceleration * 0.9f)) * Time.deltaTime;
+        }
+        else
+        {
+            velocity += gravity * Time.deltaTime;
+        }
 
-        if (!isFreezed) body.velocity = velocity;
+        if (!isFreezed)
+        {
+            body.velocity = velocity;
+        }
 
         ClearState();
     }
@@ -224,7 +249,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void PreventSnapToGround()
     {
-        stepsSinceLastJump = -1;
+        stepsSinceLastShoot = -1;
     }
 
 
@@ -298,7 +323,7 @@ public class PC_MovingSphere : MonoBehaviour
             forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
         }
 
-        if (Swimming) desiresClimbing = false;
+        desiredJump |= Input.GetButtonDown("Jump");
     }
 
     private void UpdateBall()
@@ -391,18 +416,19 @@ public class PC_MovingSphere : MonoBehaviour
     private void UpdateState()
     {
         stepsSinceLastGrounded += 1;
-        stepsSinceLastJump += 1;
+        stepsSinceLastShoot += 1;
         velocity = body.velocity;
 
         if (CheckClimbing() || CheckSwimming() || OnGround || SnapToGround() || CheckSteepContacts())
         {
             stepsSinceLastGrounded = 0;
 
-            if (stepsSinceLastJump > 1 & shootCharges <= 0)
+            if (stepsSinceLastShoot > 1 & shootCharges <= 0)
             {
                 StartCoroutine(CameraManager.Instance.LandingShake());
 
                 shootCharges = 1;
+                jumpPhase = 0;
 
                 if (UIManager.instance != null)
                 {
@@ -480,7 +506,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     private bool SnapToGround()
     {
-        if (stepsSinceLastGrounded > 1 || stepsSinceLastJump <= 2 || InWater)
+        if (stepsSinceLastGrounded > 1 || stepsSinceLastShoot <= 2 || InWater)
         {
             return false;
         }
@@ -505,6 +531,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         groundContactCount = 1;
+
         contactNormal = hit.normal;
         float dot = Vector3.Dot(velocity, hit.normal);
 
@@ -640,37 +667,74 @@ public class PC_MovingSphere : MonoBehaviour
         IncreaseSpeedLimitToMaximum();
     }
 
+    int jumpPhase;
+    public int jumpHeight = 2, maxAirJumps = 1;
+    void Jump(Vector3 gravity)
+    {
+        Vector3 jumpDirection;
+
+        if (OnSteep)
+        {
+            jumpDirection = steepNormal;
+            jumpPhase = 0;
+        }
+        else if (OnGround)
+        {
+            jumpDirection = contactNormal;
+            jumpPhase = 0;
+        }
+        else if (maxAirJumps > 0 && jumpPhase < maxAirJumps)
+        {
+            jumpDirection = contactNormal;
+
+            Debug.Log("Debug jump");
+        }
+        else
+        {
+            Debug.Log("Debug jump cant jump");
+            Debug.Log(maxAirJumps > 0);
+            Debug.Log((jumpPhase < maxAirJumps) + " phase : " + jumpPhase);
+            return;
+        }
+
+        stepsSinceLastShoot = 0;
+        jumpPhase += 1;
+
+        float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+
+        jumpDirection = (jumpDirection + upAxis).normalized;
+        float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
+
+        if (alignedSpeed > 0f)
+        {
+            jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
+        }
+
+        velocity += jumpDirection * jumpSpeed;
+    }
+
     private float shootingFactor = 0.5f;
-    private Vector3 shootdirectiondebug;
-
-
     private void Shoot(Vector3 gravity)
     {
-        if (!canShoot) return;
+        if (!canShoot)
+        { 
+            return;
+        }
 
         Vector3 shootDirection;
 
-        if (maxShoots <= 0 || shootCharges <= 0) return;
+        if (maxShoots <= 0 || shootCharges <= 0)
+        {
+            return;
+        }
 
-        stepsSinceLastJump = 0;
+        stepsSinceLastShoot = 0;
         shootCharges -= 1;
-
-        float shootSpeed = Mathf.Sqrt(2f * gravity.magnitude * shootHeight);
-        
-        //if (InWater)
-        //{
-        //    shootSpeed *= Mathf.Max(0f, 1f - submergence / swimThreshold);
-        //}
 
         shootDirection = playerInputSpace.forward;
         shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
         IncreaseSpeedLimit();
-
-        //float shootForce = shootSpeed * EvaluateShootFactor();
-        //shootForce = Mathf.Clamp(shootForce, minShootForce, maxShootForce);
-
-        //velocity = shootDirection * (shootForce + velocity.magnitude);
 
         float localMaxSpeed = Mathf.Max(velocity.magnitude, maxSpeed);
 

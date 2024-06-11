@@ -48,6 +48,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: 680e77cf49a6fae4dbb07ba51303bb6f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_0bd254c9accb497d99d6748fc24edb92_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 7385f77603e598042988b50728804452, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_2067aca896a54190a7771007fe47b2eb_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 9be07e88bf304ab4b8ec2efeab744e75, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -66,7 +74,7 @@ Material:
     - _FoamCutOff: 1.9
     - _FoamScale: 10
     - _FoamSpeed: 0.05
-    - _HeatControl: 5
+    - _HeatControl: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RippleDensity: 8
@@ -75,9 +83,10 @@ Material:
     - _WaveScale: 0.5
     - _WaveSpeed: 0.2
     m_Colors:
-    - _Animationcontrol: {r: 0.01, g: 0, b: 0, a: 0}
+    - _Animationcontrol: {r: 0.04, g: 0.02, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 0.05711352, b: 0, a: 1}
+    - _Color: {r: 3.5869505, g: 1.3521488, b: 0, a: 0}
     - _FoamColor: {r: 1, g: 0.48963165, b: 0, a: 1}
     - _RippleColor: {r: 0.8027794, g: 0.18463233, b: 0, a: 0}
-    - _TilingControl: {r: 1, g: 1, b: 0, a: 0}
+    - _TilingControl: {r: 2, g: 2, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -8,13 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Sandbox/Baptiste/Tutorial.unity
     guid: c166f7f3287750e4f93398bfde53436d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Level/Scenes/LevelArea.unity
-    guid: 846bc25943031e6458458ea130aaab5b
-  - enabled: 1
+    guid: 0b3e9a4b20267cc4eb171fe3d0076046
+  - enabled: 0
     path: Assets/Level/Scenes/Menu.unity
     guid: b8d349e1a0cd0d349a42a20a3f0982a0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Sandbox/Killian/LevelAreaKillian.unity
     guid: 3513f977169cd4a43af38256f74144ad
   m_configObjects: {}

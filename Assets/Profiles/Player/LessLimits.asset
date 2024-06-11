@@ -52,5 +52,5 @@ MonoBehaviour:
   maxGroundAngle: 30
   maxSnapSpeed: 30
   probeDistance: 1
-  rollingMaterial: {fileID: 2100000, guid: ead9dcc13192f0c458a47f7f5be93b61, type: 2}
+  rollingMaterial: {fileID: 2100000, guid: 1be402a41ec1721489aacf5df601bbfb, type: 2}
   aimingMaterial: {fileID: 2100000, guid: 527546c87900b9740907297ec7dbfc85, type: 2}

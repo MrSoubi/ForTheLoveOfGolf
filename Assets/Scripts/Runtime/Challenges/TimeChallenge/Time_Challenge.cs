@@ -17,6 +17,7 @@ public class TimeChallenge : MonoBehaviour
     [SerializeField] private AudioSource sfxReward;
 
     [Header("Settings")]
+    [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
 
     [Header("Time")]
@@ -128,14 +129,16 @@ public class TimeChallenge : MonoBehaviour
 
         TriggerBoxSetActive(false);
         CoinSetActive(false);
-
-        StartCoroutine(Utils.Delay(() =>
+        if (camActivated)
         {
-            pc.SetDirection(Vector3.zero);
-            pc.Freeze();
+            StartCoroutine(Utils.Delay(() =>
+            {
+                pc.SetDirection(Vector3.zero);
+                pc.Freeze();
 
-            CameraManager.Instance.ActivateCamera(cam);
-        }, 0.2f));
+                CameraManager.Instance.ActivateCamera(cam);
+            }, 0.2f));
+        }
 
         StopCoroutine(timer);
 
@@ -147,9 +150,11 @@ public class TimeChallenge : MonoBehaviour
 
             if (particleEffect != null) particleEffect.Play();
         }, 1f));
-
-        StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-        StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
+        if (camActivated)
+        {
+            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
+            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
+        }
     }
 
     /// <summary>

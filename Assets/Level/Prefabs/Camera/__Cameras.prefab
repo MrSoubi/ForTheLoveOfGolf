@@ -78,6 +78,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   trailEffect: {fileID: 9110926438149352697}
+  minY: 1
+  maxY: 6
+  neutralY: 3
+  YSensibility: 1
 --- !u!1001 &176234362786128446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -861,6 +865,10 @@ PrefabInstance:
     - target: {fileID: 5507888531032965200, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: field of view
       value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5507888531032965200, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 63
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalPosition.x

@@ -78,6 +78,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   trailEffect: {fileID: 9110926438149352697}
+  minY: 1
+  maxY: 6
+  neutralY: 3
+  YSensibility: 1
 --- !u!1001 &176234362786128446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -860,35 +864,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5507888531032965200, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: field of view
-      value: 80
+      value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 5507888531032965200, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 63
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 426.87408
+      value: 1050.24
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16.74155
+      value: -26.399998
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 45.643402
+      value: 401.05
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.6756762
+      value: 0.9192121
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.20846885
+      value: 0.39183697
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6756802
+      value: 0.03578192
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.20846759
+      value: -0.015252931
       objectReference: {fileID: 0}
     - target: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1003,7 +1011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4001192045465118244, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -41.84494
+      value: 319.15506
       objectReference: {fileID: 0}
     - target: {fileID: 4001192045465118244, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1120,7 +1128,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3726822637318792484, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7398293322940928898}
   m_SourcePrefab: {fileID: 100100000, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
 --- !u!114 &3309169224371312152 stripped
 MonoBehaviour:
@@ -1133,6 +1144,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5295478382120419220 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3726822637318792484, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
+  m_PrefabInstance: {fileID: 8846482511678233264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7398293322940928898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5295478382120419220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!4 &5567031940996430996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4001192045465118244, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}

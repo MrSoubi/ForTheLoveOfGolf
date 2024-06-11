@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1296922213461019624}
   - component: {fileID: 7044918927848929662}
   - component: {fileID: 3416813226037190148}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Trampoline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3820584603861744449}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: TeleportPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,6 +170,10 @@ PrefabInstance:
     - target: {fileID: 1000599048822866, guid: 5171d5eb12e0f184a8761aa4157f7d00, type: 3}
       propertyPath: m_Name
       value: SM_Buildings_Floor_5x5_01P
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000599048822866, guid: 5171d5eb12e0f184a8761aa4157f7d00, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4874802182062810, guid: 5171d5eb12e0f184a8761aa4157f7d00, type: 3}
       propertyPath: m_LocalScale.x
@@ -248,6 +252,10 @@ PrefabInstance:
     - target: {fileID: 1730004068025100, guid: fcdc53b40414ad24784c8d08ba9dc13d, type: 3}
       propertyPath: m_Name
       value: SM_Icon_Light_Directional_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 1730004068025100, guid: fcdc53b40414ad24784c8d08ba9dc13d, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4317328032718040, guid: fcdc53b40414ad24784c8d08ba9dc13d, type: 3}
       propertyPath: m_LocalScale.x

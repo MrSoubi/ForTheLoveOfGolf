@@ -16,7 +16,6 @@ public class Hole : MonoBehaviour
     [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private Vector3 respawnPoint;
-    [SerializeField] private bool holeInPanel;
     public bool isGoldenFlag;
 
     [Header("DEBUG")]
@@ -28,7 +27,7 @@ public class Hole : MonoBehaviour
     {
         virtualBall.gameObject.SetActive(false);
 
-        if(!holeInPanel) StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(this), .001f));
+        StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(this), .001f));
     }
 
     private void OnTriggerEnter(Collider other)

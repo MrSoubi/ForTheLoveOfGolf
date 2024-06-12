@@ -10,7 +10,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - NoCameraCollision
   - Water
   - UI
   - NoPostPr

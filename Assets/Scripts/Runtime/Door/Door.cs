@@ -108,7 +108,20 @@ public class Door : MonoBehaviour
 
             if (particleRight != null) particleRight?.Play();
 
-            if (sfx != null) sfx.Play();
+            if (particleLeft != null)
+            {
+                if (verticalMouvement) particleLeft.transform.localScale = transform.localScale;
+                else particleLeft.transform.localScale = doorLeft.transform.localScale;
+
+                particleLeft?.Play();
+            }
+
+            if (particleRight != null)
+            {
+                particleLeft.transform.localScale = doorRight.transform.localScale;
+                particleRight?.Play();
+            }
+
         }, delayBeforeActivation));
 
         StartCoroutine(Utils.Delay(() =>

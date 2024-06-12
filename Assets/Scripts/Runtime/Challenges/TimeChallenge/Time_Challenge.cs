@@ -145,7 +145,11 @@ public class TimeChallenge : MonoBehaviour
 
             if (sfxReward != null) sfxReward.Play();
 
-            if (particleEffect != null) particleEffect.Play();
+            if (particleEffect != null)
+            {
+                particleEffect.transform.localScale = rewardHole.transform.localScale * 4;
+                particleEffect.Play();
+            }
         }, delayBeforeActivation));
         StartCoroutine(Utils.Delay(() =>
         {

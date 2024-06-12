@@ -45,7 +45,7 @@ public class HoleManager : MonoBehaviour
         holeCollected++;
         onCollectedHole?.Invoke();
 
-        if ((hole.isGoldenFlag) && (holeCollected >= holeQuantity) && (CoinManager.instance.coinCollected >= CoinManager.instance.coinQuantity))
+        if ((hole.isGoldenFlag) && (holeCollected >= holeQuantity))
         {
             if(goldenSfx != null) goldenSfx.Play();
             if(goldenMaterial != null) hole.GetFlagMesh1().material = goldenMaterial;

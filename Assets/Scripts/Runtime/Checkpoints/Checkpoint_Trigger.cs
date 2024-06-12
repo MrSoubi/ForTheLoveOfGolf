@@ -7,6 +7,7 @@ public class CheckpointTrigger : MonoBehaviour
 
     [Header("Reference")]
     public ParticleSystem particle;
+    public ParticleSystem particle2;
 
     private void Start()
     {

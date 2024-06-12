@@ -4,6 +4,7 @@ public class Inputs : MonoBehaviour
 {
     [Header("Ref Menu")]
     [SerializeField] private GameObject panelMenu;
+    [SerializeField] private GameObject optionsMenu;
 
     private GameObject players;
 
@@ -26,7 +27,11 @@ public class Inputs : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(!panelMenu.activeInHierarchy)
+            if(optionsMenu.activeInHierarchy)
+            {
+                optionsMenu.SetActive(false);
+            }
+            else if(!panelMenu.activeInHierarchy)
             {
                 Time.timeScale = 0.0f;
 
@@ -35,7 +40,7 @@ public class Inputs : MonoBehaviour
                 CursorManager.instance.SetCursorVisibility(true);
                 CursorManager.instance.SetCursorLockMod(CursorLockMode.None);
             }
-            else
+            else if(panelMenu.activeInHierarchy)
             {
                 Time.timeScale = 1.0f;
 

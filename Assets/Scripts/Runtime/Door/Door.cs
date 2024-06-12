@@ -18,8 +18,6 @@ public class Door : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int animeDuration;
     [SerializeField] private bool verticalMouvement;
-    [SerializeField] private float rotationDoorLeft;
-    [SerializeField] private float rotationDoorRight;
 
     [Header("Cinematique Settings")]
     [SerializeField] private float delayBeforeActivation;
@@ -134,14 +132,14 @@ public class Door : MonoBehaviour
     /// <summary>
     /// Ouvre la porte verticalement vers le bas
     /// </summary>
-    private void OpenVerticaly() => doorLeft?.DOMove(new Vector3(transform.position.x, transform.position.y - 4, transform.position.z), animeDuration);
+    private void OpenVerticaly() => doorLeft?.DOMove(new Vector3(transform.position.x, doorLeft.position.y - (doorLeft.localScale.y + 1), transform.position.z), animeDuration);
 
     /// <summary>
     /// Ouvre les 2 portes en les pivotants
     /// </summary>
     private void OpenPivot()
     {
-        doorLeft?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + rotationDoorLeft, transform.rotation.z), animeDuration);
-        doorRight?.DORotate(new Vector3(transform.rotation.x, transform.rotation.y + rotationDoorRight, transform.rotation.z), animeDuration);
+        doorLeft?.DORotate(new Vector3(transform.rotation.x, doorLeft.eulerAngles.y - 90, transform.rotation.z), animeDuration);
+        doorRight?.DORotate(new Vector3(transform.rotation.x, doorLeft.eulerAngles.y + 90, transform.rotation.z), animeDuration);
     }
 }

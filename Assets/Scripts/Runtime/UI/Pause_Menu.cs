@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,6 +9,7 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] GameObject optionsMenu;
     [SerializeField] private Texture2D handCursor;
     [SerializeField] private AudioSource sfx;
 
@@ -98,6 +101,15 @@ public class PauseMenu : MonoBehaviour
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         SaveManager.SaveToFile();
+    }
+
+    public void Options()
+    {
+        ButtonPress();
+
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+        optionsMenu.SetActive(true);
     }
 
     /// <summary>

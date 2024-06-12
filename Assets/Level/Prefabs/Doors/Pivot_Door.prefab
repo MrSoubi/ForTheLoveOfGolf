@@ -160,7 +160,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 80
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -568,11 +568,12 @@ MonoBehaviour:
   particleLeft: {fileID: 8010654965562804301}
   particleRight: {fileID: 7814901579849252929}
   sfx: {fileID: 6517264879366674283}
-  camActivated: 0
   animeDuration: 3
   verticalMouvement: 0
   rotationDoorLeft: 90
   rotationDoorRight: -90
+  delayBeforeActivation: 0
+  delayAfterActivation: 0
   coinTreshold: 0
   coinQuantity: 0
   holeTreshold: 1

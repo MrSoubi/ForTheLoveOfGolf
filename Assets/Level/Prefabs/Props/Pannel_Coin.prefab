@@ -149,8 +149,8 @@ MonoBehaviour:
   particleEffect: {fileID: 8598436368702196716}
   sfx: {fileID: 9208131780917975969}
   pannelGo: {fileID: 673721895053015831}
-  camActivated: 0
-  animeDuration: 2
+  focusDuration: 3
+  delayBeforeActivation: 1
   nbCollectibles: 10
 --- !u!1 &8672605843537902163
 GameObject:

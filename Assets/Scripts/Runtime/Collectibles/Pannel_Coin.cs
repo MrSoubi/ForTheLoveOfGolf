@@ -13,9 +13,11 @@ public class PannelCollectible : MonoBehaviour
     [SerializeField] private AudioSource sfx;
     [SerializeField] private GameObject pannelGo;
 
+    [Header("Cinematique Settings")]
+    [SerializeField] private float focusDuration;
+    [SerializeField] private float delayBeforeActivation;
+
     [Header("Settings")]
-    [SerializeField] private bool camActivated;
-    [SerializeField] private float animeDuration;
     [SerializeField] private int nbCollectibles;
 
     private void Start()
@@ -37,10 +39,8 @@ public class PannelCollectible : MonoBehaviour
 
         if (CoinManager.instance.coinCollected >= nbCollectibles)
         {
-            if (camActivated)
-            {
-                CameraManager.Instance.ActivateCamera(cam);
-            }
+            CameraManager.Instance.ActivateCamera(cam);
+
             if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
 
             StartCoroutine(Utils.Delay(() =>
@@ -55,11 +55,9 @@ public class PannelCollectible : MonoBehaviour
 
                 Destroy(transform.GetChild(0).gameObject);
                 holeGo.SetActive(true);
-            }, 1f));
-            if (camActivated)
-            {
-                StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-            }
+            }, delayBeforeActivation));
+
+            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), focusDuration));
         }
     }
 }

@@ -16,9 +16,9 @@ public class TimeChallenge : MonoBehaviour
     [SerializeField] private AudioSource sfx;
     [SerializeField] private AudioSource sfxReward;
 
-    [Header("Settings")]
-    [SerializeField] private bool camActivated;
-    [SerializeField] private int animeDuration;
+    [Header("Cinematique Settings")]
+    [SerializeField] private float focusDuration;
+    [SerializeField] private float delayBeforeActivation;
 
     [Header("Time")]
     [SerializeField] private float timeToComplete;
@@ -50,7 +50,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Active ou désactive toutes les pièces du challenge
+    /// Active ou dÃ©sactive toutes les piÃ¨ces du challenge
     /// </summary>
     /// <param name="state"></param>
     private void CoinSetActive(bool state)
@@ -82,7 +82,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour le timer du challenge
+    /// Met Ã  jour le timer du challenge
     /// </summary>
     private IEnumerator Timer()
     {
@@ -131,16 +131,11 @@ public class TimeChallenge : MonoBehaviour
 
         TriggerBoxSetActive(false);
         CoinSetActive(false);
-        if (camActivated)
-        {
-            StartCoroutine(Utils.Delay(() =>
-            {
-                pc.SetDirection(Vector3.zero);
-                pc.Freeze();
 
-                CameraManager.Instance.ActivateCamera(cam);
-            }, 0.2f));
-        }
+        pc.SetDirection(Vector3.zero);
+        pc.Block();
+
+        CameraManager.Instance.ActivateCamera(cam);
 
         StopCoroutine(timer);
 
@@ -150,21 +145,17 @@ public class TimeChallenge : MonoBehaviour
 
             if (sfxReward != null) sfxReward.Play();
 
-            if (particleEffect != null)
-            {
-                particleEffect.transform.localScale = rewardHole.transform.localScale * 4;
-                particleEffect.Play();
-            }
-        }, 1f));
-        if (camActivated)
+            if (particleEffect != null) particleEffect.Play();
+        }, delayBeforeActivation));
+        StartCoroutine(Utils.Delay(() =>
         {
-            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
-        }
+            CameraManager.Instance.DeActivateCurrentCamera();
+            pc.UnBlock(true);
+        }, focusDuration));
     }
 
     /// <summary>
-    /// Affiche la porte avec un délais lorsque le challenge est raté
+    /// Affiche la porte avec un dÃ©lais lorsque le challenge est ratÃ©
     /// </summary>
     private IEnumerator TriggerBox()
     {
@@ -175,7 +166,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Réinitalise le challenge
+    /// RÃ©initalise le challenge
     /// </summary>
     public void ResetChallenge()
     {
@@ -203,7 +194,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute une pièce de challenge au compteur
+    /// Ajoute une piÃ¨ce de challenge au compteur
     /// </summary>
     /// <param name="coin"></param>
     public void CollectCoin(TimeChallengeCoin coin)

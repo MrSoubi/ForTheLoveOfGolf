@@ -309,8 +309,8 @@ MonoBehaviour:
   particleEffect: {fileID: 4028189076315227425}
   sfx: {fileID: 945452784334714776}
   sfxReward: {fileID: 4574834632749634924}
-  camActivated: 0
-  animeDuration: 3
+  focusDuration: 3
+  delayBeforeActivation: 1
   timeToComplete: 10
   rewardHole: {fileID: 2636597490068318151}
   started: 0
@@ -802,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330682890080737255, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.015253112
+      value: -0.015253171
       objectReference: {fileID: 0}
     - target: {fileID: 1549808837370130395, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: m_Layer

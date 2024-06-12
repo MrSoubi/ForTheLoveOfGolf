@@ -16,11 +16,14 @@ public class Door : MonoBehaviour
     [SerializeField] private AudioSource sfx;
 
     [Header("Settings")]
-    [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private bool verticalMouvement;
     [SerializeField] private float rotationDoorLeft;
     [SerializeField] private float rotationDoorRight;
+
+    [Header("Cinematique Settings")]
+    [SerializeField] private float delayBeforeActivation;
+    [SerializeField] private float delayAfterActivation;
 
     [Header("Object Need")]
     public bool coinTreshold;
@@ -49,7 +52,7 @@ public class Door : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour le text des pièces collecter et son nombre max
+    /// Met Ã  jour le text des piÃ¨ces collecter et son nombre max
     /// </summary>
     private void UpdatePannelCoin()
     {
@@ -63,7 +66,7 @@ public class Door : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour le text des troues collecter et son nombre max
+    /// Met Ã  jour le text des troues collecter et son nombre max
     /// </summary>
     private void UpdatePannelHole()
     {
@@ -77,7 +80,7 @@ public class Door : MonoBehaviour
     }
 
     /// <summary>
-    /// Vérifie la condition d'ouverture
+    /// VÃ©rifie la condition d'ouverture
     /// </summary>
     public void TriggerOpen(PC_MovingSphere pc)
     {
@@ -89,42 +92,30 @@ public class Door : MonoBehaviour
     /// </summary>
     private void OpenDoor(PC_MovingSphere pc)
     {
+        pc.SetDirection(Vector3.zero);
+        pc.Block();
+
+        CameraManager.Instance.ActivateCamera(cam);
+
         open = true;
 
-        if (camActivated)
+        StartCoroutine(Utils.Delay(() =>
         {
-            pc.SetDirection(Vector3.zero);
-            pc.Freeze();
+            if (verticalMouvement) OpenVerticaly();
+            else OpenPivot();
 
-            CameraManager.Instance.ActivateCamera(cam);
-        }
-        
+            if (particleLeft != null) particleLeft?.Play();
 
-        if(verticalMouvement) OpenVerticaly();
-        else OpenPivot();
+            if (particleRight != null) particleRight?.Play();
 
-        if (particleLeft != null)
+            if (sfx != null) sfx.Play();
+        }, delayBeforeActivation));
+
+        StartCoroutine(Utils.Delay(() =>
         {
-            if(verticalMouvement) particleLeft.transform.localScale = transform.localScale;
-            else particleLeft.transform.localScale = doorLeft.transform.localScale;
-            
-            particleLeft?.Play();
-        }
-
-        if (particleRight != null)
-        {
-            particleLeft.transform.localScale = doorRight.transform.localScale;
-            particleRight?.Play();
-        }
-
-        if (sfx != null) sfx.Play();
-
-        if (camActivated)
-        {
-
-            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
-        }
+            CameraManager.Instance.DeActivateCurrentCamera();
+            pc.UnBlock(true);
+        }, animeDuration + delayAfterActivation));
     }
 
     /// <summary>

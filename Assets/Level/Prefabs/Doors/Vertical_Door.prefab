@@ -811,6 +811,8 @@ MonoBehaviour:
   verticalMouvement: 1
   rotationDoorLeft: 0
   rotationDoorRight: 0
+  delayBeforeFocus: 0
+  delayAfterFocus: 0
   coinTreshold: 1
   coinQuantity: 7
   holeTreshold: 0

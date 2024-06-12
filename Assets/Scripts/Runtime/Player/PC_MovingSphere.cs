@@ -273,7 +273,7 @@ public class PC_MovingSphere : MonoBehaviour
     {
         if (!canShoot || shootCharges < 1) return;
 
-        ShowShootingIndicator();
+        //ShowShootingIndicator();
         isAiming = true;
 
         if (aimingMaterial != null) meshRenderer.material = aimingMaterial;
@@ -747,7 +747,7 @@ public class PC_MovingSphere : MonoBehaviour
         shootCharges -= 1;
 
         shootDirection = playerInputSpace.forward;
-        shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
+        //shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
         IncreaseSpeedLimit();
 

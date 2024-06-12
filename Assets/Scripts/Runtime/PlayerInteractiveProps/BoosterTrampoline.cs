@@ -18,6 +18,8 @@ public class BoosterTrampoline : MonoBehaviour
     [SerializeField] private bool freeze;
     [SerializeField] private bool giveShoot;
 
+    [SerializeField] private AudioSource sfx;
+
     private void OnTriggerEnter(Collider other)
     {
         PC_MovingSphere PC = other.GetComponent<PC_MovingSphere>();
@@ -48,6 +50,8 @@ public class BoosterTrampoline : MonoBehaviour
             PC.IncreaseVelocityToCurrentSpeedLimit();
 
             PC.SetDirection(type == Type.BOOSTER ? transform.forward : transform.up);
+
+            if(type == Type.BOOSTER && sfx != null) sfx.Play();
         }
     }
 }

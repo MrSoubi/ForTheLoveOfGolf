@@ -64,7 +64,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float YSensibility = 1;
     private void Update()
     {
-        if (brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
+        if (brain.ActiveVirtualCamera != null && brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
         {
             // FOV
             float speed = playerController.GetVelocity().magnitude;

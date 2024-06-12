@@ -35,6 +35,7 @@ Transform:
   - {fileID: 1162733399372341238}
   - {fileID: 5044757959530631718}
   - {fileID: 3968716608012187292}
+  - {fileID: 5288313457629079162}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33479917075995112
@@ -586,10 +587,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: fcc6100d84022294fbac085a67ea3637, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4626354519981188, guid: 0b49b21974f2e634d8523f26d2e7516c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5288313457629079162}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b49b21974f2e634d8523f26d2e7516c, type: 3}
 --- !u!4 &1162733399372341238 stripped
@@ -603,7 +601,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1162733399372341238}
+    m_TransformParent: {fileID: 4595880652613284}
     m_Modifications:
     - target: {fileID: 697955181779364637, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_Name
@@ -615,15 +613,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5641026
+      value: 3.3333335
       objectReference: {fileID: 0}
     - target: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.2735043
+      value: 3.3333335
       objectReference: {fileID: 0}
     - target: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 16.666664
+      value: 3.3333328
       objectReference: {fileID: 0}
     - target: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -631,7 +629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.3390001
       objectReference: {fileID: 0}
     - target: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
       propertyPath: m_LocalPosition.z

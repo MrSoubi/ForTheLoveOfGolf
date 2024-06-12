@@ -873,7 +873,7 @@ MonoBehaviour:
   handCursor: {fileID: 2800000, guid: 4fc2dd7682de6b14ab6527a1febd083e, type: 3}
   sfx: {fileID: 2061522891539266188}
   buttonContinue: {fileID: 3352758314141560195}
-  level: LevelAreaKillian
+  level: Tutorial
 --- !u!1 &7537984332646000692
 GameObject:
   m_ObjectHideFlags: 0

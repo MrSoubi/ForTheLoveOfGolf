@@ -568,6 +568,7 @@ MonoBehaviour:
   particleLeft: {fileID: 8010654965562804301}
   particleRight: {fileID: 7814901579849252929}
   sfx: {fileID: 6517264879366674283}
+  camActivated: 0
   animeDuration: 3
   verticalMouvement: 0
   rotationDoorLeft: 90
@@ -1205,19 +1206,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.40000004
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.33333334
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.09999996
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5266667
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1296,7 +1297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.56
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.z

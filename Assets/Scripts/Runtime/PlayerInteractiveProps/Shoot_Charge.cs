@@ -5,7 +5,6 @@ public class GiveShootCharge : MonoBehaviour
 {
     [Header("References")]
     public ParticleSystem stars;
-    [SerializeField] private AudioSource sfx;
 
     [Header("Settings")]
     [SerializeField] private int quantityToGive = 1;
@@ -21,9 +20,13 @@ public class GiveShootCharge : MonoBehaviour
             take = true;
             StartCoroutine(ResetCoin());
 
-            if(sfx != null) sfx.Play();
+            if (SoundManager.instance != null && SoundManager.instance.sfxShootCharger != null) SoundManager.instance.sfxShootCharger.Play();
 
-            if (stars != null) Instantiate(stars, transform.position, transform.rotation);
+            if (stars != null)
+            {
+                ParticleSystem particle = Instantiate(stars, transform.position, transform.rotation);
+                particle.transform.localScale = transform.localScale;
+            }
 
             PC_MovingSphere PC = other.GetComponent<PC_MovingSphere>();
             PC.AddShootCharges(quantityToGive);

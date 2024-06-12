@@ -103,9 +103,19 @@ public class Door : MonoBehaviour
         if(verticalMouvement) OpenVerticaly();
         else OpenPivot();
 
-        if (particleLeft != null) particleLeft?.Play();
+        if (particleLeft != null)
+        {
+            if(verticalMouvement) particleLeft.transform.localScale = transform.localScale;
+            else particleLeft.transform.localScale = doorLeft.transform.localScale;
             
-        if(particleRight != null) particleRight?.Play();
+            particleLeft?.Play();
+        }
+
+        if (particleRight != null)
+        {
+            particleLeft.transform.localScale = doorRight.transform.localScale;
+            particleRight?.Play();
+        }
 
         if (sfx != null) sfx.Play();
 

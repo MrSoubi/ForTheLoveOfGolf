@@ -23,7 +23,12 @@ public class Breakable : MonoBehaviour
             {
                 if (SoundManager.instance != null && SoundManager.instance.sfx != null) SoundManager.instance.sfx.Play();
 
-                if (particleDestroyed) Instantiate(particleDestroyed, transform.position, Quaternion.identity);
+                if (particleDestroyed)
+                {
+                    GameObject particle = Instantiate(particleDestroyed, transform.position, Quaternion.identity);
+                    particle.transform.localScale = transform.localScale;
+                }
+
                 gameObject.SetActive(false);
                 return;
             }

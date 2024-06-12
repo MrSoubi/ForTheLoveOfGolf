@@ -55,7 +55,11 @@ public class CoinManager : MonoBehaviour
 
         if(sfx != null) sfx.Play();
 
-        if (coin.stars != null) Instantiate(coin.stars, coin.transform.position, coin.transform.rotation);
+        if (coin.stars != null)
+        {
+            ParticleSystem particle = Instantiate(coin.stars, coin.transform.position, coin.transform.rotation);
+            particle.transform.localScale = coin.transform.localScale;
+        }
 
         RemoveCoin(coin);
     }

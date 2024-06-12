@@ -16,6 +16,8 @@ public class Hole : MonoBehaviour
     [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private Vector3 respawnPoint;
+    [SerializeField] private bool holePannel;
+
     public bool isGoldenFlag;
 
     [Header("DEBUG")]
@@ -27,7 +29,7 @@ public class Hole : MonoBehaviour
     {
         virtualBall.gameObject.SetActive(false);
 
-        StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(this), .001f));
+        if(!holePannel) StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(this), .001f));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -110,7 +112,11 @@ public class Hole : MonoBehaviour
     {
         yield return new WaitForSeconds(1.15f);
 
-        if(completedParticle != null) Instantiate(completedParticle, transform).Play();  
+        if (completedParticle != null)
+        {
+            ParticleSystem particle = Instantiate(completedParticle, transform);
+            particle.transform.localScale = transform.localScale;
+        }
 
         collision.SetActive(true);
         virtualBall.gameObject.SetActive(false);

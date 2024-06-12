@@ -97,6 +97,8 @@ public class TimeChallenge : MonoBehaviour
             yield return null;
         }
 
+        timer = 0;
+
         ResetChallenge();
     }
 
@@ -148,7 +150,11 @@ public class TimeChallenge : MonoBehaviour
 
             if (sfxReward != null) sfxReward.Play();
 
-            if (particleEffect != null) particleEffect.Play();
+            if (particleEffect != null)
+            {
+                particleEffect.transform.localScale = rewardHole.transform.localScale * 4;
+                particleEffect.Play();
+            }
         }, 1f));
         if (camActivated)
         {
@@ -204,7 +210,11 @@ public class TimeChallenge : MonoBehaviour
     {
         coinCollected += coin.value;
 
-        if (stars != null) Instantiate(stars, coin.transform.position, coin.transform.rotation);
+        if (stars != null)
+        {
+            ParticleSystem particle = Instantiate(stars, coin.transform.position, coin.transform.rotation);
+            particle.transform.localScale = coin.transform.localScale;
+        }
 
         if (sfx != null) sfx.Play();
 

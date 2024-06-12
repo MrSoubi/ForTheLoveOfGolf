@@ -138,8 +138,9 @@ public class CameraManager : MonoBehaviour
     {
         if (!reset)
         {
-            followingCam.transform.position = aimingCam.transform.position;
-            followingCam.transform.rotation = aimingCam.transform.rotation;
+            Quaternion direction = Quaternion.LookRotation(playerController.GetVelocity().normalized);
+
+            followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.Value = direction.eulerAngles.y;
         }
 
         followingCam.Priority = 100;

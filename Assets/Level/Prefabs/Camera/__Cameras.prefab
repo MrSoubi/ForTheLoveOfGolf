@@ -130,6 +130,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
+      propertyPath: m_Damping
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
+      propertyPath: m_SmoothingTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_XAxis.m_InputAxisName
       value: 
@@ -1042,10 +1050,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
-      propertyPath: m_Damping
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_Strategy
       value: 0
       objectReference: {fileID: 0}
@@ -1056,10 +1060,6 @@ PrefabInstance:
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_MaximumEffort
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
-      propertyPath: m_SmoothingTime
-      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5620178156943347885, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_DampingWhenOccluded
@@ -1096,10 +1096,6 @@ PrefabInstance:
     - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_FollowOffset.z
       value: -5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
-      propertyPath: m_Heading.m_Bias
-      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5670889422256985673, guid: af9d1757ce59b1b4aa1be98dc70d57c3, type: 3}
       propertyPath: m_AngularDampingMode

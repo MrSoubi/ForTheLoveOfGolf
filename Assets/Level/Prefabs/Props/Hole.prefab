@@ -101,6 +101,8 @@ MonoBehaviour:
   animeDuration: 3
   respawnPoint: {x: 0, y: 1, z: -2.5}
   isGoldenFlag: 1
+  delayBeforeActivation: 0
+  delayAfterActivation: 0
   completed: 0
 --- !u!1 &2489905408835183118
 GameObject:

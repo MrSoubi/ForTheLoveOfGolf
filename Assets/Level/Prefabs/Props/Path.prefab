@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4635628611927372469}
   - component: {fileID: 4688432501585618955}
   - component: {fileID: 8838390856660780178}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Path
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 3027969828794922050}
   - component: {fileID: 7526228262865587882}
   - component: {fileID: 4326950849351368952}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Road Mesh Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

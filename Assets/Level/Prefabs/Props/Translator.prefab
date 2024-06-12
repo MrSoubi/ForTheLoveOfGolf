@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7370817838989418024}
   - component: {fileID: 4585197974569073369}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EndingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7175473142847937667}
   - component: {fileID: 6026529226748651986}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Translator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,7 +119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4638540556990358673}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Subject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3171537338794031051}
   - component: {fileID: 1420130438611753089}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: StartingPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8965957340395033064}
   - component: {fileID: 226173401243736367}
   - component: {fileID: 6089398495282159494}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Booster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetSpeedLimit: 4
   type: 0
-  teleportLocation: {x: 0, y: 0, z: 0}
+  teleportLocation: {fileID: 0}
   teleport: 0
   freeze: 0
   giveShoot: 1

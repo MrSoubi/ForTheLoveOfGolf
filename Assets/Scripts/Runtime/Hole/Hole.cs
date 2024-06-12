@@ -13,7 +13,7 @@ public class Hole : MonoBehaviour
     [SerializeField] private ParticleSystem completedParticle;
 
     [Header("Settings")]
-    [SerializeField] private int animeDuration;
+    [SerializeField] private float animeDuration;
     [SerializeField] private Vector3 respawnPoint;
     [SerializeField] private bool holePannel;
 

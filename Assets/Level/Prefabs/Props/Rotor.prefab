@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1648734449632383775}
   - component: {fileID: 2849621215800988794}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Rotor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

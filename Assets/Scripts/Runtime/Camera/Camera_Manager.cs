@@ -64,6 +64,12 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float YSensibility = 1;
     private void Update()
     {
+        // check si il y a bien une caméra active
+        if (brain.ActiveVirtualCamera == null)
+        {
+            return;
+        }
+
         if (brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
         {
             // FOV
@@ -87,8 +93,6 @@ public class CameraManager : MonoBehaviour
         {
             trailEffect.SetFloat("Speed_Lerp", playerController.GetVelocity().magnitude / playerController.GetMaxSpeedLimit());
         }
-
-
     }
 
     /// <summary>
@@ -131,14 +135,16 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Active la caméra de suivi de la balle
+    /// Active la caméra de suivi de la balle. Si reset est true, la caméra reprendra la position qu'elle avait avant le aim.
     /// </summary>
+    /// <param name="reset"></param>
     public void ActivateFollowMode(bool reset)
     {
-        if (reset)
+        if (!reset)
         {
-            followingCam.transform.position = aimingCam.transform.position;
-            followingCam.transform.rotation = aimingCam.transform.rotation;
+            Quaternion direction = Quaternion.LookRotation(playerController.GetVelocity().normalized);
+
+            followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_XAxis.Value = direction.eulerAngles.y;
         }
 
         followingCam.Priority = 100;

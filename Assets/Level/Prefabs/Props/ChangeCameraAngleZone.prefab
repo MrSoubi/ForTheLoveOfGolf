@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5056248264844091434}
   - component: {fileID: 3249726198497083864}
   - component: {fileID: 7150997542733129949}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ChangeCameraAngleZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 8543082545235080798}
   - component: {fileID: 3383993947225712194}
   - component: {fileID: 6194463911106860477}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3281319960437246002}
   - component: {fileID: 1047707859628318928}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Virtual Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}

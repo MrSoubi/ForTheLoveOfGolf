@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5636689700931796928}
   - component: {fileID: 5882471573757359218}
   - component: {fileID: 5279165094085779513}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WaterDangerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

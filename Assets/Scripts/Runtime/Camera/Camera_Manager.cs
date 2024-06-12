@@ -82,9 +82,8 @@ public class CameraManager : MonoBehaviour
 
             float YModulation = -Input.GetAxis("Camera Y") * Time.deltaTime * YSensibility;
 
-            if (Mathf.Abs(YModulation) < 0.001f)
+            if (Mathf.Abs(YModulation) == 0)
             {
-                Debug.Log(YOrientationDelta);
                 if (YOrientationDelta < 0)
                 {
                     YModulation = (neutralY - YOrientationDelta) * Time.deltaTime;
@@ -92,10 +91,17 @@ public class CameraManager : MonoBehaviour
                 else
                 {
                     YModulation = (YOrientationDelta - neutralY) * Time.deltaTime;
+                    Debug.Log(YModulation < 0.01f);
                 }
+                //YModulation = (YOrientationDelta - neutralY) * Time.deltaTime;
 
-                YModulation *= 0.3f;
+                if (Mathf.Abs(YModulation) < 0.01f)
+                {
+                    YModulation = 0f;
+                }
             }
+
+            YModulation *= 0.3f;
 
             YOrientationDelta += YModulation;
 

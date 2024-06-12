@@ -806,6 +806,7 @@ MonoBehaviour:
   particleLeft: {fileID: 4184561897907153040}
   particleRight: {fileID: 0}
   sfx: {fileID: 5046907676597321477}
+  camActivated: 0
   animeDuration: 3
   verticalMouvement: 1
   rotationDoorLeft: 0
@@ -813,7 +814,7 @@ MonoBehaviour:
   delayBeforeFocus: 0
   delayAfterFocus: 0
   coinTreshold: 1
-  coinQuantity: 0
+  coinQuantity: 7
   holeTreshold: 0
   holeQuantity: 0
   open: 0
@@ -1040,7 +1041,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.503
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1771282476081958068, guid: bbd2661a00040d94592f7e53bf6a99ed, type: 3}
       propertyPath: m_LocalPosition.z

@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance {  get; private set; }
     private Queue<AudioSource> audioSourcesAvailable = new ();
     public AudioSource sfx;
+    public AudioSource sfxShootCharger;
 
     [Header("References")]
     [Tooltip("Don't touch! MUSIC = 0, SFX = 1, AMBIENT = 2")][SerializeField] private List<AudioMixerGroup> mixerGroups;

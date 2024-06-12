@@ -50,7 +50,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Active ou désactive toutes les pièces du challenge
+    /// Active ou dÃ©sactive toutes les piÃ¨ces du challenge
     /// </summary>
     /// <param name="state"></param>
     private void CoinSetActive(bool state)
@@ -82,7 +82,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour le timer du challenge
+    /// Met Ã  jour le timer du challenge
     /// </summary>
     private IEnumerator Timer()
     {
@@ -96,6 +96,8 @@ public class TimeChallenge : MonoBehaviour
 
             yield return null;
         }
+
+        timer = 0;
 
         ResetChallenge();
     }
@@ -153,7 +155,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Affiche la porte avec un délais lorsque le challenge est raté
+    /// Affiche la porte avec un dÃ©lais lorsque le challenge est ratÃ©
     /// </summary>
     private IEnumerator TriggerBox()
     {
@@ -164,7 +166,7 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Réinitalise le challenge
+    /// RÃ©initalise le challenge
     /// </summary>
     public void ResetChallenge()
     {
@@ -192,14 +194,18 @@ public class TimeChallenge : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute une pièce de challenge au compteur
+    /// Ajoute une piÃ¨ce de challenge au compteur
     /// </summary>
     /// <param name="coin"></param>
     public void CollectCoin(TimeChallengeCoin coin)
     {
         coinCollected += coin.value;
 
-        if (stars != null) Instantiate(stars, coin.transform.position, coin.transform.rotation);
+        if (stars != null)
+        {
+            ParticleSystem particle = Instantiate(stars, coin.transform.position, coin.transform.rotation);
+            particle.transform.localScale = coin.transform.localScale;
+        }
 
         if (sfx != null) sfx.Play();
 

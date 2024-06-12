@@ -52,7 +52,7 @@ public class Door : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour le text des pièces collecter et son nombre max
+    /// Met Ã  jour le text des piÃ¨ces collecter et son nombre max
     /// </summary>
     private void UpdatePannelCoin()
     {
@@ -66,7 +66,7 @@ public class Door : MonoBehaviour
     }
 
     /// <summary>
-    /// Met à jour le text des troues collecter et son nombre max
+    /// Met Ã  jour le text des troues collecter et son nombre max
     /// </summary>
     private void UpdatePannelHole()
     {
@@ -80,7 +80,7 @@ public class Door : MonoBehaviour
     }
 
     /// <summary>
-    /// Vérifie la condition d'ouverture
+    /// VÃ©rifie la condition d'ouverture
     /// </summary>
     public void TriggerOpen(PC_MovingSphere pc)
     {

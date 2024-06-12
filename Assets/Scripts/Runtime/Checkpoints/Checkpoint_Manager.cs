@@ -29,7 +29,11 @@ public class CheckpointManager : MonoBehaviour
             {
                 if (sfx != null) sfx.Play();
 
-                if (trigger.particle != null) trigger.particle.Play();
+                if (trigger.particle != null)
+                {
+                    trigger.particle.transform.localScale = trigger.transform.localScale;
+                    trigger.particle.Play();
+                }
             }
 
             checkPoints = newCheckPoints;

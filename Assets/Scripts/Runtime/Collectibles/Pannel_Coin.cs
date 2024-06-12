@@ -46,7 +46,13 @@ public class PannelCollectible : MonoBehaviour
             StartCoroutine(Utils.Delay(() =>
             {
                 if (sfx != null) sfx.Play();
-                if (particleEffect != null) particleEffect.Play();
+
+                if (particleEffect != null)
+                {
+                    particleEffect.transform.localScale = holeGo.transform.localScale * 4;
+                    particleEffect.Play();
+                }
+
                 Destroy(transform.GetChild(0).gameObject);
                 holeGo.SetActive(true);
             }, delayBeforeActivation));

@@ -258,7 +258,7 @@ public class PC_MovingSphere : MonoBehaviour
     private void ShowShootingIndicator()
     {
         shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
-        //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
+        shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
         shootingIndicator.SetActive(true);
     }
 
@@ -751,7 +751,13 @@ public class PC_MovingSphere : MonoBehaviour
         shootCharges -= 1;
 
         shootDirection = playerInputSpace.forward;
-        //shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
+
+        if (OnGround && Vector3.Dot(contactNormal, shootDirection) < 0)
+        {
+            shootDirection = Vector3.ProjectOnPlane(shootDirection, contactNormal).normalized;
+        }
+
+        shootDirection = Quaternion.AngleAxis(shootingAngle, playerInputSpace.right) * shootDirection;
 
         IncreaseSpeedLimit();
 

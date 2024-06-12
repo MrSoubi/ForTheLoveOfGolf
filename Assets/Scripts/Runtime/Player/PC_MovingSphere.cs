@@ -431,13 +431,14 @@ public class PC_MovingSphere : MonoBehaviour
                 StartCoroutine(Rumble(0.2f, 0.4f, 0.4f));
 
                 shootCharges = 1;
-                jumpPhase = 0;
 
                 if (UIManager.instance != null)
                 {
                     UIManager.instance.ShootInterface(false);
                 }
             }
+
+            jumpPhase = 0;
 
             CameraManager.Instance.Shake(0);
 

@@ -131,11 +131,12 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Active la caméra de suivi de la balle
+    /// Active la caméra de suivi de la balle. Si reset est true, la caméra reprendra la position qu'elle avait avant le aim.
     /// </summary>
+    /// <param name="reset"></param>
     public void ActivateFollowMode(bool reset)
     {
-        if (reset)
+        if (!reset)
         {
             followingCam.transform.position = aimingCam.transform.position;
             followingCam.transform.rotation = aimingCam.transform.rotation;

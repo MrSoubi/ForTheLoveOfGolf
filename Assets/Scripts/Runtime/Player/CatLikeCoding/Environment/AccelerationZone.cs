@@ -8,12 +8,15 @@ public class AccelerationZone : MonoBehaviour
 	float acceleration = 10f, speed = 10f;
 	[SerializeField] private bool giveShoot;
 
-	void OnTriggerEnter (Collider other) {
+    [SerializeField] private AudioSource sfx;
+
+    void OnTriggerEnter (Collider other) {
 		Rigidbody body = other.attachedRigidbody;
 		if (body) 
 		{
 			if (giveShoot) body.GetComponent<PC_MovingSphere>().AddShootCharges(1);
-			Accelerate(body);
+            if (sfx != null) sfx.Play();
+            Accelerate(body);
 		}
 	}
 

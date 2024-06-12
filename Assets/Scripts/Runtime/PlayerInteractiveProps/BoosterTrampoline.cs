@@ -51,7 +51,7 @@ public class BoosterTrampoline : MonoBehaviour
 
             PC.SetDirection(type == Type.BOOSTER ? transform.forward : transform.up);
 
-            if(type == Type.BOOSTER && sfx != null) sfx.Play();
+            if(sfx != null) sfx.Play();
         }
     }
 }

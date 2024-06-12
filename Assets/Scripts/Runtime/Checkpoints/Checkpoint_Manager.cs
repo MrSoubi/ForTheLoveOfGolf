@@ -32,6 +32,7 @@ public class CheckpointManager : MonoBehaviour
                 if (trigger.particle != null)
                 {
                     trigger.particle.transform.localScale = trigger.transform.localScale;
+                    trigger.particle2.transform.localScale = trigger.transform.localScale;
                     trigger.particle.Play();
                 }
             }

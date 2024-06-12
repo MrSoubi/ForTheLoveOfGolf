@@ -20,8 +20,22 @@ public class PannelCollectible : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int nbCollectibles;
 
+    private PC_MovingSphere players;
+
     private void Start()
     {
+        GameObject[] tmp = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+
+        for (int i = 0; i < tmp.Length; i++)
+        {
+            if (tmp[i].TryGetComponent(out PC_MovingSphere player))
+            {
+                players = player;
+
+                break;
+            }
+        }
+
         textCollectibles.text = 0 + "/" + nbCollectibles;
 
         if (CoinManager.instance) StartCoroutine(Utils.Delay(() => CoinManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
@@ -39,6 +53,10 @@ public class PannelCollectible : MonoBehaviour
 
         if (CoinManager.instance.coinCollected >= nbCollectibles)
         {
+            players.ToggleRoll(true);
+            players.SetDirection(Vector3.zero);
+            players.Block();
+
             CameraManager.Instance.ActivateCamera(cam);
 
             if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
@@ -57,7 +75,11 @@ public class PannelCollectible : MonoBehaviour
                 holeGo.SetActive(true);
             }, delayBeforeActivation));
 
-            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), focusDuration));
+            StartCoroutine(Utils.Delay(() =>
+            {
+                CameraManager.Instance.DeActivateCurrentCamera();
+                players.UnBlock(true);
+            }, focusDuration));
         }
     }
 }

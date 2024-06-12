@@ -19,17 +19,17 @@ public class Options_Menu : MonoBehaviour
 
     private void Start()
     {
-        /*float valueMusic;
+        float valueMusic;
         float valueSfx;
 
         mixer.GetFloat("MusicVolume", out valueMusic);
         mixer.GetFloat("SFXVolume", out valueSfx);
 
-        valueMusic = Mathf.Lerp(0, 100, (valueMusic - (-60)) / (0 - (-60)));
-        valueSfx = Mathf.Lerp(0, 100, (valueSfx - 0) / (-60 - 0));
+        valueMusic = (valueMusic + 80) * (100.0f / 80.0f);
+        valueSfx = (valueSfx + 80) * (100.0f / 80.0f);
 
         audioMusic.value = valueMusic;
-        audioSFX.value = valueSfx;*/
+        audioSFX.value = valueSfx;
     }
 
     /// <summary>
@@ -60,12 +60,7 @@ public class Options_Menu : MonoBehaviour
 
         textMusic.text = val.ToString() + "%";
 
-        if (val == 0)
-        {
-            val = 1;
-        }
-
-        mixer.SetFloat("MusicVolume", 30 * Mathf.Log10(val / 100));
+        mixer.SetFloat("MusicVolume", val * (80.0f / 100.0f) - 80);
     }
 
     public void SFX(float val)
@@ -74,12 +69,7 @@ public class Options_Menu : MonoBehaviour
 
         textSfx.text = val.ToString() + "%";
 
-        if (val == 0)
-        {
-            val = 1;
-        }
-
-        mixer.SetFloat("SFXVolume", 30 * Mathf.Log10(val / 100));
+        mixer.SetFloat("SFXVolume", val * (80.0f / 100.0f) - 80);
     }
 
     /// <summary>

@@ -132,6 +132,7 @@ public class TimeChallenge : MonoBehaviour
         TriggerBoxSetActive(false);
         CoinSetActive(false);
 
+        pc.ToggleRoll(true);
         pc.SetDirection(Vector3.zero);
         pc.Block();
 

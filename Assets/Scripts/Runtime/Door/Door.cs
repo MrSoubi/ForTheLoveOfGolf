@@ -90,6 +90,7 @@ public class Door : MonoBehaviour
     /// </summary>
     private void OpenDoor(PC_MovingSphere pc)
     {
+        pc.ToggleRoll(true);
         pc.SetDirection(Vector3.zero);
         pc.Block();
 

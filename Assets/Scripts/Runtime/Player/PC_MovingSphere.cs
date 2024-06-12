@@ -664,7 +664,6 @@ public class PC_MovingSphere : MonoBehaviour
         maxSpeed = speedLimits[maxSpeedIndex];
     }
 
-
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
@@ -673,6 +672,11 @@ public class PC_MovingSphere : MonoBehaviour
 
     public IEnumerator Rumble(float lowFrequencyIntensity, float highFrequencyIntensity, float duration)
     {
+        if (Gamepad.current == null)
+        {
+            yield break;
+        }
+
         Gamepad.current.SetMotorSpeeds(lowFrequencyIntensity, highFrequencyIntensity);
 
         yield return new WaitForSeconds(duration);

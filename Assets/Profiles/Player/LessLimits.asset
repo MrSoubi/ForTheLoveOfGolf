@@ -15,7 +15,7 @@ MonoBehaviour:
   shootingFactor: 0.1
   shootHeight: 2
   maxShoots: 1
-  shootingAngle: -45
+  shootingAngle: -5
   maxAcceleration: 12
   maxAirAcceleration: 8
   rotationCurve:

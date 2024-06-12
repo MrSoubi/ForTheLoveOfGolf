@@ -80,7 +80,24 @@ public class CameraManager : MonoBehaviour
             float offsetX = followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_FollowOffset.x;
             float offsetZ = followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_FollowOffset.z;
 
-            YOrientationDelta += -Input.GetAxis("Camera Y") * Time.deltaTime * YSensibility;
+            float YModulation = -Input.GetAxis("Camera Y") * Time.deltaTime * YSensibility;
+
+            if (Mathf.Abs(YModulation) < 0.001f)
+            {
+                Debug.Log(YOrientationDelta);
+                if (YOrientationDelta < 0)
+                {
+                    YModulation = (neutralY - YOrientationDelta) * Time.deltaTime;
+                }
+                else
+                {
+                    YModulation = (YOrientationDelta - neutralY) * Time.deltaTime;
+                }
+
+                YModulation *= 0.3f;
+            }
+
+            YOrientationDelta += YModulation;
 
             YOrientationDelta = Mathf.Clamp(YOrientationDelta, -1, 1);
 

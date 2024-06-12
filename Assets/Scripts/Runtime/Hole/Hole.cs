@@ -39,6 +39,8 @@ public class Hole : MonoBehaviour
     {
         if (other.CompareTag("Player") && !completed)
         {
+            completed = true;
+
             PC_MovingSphere pc = other.GetComponent<PC_MovingSphere>();
 
             pc.SetDirection(Vector3.zero);

@@ -64,6 +64,12 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float YSensibility = 1;
     private void Update()
     {
+        // check si il y a bien une caméra active
+        if (brain.ActiveVirtualCamera == null)
+        {
+            return;
+        }
+
         if (brain.ActiveVirtualCamera.VirtualCameraGameObject == followingCam.gameObject)
         {
             // FOV
@@ -87,8 +93,6 @@ public class CameraManager : MonoBehaviour
         {
             trailEffect.SetFloat("Speed_Lerp", playerController.GetVelocity().magnitude / playerController.GetMaxSpeedLimit());
         }
-
-
     }
 
     /// <summary>

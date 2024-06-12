@@ -13,10 +13,13 @@ public class Hole : MonoBehaviour
     [SerializeField] private ParticleSystem completedParticle;
 
     [Header("Settings")]
-    [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private Vector3 respawnPoint;
     public bool isGoldenFlag;
+
+    [Header("Cinematique Settings")]
+    [SerializeField] private float delayBeforeActivation;
+    [SerializeField] private float delayAfterActivation;
 
     [Header("DEBUG")]
     public bool completed;
@@ -36,34 +39,34 @@ public class Hole : MonoBehaviour
         {
             PC_MovingSphere pc = other.GetComponent<PC_MovingSphere>();
 
-            completed = true;
-            if (camActivated)
+            pc.SetDirection(Vector3.zero);
+            pc.Block();
+
+            CameraManager.Instance.ActivateCamera(cam);
+
+            StartCoroutine(Utils.Delay(() =>
             {
-                pc.SetDirection(Vector3.zero);
-                pc.Freeze();
+                if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
+                else Debug.LogError("No Hole Manager on scene");
 
-                CameraManager.Instance.ActivateCamera(cam);
-            }
+                collision = other.gameObject;
+                collision.SetActive(false);
+                virtualBall.gameObject.SetActive(true);
 
-            if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
-            else Debug.LogError("No Hole Manager on scene");
+                ballContentAnim.SetTrigger("WinAnimation");
+                StartCoroutine(SpawnPoint());
 
-            collision = other.gameObject;
-            collision.SetActive(false);
-            virtualBall.gameObject.SetActive(true);
+                virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
+                virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh;
+                virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
 
-            ballContentAnim.SetTrigger("WinAnimation");
-            StartCoroutine(SpawnPoint());
+            }, delayBeforeActivation));
 
-            virtualBall.transform.localScale = collision.transform.localScale / transform.localScale.x;
-            virtualBall.GetComponent<MeshFilter>().mesh = collision.GetComponentInChildren<MeshFilter>().mesh;
-            virtualBall.GetComponent<MeshRenderer>().materials = collision.GetComponentInChildren<MeshRenderer>().materials;
-
-            if (camActivated)
+            StartCoroutine(Utils.Delay(() =>
             {
-                StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-                StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
-            }  
+                CameraManager.Instance.DeActivateCurrentCamera();
+                pc.UnBlock(true);
+            }, animeDuration + delayAfterActivation));
         }
     }
 

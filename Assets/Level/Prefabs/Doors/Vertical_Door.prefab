@@ -218,7 +218,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 3489343829429236898}
   sfx: {fileID: 6110477422739017958}
-  freezeTime: 4
   animeDuration: 1
 --- !u!1 &1566272303563840479
 GameObject:
@@ -811,6 +810,8 @@ MonoBehaviour:
   verticalMouvement: 1
   rotationDoorLeft: 0
   rotationDoorRight: 0
+  delayBeforeFocus: 0
+  delayAfterFocus: 0
   coinTreshold: 1
   coinQuantity: 0
   holeTreshold: 0

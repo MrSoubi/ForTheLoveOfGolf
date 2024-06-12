@@ -16,11 +16,14 @@ public class Door : MonoBehaviour
     [SerializeField] private AudioSource sfx;
 
     [Header("Settings")]
-    [SerializeField] private bool camActivated;
     [SerializeField] private int animeDuration;
     [SerializeField] private bool verticalMouvement;
     [SerializeField] private float rotationDoorLeft;
     [SerializeField] private float rotationDoorRight;
+
+    [Header("Cinematique Settings")]
+    [SerializeField] private float delayBeforeActivation;
+    [SerializeField] private float delayAfterActivation;
 
     [Header("Object Need")]
     public bool coinTreshold;
@@ -89,32 +92,30 @@ public class Door : MonoBehaviour
     /// </summary>
     private void OpenDoor(PC_MovingSphere pc)
     {
+        pc.SetDirection(Vector3.zero);
+        pc.Block();
+
+        CameraManager.Instance.ActivateCamera(cam);
+
         open = true;
 
-        if (camActivated)
+        StartCoroutine(Utils.Delay(() =>
         {
-            pc.SetDirection(Vector3.zero);
-            pc.Freeze();
+            if (verticalMouvement) OpenVerticaly();
+            else OpenPivot();
 
-            CameraManager.Instance.ActivateCamera(cam);
-        }
-        
+            if (particleLeft != null) particleLeft?.Play();
 
-        if(verticalMouvement) OpenVerticaly();
-        else OpenPivot();
+            if (particleRight != null) particleRight?.Play();
 
-        if (particleLeft != null) particleLeft?.Play();
-            
-        if(particleRight != null) particleRight?.Play();
+            if (sfx != null) sfx.Play();
+        }, delayBeforeActivation));
 
-        if (sfx != null) sfx.Play();
-
-        if (camActivated)
+        StartCoroutine(Utils.Delay(() =>
         {
-
-            StartCoroutine(Utils.Delay(() => CameraManager.Instance.DeActivateCurrentCamera(), animeDuration));
-            StartCoroutine(Utils.Delay(() => pc.UnFreeze(), animeDuration + 0.5f));
-        }
+            CameraManager.Instance.DeActivateCurrentCamera();
+            pc.UnBlock(true);
+        }, animeDuration + delayAfterActivation));
     }
 
     /// <summary>

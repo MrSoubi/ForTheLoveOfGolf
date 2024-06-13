@@ -43,6 +43,7 @@ public class Hole : MonoBehaviour
 
             PC_MovingSphere pc = other.GetComponent<PC_MovingSphere>();
 
+            pc.ToggleRoll(true);
             pc.SetDirection(Vector3.zero);
             pc.Block();
 

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Menu : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] GameObject optionsMenu;
     [SerializeField] private Texture2D handCursor;
     [SerializeField] private AudioSource sfx;
     [SerializeField] private Button buttonContinue;
@@ -15,22 +16,6 @@ public class Menu : MonoBehaviour
     public string level;
 
     private AsyncOperation ao;
-
-    private void Start()
-    {
-        /*string filePath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Save", "Save.json");
-
-        if (File.Exists(filePath))
-        {
-            buttonContinue.GetComponent<Button>().interactable = true;
-            buttonContinue.GetComponent<EventTrigger>().enabled = true;
-        }
-        else
-        {
-            buttonContinue.GetComponent<Button>().interactable = false;
-            buttonContinue.GetComponent<EventTrigger>().enabled = false;
-        }*/
-    }
 
     /// <summary>
     /// Change le cursor en main lorsque la souris passe dessus
@@ -88,20 +73,13 @@ public class Menu : MonoBehaviour
         StartCoroutine(ChangeLevel());
     }
 
-    /// <summary>
-    /// Charge la sauvegarde du jeu
-    /// </summary>
-    public void Continue()
+    public void Options()
     {
         ButtonPress();
 
-        if (SaveManager.LoadFile())
-        {
-            ao = SceneManager.LoadSceneAsync(level);
-            ao.allowSceneActivation = false;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-            StartCoroutine(ChangeLevel());
-        }
+        optionsMenu.SetActive(true);
     }
 
     /// <summary>

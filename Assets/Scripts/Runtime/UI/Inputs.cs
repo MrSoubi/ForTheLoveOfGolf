@@ -27,11 +27,13 @@ public class Inputs : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(optionsMenu.activeInHierarchy)
+            if(optionsMenu != null && optionsMenu.activeInHierarchy)
             {
                 optionsMenu.SetActive(false);
+
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             }
-            else if(!panelMenu.activeInHierarchy)
+            else if(panelMenu != null && !panelMenu.activeInHierarchy)
             {
                 Time.timeScale = 0.0f;
 
@@ -40,7 +42,7 @@ public class Inputs : MonoBehaviour
                 CursorManager.instance.SetCursorVisibility(true);
                 CursorManager.instance.SetCursorLockMod(CursorLockMode.None);
             }
-            else if(panelMenu.activeInHierarchy)
+            else if(panelMenu != null && panelMenu.activeInHierarchy)
             {
                 Time.timeScale = 1.0f;
 
@@ -55,7 +57,8 @@ public class Inputs : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R) && Time.timeScale > 0)
         {
-            GameManager.instance.Respawn(players);
+            if (ChallengeManager.instance.currentChallenge != null) ChallengeManager.instance.currentChallenge.Respawn(players);
+            else if(GameManager.instance != null) GameManager.instance.Respawn(players);
         }
     }
 }

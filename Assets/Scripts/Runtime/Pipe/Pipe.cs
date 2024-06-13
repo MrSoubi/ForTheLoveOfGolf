@@ -26,6 +26,13 @@ public class Pipe : MonoBehaviour
         {
             take = true;
             collision = other.gameObject;
+
+            PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
+
+            tmp.ToggleRoll(true);
+            tmp.SetDirection(Vector3.zero);
+            tmp.Block();
+
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);
 
@@ -56,8 +63,6 @@ public class Pipe : MonoBehaviour
 
         virtualBall.gameObject.SetActive(false);
         PC_MovingSphere tmp = collision.GetComponent<PC_MovingSphere>();
-
-        tmp.Block();
 
         yield return new WaitForSeconds(.4f);
 

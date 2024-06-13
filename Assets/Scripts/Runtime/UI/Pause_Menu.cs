@@ -91,18 +91,6 @@ public class PauseMenu : MonoBehaviour
         StartCoroutine(ChangeLevel());
     }
 
-    /// <summary>
-    /// Sauvegarde le jeu
-    /// </summary>
-    public void SaveGame()
-    {
-        ButtonPress();
-
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-
-        SaveManager.SaveToFile();
-    }
-
     public void Options()
     {
         ButtonPress();

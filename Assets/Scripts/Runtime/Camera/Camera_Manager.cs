@@ -65,7 +65,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float YSensibility = 1;
     private void Update()
     {
-        neutralY = maxY - minY;
+        neutralY = (maxY - minY) / 2 + minY;
 
         // check si il y a bien une caméra active
         if (brain.ActiveVirtualCamera == null)

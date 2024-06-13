@@ -125,6 +125,7 @@ public class PC_MovingSphere : MonoBehaviour
         OnValidate();
     }
 
+
     private void Start()
     {
         UpdatePCData();
@@ -152,6 +153,7 @@ public class PC_MovingSphere : MonoBehaviour
             if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming && canAim)
             {
                 ToggleAim(); // Activation du mode Aim
+
                 canAim = false;
             }
             else if((Input.GetButtonUp("Aim") || (Input.GetAxisRaw("Aim GamePad") == 0) && !Input.GetButton("Aim")) && Time.timeScale > 0 && isAiming)
@@ -278,7 +280,10 @@ public class PC_MovingSphere : MonoBehaviour
 
     public void ToggleAim()
     {
-        if (!canShoot || shootCharges < 1) return;
+        if (!canShoot || shootCharges < 1)
+        {
+            return;
+        }
 
         //ShowShootingIndicator();
         isAiming = true;
@@ -301,7 +306,19 @@ public class PC_MovingSphere : MonoBehaviour
         Time.timeScale = 1.0f;
         isAiming = false;
 
-        if(rollingMaterial != null) meshRenderer.material = rollingMaterial;
+        if (rollingMaterial != null)
+        {
+            meshRenderer.material = rollingMaterial;
+        }
+
+        if (shootCharges > 0)
+        {
+            meshRenderer.material.SetColor("_BaseColor", Color.white);
+        }
+        else
+        {
+            meshRenderer.material.SetColor("_BaseColor", Color.grey);
+        }
 
         CameraManager.Instance.ActivateFollowMode(reset);
     }
@@ -443,6 +460,8 @@ public class PC_MovingSphere : MonoBehaviour
                 }
 
                 shootCharges = 1;
+
+                meshRenderer.material.SetColor("_BaseColor", Color.white);
 
                 if (UIManager.instance != null)
                 {
@@ -777,6 +796,8 @@ public class PC_MovingSphere : MonoBehaviour
 
         stepsSinceLastShoot = 0;
         shootCharges -= 1;
+
+        meshRenderer.material.SetColor("_BaseColor", Color.grey);
 
         shootDirection = playerInputSpace.forward;
 

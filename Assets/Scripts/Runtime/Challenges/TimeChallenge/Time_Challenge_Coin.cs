@@ -15,7 +15,7 @@ public class TimeChallengeCoin : MonoBehaviour
 
     private void Start()
     {
-        position = transform.position;
+        position = transform.localPosition;
     }
 
     private void OnTriggerEnter(Collider other)

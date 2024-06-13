@@ -5000,6 +5000,7 @@ MonoBehaviour:
   timeChallenge: {fileID: 8676696423853696499}
   timerText: {fileID: 7252226735000320205}
   timerCoinValueText: {fileID: 6888252878667690587}
+  pannelPipe: {fileID: 7274654478818326360}
   circularFadeAnim: {fileID: 6472752536105276303}
   challengeAnim: {fileID: 6731437081308524879}
 --- !u!1 &7933582274806775257

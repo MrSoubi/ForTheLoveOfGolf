@@ -950,7 +950,10 @@ public class PC_MovingSphere : MonoBehaviour
     public void Teleport(Vector3 position)
     {
         StopAllCoroutines();
-        Rumble(0, 0, 0);
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
         CameraManager.Instance.ResetShake();
         body.position = position;
     }
@@ -962,7 +965,10 @@ public class PC_MovingSphere : MonoBehaviour
     public void Teleport(Transform transform)
     {
         StopAllCoroutines();
-        Rumble(0, 0, 0);
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
         CameraManager.Instance.ResetShake();
         body.position = transform.position;
         //body.rotation = transform.rotation;
@@ -976,7 +982,10 @@ public class PC_MovingSphere : MonoBehaviour
     public void Teleport(Vector3 position, Quaternion rotation)
     {
         StopAllCoroutines();
-        Rumble(0, 0, 0);
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
         CameraManager.Instance.ResetShake();
         body.position = position;
         //body.rotation = rotation;
@@ -1004,7 +1013,10 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = true;
         CameraManager.Instance.ResetShake();
         StopAllCoroutines();
-        Rumble(0, 0, 0);
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
     }
 
     /// <summary>
@@ -1022,7 +1034,10 @@ public class PC_MovingSphere : MonoBehaviour
         isBlocked = false;
         CameraManager.Instance.ResetShake();
         StopAllCoroutines();
-        Rumble(0, 0, 0);
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
 
     }
 
@@ -1034,6 +1049,11 @@ public class PC_MovingSphere : MonoBehaviour
     public void FreezeDirection()
     {
         canTurn = false;
+        StopAllCoroutines();
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
     }
 
     /// <summary>
@@ -1042,6 +1062,11 @@ public class PC_MovingSphere : MonoBehaviour
     public void UnFreezeDirection()
     {
         canTurn = true;
+        StopAllCoroutines();
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
     }
 
     private bool isFreezed = false;
@@ -1062,6 +1087,11 @@ public class PC_MovingSphere : MonoBehaviour
     {
         UnFreezeDirection();
         isFreezed = false;
+        StopAllCoroutines();
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0, 0);
+        }
     }
 
     /// <summary>

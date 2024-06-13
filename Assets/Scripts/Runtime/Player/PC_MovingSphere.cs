@@ -14,7 +14,7 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField] private AudioSource sfxLanding;
 
     [SerializeField] private Transform ball = default;
-    [SerializeField] private GameObject shootingIndicator;
+    //[SerializeField] private GameObject shootingIndicator;
 
     // ----------
     // -- Tool --
@@ -266,15 +266,15 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void ShowShootingIndicator()
     {
-        shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
-        shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
-        shootingIndicator.SetActive(true);
+        //shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
+        //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
+        //shootingIndicator.SetActive(true);
     }
 
 
     private void HideShootingIndicator()
     {
-        shootingIndicator.SetActive(false);
+        //shootingIndicator.SetActive(false);
     }
 
 
@@ -291,7 +291,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (aimingMaterial != null) meshRenderer.material = aimingMaterial;
 
         CameraManager.Instance.ActivateAimMode();
-        shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
+        //shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
         Time.timeScale = 0.1f;
     }
 
@@ -301,8 +301,8 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="reset"></param>
     public void ToggleRoll(bool reset)
     {
-        shootingIndicator.GetComponent<Animator>().SetBool("Show", false);
-        HideShootingIndicator();
+        //shootingIndicator.GetComponent<Animator>().SetBool("Show", false);
+        //HideShootingIndicator();
         Time.timeScale = 1.0f;
         isAiming = false;
 
@@ -327,7 +327,7 @@ public class PC_MovingSphere : MonoBehaviour
     private void HandleAim()
     {
         desiredShoot |= Input.GetButtonDown("Shoot") || Input.GetAxisRaw("Shoot GamePad") == 1;
-        shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
+        //shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
 

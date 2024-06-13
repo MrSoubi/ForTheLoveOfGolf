@@ -134,7 +134,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     private bool isAiming;
-
+    bool canAim = true;
     private void Update()
     {
         playerInputSpace = CameraManager.Instance.GetLookingDirection();
@@ -149,14 +149,20 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming)
+            if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming && canAim)
             {
                 ToggleAim(); // Activation du mode Aim
+                canAim = false;
             }
             else if((Input.GetButtonUp("Aim") || (Input.GetAxisRaw("Aim GamePad") == 0) && !Input.GetButton("Aim")) && Time.timeScale > 0 && isAiming)
             {
                 ToggleRoll(true); // Desactivation du mode Aim
+                canAim = true;
             }
+        }
+
+        if ((Input.GetButtonUp("Aim") || (Input.GetAxisRaw("Aim GamePad") == 0))){
+            canAim = true;
         }
 
         if (isAiming)
@@ -596,7 +602,27 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void AdjustMaxSpeed()
     {
-        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin) LowerMaxSpeed();
+        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
+        {
+            LowerMaxSpeed();
+        }
+
+        if (!isVelocityClamped)
+        {
+            for (int i = 0; i < speedLimits.Count; i++)
+            {
+                if (velocity.magnitude < speedLimits[i])
+                {
+                    maxSpeedIndex = i;
+                    maxSpeed = speedLimits[maxSpeedIndex];
+
+                    break;
+                }
+            }
+
+            // maxSpeedIndex = speedLimits.Count - 1;
+            maxSpeed = speedLimits[maxSpeedIndex];
+        }
     }
 
     private bool isVelocityClamped = true;
@@ -654,7 +680,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void ClampVelocity()
     {
         isVelocityClamped = true;
-
+        /*
         for (int i = 0; i < speedLimits.Count; i++)
         {
             if (velocity.magnitude < speedLimits[i])
@@ -668,12 +694,13 @@ public class PC_MovingSphere : MonoBehaviour
 
         maxSpeedIndex = speedLimits.Count - 1;
         maxSpeed = speedLimits[maxSpeedIndex];
+        */
     }
 
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
-        IncreaseSpeedLimitToMaximum();
+        //IncreaseSpeedLimitToMaximum();
     }
 
     public IEnumerator Rumble(float lowFrequencyIntensity, float highFrequencyIntensity, float duration)
@@ -709,14 +736,9 @@ public class PC_MovingSphere : MonoBehaviour
         else if (maxAirJumps > 0 && jumpPhase < maxAirJumps)
         {
             jumpDirection = contactNormal;
-
-            Debug.Log("Debug jump");
         }
         else
         {
-            Debug.Log("Debug jump cant jump");
-            Debug.Log(maxAirJumps > 0);
-            Debug.Log((jumpPhase < maxAirJumps) + " phase : " + jumpPhase);
             return;
         }
 
@@ -906,6 +928,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="position"></param>
     public void Teleport(Vector3 position)
     {
+        StopAllCoroutines();
         body.position = position;
     }
 

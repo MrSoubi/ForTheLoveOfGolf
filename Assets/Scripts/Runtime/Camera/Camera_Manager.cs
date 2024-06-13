@@ -59,11 +59,14 @@ public class CameraManager : MonoBehaviour
         boostCam.LookAt = target.transform;
     }
 
-    [SerializeField] float minY = 1, maxY = 6, neutralY = 3;
+    [SerializeField] float minY = 1, maxY = 6;
+    float neutralY;
     float YOrientationDelta = 0;
     [SerializeField] float YSensibility = 1;
     private void Update()
     {
+        neutralY = (maxY - minY) / 2 + minY;
+
         // check si il y a bien une caméra active
         if (brain.ActiveVirtualCamera == null)
         {
@@ -86,28 +89,24 @@ public class CameraManager : MonoBehaviour
             {
                 if (YOrientationDelta < 0)
                 {
-                    YModulation = (neutralY - YOrientationDelta) * Time.deltaTime;
+                    YModulation = (neutralY - YOrientationDelta) * Time.deltaTime * YSensibility * 0.03f;
                 }
                 else
                 {
-                    YModulation = (YOrientationDelta - neutralY) * Time.deltaTime;
-                    Debug.Log(YModulation < 0.01f);
-                }
-                //YModulation = (YOrientationDelta - neutralY) * Time.deltaTime;
-
-                if (Mathf.Abs(YModulation) < 0.01f)
-                {
-                    YModulation = 0f;
+                    YModulation = (YOrientationDelta - neutralY) * Time.deltaTime * YSensibility * 0.03f;
                 }
             }
-
-            YModulation *= 0.3f;
 
             YOrientationDelta += YModulation;
 
             YOrientationDelta = Mathf.Clamp(YOrientationDelta, -1, 1);
 
             float offsetY = Mathf.Lerp(minY, maxY, Mathf.InverseLerp(-1, 1, YOrientationDelta));
+
+            if (Mathf.Abs(offsetY - neutralY) < 0.1f)
+            {
+                offsetY = neutralY;
+            }
 
             followingCam.GetCinemachineComponent<CinemachineOrbitalTransposer>().m_FollowOffset = new Vector3(offsetX, offsetY, offsetZ);
         }
@@ -231,7 +230,7 @@ public class CameraManager : MonoBehaviour
 
     public void Shake(float intensity)
     {
-        followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = intensity / 2;
+        //followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = intensity / 2;
     }
 
     public IEnumerator LandingShake()

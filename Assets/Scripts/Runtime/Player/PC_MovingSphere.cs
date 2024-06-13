@@ -929,6 +929,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void Teleport(Vector3 position)
     {
         StopAllCoroutines();
+        Rumble(0, 0, 0);
         body.position = position;
     }
 

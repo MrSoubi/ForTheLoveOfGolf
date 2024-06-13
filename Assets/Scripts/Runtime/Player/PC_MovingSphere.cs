@@ -134,7 +134,7 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
     private bool isAiming;
-
+    bool canAim = true;
     private void Update()
     {
         playerInputSpace = CameraManager.Instance.GetLookingDirection();
@@ -149,14 +149,20 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming)
+            if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming && canAim)
             {
                 ToggleAim(); // Activation du mode Aim
+                canAim = false;
             }
             else if((Input.GetButtonUp("Aim") || (Input.GetAxisRaw("Aim GamePad") == 0) && !Input.GetButton("Aim")) && Time.timeScale > 0 && isAiming)
             {
                 ToggleRoll(true); // Desactivation du mode Aim
+                canAim = true;
             }
+        }
+
+        if ((Input.GetButtonUp("Aim") || (Input.GetAxisRaw("Aim GamePad") == 0))){
+            canAim = true;
         }
 
         if (isAiming)

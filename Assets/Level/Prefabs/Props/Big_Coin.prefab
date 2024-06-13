@@ -174,8 +174,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coin: {fileID: 8986821413852619165}
-  forceFactor: 0.1
-  IncrementationMultiplicator: 1.15
+  forceFactor: 0.2
+  IncrementationMultiplicator: 1.2
 --- !u!1 &8986821413852619165
 GameObject:
   m_ObjectHideFlags: 0

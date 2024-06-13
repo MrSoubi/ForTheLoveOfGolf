@@ -951,6 +951,7 @@ public class PC_MovingSphere : MonoBehaviour
     {
         StopAllCoroutines();
         Rumble(0, 0, 0);
+        CameraManager.Instance.ResetShake();
         body.position = position;
     }
 
@@ -960,6 +961,9 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="transform"></param>
     public void Teleport(Transform transform)
     {
+        StopAllCoroutines();
+        Rumble(0, 0, 0);
+        CameraManager.Instance.ResetShake();
         body.position = transform.position;
         //body.rotation = transform.rotation;
     }
@@ -971,6 +975,9 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="rotation"></param>
     public void Teleport(Vector3 position, Quaternion rotation)
     {
+        StopAllCoroutines();
+        Rumble(0, 0, 0);
+        CameraManager.Instance.ResetShake();
         body.position = position;
         //body.rotation = rotation;
     }

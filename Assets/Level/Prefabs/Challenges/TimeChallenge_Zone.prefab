@@ -781,10 +781,6 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-      propertyPath: isGoldenFlag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 606018989725004980, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
       propertyPath: respawnPoint.z
       value: 2.5
       objectReference: {fileID: 0}

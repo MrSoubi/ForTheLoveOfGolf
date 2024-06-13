@@ -80,7 +80,6 @@ MonoBehaviour:
   trailEffect: {fileID: 9110926438149352697}
   minY: 1
   maxY: 6
-  neutralY: 3
   YSensibility: 15
 --- !u!1001 &176234362786128446
 PrefabInstance:
@@ -940,9 +939,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7142984298639536114, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+    - {fileID: 6113959909539325933, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 111529354405195739, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8878428247951214319}
   m_SourcePrefab: {fileID: 100100000, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
 --- !u!114 &580275826140843212 stripped
 MonoBehaviour:
@@ -955,11 +958,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &1676253464601019446 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8112102141036242772, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+  m_PrefabInstance: {fileID: 7480697027780240226}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3043973504770512759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5615596800584283157, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
   m_PrefabInstance: {fileID: 7480697027780240226}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &3152296676534936370 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5507888531032965200, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+  m_PrefabInstance: {fileID: 7480697027780240226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7376048554926722233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 111529354405195739, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}
+  m_PrefabInstance: {fileID: 7480697027780240226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8878428247951214319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7376048554926722233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86fffc841f45cb64f821d789a835206b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTarget: {fileID: 3152296676534936370}
+  cameraObject: {fileID: 1676253464601019446}
 --- !u!2083052967 &9110926438149352697 stripped
 VisualEffect:
   m_CorrespondingSourceObject: {fileID: 1846551838442262427, guid: 753302fdcd30ee54896f142e52fd7b4f, type: 3}

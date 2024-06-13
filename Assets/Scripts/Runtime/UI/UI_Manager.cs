@@ -14,11 +14,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI timerCoinValueText;
 
-    [Header("Ref Shoot Icon")]
-    [SerializeField] private Image shootIcon;
-    [SerializeField] private Sprite shoot;
-    [SerializeField] private Sprite shootTransparent;
-
     [Header("Ref Animations")]
     [SerializeField] private Animator circularFadeAnim;
     [SerializeField] private Animator challengeAnim;
@@ -129,8 +124,6 @@ public class UIManager : MonoBehaviour
     /// </summary>
     /// <param name="transparent"></param>
     public void ShootInterface(bool transparent)
-    {
-        if(transparent) shootIcon.sprite = shootTransparent;
-        else shootIcon.sprite = shoot;
+    { 
     }
 }

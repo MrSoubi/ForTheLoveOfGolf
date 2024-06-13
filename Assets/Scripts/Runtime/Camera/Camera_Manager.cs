@@ -249,4 +249,10 @@ public class CameraManager : MonoBehaviour
             yield return null;
         }
     }
+
+    public void ResetShake()
+    {
+        StopAllCoroutines();
+        followingCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0;
+    }
 }

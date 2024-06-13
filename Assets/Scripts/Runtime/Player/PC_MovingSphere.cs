@@ -14,7 +14,7 @@ public class PC_MovingSphere : MonoBehaviour
     [SerializeField] private AudioSource sfxLanding;
 
     [SerializeField] private Transform ball = default;
-    [SerializeField] private GameObject shootingIndicator;
+    //[SerializeField] private GameObject shootingIndicator;
 
     // ----------
     // -- Tool --
@@ -125,6 +125,7 @@ public class PC_MovingSphere : MonoBehaviour
         OnValidate();
     }
 
+
     private void Start()
     {
         UpdatePCData();
@@ -152,6 +153,7 @@ public class PC_MovingSphere : MonoBehaviour
             if ((Input.GetButtonDown("Aim") || Input.GetAxisRaw("Aim GamePad") == 1) && Time.timeScale > 0 && !isAiming && canAim)
             {
                 ToggleAim(); // Activation du mode Aim
+
                 canAim = false;
             }
             else if((Input.GetButtonUp("Aim") || (Input.GetAxisRaw("Aim GamePad") == 0) && !Input.GetButton("Aim")) && Time.timeScale > 0 && isAiming)
@@ -264,21 +266,24 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void ShowShootingIndicator()
     {
-        shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
-        shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
-        shootingIndicator.SetActive(true);
+        //shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
+        //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
+        //shootingIndicator.SetActive(true);
     }
 
 
     private void HideShootingIndicator()
     {
-        shootingIndicator.SetActive(false);
+        //shootingIndicator.SetActive(false);
     }
 
 
     public void ToggleAim()
     {
-        if (!canShoot || shootCharges < 1) return;
+        if (!canShoot || shootCharges < 1)
+        {
+            return;
+        }
 
         //ShowShootingIndicator();
         isAiming = true;
@@ -286,7 +291,7 @@ public class PC_MovingSphere : MonoBehaviour
         if (aimingMaterial != null) meshRenderer.material = aimingMaterial;
 
         CameraManager.Instance.ActivateAimMode();
-        shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
+        //shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
         Time.timeScale = 0.1f;
     }
 
@@ -296,12 +301,24 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="reset"></param>
     public void ToggleRoll(bool reset)
     {
-        shootingIndicator.GetComponent<Animator>().SetBool("Show", false);
-        HideShootingIndicator();
+        //shootingIndicator.GetComponent<Animator>().SetBool("Show", false);
+        //HideShootingIndicator();
         Time.timeScale = 1.0f;
         isAiming = false;
 
-        if(rollingMaterial != null) meshRenderer.material = rollingMaterial;
+        if (rollingMaterial != null)
+        {
+            meshRenderer.material = rollingMaterial;
+        }
+
+        if (shootCharges > 0)
+        {
+            meshRenderer.material.SetColor("_BaseColor", Color.white);
+        }
+        else
+        {
+            meshRenderer.material.SetColor("_BaseColor", Color.grey);
+        }
 
         CameraManager.Instance.ActivateFollowMode(reset);
     }
@@ -310,7 +327,7 @@ public class PC_MovingSphere : MonoBehaviour
     private void HandleAim()
     {
         desiredShoot |= Input.GetButtonDown("Shoot") || Input.GetAxisRaw("Shoot GamePad") == 1;
-        shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
+        //shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
 
@@ -443,6 +460,8 @@ public class PC_MovingSphere : MonoBehaviour
                 }
 
                 shootCharges = 1;
+
+                meshRenderer.material.SetColor("_BaseColor", Color.white);
 
                 if (UIManager.instance != null)
                 {
@@ -778,6 +797,8 @@ public class PC_MovingSphere : MonoBehaviour
         stepsSinceLastShoot = 0;
         shootCharges -= 1;
 
+        meshRenderer.material.SetColor("_BaseColor", Color.grey);
+
         shootDirection = playerInputSpace.forward;
 
         if (OnGround && Vector3.Dot(contactNormal, shootDirection) < 0)
@@ -930,6 +951,7 @@ public class PC_MovingSphere : MonoBehaviour
     {
         StopAllCoroutines();
         Rumble(0, 0, 0);
+        CameraManager.Instance.ResetShake();
         body.position = position;
     }
 
@@ -939,6 +961,9 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="transform"></param>
     public void Teleport(Transform transform)
     {
+        StopAllCoroutines();
+        Rumble(0, 0, 0);
+        CameraManager.Instance.ResetShake();
         body.position = transform.position;
         //body.rotation = transform.rotation;
     }
@@ -950,6 +975,9 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="rotation"></param>
     public void Teleport(Vector3 position, Quaternion rotation)
     {
+        StopAllCoroutines();
+        Rumble(0, 0, 0);
+        CameraManager.Instance.ResetShake();
         body.position = position;
         //body.rotation = rotation;
     }

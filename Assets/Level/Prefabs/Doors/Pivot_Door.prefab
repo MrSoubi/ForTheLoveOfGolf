@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2645583899148305293}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: -1.75, y: 0, z: 0}
   m_LocalScale: {x: 3.5, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -570,13 +570,11 @@ MonoBehaviour:
   sfx: {fileID: 6517264879366674283}
   animeDuration: 3
   verticalMouvement: 0
-  rotationDoorLeft: 90
-  rotationDoorRight: -90
   delayBeforeActivation: 0
   delayAfterActivation: 0
   coinTreshold: 0
   coinQuantity: 0
-  holeTreshold: 1
+  holeTreshold: 0
   holeQuantity: 0
   open: 0
 --- !u!1 &5226868743687604634
@@ -699,7 +697,7 @@ Transform:
   m_GameObject: {fileID: 5895958355656128464}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.75, y: 0, z: 0}
+  m_LocalPosition: {x: -3.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -953,7 +951,7 @@ Transform:
   m_GameObject: {fileID: 7003911263428509806}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 1.75, y: 0, z: 0}
   m_LocalScale: {x: 3.5, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1056,7 +1054,7 @@ Transform:
   m_GameObject: {fileID: 7336299172077675115}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.75, y: 0, z: 0}
+  m_LocalPosition: {x: 3.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:

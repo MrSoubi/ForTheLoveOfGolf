@@ -928,6 +928,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="position"></param>
     public void Teleport(Vector3 position)
     {
+        StopAllCoroutines();
         body.position = position;
     }
 

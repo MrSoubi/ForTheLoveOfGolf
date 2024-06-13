@@ -11,12 +11,6 @@ public class TimeChallengeCoin : MonoBehaviour
 
     [Header("__DEBUG__")]
     public bool isPickingUp;
-    public Vector3 position;
-
-    private void Start()
-    {
-        position = transform.localPosition;
-    }
 
     private void OnTriggerEnter(Collider other)
     {

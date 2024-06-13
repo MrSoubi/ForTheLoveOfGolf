@@ -12,6 +12,7 @@ public class TimeChallenge : MonoBehaviour
     [SerializeField] private GameObject triggerBox;
     [SerializeField] private ParticleSystem stars;
     [SerializeField] private List<TimeChallengeCoin> coinList = new List<TimeChallengeCoin>();
+    [SerializeField] private List<Vector3> coinPos = new List<Vector3>();
     [SerializeField] private VisualEffect particleEffect;
     [SerializeField] private AudioSource sfx;
     [SerializeField] private AudioSource sfxReward;
@@ -35,6 +36,11 @@ public class TimeChallenge : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < coinList.Count(); i++)
+        {
+            coinPos.Add(coinList[i].transform.position);
+        }
+
         CoinSetActive(false);
         StartCoroutine(Utils.Delay(() => RewardSetActive(false), .005f));
         TriggerBoxSetActive(true);
@@ -60,7 +66,6 @@ public class TimeChallenge : MonoBehaviour
             coinList[i].gameObject.SetActive(state);
             coinList[i].challenge = this;
             coinList[i].isPickingUp = false;
-            coinList[i].transform.position = transform.position + coinList[i].position;
         }
     }
 
@@ -109,6 +114,12 @@ public class TimeChallenge : MonoBehaviour
     private void StartChallenge()
     {
         started = true;
+
+        for (int i = 0; i < coinList.Count(); i++)
+        {
+            coinList[i].transform.position = coinPos[i];
+        }
+
         ChallengeManager.instance.currentChallenge = this;
 
         if (UIManager.instance != null) UIManager.instance.UpdateTimerCoinText(coinCollected.ToString(), coinList.Count.ToString());

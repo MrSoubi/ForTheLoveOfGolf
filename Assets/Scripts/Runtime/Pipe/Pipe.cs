@@ -67,6 +67,8 @@ public class Pipe : MonoBehaviour
 
         yield return new WaitForSeconds(.4f);
 
+        UIManager.instance.pannelPipe.SetActive(true);
+
         UIManager.instance.InterfacePipe(true);
 
         yield return new WaitForSeconds(1.2f);
@@ -78,6 +80,8 @@ public class Pipe : MonoBehaviour
         UIManager.instance.InterfacePipe(false);
 
         yield return new WaitForSeconds(.8f);
+
+        UIManager.instance.pannelPipe.SetActive(false);
 
         tmp.UnBlock(true);
         collision = null;

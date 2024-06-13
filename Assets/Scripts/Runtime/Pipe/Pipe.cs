@@ -32,6 +32,7 @@ public class Pipe : MonoBehaviour
             tmp.ToggleRoll(true);
             tmp.SetDirection(Vector3.zero);
             tmp.Block();
+            CameraManager.Instance.ResetShake();
 
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);

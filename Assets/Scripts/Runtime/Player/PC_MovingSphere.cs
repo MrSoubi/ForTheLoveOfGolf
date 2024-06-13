@@ -1002,6 +1002,9 @@ public class PC_MovingSphere : MonoBehaviour
         savedVelocity = body.velocity;
         body.velocity = Vector3.zero;
         isBlocked = true;
+        CameraManager.Instance.ResetShake();
+        StopAllCoroutines();
+        Rumble(0, 0, 0);
     }
 
     /// <summary>
@@ -1017,6 +1020,10 @@ public class PC_MovingSphere : MonoBehaviour
         }
 
         isBlocked = false;
+        CameraManager.Instance.ResetShake();
+        StopAllCoroutines();
+        Rumble(0, 0, 0);
+
     }
 
     private bool canTurn = true;

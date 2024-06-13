@@ -730,14 +730,9 @@ public class PC_MovingSphere : MonoBehaviour
         else if (maxAirJumps > 0 && jumpPhase < maxAirJumps)
         {
             jumpDirection = contactNormal;
-
-            Debug.Log("Debug jump");
         }
         else
         {
-            Debug.Log("Debug jump cant jump");
-            Debug.Log(maxAirJumps > 0);
-            Debug.Log((jumpPhase < maxAirJumps) + " phase : " + jumpPhase);
             return;
         }
 

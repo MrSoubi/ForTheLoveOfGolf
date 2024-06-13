@@ -596,7 +596,27 @@ public class PC_MovingSphere : MonoBehaviour
 
     private void AdjustMaxSpeed()
     {
-        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin) LowerMaxSpeed();
+        if (isVelocityClamped && maxSpeedIndex > 0 && velocity.magnitude < speedLimits[maxSpeedIndex - 1] - speedLimitMargin)
+        {
+            LowerMaxSpeed();
+        }
+
+        if (!isVelocityClamped)
+        {
+            for (int i = 0; i < speedLimits.Count; i++)
+            {
+                if (velocity.magnitude < speedLimits[i])
+                {
+                    maxSpeedIndex = i;
+                    maxSpeed = speedLimits[maxSpeedIndex];
+
+                    break;
+                }
+            }
+
+            // maxSpeedIndex = speedLimits.Count - 1;
+            maxSpeed = speedLimits[maxSpeedIndex];
+        }
     }
 
     private bool isVelocityClamped = true;
@@ -654,7 +674,7 @@ public class PC_MovingSphere : MonoBehaviour
     public void ClampVelocity()
     {
         isVelocityClamped = true;
-
+        /*
         for (int i = 0; i < speedLimits.Count; i++)
         {
             if (velocity.magnitude < speedLimits[i])
@@ -668,12 +688,13 @@ public class PC_MovingSphere : MonoBehaviour
 
         maxSpeedIndex = speedLimits.Count - 1;
         maxSpeed = speedLimits[maxSpeedIndex];
+        */
     }
 
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
-        IncreaseSpeedLimitToMaximum();
+        //IncreaseSpeedLimitToMaximum();
     }
 
     public IEnumerator Rumble(float lowFrequencyIntensity, float highFrequencyIntensity, float duration)

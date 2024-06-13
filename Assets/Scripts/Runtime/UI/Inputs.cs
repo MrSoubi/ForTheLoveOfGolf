@@ -25,7 +25,7 @@ public class Inputs : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetButtonDown("Menu"))
         {
             if(optionsMenu != null && optionsMenu.activeInHierarchy)
             {
@@ -55,7 +55,7 @@ public class Inputs : MonoBehaviour
             }  
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && Time.timeScale > 0)
+        if (Input.GetButtonDown("Respawn") && Time.timeScale > 0)
         {
             if (ChallengeManager.instance.currentChallenge != null) ChallengeManager.instance.currentChallenge.Respawn(players);
             else if(GameManager.instance != null) GameManager.instance.Respawn(players);

@@ -60,6 +60,7 @@ public class TimeChallenge : MonoBehaviour
             coinList[i].gameObject.SetActive(state);
             coinList[i].challenge = this;
             coinList[i].isPickingUp = false;
+            coinList[i].transform.position = coinList[i].position;
         }
     }
 

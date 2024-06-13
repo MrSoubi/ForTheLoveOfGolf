@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerCoinValueText;
 
     [Header("Ref Animations")]
+    [SerializeField] private GameObject pannelPipe;
     [SerializeField] private Animator circularFadeAnim;
     [SerializeField] private Animator challengeAnim;
 

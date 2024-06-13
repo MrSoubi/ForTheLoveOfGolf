@@ -11,6 +11,7 @@ public class PC_MovingSphere : MonoBehaviour
 
     [SerializeField] private AudioSource sfxShoot;
     [SerializeField] private AudioSource sfxSpeed;
+    [SerializeField] private AudioSource sfxLanding;
 
     [SerializeField] private Transform ball = default;
     [SerializeField] private GameObject shootingIndicator;
@@ -429,6 +430,11 @@ public class PC_MovingSphere : MonoBehaviour
             {
                 StartCoroutine(CameraManager.Instance.LandingShake());
                 StartCoroutine(Rumble(0.2f, 0.4f, 0.4f));
+
+                if (sfxLanding != null)
+                {
+                    sfxLanding.Play();
+                }
 
                 shootCharges = 1;
 

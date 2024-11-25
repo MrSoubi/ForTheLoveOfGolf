@@ -5,8 +5,8 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "RSE_CompleteHole", menuName = "Data/RSO/CompleteHole")]
-public class RSE_CompleteHole : ScriptableObject
+[CreateAssetMenu(fileName = "RSE_DeclareHole", menuName = "Data/RSE/DeclareHole")]
+public class RSE_DeclareHole : ScriptableObject
 {
     public Action TriggerEvent;
 }

@@ -231,7 +231,7 @@ public class PC_MovingSphere : MonoBehaviour
 
         if (!isFreezed)
         {
-            body.velocity = velocity;
+            body.linearVelocity = velocity;
         }
 
         ClearState();
@@ -363,25 +363,25 @@ public class PC_MovingSphere : MonoBehaviour
             else rotationFactor = ballAirRotation;
         }
 
-        if (body.velocity.magnitude > 10 && particlesTrail != null && particlesTrail.isStopped)
+        if (body.linearVelocity.magnitude > 10 && particlesTrail != null && particlesTrail.isStopped)
         {
             particlesTrail.Play();
         }
-        else if (body.velocity.magnitude <= 10 && particlesTrail != null && particlesTrail.isPlaying)
+        else if (body.linearVelocity.magnitude <= 10 && particlesTrail != null && particlesTrail.isPlaying)
         {
             particlesTrail.Stop();
         }
 
-        if (body.velocity.magnitude > 10 && sfxSpeed != null && !sfxSpeed.isPlaying)
+        if (body.linearVelocity.magnitude > 10 && sfxSpeed != null && !sfxSpeed.isPlaying)
         {
             sfxSpeed.Play();
         }
-        else if (body.velocity.magnitude <= 10 && sfxSpeed != null && sfxSpeed.isPlaying)
+        else if (body.linearVelocity.magnitude <= 10 && sfxSpeed != null && sfxSpeed.isPlaying)
         {
             sfxSpeed.Stop();
         }
 
-        Vector3 movement = (body.velocity - lastConnectionVelocity) * Time.deltaTime;
+        Vector3 movement = (body.linearVelocity - lastConnectionVelocity) * Time.deltaTime;
         movement -= rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
 
         float distance = movement.magnitude;
@@ -443,7 +443,7 @@ public class PC_MovingSphere : MonoBehaviour
     {
         stepsSinceLastGrounded += 1;
         stepsSinceLastShoot += 1;
-        velocity = body.velocity;
+        velocity = body.linearVelocity;
 
         if (CheckClimbing() || CheckSwimming() || OnGround || SnapToGround() || CheckSteepContacts())
         {
@@ -480,7 +480,7 @@ public class PC_MovingSphere : MonoBehaviour
         }
         else
         {
-            CameraManager.Instance.Shake(body.velocity.magnitude / GetMaxSpeedLimit());
+            CameraManager.Instance.Shake(body.linearVelocity.magnitude / GetMaxSpeedLimit());
             contactNormal = upAxis;
         }
 
@@ -997,7 +997,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// <returns>Vector3</returns>
     public Vector3 GetVelocity()
     {
-        return body.velocity;
+        return body.linearVelocity;
     }
 
     private Vector3 savedVelocity;
@@ -1008,8 +1008,8 @@ public class PC_MovingSphere : MonoBehaviour
     /// </summary>
     public void Block()
     {
-        savedVelocity = body.velocity;
-        body.velocity = Vector3.zero;
+        savedVelocity = body.linearVelocity;
+        body.linearVelocity = Vector3.zero;
         isBlocked = true;
         CameraManager.Instance.ResetShake();
         StopAllCoroutines();
@@ -1027,7 +1027,7 @@ public class PC_MovingSphere : MonoBehaviour
     {
         if (!resetMovement)
         {
-            body.velocity = savedVelocity;
+            body.linearVelocity = savedVelocity;
             savedVelocity = Vector3.zero;
         }
 
@@ -1114,7 +1114,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="direction"></param>
     public void SetDirection(Vector3 direction)
     {
-        body.velocity = direction.normalized * body.velocity.magnitude;
+        body.linearVelocity = direction.normalized * body.linearVelocity.magnitude;
     }
 
     /// <summary>
@@ -1140,7 +1140,7 @@ public class PC_MovingSphere : MonoBehaviour
     /// </summary>
     public void IncreaseVelocityToCurrentSpeedLimit()
     {
-        body.velocity = body.velocity.normalized * speedLimits[maxSpeedIndex];
+        body.linearVelocity = body.linearVelocity.normalized * speedLimits[maxSpeedIndex];
     }
 
     /// <summary>

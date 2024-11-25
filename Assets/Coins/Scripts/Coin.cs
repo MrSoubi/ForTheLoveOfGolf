@@ -1,22 +1,20 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public RSO_TotalCoins totalCoins;
-    public RSO_CollectedCoins collectedCoins;
+    [Header("Output")]
     public RSE_CollectCoin collectCoin;
     public RSE_DeclareCoin declareCoin;
 
-
-    [SerializeField] private AudioSource sfx;
     [Header("References")]
-    public ParticleSystem stars;
-    public GameObject mesh;
+    [SerializeField] private AudioSource sfx;
+    [SerializeField] private ParticleSystem stars;
 
     [Header("Settings")]
-    public int value;
+    [SerializeField] private int value;
 
-    private void Start()
+    public void Start()
     {
         declareCoin.TriggerEvent?.Invoke(value);
     }
@@ -40,5 +38,11 @@ public class Coin : MonoBehaviour
     private void OnDestroy()
     {
         collectCoin.TriggerEvent?.Invoke(value);
+    }
+
+    [Button]
+    private void Collect()
+    {
+        Destroy(gameObject);
     }
 }

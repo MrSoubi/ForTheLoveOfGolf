@@ -172,7 +172,7 @@ public class MovingSphere : MonoBehaviour {
 		meshRenderer.material = ballMaterial;
 
 		Vector3 movement =
-			(body.velocity - lastConnectionVelocity) * Time.deltaTime;
+			(body.linearVelocity - lastConnectionVelocity) * Time.deltaTime;
 		movement -=
 			rotationPlaneNormal * Vector3.Dot(movement, rotationPlaneNormal);
 
@@ -258,7 +258,7 @@ public class MovingSphere : MonoBehaviour {
 		else {
 			velocity += gravity * Time.deltaTime;
 		}
-		body.velocity = velocity;
+		body.linearVelocity = velocity;
 		ClearState();
 	}
 
@@ -277,7 +277,7 @@ public class MovingSphere : MonoBehaviour {
 	void UpdateState () {
 		stepsSinceLastGrounded += 1;
 		stepsSinceLastJump += 1;
-		velocity = body.velocity;
+		velocity = body.linearVelocity;
 		if (
 			CheckClimbing() || CheckSwimming() ||
 			OnGround || SnapToGround() || CheckSteepContacts()

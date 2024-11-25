@@ -48,7 +48,7 @@ public class StableFloatingRigidbody : MonoBehaviour {
 				return;
 			}
 
-			if (body.velocity.sqrMagnitude < 0.0001f) {
+			if (body.linearVelocity.sqrMagnitude < 0.0001f) {
 				floatDelay += Time.deltaTime;
 				if (floatDelay >= 1f) {
 					return;
@@ -66,7 +66,7 @@ public class StableFloatingRigidbody : MonoBehaviour {
 			if (submergence[i] > 0f) {
 				float drag =
 					Mathf.Max(0f, 1f - dragFactor * submergence[i]);
-				body.velocity *= drag;
+				body.linearVelocity *= drag;
 				body.angularVelocity *= drag;
 				body.AddForceAtPosition(
 					gravity * (buoyancyFactor * submergence[i]),

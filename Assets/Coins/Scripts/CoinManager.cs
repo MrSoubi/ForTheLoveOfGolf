@@ -10,7 +10,7 @@ public class CoinManager : MonoBehaviour
     public RSE_CollectCoin collectCoin;
     public RSE_DeclareCoin declareCoin;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         declareCoin.TriggerEvent += DeclareCoin;
         collectCoin.TriggerEvent += CollectCoin;
@@ -19,7 +19,7 @@ public class CoinManager : MonoBehaviour
         collectedCoins.Value = 0;
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         declareCoin.TriggerEvent -= DeclareCoin;
         collectCoin.TriggerEvent -= CollectCoin;

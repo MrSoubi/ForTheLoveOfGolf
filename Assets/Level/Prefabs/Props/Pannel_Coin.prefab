@@ -144,15 +144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectedCoins: {fileID: 11400000, guid: fd7f62dbe8427a94795b7547b8ec007c, type: 2}
-  cam: {fileID: 2980042796575806840}
-  textCollectibles: {fileID: 6595625477531568989}
-  holeGo: {fileID: 6458433658853981496}
-  particleEffect: {fileID: 8598436368702196716}
-  sfx: {fileID: 9208131780917975969}
-  pannelGo: {fileID: 673721895053015831}
-  focusDuration: 3
-  delayBeforeActivation: 1
-  nbCollectibles: 10
+  coinAmountNeeded: 0
+  textCoins: {fileID: 6595625477531568989}
+  panelThresholdReached: {fileID: 0}
 --- !u!1 &8672605843537902163
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,11 +343,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4595880652613284, guid: 343a362cd2f920440a92d2c3068a04fc, type: 3}
   m_PrefabInstance: {fileID: 675494148119200233}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &673721895053015831 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1790173281630974, guid: 343a362cd2f920440a92d2c3068a04fc, type: 3}
-  m_PrefabInstance: {fileID: 675494148119200233}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6595625477531568989 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5969389589923170996, guid: 343a362cd2f920440a92d2c3068a04fc, type: 3}
@@ -462,11 +451,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
---- !u!1 &6458433658853981496 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 30637031762711306, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
-  m_PrefabInstance: {fileID: 6470598467883019826}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6974656672296605666 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4109211731532102096, guid: a02a8eaf501353c4a9fab34d7c765273, type: 3}
@@ -552,15 +536,5 @@ PrefabInstance:
 --- !u!4 &4336020123340021187 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6955001416313538936, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
-  m_PrefabInstance: {fileID: 6677012664714368187}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &8598436368702196716 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 3168928809040666455, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
-  m_PrefabInstance: {fileID: 6677012664714368187}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &9208131780917975969 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 2549134923764879130, guid: 03110d894ab51ad41958ac005eb910a2, type: 3}
   m_PrefabInstance: {fileID: 6677012664714368187}
   m_PrefabAsset: {fileID: 0}

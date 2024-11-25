@@ -5,8 +5,8 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "RSE_CollectCoin", menuName = "Data/RSO/CollectCoin")]
-public class RSE_CollectCoin : ScriptableObject
+[CreateAssetMenu(fileName = "RSE_DeclareCoin", menuName = "Data/RSE/DeclareCoin")]
+public class RSE_DeclareCoin : ScriptableObject
 {
     public Action<int> TriggerEvent;
 

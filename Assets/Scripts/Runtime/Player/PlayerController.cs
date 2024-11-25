@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PC_MovingSphere : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private ParticleSystem particlesTrail, particlesShoot;
@@ -70,7 +70,6 @@ public class PC_MovingSphere : MonoBehaviour
     private Rigidbody body, connectedBody, previousConnectedBody;
     private Vector3 playerInput;
     private Vector3 velocity, connectionVelocity;
-    private float Velocity;
     private Vector3 connectionWorldPosition, connectionLocalPosition;
     private Vector3 upAxis, rightAxis, forwardAxis;
     private bool desiredShoot, desiresClimbing;
@@ -94,27 +93,6 @@ public class PC_MovingSphere : MonoBehaviour
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
         minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
         minClimbDotProduct = Mathf.Cos(maxClimbAngle * Mathf.Deg2Rad);
-
-        /*
-        if(speedLimits.Count < 1)
-        {
-            Debug.LogWarning("Speed Limits doit contenir au moins 1 élément.");
-        }
-        else
-        {
-            for(int i = 1; i < speedLimits.Count; i++)
-            {
-                if (speedLimits[i] <= speedLimits[i - 1])
-                {
-                    Debug.LogWarning("Le palier " + i + " des Speed Limits est inférieur ou égal à son prédécesseur");
-                }
-                if (speedLimits[i] - speedLimitMargin <= speedLimits[i - 1])
-                {
-                    Debug.LogWarning("Speed Limit Margin est plus grand que le palier " + (i - 1));
-                }
-            }
-        }
-        */
     }
 
     private void Awake()
@@ -124,7 +102,6 @@ public class PC_MovingSphere : MonoBehaviour
         meshRenderer = ball.GetComponent<MeshRenderer>();
         OnValidate();
     }
-
 
     private void Start()
     {
@@ -264,20 +241,6 @@ public class PC_MovingSphere : MonoBehaviour
     }
 
 
-    private void ShowShootingIndicator()
-    {
-        //shootingIndicator.transform.rotation = CameraManager.Instance.GetLookingDirection().rotation;
-        //shootingIndicator.transform.rotation = Quaternion.Euler(-shootingAngle, 0, 0) * shootingIndicator.transform.rotation;
-        //shootingIndicator.SetActive(true);
-    }
-
-
-    private void HideShootingIndicator()
-    {
-        //shootingIndicator.SetActive(false);
-    }
-
-
     public void ToggleAim()
     {
         if (!canShoot || shootCharges < 1)
@@ -285,13 +248,11 @@ public class PC_MovingSphere : MonoBehaviour
             return;
         }
 
-        //ShowShootingIndicator();
         isAiming = true;
 
         if (aimingMaterial != null) meshRenderer.material = aimingMaterial;
 
         CameraManager.Instance.ActivateAimMode();
-        //shootingIndicator.GetComponent<Animator>().SetBool("Show", true);
         Time.timeScale = 0.1f;
     }
 
@@ -301,8 +262,6 @@ public class PC_MovingSphere : MonoBehaviour
     /// <param name="reset"></param>
     public void ToggleRoll(bool reset)
     {
-        //shootingIndicator.GetComponent<Animator>().SetBool("Show", false);
-        //HideShootingIndicator();
         Time.timeScale = 1.0f;
         isAiming = false;
 
@@ -327,7 +286,6 @@ public class PC_MovingSphere : MonoBehaviour
     private void HandleAim()
     {
         desiredShoot |= Input.GetButtonDown("Shoot") || Input.GetAxisRaw("Shoot GamePad") == 1;
-        //shootingIndicator.transform.rotation = Quaternion.Euler(CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.x + shootingAngle / 2, CameraManager.Instance.GetLookingDirection().rotation.eulerAngles.y, 0);
     }
 
 
@@ -691,35 +649,17 @@ public class PC_MovingSphere : MonoBehaviour
         velocity += xAxis * (adjustment.x * turningFactor) + zAxis * (adjustment.z * 1);
 
         if (Swimming) velocity += upAxis * adjustment.y;
-
-        Velocity = velocity.magnitude;
     }
 
 
     public void ClampVelocity()
     {
         isVelocityClamped = true;
-        /*
-        for (int i = 0; i < speedLimits.Count; i++)
-        {
-            if (velocity.magnitude < speedLimits[i])
-            {
-                maxSpeedIndex = i;
-                maxSpeed = speedLimits[maxSpeedIndex];
-
-                break;
-            }
-        }
-
-        maxSpeedIndex = speedLimits.Count - 1;
-        maxSpeed = speedLimits[maxSpeedIndex];
-        */
     }
 
     public void UnClampVelocity()
     {
         isVelocityClamped = false;
-        //IncreaseSpeedLimitToMaximum();
     }
 
     public IEnumerator Rumble(float lowFrequencyIntensity, float highFrequencyIntensity, float duration)

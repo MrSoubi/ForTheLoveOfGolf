@@ -8,7 +8,7 @@ public class SpeedLimitFreeZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PC_MovingSphere>().UnClampVelocity();
+            other.gameObject.GetComponent<PlayerController>().UnClampVelocity();
         }
     }
 
@@ -16,7 +16,7 @@ public class SpeedLimitFreeZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PC_MovingSphere>().ClampVelocity();
+            other.gameObject.GetComponent<PlayerController>().ClampVelocity();
         }
     }
 }

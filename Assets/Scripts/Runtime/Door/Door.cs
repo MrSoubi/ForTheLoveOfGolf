@@ -63,7 +63,7 @@ public class Door : MonoBehaviour
         textHole.text = holeAmount.ToString() + "/" + holeTreshold.ToString() + " Holes";
     }
 
-    public void TriggerOpen(PC_MovingSphere pc)
+    public void TriggerOpen(PlayerController pc)
     {
         if (CanBeOpened())
         {
@@ -78,7 +78,7 @@ public class Door : MonoBehaviour
         return !isOpen && completedHoles.Value >= holeTreshold && collectedCoins.Value >= coinTreshold;
     }
 
-    private void OpenDoor(PC_MovingSphere pc)
+    private void OpenDoor(PlayerController pc)
     {
         pc.ToggleRoll(true);
         pc.SetDirection(Vector3.zero);

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     /// <param name="currentPlayer"></param>
     public void Respawn(GameObject currentPlayer)
     {
-        PC_MovingSphere tmp = currentPlayer.GetComponent<PC_MovingSphere>();
+        PlayerController tmp = currentPlayer.GetComponent<PlayerController>();
 
         tmp.Block();
         tmp.Teleport(CheckpointManager.instance.GetRespawnPoint());

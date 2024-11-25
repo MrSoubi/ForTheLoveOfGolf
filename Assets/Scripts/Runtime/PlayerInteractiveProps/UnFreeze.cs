@@ -6,6 +6,6 @@ public class UnFreeze : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) other.GetComponent<PC_MovingSphere>().UnFreeze();
+        if (other.CompareTag("Player")) other.GetComponent<PlayerController>().UnFreeze();
     }
 }

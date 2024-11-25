@@ -24,7 +24,7 @@ public class Buttons : MonoBehaviour
         {
             if (sfx != null) sfx.Play();
             
-            door?.TriggerOpen(other.GetComponent<PC_MovingSphere>());
+            door?.TriggerOpen(other.GetComponent<PlayerController>());
             transform.DOMove(new Vector3(posButton.x, posButton.y - 0.2f, posButton.z), animeDuration);
         }
     }

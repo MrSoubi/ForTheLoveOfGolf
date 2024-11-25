@@ -16,7 +16,7 @@ public class Breakable : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            var player = other.transform.GetComponent<PC_MovingSphere>();
+            var player = other.transform.GetComponent<PlayerController>();
             var velocity = player.GetVelocity();
 
             if (velocity.magnitude >= threasholdSpeed)

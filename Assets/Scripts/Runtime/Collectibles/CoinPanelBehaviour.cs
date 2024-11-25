@@ -13,7 +13,7 @@ public class CoinPanelBehaviour : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private TMP_Text textCoins;
-
+     
     [Header("Ouput")]
     public RSE_StandardGameEvent panelThresholdReached;
 

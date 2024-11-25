@@ -28,7 +28,7 @@ public class GiveShootCharge : MonoBehaviour
                 particle.transform.localScale = transform.localScale;
             }
 
-            PC_MovingSphere PC = other.GetComponent<PC_MovingSphere>();
+            PlayerController PC = other.GetComponent<PlayerController>();
             PC.AddShootCharges(quantityToGive);
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
         }

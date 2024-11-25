@@ -30,7 +30,7 @@ public class CameraManager : MonoBehaviour
     public CinemachineBrain brain;
 
     private GameObject target;
-    private PC_MovingSphere playerController;
+    private PlayerController playerController;
 
     [SerializeField] private AnimationCurve FOVCurve;
     [SerializeField] private VisualEffect trailEffect;
@@ -48,7 +48,7 @@ public class CameraManager : MonoBehaviour
 
         if (target)
         {
-            playerController = target.GetComponent<PC_MovingSphere>();
+            playerController = target.GetComponent<PlayerController>();
         }
 
         followingCam.Follow = target.transform;

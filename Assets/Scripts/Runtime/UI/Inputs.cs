@@ -14,7 +14,7 @@ public class Inputs : MonoBehaviour
 
         for (int i = 0; i < tmp.Length; i++)
         {
-            if(tmp[i].TryGetComponent(out PC_MovingSphere player))
+            if(tmp[i].TryGetComponent(out PlayerController player))
             {
                 players = player.gameObject;
 

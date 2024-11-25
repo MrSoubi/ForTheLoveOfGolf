@@ -12,7 +12,7 @@ public class ChangeAimMode : MonoBehaviour
     [SerializeField] private Type type;
     private void OnTriggerEnter(Collider other)
     {
-        PC_MovingSphere PC = other.GetComponent<PC_MovingSphere>();
+        PlayerController PC = other.GetComponent<PlayerController>();
         if (PC != null)
         {
             if (type == Type.EnableAimMode)

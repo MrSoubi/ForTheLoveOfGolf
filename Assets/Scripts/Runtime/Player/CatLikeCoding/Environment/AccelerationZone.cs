@@ -14,7 +14,7 @@ public class AccelerationZone : MonoBehaviour
 		Rigidbody body = other.attachedRigidbody;
 		if (body) 
 		{
-			if (giveShoot) body.GetComponent<PC_MovingSphere>().AddShootCharges(1);
+			if (giveShoot) body.GetComponent<PlayerController>().AddShootCharges(1);
             if (sfx != null) sfx.Play();
             Accelerate(body);
 		}

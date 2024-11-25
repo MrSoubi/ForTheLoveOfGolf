@@ -8,11 +8,11 @@ public class DebugCanvas : MonoBehaviour
     public TMP_Text TMP_Velocity, TMP_SpeedLimit;
     public GameObject sphere;
 
-    PC_MovingSphere pc;
+    PlayerController pc;
 
     private void Start()
     {
-        pc = sphere.GetComponent<PC_MovingSphere>();
+        pc = sphere.GetComponent<PlayerController>();
     }
 
     void Update()

@@ -32,7 +32,7 @@ public class TimeChallenge : MonoBehaviour
     public bool started;
     public bool completed;
     public int coinCollected;
-    public PC_MovingSphere pc;
+    public PlayerController pc;
 
     private void Start()
     {
@@ -50,7 +50,7 @@ public class TimeChallenge : MonoBehaviour
     {
         if (other.transform.CompareTag("Player") && !started)
         {
-            pc = other.GetComponent<PC_MovingSphere>();
+            pc = other.GetComponent<PlayerController>();
             StartChallenge();
         }
     }
@@ -203,7 +203,7 @@ public class TimeChallenge : MonoBehaviour
     /// <param name="player"></param>
     public void Respawn(GameObject player)
     {
-        PC_MovingSphere tmp = player.GetComponent<PC_MovingSphere>();
+        PlayerController tmp = player.GetComponent<PlayerController>();
 
         tmp.Block();
         player.transform.position = triggerBox.transform.position - new Vector3(0, 0.5f, 0);

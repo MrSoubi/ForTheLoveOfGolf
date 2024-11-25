@@ -560,6 +560,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c76988a269ee049419bfd05116974b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectedCoins: {fileID: 11400000, guid: fd7f62dbe8427a94795b7547b8ec007c, type: 2}
+  totalCoins: {fileID: 11400000, guid: dbbc0371328d7b34880f4069ffa53cb1, type: 2}
+  completedHoles: {fileID: 11400000, guid: 7b32d423c5d32a64aa00f296e2e8c074, type: 2}
+  totalHoles: {fileID: 11400000, guid: 9971c1633f9109d4bb2ccac8e33648ab, type: 2}
   cam: {fileID: 5538500397734018608}
   doorLeft: {fileID: 4209833157107885017}
   doorRight: {fileID: 127810273511404620}
@@ -573,10 +577,8 @@ MonoBehaviour:
   delayBeforeActivation: 0
   delayAfterActivation: 0
   coinTreshold: 0
-  coinQuantity: 0
   holeTreshold: 0
-  holeQuantity: 0
-  open: 0
+  isOpen: 0
 --- !u!1 &5226868743687604634
 GameObject:
   m_ObjectHideFlags: 0

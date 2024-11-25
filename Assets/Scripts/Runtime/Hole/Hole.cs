@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
+    public RSE_DeclareHole declareHole;
+    public RSE_CompleteHole completeHole;
+
     [Header("References")]
     [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private Animator ballContentAnim;
@@ -15,7 +18,6 @@ public class Hole : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float animeDuration;
     [SerializeField] private Vector3 respawnPoint;
-    [SerializeField] private bool holePannel;
 
     public bool isGoldenFlag;
 
@@ -30,9 +32,9 @@ public class Hole : MonoBehaviour
 
     private void Start()
     {
-        virtualBall.gameObject.SetActive(false);
+        declareHole.TriggerEvent?.Invoke();
 
-        if(!holePannel) StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(this), .001f));
+        virtualBall.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,8 +53,7 @@ public class Hole : MonoBehaviour
 
             StartCoroutine(Utils.Delay(() =>
             {
-                if (HoleManager.instance != null) HoleManager.instance.CompleteHole(this);
-                else Debug.LogError("No Hole Manager on scene");
+                completeHole.TriggerEvent.Invoke();
 
                 collision = other.gameObject;
                 collision.SetActive(false);

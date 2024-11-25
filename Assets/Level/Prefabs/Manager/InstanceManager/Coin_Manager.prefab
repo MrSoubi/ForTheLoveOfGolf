@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde4660aec2b2f04489876255565b7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinQuantity: 0
-  coinCollected: 0
-  coinLists: []
-  sfx: {fileID: 7002099186111987149}
+  collectedCoins: {fileID: 11400000, guid: fd7f62dbe8427a94795b7547b8ec007c, type: 2}
+  totalCoins: {fileID: 11400000, guid: dbbc0371328d7b34880f4069ffa53cb1, type: 2}
+  collectCoin: {fileID: 11400000, guid: 6cebe4203f731cd47820ee4cc9e22293, type: 2}
+  declareCoin: {fileID: 11400000, guid: 6a0943d9615df3048979e5937d1ea584, type: 2}

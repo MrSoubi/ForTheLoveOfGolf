@@ -92,6 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76664273647b4b478ff0163fdab1cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  declareHole: {fileID: 11400000, guid: a1b51391340545e4d9fb5244e86a8f90, type: 2}
+  completeHole: {fileID: 11400000, guid: efb9ceadd08054b4599b38be4d6af85b, type: 2}
   cam: {fileID: 463244610969970133}
   ballContentAnim: {fileID: 795155549243242335}
   virtualBall: {fileID: 412713680079169280}
@@ -212,7 +214,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &795155549243242335
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -226,7 +228,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

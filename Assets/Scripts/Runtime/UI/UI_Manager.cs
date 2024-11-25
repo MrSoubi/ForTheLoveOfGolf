@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public RSO_CollectedCoins collectedCoins;
+    public RSO_TotalCoins totalCoins;
+    public RSO_CompletedHoles completedHoles;
+    public RSO_TotalHoles totalHoles;
+
     [Header("Ref Collectibles")]
     [SerializeField] private TextMeshProUGUI coinValueText;
     [SerializeField] private TextMeshProUGUI holeValueText;
@@ -26,58 +31,56 @@ public class UIManager : MonoBehaviour
         instance = this.Singleton(instance, () => Destroy(gameObject));
     }
 
+    private void OnEnable()
+    {
+        collectedCoins.onValueChanged += UpdateCollectedCoins;
+        completedHoles.onValueChanged += UpdateCompletedHoles;
+
+        totalCoins.onValueChanged += UpdateTotalCoins;
+        totalHoles.onValueChanged += UpdateTotalHoles;
+    }
+
     private void Start()
     {
-        StartCoroutine(Utils.Delay(LinkEvent, 0.05f));
-
-        StartCoroutine(Utils.Delay(() => UpdateCoinText(), .002f));
-        StartCoroutine(Utils.Delay(() => UpdateHoleText(), .002f));
+        UpdateCoinText();
+        UpdateHoleText();
     }
 
-    /// <summary>
-    /// Met à jour les affichages à chaque fois que pièce ou un drapeau est collecté
-    /// </summary>
-    private void LinkEvent() 
+    private void OnDisable()
     {
-        if (CoinManager.instance) CoinManager.instance.onCollectedCoin += UpdateCoinText;
-        if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdateHoleText;
+        collectedCoins.onValueChanged -= UpdateCollectedCoins;
+        completedHoles.onValueChanged -= UpdateCompletedHoles;
+
+        totalCoins.onValueChanged -= UpdateTotalCoins;
+        totalHoles.onValueChanged -= UpdateTotalHoles;
     }
 
-    /// <summary>
-    /// Met à jour la valeur de pièces collecter sur le nombre max
-    /// </summary>
+    private void UpdateCollectedCoins(int _) => UpdateCoinText();
+    private void UpdateTotalCoins(int _) => UpdateCoinText();
+    private void UpdateCompletedHoles(int _) => UpdateHoleText();
+    private void UpdateTotalHoles(int _) => UpdateHoleText();
+
+
     public void UpdateCoinText()
     {
-        coinValueText.text = CoinManager.instance.coinCollected + "/" + CoinManager.instance.coinQuantity;
+        coinValueText.text = collectedCoins.Value.ToString() + "/" + totalCoins.Value.ToString();
     }
 
-    /// <summary>
-    /// Met à jour la valeur de troue collecter sur le nombre max
-    /// </summary>
     public void UpdateHoleText()
     {
-        holeValueText.text = HoleManager.instance.holeCollected + "/" + HoleManager.instance.holeQuantity;
+        holeValueText.text = completedHoles.Value.ToString() + "/" + totalHoles.Value.ToString();
     }
 
-    /// <summary>
-    /// Met à jour le temps
-    /// </summary>
     public void UpdateTimerText(string value)
     {
         timerText.text = value + "s";
     }
 
-    /// <summary>
-    /// Met à jour la valeur de pièces de challenge collecter sur le nombre max
-    /// </summary>
     public void UpdateTimerCoinText(string value, string maxValue)
     {
         timerCoinValueText.text = value + "/" + maxValue;
     }
 
-    /// <summary>
-    /// Tremble l'interface et la cache
-    /// </summary>
     private IEnumerator HideUIChallenge(bool shake)
     {
         if (shake)

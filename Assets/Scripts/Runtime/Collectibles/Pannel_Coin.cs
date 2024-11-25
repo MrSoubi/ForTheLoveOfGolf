@@ -5,6 +5,9 @@ using UnityEngine.VFX;
 
 public class PannelCollectible : MonoBehaviour
 {
+    [Header("Input events")]
+    public RSO_CollectedCoins collectedCoins;
+
     [Header("References")]
     [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private TMP_Text textCollectibles;
@@ -38,28 +41,22 @@ public class PannelCollectible : MonoBehaviour
 
         textCollectibles.text = 0 + "/" + nbCollectibles;
 
-        if (CoinManager.instance) StartCoroutine(Utils.Delay(() => CoinManager.instance.onCollectedCoin += UpdatePannel, 0.05f));
+        collectedCoins.onValueChanged += UpdatePannel;
 
-        StartCoroutine(Utils.Delay(() => HoleManager.instance.AddHole(pannelGo.GetComponent<Hole>()), .001f));
         holeGo.SetActive(false);
     }
 
-    /// <summary>
-    /// Met à jour l'affichage sur le panneau
-    /// </summary>
-    private void UpdatePannel()
+    private void UpdatePannel(int collectedCoinAmount)
     {
-        textCollectibles.text = CoinManager.instance.coinCollected + "/" + nbCollectibles;
+        textCollectibles.text = collectedCoinAmount.ToString() + "/" + nbCollectibles.ToString();
 
-        if (CoinManager.instance.coinCollected >= nbCollectibles)
+        if (collectedCoins.Value >= nbCollectibles)
         {
             players.ToggleRoll(true);
             players.SetDirection(Vector3.zero);
             players.Block();
 
             CameraManager.Instance.ActivateCamera(cam);
-
-            if (CoinManager.instance) CoinManager.instance.onCollectedCoin -= UpdatePannel;
 
             StartCoroutine(Utils.Delay(() =>
             {

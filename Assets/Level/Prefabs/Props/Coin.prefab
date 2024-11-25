@@ -156,7 +156,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!95 &8615470911013063659
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -170,7 +170,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -243,6 +242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d12bd8bf14600c48821db128a3f86fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalCoins: {fileID: 11400000, guid: dbbc0371328d7b34880f4069ffa53cb1, type: 2}
+  collectedCoins: {fileID: 11400000, guid: fd7f62dbe8427a94795b7547b8ec007c, type: 2}
+  collectCoin: {fileID: 11400000, guid: 6cebe4203f731cd47820ee4cc9e22293, type: 2}
+  declareCoin: {fileID: 11400000, guid: 6a0943d9615df3048979e5937d1ea584, type: 2}
+  sfx: {fileID: 0}
   stars: {fileID: 3623493038056323974, guid: ce6405f5034ac884090b258e1c0be6f4, type: 3}
   mesh: {fileID: 7511748825886624478}
   value: 1

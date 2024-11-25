@@ -5,6 +5,10 @@ using TMPro;
 
 public class Door : MonoBehaviour
 {
+
+    public RSO_CollectedCoins collectedCoins;
+    public RSO_CompletedHoles completedHoles;
+
     [Header("References")]
     [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private Transform doorLeft;
@@ -24,70 +28,56 @@ public class Door : MonoBehaviour
     [SerializeField] private float delayAfterActivation;
 
     [Header("Object Need")]
-    public bool coinTreshold;
-    public int coinQuantity;
-    public bool holeTreshold;
-    public int holeQuantity;
+    public int coinTreshold;
+    public int holeTreshold;
 
     [Header("__DEBUG__")]
-    [SerializeField] private bool open;
+    [SerializeField] private bool isOpen;
 
-    private int holeCompleted;
-    private int coinCollected;
+    private void OnEnable()
+    {
+        if (coinTreshold > 0)
+        {
+            collectedCoins.onValueChanged += UpdatePanelCoin;
+        }
+
+        if (holeTreshold > 0)
+        {
+            completedHoles.onValueChanged += UpdatePanelHole;
+        }
+    }
 
     private void Start()
     {
-        StartCoroutine(Utils.Delay(LinkEvent, 0.001f));
-        UpdatePannelCoin();
-        UpdatePannelHole();
+        UpdatePanelCoin(collectedCoins.Value);
+        UpdatePanelHole(completedHoles.Value);
     }
 
-    private void LinkEvent()
+    private void UpdatePanelCoin(int coinAmount)
     {
-        if (CoinManager.instance) CoinManager.instance.onCollectedCoin += UpdatePannelCoin;
-
-        if (HoleManager.instance) HoleManager.instance.onCollectedHole += UpdatePannelHole;
+        textCoin.text = coinAmount.ToString() + "/" + coinTreshold.ToString() + " Coins";
     }
 
-    /// <summary>
-    /// Met à jour le text des pièces collecter et son nombre max
-    /// </summary>
-    private void UpdatePannelCoin()
+    private void UpdatePanelHole(int holeAmount)
     {
-        if (coinTreshold)
-        {
-            if (CoinManager.instance) coinCollected = CoinManager.instance.coinCollected;
-
-            textCoin.text = coinCollected.ToString() + "/" + coinQuantity.ToString() + " Coins";
-        }
-        else textCoin.text = "";
+        textHole.text = holeAmount.ToString() + "/" + holeTreshold.ToString() + " Holes";
     }
 
-    /// <summary>
-    /// Met à jour le text des troues collecter et son nombre max
-    /// </summary>
-    private void UpdatePannelHole()
-    {
-        if (holeTreshold)
-        {
-            if (HoleManager.instance) holeCompleted = HoleManager.instance.holeCollected;
-
-            textHole.text = holeCompleted.ToString() + "/" + holeQuantity.ToString() + " Holes";
-        }
-        else textHole.text = "";
-    }
-
-    /// <summary>
-    /// Vérifie la condition d'ouverture
-    /// </summary>
     public void TriggerOpen(PC_MovingSphere pc)
     {
-        if (!open && (holeCompleted >= holeQuantity || !holeTreshold) && (coinCollected >= coinQuantity || !coinTreshold)) OpenDoor(pc);
+        if (CanBeOpened())
+        {
+            OpenDoor(pc);
+            collectedCoins.onValueChanged -= UpdatePanelCoin;
+            completedHoles.onValueChanged -= UpdatePanelHole;
+        }
     }
 
-    /// <summary>
-    /// Ouvre la porte selon son type
-    /// </summary>
+    private bool CanBeOpened()
+    {
+        return !isOpen && completedHoles.Value >= holeTreshold && collectedCoins.Value >= coinTreshold;
+    }
+
     private void OpenDoor(PC_MovingSphere pc)
     {
         pc.ToggleRoll(true);
@@ -96,7 +86,7 @@ public class Door : MonoBehaviour
 
         CameraManager.Instance.ActivateCamera(cam);
 
-        open = true;
+        isOpen = true;
 
         StartCoroutine(Utils.Delay(() =>
         {

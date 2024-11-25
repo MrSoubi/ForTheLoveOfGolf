@@ -4490,7 +4490,7 @@ MonoBehaviour:
   m_ShowMaskGraphic: 0
 --- !u!95 &6472752536105276303
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4504,7 +4504,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -4872,7 +4871,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 255
 --- !u!82 &5503778929795931674
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4995,6 +4994,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a345d5a67941e464b8fb0aeaed751228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectedCoins: {fileID: 11400000, guid: fd7f62dbe8427a94795b7547b8ec007c, type: 2}
+  totalCoins: {fileID: 11400000, guid: dbbc0371328d7b34880f4069ffa53cb1, type: 2}
+  completedHoles: {fileID: 11400000, guid: 7b32d423c5d32a64aa00f296e2e8c074, type: 2}
+  totalHoles: {fileID: 11400000, guid: 9971c1633f9109d4bb2ccac8e33648ab, type: 2}
   coinValueText: {fileID: 4037958527164247570}
   holeValueText: {fileID: 3923562158392594854}
   timeChallenge: {fileID: 8676696423853696499}
@@ -5432,7 +5435,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &6731437081308524879
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5446,7 +5449,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

@@ -8,20 +8,7 @@ using DG.Tweening;
 
 public class CameraManager : MonoBehaviour
 {
-    private static CameraManager instance = null; 
-    public static CameraManager Instance => instance;
     public bool enableBoostEffect = false;
-
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-
-            return;
-        }
-        else instance = this;
-    }
 
     [Header("Ref Camera")]
     [SerializeField] private CinemachineVirtualCamera followingCam;

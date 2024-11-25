@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class Inputs : MonoBehaviour
 {
+    [Header("Output events")]
+    public RSE_EnableCursor EnableCursor;
+    public RSE_DisableCursor DisableCursor;
+
     [Header("Ref Menu")]
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private GameObject panelMenu;
     [SerializeField] private GameObject optionsMenu;
 
@@ -38,18 +43,16 @@ public class Inputs : MonoBehaviour
                 Time.timeScale = 0.0f;
 
                 panelMenu.SetActive(true);
-                CameraManager.Instance.brain.m_IgnoreTimeScale = false;
-                CursorManager.instance.SetCursorVisibility(true);
-                CursorManager.instance.SetCursorLockMod(CursorLockMode.None);
+                cameraManager.brain.m_IgnoreTimeScale = false;
+                EnableCursor.TriggerEvent();
             }
             else if(panelMenu != null && panelMenu.activeInHierarchy)
             {
                 Time.timeScale = 1.0f;
 
                 panelMenu.SetActive(false);
-                CameraManager.Instance.brain.m_IgnoreTimeScale = true;
-                CursorManager.instance.SetCursorVisibility(false);
-                CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
+                cameraManager.brain.m_IgnoreTimeScale = true;
+                DisableCursor.TriggerEvent();
 
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             }  

@@ -8,6 +8,7 @@ using UnityEngine.VFX;
 public class TimeChallenge : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private GameObject triggerBox;
     [SerializeField] private ParticleSystem stars;
@@ -148,7 +149,7 @@ public class TimeChallenge : MonoBehaviour
         pc.SetDirection(Vector3.zero);
         pc.Block();
 
-        CameraManager.Instance.ActivateCamera(cam);
+        cameraManager.ActivateCamera(cam);
 
         StopCoroutine(timer);
 
@@ -166,7 +167,7 @@ public class TimeChallenge : MonoBehaviour
         }, delayBeforeActivation));
         StartCoroutine(Utils.Delay(() =>
         {
-            CameraManager.Instance.DeActivateCurrentCamera();
+            cameraManager.DeActivateCurrentCamera();
             pc.UnBlock(true);
         }, focusDuration));
     }

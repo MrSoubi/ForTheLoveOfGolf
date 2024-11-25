@@ -4,6 +4,7 @@ using UnityEngine;
 public class Pipe : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private AudioSource sfx;
     [SerializeField] private Animator ballContentAnim;
     [SerializeField] private Transform virtualBall;
@@ -32,7 +33,7 @@ public class Pipe : MonoBehaviour
             tmp.ToggleRoll(true);
             tmp.SetDirection(Vector3.zero);
             tmp.Block();
-            CameraManager.Instance.ResetShake();
+            cameraManager.ResetShake();
 
             collision.SetActive(false);
             virtualBall.gameObject.SetActive(true);

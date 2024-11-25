@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private ParticleSystem particlesTrail, particlesShoot;
 
     [SerializeField] private AudioSource sfxShoot;
@@ -106,16 +107,15 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         UpdatePCData();
-        //UnFreeze();
         ResetMaxSpeed();
-        playerInputSpace = CameraManager.Instance.GetLookingDirection();
+        playerInputSpace = cameraManager.GetLookingDirection();
     }
 
     private bool isAiming;
     bool canAim = true;
     private void Update()
     {
-        playerInputSpace = CameraManager.Instance.GetLookingDirection();
+        playerInputSpace = cameraManager.GetLookingDirection();
         UpdatePCData();
 
         if (isBlocked) return;
@@ -252,7 +252,7 @@ public class PlayerController : MonoBehaviour
 
         if (aimingMaterial != null) meshRenderer.material = aimingMaterial;
 
-        CameraManager.Instance.ActivateAimMode();
+        cameraManager.ActivateAimMode();
         Time.timeScale = 0.1f;
     }
 
@@ -279,7 +279,7 @@ public class PlayerController : MonoBehaviour
             meshRenderer.material.SetColor("_BaseColor", Color.grey);
         }
 
-        CameraManager.Instance.ActivateFollowMode(reset);
+        cameraManager.ActivateFollowMode(reset);
     }
 
 
@@ -409,7 +409,7 @@ public class PlayerController : MonoBehaviour
 
             if (stepsSinceLastShoot > 1 & shootCharges <= 0)
             {
-                StartCoroutine(CameraManager.Instance.LandingShake());
+                StartCoroutine(cameraManager.LandingShake());
                 StartCoroutine(Rumble(0.2f, 0.4f, 0.4f));
 
                 if (sfxLanding != null)
@@ -429,7 +429,7 @@ public class PlayerController : MonoBehaviour
 
             jumpPhase = 0;
 
-            CameraManager.Instance.Shake(0);
+            cameraManager.Shake(0);
 
             if (groundContactCount > 1)
             {
@@ -438,7 +438,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            CameraManager.Instance.Shake(body.linearVelocity.magnitude / GetMaxSpeedLimit());
+            cameraManager.Shake(body.linearVelocity.magnitude / GetMaxSpeedLimit());
             contactNormal = upAxis;
         }
 
@@ -776,7 +776,7 @@ public class PlayerController : MonoBehaviour
             particlesShoot.Play();
         }
 
-        StartCoroutine(CameraManager.Instance.BoostEffect());
+        StartCoroutine(cameraManager.BoostEffect());
         StartCoroutine(Rumble(0.4f, 0.2f, 0.4f));
     }
 
@@ -894,7 +894,7 @@ public class PlayerController : MonoBehaviour
         {
             Gamepad.current.SetMotorSpeeds(0, 0);
         }
-        CameraManager.Instance.ResetShake();
+        cameraManager.ResetShake();
         body.position = position;
     }
 
@@ -909,7 +909,7 @@ public class PlayerController : MonoBehaviour
         {
             Gamepad.current.SetMotorSpeeds(0, 0);
         }
-        CameraManager.Instance.ResetShake();
+        cameraManager.ResetShake();
         body.position = transform.position;
         //body.rotation = transform.rotation;
     }
@@ -926,7 +926,7 @@ public class PlayerController : MonoBehaviour
         {
             Gamepad.current.SetMotorSpeeds(0, 0);
         }
-        CameraManager.Instance.ResetShake();
+        cameraManager.ResetShake();
         body.position = position;
         //body.rotation = rotation;
     }
@@ -951,7 +951,7 @@ public class PlayerController : MonoBehaviour
         savedVelocity = body.linearVelocity;
         body.linearVelocity = Vector3.zero;
         isBlocked = true;
-        CameraManager.Instance.ResetShake();
+        cameraManager.ResetShake();
         StopAllCoroutines();
         if (Gamepad.current != null)
         {
@@ -972,7 +972,7 @@ public class PlayerController : MonoBehaviour
         }
 
         isBlocked = false;
-        CameraManager.Instance.ResetShake();
+        cameraManager.ResetShake();
         StopAllCoroutines();
         if (Gamepad.current != null)
         {

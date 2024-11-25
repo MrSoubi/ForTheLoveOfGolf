@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
     public RSO_CompletedHoles completedHoles;
 
     [Header("References")]
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private Transform doorLeft;
     [SerializeField] private Transform doorRight;
@@ -84,7 +85,7 @@ public class Door : MonoBehaviour
         pc.SetDirection(Vector3.zero);
         pc.Block();
 
-        CameraManager.Instance.ActivateCamera(cam);
+        cameraManager.ActivateCamera(cam);
 
         isOpen = true;
 
@@ -115,7 +116,7 @@ public class Door : MonoBehaviour
 
         StartCoroutine(Utils.Delay(() =>
         {
-            CameraManager.Instance.DeActivateCurrentCamera();
+            cameraManager.DeActivateCurrentCamera();
             pc.UnBlock(true);
         }, animeDuration + delayAfterActivation));
     }

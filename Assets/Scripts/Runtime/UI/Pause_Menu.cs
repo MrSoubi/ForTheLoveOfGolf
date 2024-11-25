@@ -8,7 +8,12 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    [Header("Output events")]
+    public RSE_EnableCursor EnableCursor;
+    public RSE_DisableCursor DisableCursor;
+
     [Header("References")]
+    [SerializeField] private CameraManager cameraManager;
     [SerializeField] GameObject optionsMenu;
     [SerializeField] private Texture2D handCursor;
     [SerializeField] private AudioSource sfx;
@@ -53,9 +58,8 @@ public class PauseMenu : MonoBehaviour
     {
         ButtonPress();
 
-        CameraManager.Instance.brain.m_IgnoreTimeScale = true;
-        CursorManager.instance.SetCursorVisibility(false);
-        CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
+        cameraManager.brain.m_IgnoreTimeScale = true;
+        DisableCursor.TriggerEvent();
 
         Time.timeScale = 1.0f;
         gameObject.SetActive(false);
@@ -82,8 +86,7 @@ public class PauseMenu : MonoBehaviour
     {
         ButtonPress();
 
-        CursorManager.instance.SetCursorVisibility(false);
-        CursorManager.instance.SetCursorLockMod(CursorLockMode.Locked);
+        DisableCursor.TriggerEvent();
 
         ao = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         ao.allowSceneActivation = false;
@@ -107,8 +110,7 @@ public class PauseMenu : MonoBehaviour
     {
         ButtonPress();
 
-        CursorManager.instance.SetCursorVisibility(true);
-        CursorManager.instance.SetCursorLockMod(CursorLockMode.None);
+        EnableCursor.TriggerEvent();
 
         ao = SceneManager.LoadSceneAsync("Menu");
         ao.allowSceneActivation = false;

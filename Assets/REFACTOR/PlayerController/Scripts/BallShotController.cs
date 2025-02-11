@@ -11,7 +11,6 @@ public class BallShotController : MonoBehaviour
     [Header("Paramètres du tir")]
     public float maxChargeTime = 2f; // Temps max de charge du tir
     public float maxShotForce = 20f; // Force max appliquée à la balle
-    public int trajectoryPoints = 20; // Nombre de points sur la courbe
     public float launchAngle = 20f; // **Angle de tir vers le haut (en degrés)**
 
     private bool isBallFrozen = false; // Indique si la balle est figée
@@ -20,6 +19,8 @@ public class BallShotController : MonoBehaviour
 
     private Vector3 savedVelocity;
     private Vector3 savedAngularVelocity;
+
+    private bool hasShot = false;
 
     void Start()
     {
@@ -54,6 +55,8 @@ public class BallShotController : MonoBehaviour
             savedAngularVelocity = rb.angularVelocity;
 
             rb.isKinematic = true; // On fige la balle
+
+            hasShot = false;
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
@@ -62,8 +65,14 @@ public class BallShotController : MonoBehaviour
                 isBallFrozen = false;
 
                 rb.isKinematic = false;
-                rb.linearVelocity = savedVelocity;
-                rb.angularVelocity = savedAngularVelocity;
+
+                if (!hasShot)
+                {
+                    rb.linearVelocity = savedVelocity;
+                    rb.angularVelocity = savedAngularVelocity;
+                }
+
+                hasShot = false;
             }
         }
     }
@@ -83,6 +92,7 @@ public class BallShotController : MonoBehaviour
             ShootBall();
             isChargingShot = false;
             trajectoryRenderer.enabled = false;
+            hasShot = true;
         }
     }
 
@@ -103,19 +113,28 @@ public class BallShotController : MonoBehaviour
         chargeTime = 0f;
     }
 
+    public int resolution = 30;  // Nombre de points dans la courbe
+    public float timeStep = 0.05f; // Intervalle de temps entre chaque point
+
     void UpdateTrajectory()
     {
         Vector3 startPosition = transform.position;
         Vector3 initialVelocity = GetLaunchVelocity();
+        Vector3[] trajectoryPoints = new Vector3[resolution];
 
-        trajectoryRenderer.positionCount = trajectoryPoints;
+        trajectoryRenderer.positionCount = resolution;
 
-        for (int i = 0; i < trajectoryPoints; i++)
+        for (int i = 0; i < resolution; i++)
         {
-            float time = (i / (float)trajectoryPoints) * (2f * initialVelocity.y / -Physics.gravity.y); // Approximation du temps de vol
-            Vector3 position = startPosition + initialVelocity * time + 0.5f * Physics.gravity * time * time;
-            trajectoryRenderer.SetPosition(i, position);
+            float t = i * timeStep; // Temps écoulé
+
+            // Formule de la trajectoire : P = P0 + V0 * t + 0.5 * g * t²
+            Vector3 point = startPosition + initialVelocity * t + 0.5f * Physics.gravity * t * t;
+
+            trajectoryPoints[i] = point;
         }
+
+        trajectoryRenderer.SetPositions(trajectoryPoints);
     }
 
 

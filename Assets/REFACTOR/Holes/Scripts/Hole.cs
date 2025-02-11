@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
-    [Header("Output")]
-    public RSE_DeclareHole declareHole;
-    public RSE_CompleteHole completeHole;
+    [Title("Output events")]
+    [SerializeField] RSE_DeclareHole declareHole;
+    [SerializeField] RSE_CompleteHole completeHole;
 
     private bool isCompleted;
 

@@ -1,12 +1,15 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
+    [Title("Output Data")]
     public RSO_CollectedCoins collectedCoins;
     public RSO_TotalCoins totalCoins;
 
+    [Title("Input Events")]
     public RSE_CollectCoin collectCoin;
     public RSE_DeclareCoin declareCoin;
 

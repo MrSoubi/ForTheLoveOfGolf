@@ -1,14 +1,15 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HoleManager : MonoBehaviour
 {
-    [Header("Input Events")]
+    [Title("Input Events")]
     public RSE_CompleteHole completeHole;
     public RSE_DeclareHole declareHole;
 
-    [Header("Output data")]
+    [Title("Output data")]
     public RSO_CompletedHoles completedHoles;
     public RSO_TotalHoles totalHoles;
 

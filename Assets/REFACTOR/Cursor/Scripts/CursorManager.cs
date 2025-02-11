@@ -1,9 +1,11 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
+    [Title("Input Events")]
     [SerializeField] RSE_EnableCursor EnableCursor;
     [SerializeField] RSE_DisableCursor DisableCursor;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    [Header("Output")]
+    [Header("Output Events")]
     public RSE_CollectCoin collectCoin;
     public RSE_DeclareCoin declareCoin;
 

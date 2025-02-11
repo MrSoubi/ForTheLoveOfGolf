@@ -1,0 +1,34 @@
+{
+    "name": "CameraControllerInputMap",
+    "maps": [
+        {
+            "name": "ActionMap",
+            "id": "012d18d1-c68d-4804-81a5-e4f3fd309ec0",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "3fce332e-06b9-43be-b41a-a7b716a5d241",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0f1e3572-554e-492a-87a8-af3bf7f63932",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

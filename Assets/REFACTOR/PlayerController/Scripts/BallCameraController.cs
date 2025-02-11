@@ -9,7 +9,7 @@ public class BallCameraController : MonoBehaviour
     [Header("Paramètres de la caméra")]
     public float distance = 5f; // Distance entre la caméra et la balle
     public float heightOffset = 1.5f; // Hauteur de la caméra par rapport à la balle
-    public float rotationSpeed = 3f; // Sensibilité de la rotation
+    public float rotationSpeed = 150f; // Sensibilité du joystick
 
     [Header("Limites de l'angle vertical")]
     public float minVerticalAngle = -20f;
@@ -18,9 +18,8 @@ public class BallCameraController : MonoBehaviour
     private float yaw = 0f; // Rotation horizontale (gauche/droite)
     private float pitch = 20f; // Rotation verticale (haut/bas)
 
-    private Vector2 lookInput; // Stockage de l'entrée du joueur pour la rotation
-
-    private PlayerInput playerInput;
+    private Vector2 lookInput; // Stockage de l'entrée du joystick droit
+    private float zoomInput;
 
     void Start()
     {
@@ -29,8 +28,6 @@ public class BallCameraController : MonoBehaviour
             Debug.LogError("Aucune cible assignée à la caméra !");
             return;
         }
-
-        playerInput = GetComponent<PlayerInput>();
 
         // Initialisation des angles de rotation
         Vector3 angles = transform.eulerAngles;
@@ -42,7 +39,7 @@ public class BallCameraController : MonoBehaviour
     {
         if (target == null) return;
 
-        // Appliquer la rotation en fonction de l'entrée du joueur
+        // Rotation de la caméra en fonction du joystick droit
         yaw += lookInput.x * rotationSpeed * Time.deltaTime;
         pitch -= lookInput.y * rotationSpeed * Time.deltaTime;
         pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);
@@ -59,15 +56,9 @@ public class BallCameraController : MonoBehaviour
         transform.LookAt(target.position + Vector3.up * heightOffset);
     }
 
-    // Appelé par le système d'Input
+    // Gestion du joystick droit (rotation de la caméra)
     public void OnLook(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
-        {
-            Vector2 delta = context.ReadValue<Vector2>();
-            yaw += delta.x * rotationSpeed * Time.deltaTime;
-            pitch -= delta.y * rotationSpeed * Time.deltaTime;
-            pitch = Mathf.Clamp(pitch, minVerticalAngle, maxVerticalAngle);
-        }
+        lookInput = context.ReadValue<Vector2>();
     }
 }

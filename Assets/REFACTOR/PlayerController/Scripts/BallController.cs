@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BallController : MonoBehaviour
@@ -18,11 +19,13 @@ public class BallController : MonoBehaviour
     private Vector3 groundNormal = Vector3.up; // Normale du sol
     private bool isGrounded;
 
+    private Vector2 moveInput; // Stockage de l'entrée du joystick gauche
+    private bool jumpPressed = false; // Détecte si le saut a été pressé
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        // Si aucune caméra n'est assignée, on cherche la caméra principale
         if (cameraTransform == null && Camera.main != null)
         {
             cameraTransform = Camera.main.transform;
@@ -36,10 +39,11 @@ public class BallController : MonoBehaviour
         // Vérifier si la balle touche le sol
         isGrounded = Physics.Raycast(transform.position, -groundNormal, 0.6f, groundLayer);
 
-        // Gérer le saut
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // Gérer le saut avec le Gamepad
+        if (jumpPressed && isGrounded)
         {
             rb.AddForce(groundNormal * jumpForce, ForceMode.Impulse);
+            jumpPressed = false; // Réinitialisation après le saut
         }
     }
 
@@ -59,28 +63,32 @@ public class BallController : MonoBehaviour
 
     void MoveBall()
     {
-        if (cameraTransform == null) return; // Vérifier qu'on a bien une caméra
-
-        float moveInput = 0f;
-        float strafeInput = 0f; // Pour le mouvement latéral
-
-        if (Input.GetKey(KeyCode.Z)) moveInput = 1f;
-        if (Input.GetKey(KeyCode.S)) moveInput = -1f;
-        if (Input.GetKey(KeyCode.Q)) strafeInput = -1f; // Gauche
-        if (Input.GetKey(KeyCode.D)) strafeInput = 1f; // Droite
+        if (cameraTransform == null) return;
 
         // Projeter les directions de la caméra sur le sol
         Vector3 forward = Vector3.ProjectOnPlane(cameraTransform.forward, groundNormal).normalized;
         Vector3 right = Vector3.ProjectOnPlane(cameraTransform.right, groundNormal).normalized;
 
-        // Appliquer le déplacement vers l'avant/arrière
-        Vector3 moveForce = forward * moveInput * moveSpeed;
+        // Calcul des forces basées sur le joystick gauche
+        Vector3 moveForce = forward * moveInput.y * moveSpeed;
+        Vector3 strafeForce = right * moveInput.x * moveSpeed;
 
-        // Appliquer un déplacement latéral (strafe)
-        Vector3 strafeForce = right * strafeInput * moveSpeed;
-
-        // Appliquer les forces au Rigidbody
+        // Appliquer la force combinée
         rb.AddForce(moveForce + strafeForce, ForceMode.Acceleration);
     }
 
+    // Gestion du joystick gauche
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    // Gestion du saut (touche "A" du Gamepad)
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            jumpPressed = true;
+        }
+    }
 }

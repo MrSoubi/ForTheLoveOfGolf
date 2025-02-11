@@ -10,9 +10,6 @@ public class BallCameraController : MonoBehaviour
     public float distance = 5f; // Distance entre la caméra et la balle
     public float heightOffset = 1.5f; // Hauteur de la caméra par rapport à la balle
     public float rotationSpeed = 3f; // Sensibilité de la rotation
-    public float zoomSpeed = 2f;
-    public float minDistance = 2f;
-    public float maxDistance = 10f;
 
     [Header("Limites de l'angle vertical")]
     public float minVerticalAngle = -20f;
